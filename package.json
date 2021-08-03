@@ -15,7 +15,7 @@
 		"build"
 	],
 	"dependencies": {
-		"ink": "^2.7.1",
+		"ink": "^3.0.9",
 		"pastel": "^1.1.1",
 		"prop-types": "^15.7.2",
 		"react": "^16.14.0"
