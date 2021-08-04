@@ -5896,6 +5896,11 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
+twitter-d@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/twitter-d/-/twitter-d-0.4.0.tgz#3b7e2dd480c38699f4199124b77511c6f7bc8e29"
+  integrity sha512-t8z7qqq0yt1dD7BUISRvASw9mtYRMSTTVzmkvjz8oM9ZN++LEC6Ix8WEXZS0RtswnGgwdSPTxY9qyHcYgPexdA==
+
 twitter-lite@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/twitter-lite/-/twitter-lite-1.1.0.tgz#77f250cc73f14ecc5a493ddb81ff0a3e9ae72680"
