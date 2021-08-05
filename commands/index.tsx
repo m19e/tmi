@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import path from "path";
+import {
+	mkdirsSync,
+	readdirSync,
+	existsSync,
+	readJsonSync,
+	writeJsonSync,
+} from "fs-extra";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
-import TL, { AccessTokenResponse } from "twitter-lite";
+import TL, { AccessTokenResponse, TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
 config();
@@ -36,6 +44,64 @@ const Hello = ({ name }) => {
 
 		init();
 	}, []);
+
+	const getConfig = (profile: string): [string, TwitterOptions | null, any] => {
+		let dir = process.env.HOME ?? "";
+		if (dir === "" && process.platform === "win32") {
+			dir = process.env.APPDATA ?? "";
+			if (dir === "") {
+				dir = path.join(
+					process.env.USERPROFILE ?? "",
+					"Application Data",
+					"tink"
+				);
+			}
+		} else {
+			dir = path.join(dir, ".config", "tink");
+		}
+
+		try {
+			mkdirsSync(dir);
+		} catch (err) {
+			return ["", null, err];
+		}
+
+		let file = "";
+		if (profile === "") {
+			file = path.join(dir, "settings.json");
+		} else if (profile === "?") {
+			try {
+				const names = readdirSync(dir, { withFileTypes: true })
+					.filter(
+						(d) =>
+							d.isFile() &&
+							path.extname(d.name) === ".json" &&
+							d.name.match(/^settings-/)
+					)
+					.map((d) => path.parse(d.name).name.replace("settings-", ""));
+
+				console.log(names.length ? names.join("\n") : "tink has no accounts.");
+				process.exit(0);
+			} catch (err) {
+				return ["", null, err];
+			}
+		} else {
+			file = path.join(dir, "setttings-" + profile + ".json");
+		}
+
+		let config: TwitterOptions;
+		const json = readJsonSync(file, { throws: false });
+		if (json === null) {
+			if (existsSync(file)) {
+				return ["", null, "CANNOT READ JSON"];
+			}
+			config = defaultOptions;
+		} else {
+			config = json;
+		}
+
+		return [file, config, null];
+	};
 
 	const getAccessTokenSync = async (): Promise<AccessTokenResponse> => {
 		return await client.getAccessToken({
