@@ -136,7 +136,7 @@ const Hello = ({ name }) => {
 
 	return (
 		<Box flexDirection="column">
-			<Text>Open URL</Text>
+			<Text>Open URL and enter PIN.</Text>
 			{status === "done" ? (
 				<Text>
 					https://api.twitter.com/oauth/authenticate?oauth_token=
