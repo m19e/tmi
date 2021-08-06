@@ -27,19 +27,35 @@ const Hello = ({ name }) => {
 	const [status, setStatus] = useState<"init" | "wait" | "done">("init");
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
+	const [filePath, setFilePath] = useState("");
 
 	const [at, setAT] = useState<AccessTokenResponse | null>(null);
+	const [config, setConfig] = useState<TwitterOptions>(defaultOptions);
 
 	useEffect(() => {
 		const init = async () => {
-			const rt = await client.getRequestToken("oob");
-			const { oauth_token } = rt as {
-				oauth_token: string;
-				oauth_token_secret: string;
-				oauth_callback_confirmed: "true";
-			};
-			setOT(oauth_token);
-			setStatus("wait");
+			const [fp, conf, err] = getConfig(name);
+			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
+				console.error("cannot get configuration: ", err);
+				setFilePath(fp);
+
+				const rt = await client.getRequestToken("oob");
+				const { oauth_token } = rt as {
+					oauth_token: string;
+				};
+				setOT(oauth_token);
+				setStatus("wait");
+			} else {
+				setConfig(conf);
+				const { access_token_key, access_token_secret } = config;
+
+				await getPrivateFriendTimeline({
+					...defaultOptions,
+					access_token_key,
+					access_token_secret,
+				});
+				setStatus("done");
+			}
 		};
 
 		init();
@@ -110,11 +126,19 @@ const Hello = ({ name }) => {
 		});
 	};
 
-	const getPrivateFriendTimeline = async (token: AccessTokenResponse) => {
+	const getPrivateFriendTimeline = async (options: TwitterOptions) => {
+		const {
+			consumer_key,
+			consumer_secret,
+			access_token_key,
+			access_token_secret,
+		} = options;
+
 		const user = new TL({
-			...defaultOptions,
-			access_token_key: token.oauth_token,
-			access_token_secret: token.oauth_token_secret,
+			consumer_key,
+			consumer_secret,
+			access_token_key,
+			access_token_secret,
 		});
 
 		const data = await user.get("statuses/user_timeline", {
@@ -135,15 +159,19 @@ const Hello = ({ name }) => {
 	};
 
 	const handleSubmitPinAuth = async (p: string) => {
-		const token = await getAccessToken(p);
+		const token = await client.getAccessToken({
+			oauth_verifier: p,
+			oauth_token: ot,
+		});
 		setAT(token);
 
-		await writeJson(filePath, {
+		const options = {
 			access_token_key: token.oauth_token,
 			access_token_secret: token.oauth_token_secret,
-		});
+		};
 
-		await getPrivateFriendTimeline(token);
+		await writeJson(filePath, options);
+		await getPrivateFriendTimeline({ ...defaultOptions, ...options });
 		setStatus("done");
 	};
 
