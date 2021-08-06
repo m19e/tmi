@@ -103,9 +103,9 @@ const Hello = ({ name }) => {
 		return [file, config, null];
 	};
 
-	const getAccessTokenSync = async (): Promise<AccessTokenResponse> => {
+	const getAccessToken = async (p: string): Promise<AccessTokenResponse> => {
 		return await client.getAccessToken({
-			oauth_verifier: pin,
+			oauth_verifier: p,
 			oauth_token: ot,
 		});
 	};
