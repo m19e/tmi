@@ -119,13 +119,6 @@ const Hello = ({ name }) => {
 		return [file, config, null];
 	};
 
-	const getAccessToken = async (p: string): Promise<AccessTokenResponse> => {
-		return await client.getAccessToken({
-			oauth_verifier: p,
-			oauth_token: ot,
-		});
-	};
-
 	const getPrivateFriendTimeline = async (options: TwitterOptions) => {
 		const {
 			consumer_key,
