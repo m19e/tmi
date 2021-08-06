@@ -6,7 +6,7 @@ import {
 	readdirSync,
 	existsSync,
 	readJsonSync,
-	writeJsonSync,
+	writeJson,
 } from "fs-extra";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
@@ -134,6 +134,19 @@ const Hello = ({ name }) => {
 		);
 	};
 
+	const handleSubmitPinAuth = async (p: string) => {
+		const token = await getAccessToken(p);
+		setAT(token);
+
+		await writeJson(filePath, {
+			access_token_key: token.oauth_token,
+			access_token_secret: token.oauth_token_secret,
+		});
+
+		await getPrivateFriendTimeline(token);
+		setStatus("done");
+	};
+
 	return (
 		<Box flexDirection="column">
 			<Text>Open URL and enter PIN.</Text>
@@ -159,12 +172,7 @@ const Hello = ({ name }) => {
 					<TextInput
 						value={pin}
 						onChange={(value) => setPIN(value)}
-						onSubmit={async () => {
-							const token = await getAccessTokenSync();
-							setAT(token);
-							await getPrivateFriendTimeline(token);
-							setStatus("done");
-						}}
+						onSubmit={handleSubmitPinAuth}
 					/>
 				</Box>
 			)}
