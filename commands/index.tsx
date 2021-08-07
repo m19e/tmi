@@ -13,6 +13,8 @@ import TextInput from "ink-text-input";
 import TL, { AccessTokenResponse, TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
+import { Tweet } from "../src/types/twitter";
+
 config();
 
 const defaultOptions = {
@@ -140,10 +142,10 @@ const Hello = ({ name }) => {
 		});
 		console.log(
 			JSON.stringify(
-				data.map((tweet) => [
-					tweet.created_at,
-					`${tweet.user.name} @${tweet.user.screen_name}`,
-					tweet.text,
+				data.map((t: Tweet) => [
+					t.created_at,
+					`${t.user.name} @${t.user.screen_name}`,
+					t.text,
 				]),
 				null,
 				2
