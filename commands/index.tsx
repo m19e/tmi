@@ -49,13 +49,7 @@ const Hello = ({ name }) => {
 				setStatus("wait");
 			} else {
 				setConfig(conf);
-				const { access_token_key, access_token_secret } = config;
-
-				await getPrivateFriendTimeline({
-					...defaultOptions,
-					access_token_key,
-					access_token_secret,
-				});
+				await getPrivateFriendTimeline(conf);
 				setStatus("done");
 			}
 		};
@@ -122,19 +116,7 @@ const Hello = ({ name }) => {
 	};
 
 	const getPrivateFriendTimeline = async (options: TwitterOptions) => {
-		const {
-			consumer_key,
-			consumer_secret,
-			access_token_key,
-			access_token_secret,
-		} = options;
-
-		const user = new TL({
-			consumer_key,
-			consumer_secret,
-			access_token_key,
-			access_token_secret,
-		});
+		const user = new TL(options);
 
 		const data: Tweet[] = await user.get("statuses/user_timeline", {
 			screen_name: name,
@@ -160,13 +142,13 @@ const Hello = ({ name }) => {
 		});
 		setAT(token);
 
-		const options = {
+		const options = Object.assign(defaultOptions, {
 			access_token_key: token.oauth_token,
 			access_token_secret: token.oauth_token_secret,
-		};
+		});
 
 		await writeJson(filePath, options);
-		await getPrivateFriendTimeline({ ...defaultOptions, ...options });
+		await getPrivateFriendTimeline(options);
 		setStatus("done");
 	};
 
