@@ -136,13 +136,13 @@ const Hello = ({ name }) => {
 			access_token_secret,
 		});
 
-		const data = await user.get("statuses/user_timeline", {
+		const data: Tweet[] = await user.get("statuses/user_timeline", {
 			screen_name: name,
 			count: 3,
 		});
 		console.log(
 			JSON.stringify(
-				data.map((t: Tweet) => [
+				data.map((t) => [
 					t.created_at,
 					`${t.user.name} @${t.user.screen_name}`,
 					t.text,
