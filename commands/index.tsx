@@ -38,7 +38,7 @@ const Hello = ({ name }) => {
 		const init = async () => {
 			const [fp, conf, err] = getConfig(name);
 			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
-				console.error("cannot get configuration: ", err);
+				if (err !== null) console.error("cannot get configuration: ", err);
 				setFilePath(fp);
 
 				const rt = await client.getRequestToken("oob");
