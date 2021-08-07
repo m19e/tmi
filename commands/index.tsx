@@ -104,7 +104,7 @@ const Hello = ({ name }) => {
 				return ["", null, err];
 			}
 		} else {
-			file = path.join(dir, "setttings-" + profile + ".json");
+			file = path.join(dir, "settings-" + profile + ".json");
 		}
 
 		let config: TwitterOptions;
