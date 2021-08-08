@@ -1,3 +1,19 @@
+export interface List {
+	id: number;
+	id_str: string;
+	name: string;
+	uri: string;
+	subscriber_count: number;
+	member_count: number;
+	mode: "public" | "private";
+	description: string;
+	slug: string;
+	full_name: string;
+	created_at: string;
+	following: boolean;
+	user: User;
+}
+
 export interface Tweet {
 	contributors?: null;
 	coordinates?: Coordinates | null;
