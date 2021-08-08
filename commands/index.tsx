@@ -36,7 +36,7 @@ const Hello = ({ name }) => {
 
 	useEffect(() => {
 		const init = async () => {
-			const [fp, conf, err] = getConfig(name);
+			const [fp, conf, err] = getConfig();
 			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
 				if (err !== null) console.error("cannot get configuration: ", err);
 				setFilePath(fp);
@@ -57,7 +57,9 @@ const Hello = ({ name }) => {
 		init();
 	}, []);
 
-	const getConfig = (profile: string): [string, TwitterOptions | null, any] => {
+	const getConfig = (
+		profile: string = ""
+	): [string, TwitterOptions | null, any] => {
 		let dir = process.env.HOME ?? "";
 		if (dir === "" && process.platform === "win32") {
 			dir = process.env.APPDATA ?? "";
