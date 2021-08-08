@@ -26,7 +26,9 @@ const defaultOptions = {
 const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
 
-	const [status, setStatus] = useState<"init" | "wait" | "done">("init");
+	const [status, setStatus] = useState<"init" | "wait" | "select" | "done">(
+		"init"
+	);
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
