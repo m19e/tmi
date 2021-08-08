@@ -26,9 +26,7 @@ const defaultOptions = {
 const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
 
-	const [status, setStatus] = useState<"init" | "wait" | "select" | "done">(
-		"init"
-	);
+	const [status, setStatus] = useState<"init" | "wait" | "select">("init");
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
@@ -184,41 +182,6 @@ const Hello = ({ name = "" }) => {
 						onSubmit={handleSubmitPinAuth}
 					/>
 				</Box>
-			)}
-			{status === "done" && (
-				<>
-					<Box>
-						<Text>
-							PIN:{" "}
-							<Text color="red">
-								{pin
-									.split("")
-									.map(() => "*")
-									.join("")}
-							</Text>
-							<Text dimColor> (masked)</Text>
-						</Text>
-					</Box>
-					<Text>
-						{at &&
-							JSON.stringify(
-								Object.assign(at, {
-									oauth_token:
-										at.oauth_token
-											.split("")
-											.map(() => "*")
-											.join("") + " (masked)",
-									oauth_token_secret:
-										at.oauth_token_secret
-											.split("")
-											.map(() => "*")
-											.join("") + " (masked)",
-								}),
-								null,
-								2
-							)}
-					</Text>
-				</>
 			)}
 		</Box>
 	);
