@@ -51,7 +51,7 @@ const Hello = ({ name = "" }) => {
 				setStatus("wait");
 			} else {
 				setConfig(conf);
-				await getPrivateFriendTimeline(conf);
+				await getUserLists(conf);
 				setStatus("done");
 			}
 		};
@@ -119,7 +119,7 @@ const Hello = ({ name = "" }) => {
 		return [file, config, null];
 	};
 
-	const getPrivateFriendTimeline = async (options: TwitterOptions) => {
+	const getUserLists = async (options: TwitterOptions) => {
 		const user = new TL(options);
 
 		const data: Tweet[] = await user.get("statuses/user_timeline", {
@@ -152,7 +152,7 @@ const Hello = ({ name = "" }) => {
 		});
 
 		await writeJson(filePath, options);
-		await getPrivateFriendTimeline(options);
+		await getUserLists(options);
 		setStatus("done");
 	};
 
