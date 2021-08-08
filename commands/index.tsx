@@ -147,6 +147,7 @@ const Hello = ({ name = "" }) => {
 
 		await writeJson(filePath, options);
 		await getUserLists(options);
+		setConfig(options)
 		setStatus("select");
 	};
 
