@@ -11,7 +11,7 @@ import {
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
-import TL, { AccessTokenResponse, TwitterOptions } from "twitter-lite";
+import TL, { TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
 import { List, Tweet } from "../src/types/twitter";
