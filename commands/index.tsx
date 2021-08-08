@@ -25,14 +25,13 @@ const defaultOptions = {
 /// Hello world command
 const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
-
-	const [status, setStatus] = useState<"init" | "wait" | "select">("init");
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
-
 	const [at, setAT] = useState<AccessTokenResponse | null>(null);
 	const [config, setConfig] = useState<TwitterOptions>(defaultOptions);
+
+	const [status, setStatus] = useState<"init" | "wait" | "select">("init");
 
 	useEffect(() => {
 		const init = async () => {
