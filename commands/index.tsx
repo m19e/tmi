@@ -201,7 +201,21 @@ const Hello = ({ name = "" }) => {
 				</>
 			)}
 			{status === "timeline" && (
-				<Text>{JSON.stringify(currentList, null, 2)}</Text>
+				<>
+					{currentTimeline.map((t) => (
+						<Box flexDirection="column" borderStyle="single" borderColor="gray">
+							<Box>
+								<Text bold>{t.user.name} </Text>
+								<Text dimColor>@{t.user.screen_name} </Text>
+								{t.user.protected && <Text>🔒</Text>}
+							</Box>
+							<Box marginBottom={1}>
+								<Text>{t.text}</Text>
+							</Box>
+							<Text dimColor>{t.created_at}</Text>
+						</Box>
+					))}
+				</>
 			)}
 		</Box>
 	);
