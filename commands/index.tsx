@@ -14,7 +14,7 @@ import SelectInput from "ink-select-input";
 import TL, { AccessTokenResponse, TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
-import { List } from "../src/types/twitter";
+import { List, Tweet } from "../src/types/twitter";
 
 config();
 
@@ -37,6 +37,7 @@ const Hello = ({ name = "" }) => {
 	);
 	const [lists, setLists] = useState<List[]>([]);
 	const [currentList, setCurrentList] = useState<List | null>(null);
+	const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
 
 	useEffect(() => {
 		const init = async () => {
