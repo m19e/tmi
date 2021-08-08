@@ -156,7 +156,7 @@ const Hello = ({ name = "" }) => {
 	};
 
 	return (
-		<Box flexDirection="column">
+		<Box flexDirection="column" marginY={1}>
 			{status === "wait" && (
 				<>
 					<Text>Open URL and enter PIN.</Text>
