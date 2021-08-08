@@ -205,8 +205,10 @@ const Hello = ({ name = "" }) => {
 					{currentTimeline.map((t) => (
 						<Box flexDirection="column" borderStyle="single" borderColor="gray">
 							<Box>
-								<Text bold>{t.user.name} </Text>
-								<Text dimColor>@{t.user.screen_name} </Text>
+								<Text bold>{t.user.name}</Text>
+								<Box paddingX={1}>
+									<Text dimColor>@{t.user.screen_name}</Text>
+								</Box>
 								{t.user.protected && <Text>🔒</Text>}
 							</Box>
 							<Box marginBottom={1}>
