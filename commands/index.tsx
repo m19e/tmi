@@ -134,6 +134,17 @@ const Hello = ({ name = "" }) => {
 		}
 	};
 
+	const getListTimeline = async (list_id: string) => {
+		const user = new TL(config);
+
+		try {
+			const data: Tweet[] = await user.get("lists/statuses", { list_id });
+			setCurrentTimeline(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const handleSubmitPinAuth = async (p: string) => {
 		const token = await client.getAccessToken({
 			oauth_verifier: p,
