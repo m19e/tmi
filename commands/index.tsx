@@ -29,7 +29,6 @@ const Hello = ({ name = "" }) => {
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
-	const [at, setAT] = useState<AccessTokenResponse | null>(null);
 	const [config, setConfig] = useState<TwitterOptions>(defaultOptions);
 
 	const [status, setStatus] = useState<"init" | "wait" | "select" | "timeline">(
@@ -150,7 +149,6 @@ const Hello = ({ name = "" }) => {
 			oauth_verifier: p,
 			oauth_token: ot,
 		});
-		setAT(token);
 
 		const options = Object.assign(defaultOptions, {
 			access_token_key: token.oauth_token,
