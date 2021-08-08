@@ -163,7 +163,6 @@ const Hello = ({ name = "" }) => {
 					<Text>
 						{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
 					</Text>
-
 					<Box>
 						<Text>PIN: </Text>
 						<TextInput
