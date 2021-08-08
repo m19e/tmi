@@ -155,10 +155,14 @@ const Hello = ({ name = "" }) => {
 
 	return (
 		<Box flexDirection="column">
-			<Text>Open URL and enter PIN.</Text>
-			<Text>
-				{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
-			</Text>
+			{status === "init" && (
+				<>
+					<Text>Open URL and enter PIN.</Text>
+					<Text>
+						{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
+					</Text>
+				</>
+			)}
 			{status === "wait" && (
 				<Box>
 					<Text>PIN: </Text>
