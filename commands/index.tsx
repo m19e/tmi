@@ -23,7 +23,7 @@ const defaultOptions = {
 };
 
 /// Hello world command
-const Hello = ({ name }) => {
+const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
 
 	const [status, setStatus] = useState<"init" | "wait" | "done">("init");
