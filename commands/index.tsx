@@ -32,7 +32,7 @@ const Hello = ({ name = "" }) => {
 	const [at, setAT] = useState<AccessTokenResponse | null>(null);
 	const [config, setConfig] = useState<TwitterOptions>(defaultOptions);
 
-	const [status, setStatus] = useState<"init" | "wait" | "select" | "list">(
+	const [status, setStatus] = useState<"init" | "wait" | "select" | "timeline">(
 		"init"
 	);
 	const [lists, setLists] = useState<List[]>([]);
@@ -152,7 +152,7 @@ const Hello = ({ name = "" }) => {
 
 	const handleSelect = ({ value }: { label: string; value: List }) => {
 		setCurrentList(value);
-		setStatus("list");
+		setStatus("timeline");
 	};
 
 	return (
@@ -186,7 +186,9 @@ const Hello = ({ name = "" }) => {
 					/>
 				</>
 			)}
-			{status === "list" && <Text>{JSON.stringify(currentList, null, 2)}</Text>}
+			{status === "timeline" && (
+				<Text>{JSON.stringify(currentList, null, 2)}</Text>
+			)}
 		</Box>
 	);
 };
