@@ -163,7 +163,8 @@ const Hello = ({ name = "" }) => {
 		setStatus("select");
 	};
 
-	const handleSelect = ({ value }: { label: string; value: List }) => {
+	const handleSelect = async ({ value }: { label: string; value: List }) => {
+		await getListTimeline(value.id_str);
 		setCurrentList(value);
 		setStatus("timeline");
 	};
