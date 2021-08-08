@@ -120,21 +120,19 @@ const Hello = ({ name = "" }) => {
 	const getUserLists = async (options: TwitterOptions) => {
 		const user = new TL(options);
 
-		const data: Tweet[] = await user.get("statuses/user_timeline", {
-			screen_name: name,
-			count: 3,
-		});
-		console.log(
-			JSON.stringify(
-				data.map((t) => [
-					t.created_at,
-					`${t.user.name} @${t.user.screen_name}`,
-					t.text,
-				]),
-				null,
-				2
-			)
-		);
+		try {
+			const data: List[] = await user.get("lists/list");
+			console.log(
+				JSON.stringify(
+					data.map((l) => `${l.name}: ${l.uri}`),
+					null,
+					2
+				)
+			);
+			setLists(data);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const handleSubmitPinAuth = async (p: string) => {
