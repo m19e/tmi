@@ -10,6 +10,7 @@ import {
 } from "fs-extra";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
+import SelectInput from "ink-select-input";
 import TL, { AccessTokenResponse, TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
@@ -31,8 +32,11 @@ const Hello = ({ name = "" }) => {
 	const [at, setAT] = useState<AccessTokenResponse | null>(null);
 	const [config, setConfig] = useState<TwitterOptions>(defaultOptions);
 
-	const [status, setStatus] = useState<"init" | "wait" | "select">("init");
+	const [status, setStatus] = useState<"init" | "wait" | "select" | "list">(
+		"init"
+	);
 	const [lists, setLists] = useState<List[]>([]);
+	const [currentList, setCurrentList] = useState<List | null>(null);
 
 	useEffect(() => {
 		const init = async () => {
@@ -122,14 +126,8 @@ const Hello = ({ name = "" }) => {
 
 		try {
 			const data: List[] = await user.get("lists/list");
-			console.log(
-				JSON.stringify(
-					data.map((l) => `${l.name}: ${l.uri}`),
-					null,
-					2
-				)
-			);
 			setLists(data);
+			setStatus("select");
 		} catch (error) {
 			console.error(error);
 		}
@@ -152,26 +150,44 @@ const Hello = ({ name = "" }) => {
 		setStatus("select");
 	};
 
+	const handleSelect = ({ value }: { label: string; value: List }) => {
+		setCurrentList(value);
+		setStatus("list");
+	};
+
 	return (
 		<Box flexDirection="column">
-			{status === "init" && (
+			{status === "wait" && (
 				<>
 					<Text>Open URL and enter PIN.</Text>
 					<Text>
 						{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
 					</Text>
+
+					<Box>
+						<Text>PIN: </Text>
+						<TextInput
+							value={pin}
+							onChange={(value) => setPIN(value)}
+							onSubmit={handleSubmitPinAuth}
+						/>
+					</Box>
 				</>
 			)}
-			{status === "wait" && (
-				<Box>
-					<Text>PIN: </Text>
-					<TextInput
-						value={pin}
-						onChange={(value) => setPIN(value)}
-						onSubmit={handleSubmitPinAuth}
+			{status === "select" && (
+				<>
+					<Text>Select list to display.</Text>
+					<SelectInput
+						items={lists.map((l) => ({
+							key: l.id_str,
+							label: l.name,
+							value: l,
+						}))}
+						onSelect={handleSelect}
 					/>
-				</Box>
+				</>
 			)}
+			{status === "list" && <Text>{JSON.stringify(currentList, null, 2)}</Text>}
 		</Box>
 	);
 };
