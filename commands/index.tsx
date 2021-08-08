@@ -157,22 +157,9 @@ const Hello = ({ name = "" }) => {
 	return (
 		<Box flexDirection="column">
 			<Text>Open URL and enter PIN.</Text>
-			{status === "done" ? (
-				<Text>
-					https://api.twitter.com/oauth/authenticate?oauth_token=
-					<Text color="red">
-						{ot
-							.split("")
-							.map(() => "*")
-							.join("")}
-					</Text>
-					<Text dimColor> (masked)</Text>
-				</Text>
-			) : (
-				<Text>
-					{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
-				</Text>
-			)}
+			<Text>
+				{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
+			</Text>
 			{status === "wait" && (
 				<Box>
 					<Text>PIN: </Text>
