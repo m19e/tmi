@@ -13,7 +13,7 @@ import TextInput from "ink-text-input";
 import TL, { AccessTokenResponse, TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
-import { Tweet } from "../src/types/twitter";
+import { List } from "../src/types/twitter";
 
 config();
 
@@ -32,6 +32,7 @@ const Hello = ({ name = "" }) => {
 	const [config, setConfig] = useState<TwitterOptions>(defaultOptions);
 
 	const [status, setStatus] = useState<"init" | "wait" | "select">("init");
+	const [lists, setLists] = useState<List[]>([]);
 
 	useEffect(() => {
 		const init = async () => {
