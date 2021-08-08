@@ -50,7 +50,7 @@ const Hello = ({ name = "" }) => {
 			} else {
 				setConfig(conf);
 				await getUserLists(conf);
-				setStatus("done");
+				setStatus("select");
 			}
 		};
 
@@ -151,7 +151,7 @@ const Hello = ({ name = "" }) => {
 
 		await writeJson(filePath, options);
 		await getUserLists(options);
-		setStatus("done");
+		setStatus("select");
 	};
 
 	return (
