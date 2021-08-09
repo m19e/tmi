@@ -151,6 +151,8 @@ const Hello = ({ name = "" }) => {
 			const data: Tweet[] = await user.get("lists/statuses", {
 				list_id,
 				count: 30,
+				tweet_mode: "extended",
+				include_entities: true,
 			});
 			setCurrentTimeline(data);
 		} catch (error) {
@@ -244,6 +246,7 @@ const Hello = ({ name = "" }) => {
 								<Box marginBottom={1}>
 									<Text>{tweet.text}</Text>
 								</Box>
+								<Text>{tweet.full_text}</Text>
 							</Box>
 						);
 					})}
