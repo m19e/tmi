@@ -9,7 +9,8 @@
 	"scripts": {
 		"dev": "pastel dev",
 		"build": "pastel build",
-		"prepare": "pastel build"
+		"prepare": "pastel build",
+		"ex": "pastel build && node build/cli.js"
 	},
 	"files": [
 		"build"
