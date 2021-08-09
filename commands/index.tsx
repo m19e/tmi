@@ -239,7 +239,7 @@ const Hello = ({ name = "" }) => {
 				<>
 					{currentTimeline.map((t) => {
 						const tweet = t.retweeted_status ?? t;
-						const created_at = getDisplayTime(
+						const ago = getDisplayTimeAgo(
 							new Date(
 								t.retweeted_status
 									? t.retweeted_status.created_at
@@ -265,10 +265,7 @@ const Hello = ({ name = "" }) => {
 										<Text>@{tweet.user.screen_name}</Text>
 									</Box>
 									{tweet.user.protected && <Text>🔒</Text>}
-									<Text dimColor>{created_at}</Text>
-								</Box>
-								<Box marginBottom={1}>
-									<Text>{tweet.text}</Text>
+									<Text dimColor>{ago}</Text>
 								</Box>
 								<Text>{tweet.full_text}</Text>
 							</Box>
