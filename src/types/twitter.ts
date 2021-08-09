@@ -24,7 +24,7 @@ export interface Tweet {
 	extended_entities?: ExtendedEntities | null;
 	favorite_count: number;
 	favorited: boolean;
-	text: string;
+	full_text: string;
 	id_str: string;
 	id: number;
 	in_reply_to_screen_name?: string | null;
