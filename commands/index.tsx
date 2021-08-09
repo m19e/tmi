@@ -8,7 +8,7 @@ import {
 	readJsonSync,
 	writeJson,
 } from "fs-extra";
-import { Text, Box } from "ink";
+import { Text, Box, useInput } from "ink";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
 import TL, { TwitterOptions } from "twitter-lite";
@@ -210,16 +210,59 @@ const Hello = ({ name = "" }) => {
 };
 
 const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
+	const [cursor, setCursor] = useState(0);
+	const [focus, setFocus] = useState(0);
+	const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
+		timeline.slice(0, 5)
+	);
+
+	useInput((input, key) => {
+		if (key.upArrow || (key.shift && key.tab)) {
+			if (focus === 0) {
+				setCursor((prev) => {
+					if (prev === 0) {
+						return prev;
+					}
+					setDisplayTimeline(timeline.slice(prev - 1, prev + 4));
+					return prev - 1;
+				});
+			} else {
+				setFocus((prev) => prev - 1);
+			}
+		} else if (key.downArrow || key.tab) {
+			if (focus === 4) {
+				setCursor((prev) => {
+					if (prev === timeline.length - 1) {
+						return prev;
+					}
+					setDisplayTimeline(timeline.slice(prev + 1, prev + 6));
+					return prev + 1;
+				});
+			} else {
+				setFocus((prev) => prev + 1);
+			}
+		}
+	}, {});
+
 	return (
 		<>
-			{timeline.map((t, i) => (
-				<TweetBox key={i} tweet={t} />
+			<Text>
+				cursor:{cursor} focus:{focus}
+			</Text>
+			{displayTimeline.map((t, i) => (
+				<TweetBox key={i} tweet={t} isFocused={focus === i} />
 			))}
 		</>
 	);
 };
 
-const TweetBox = ({ tweet }: { tweet: Tweet }) => {
+const TweetBox = ({
+	tweet,
+	isFocused,
+}: {
+	tweet: Tweet;
+	isFocused: boolean;
+}) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(
 		new Date(
@@ -246,6 +289,14 @@ const TweetBox = ({ tweet }: { tweet: Tweet }) => {
 				<Text dimColor>{ago}</Text>
 			</Box>
 			<Text>{t.full_text}</Text>
+			{isFocused && (
+				<Box marginTop={1}>
+					<Text>
+						🔄{t.retweet_count || ""}　<Text color="yellow">★</Text>
+						{t.favorite_count || ""}
+					</Text>
+				</Box>
+			)}
 		</Box>
 	);
 };
