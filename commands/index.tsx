@@ -233,7 +233,10 @@ const Hello = ({ name = "" }) => {
 								borderColor="gray"
 							>
 								{t.retweeted_status && (
-									<Text dimColor>🔄 {t.user.name} RT</Text>
+									<Text dimColor>
+										🔄 {t.user.name}
+										{t.user.protected && "🔒"} RT
+									</Text>
 								)}
 								<Box>
 									<Text bold>{tweet.user.name}</Text>
