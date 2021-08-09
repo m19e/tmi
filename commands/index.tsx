@@ -148,7 +148,10 @@ const Hello = ({ name = "" }) => {
 		const user = new TL(config);
 
 		try {
-			const data: Tweet[] = await user.get("lists/statuses", { list_id });
+			const data: Tweet[] = await user.get("lists/statuses", {
+				list_id,
+				count: 30,
+			});
 			setCurrentTimeline(data);
 		} catch (error) {
 			console.log(error);
