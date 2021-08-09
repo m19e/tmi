@@ -23,6 +23,17 @@ const defaultOptions = {
 	consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
 };
 
+const getDisplayTime = (milli: number) => {
+	const dt = new Date(milli);
+	// const y = dt.getFullYear() + "/";
+	// const m = dt.getMonth() + 1 + "/";
+	// const d = dt.getDate() + " ";
+	const ho = ("00" + dt.getHours()).slice(-2) + ":";
+	const mi = ("00" + dt.getMinutes()).slice(-2) + ":";
+	const se = ("00" + dt.getSeconds()).slice(-2);
+	return ho + mi + se;
+};
+
 /// Hello world command
 const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
