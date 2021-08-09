@@ -214,21 +214,39 @@ const Hello = ({ name = "" }) => {
 			)}
 			{status === "timeline" && (
 				<>
-					{currentTimeline.map((t) => (
-						<Box flexDirection="column" borderStyle="single" borderColor="gray">
-							<Box>
-								<Text bold>{t.user.name}</Text>
-								<Box paddingX={1}>
-									<Text dimColor>@{t.user.screen_name}</Text>
+					{currentTimeline.map((t) => {
+						const tweet = t.retweeted_status ?? t;
+						const created_at = getDisplayTime(
+							new Date(
+								t.retweeted_status
+									? t.retweeted_status.created_at
+									: t.created_at
+							).getTime()
+						);
+
+						return (
+							<Box
+								flexDirection="column"
+								borderStyle="single"
+								borderColor="gray"
+							>
+								{t.retweeted_status && (
+									<Text dimColor>🔄 {t.user.name} RT</Text>
+								)}
+								<Box>
+									<Text bold>{tweet.user.name}</Text>
+									<Box paddingX={1}>
+										<Text>@{tweet.user.screen_name}</Text>
+									</Box>
+									{tweet.user.protected && <Text>🔒</Text>}
+									<Text dimColor>{created_at}</Text>
 								</Box>
-								{t.user.protected && <Text>🔒</Text>}
+								<Box marginBottom={1}>
+									<Text>{tweet.text}</Text>
+								</Box>
 							</Box>
-							<Box marginBottom={1}>
-								<Text>{t.text}</Text>
-							</Box>
-							<Text dimColor>{t.created_at}</Text>
-						</Box>
-					))}
+						);
+					})}
 				</>
 			)}
 		</Box>
