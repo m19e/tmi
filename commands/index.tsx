@@ -24,6 +24,10 @@ const defaultOptions = {
 	consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
 };
 
+interface Config extends TwitterOptions {
+	lists: List[];
+}
+
 /// Hello world command
 const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
