@@ -216,7 +216,7 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 		timeline.slice(0, 5)
 	);
 
-	useInput((input, key) => {
+	useInput((_, key) => {
 		if (key.upArrow || (key.shift && key.tab)) {
 			if (focus === 0) {
 				setCursor((prev) => {
