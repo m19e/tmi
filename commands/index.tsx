@@ -289,11 +289,11 @@ const TweetBox = ({
 			<Text>{t.full_text}</Text>
 			{isFocused && (
 				<Box>
-					<Text>
-						🔄{t.retweet_count || ""}
-						<Text color={t.favorited ? "yellow" : undefined}>　★</Text>
-						{t.favorite_count || ""}
-					</Text>
+					<Text>{t.retweet_count ? t.retweet_count + " " : ""}</Text>
+					<Text color={t.retweeted ? "green" : "white"}>RT</Text>
+					<Text>{"　"}</Text>
+					<Text>{t.favorite_count ? t.favorite_count + " " : ""}</Text>
+					<Text color={t.favorited ? "yellow" : "white"}>fav</Text>
 				</Box>
 			)}
 		</Box>
