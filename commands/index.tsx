@@ -66,9 +66,7 @@ const Hello = ({ name = "" }) => {
 		init();
 	}, []);
 
-	const getConfig = (
-		profile: string = ""
-	): [string, TwitterOptions | null, any] => {
+	const getConfig = (profile: string = ""): [string, Config | null, any] => {
 		let dir = process.env.HOME ?? "";
 		if (dir === "" && process.platform === "win32") {
 			dir = process.env.APPDATA ?? "";
@@ -112,13 +110,13 @@ const Hello = ({ name = "" }) => {
 			file = path.join(dir, "settings-" + profile + ".json");
 		}
 
-		let config: TwitterOptions;
+		let config: Config;
 		const json = readJsonSync(file, { throws: false });
 		if (json === null) {
 			if (existsSync(file)) {
 				return ["", null, "CANNOT READ JSON"];
 			}
-			config = defaultOptions;
+			config = Object.assign(defaultOptions, { lists: [] });
 		} else {
 			config = json;
 		}
