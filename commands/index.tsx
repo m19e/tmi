@@ -288,9 +288,10 @@ const TweetBox = ({
 			</Box>
 			<Text>{t.full_text}</Text>
 			{isFocused && (
-				<Box marginTop={1}>
+				<Box>
 					<Text>
-						🔄{t.retweet_count || ""}　<Text color="yellow">★</Text>
+						🔄{t.retweet_count || ""}
+						<Text color={t.favorited ? "yellow" : undefined}>　★</Text>
 						{t.favorite_count || ""}
 					</Text>
 				</Box>
