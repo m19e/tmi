@@ -34,7 +34,9 @@ const Hello = ({ name = "" }) => {
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
-	const [config, setConfig] = useState<TwitterOptions>(defaultOptions);
+	const [config, setConfig] = useState<Config>(
+		Object.assign(defaultOptions, { lists: [] })
+	);
 
 	const [status, setStatus] = useState<"init" | "wait" | "select" | "timeline">(
 		"init"
