@@ -1,5 +1,5 @@
-export const getDisplayTimeAgo = (milli: number): string => {
-	const dt = new Date(milli);
+export const getDisplayTimeAgo = (created_at: string): string => {
+	const dt = new Date(created_at);
 	const diff_time = Date.now() - dt.getTime();
 	const diff_sec = Math.floor(diff_time / 1000);
 	const diff_min = Math.floor(diff_sec / 60);
