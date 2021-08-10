@@ -281,9 +281,9 @@ const TweetBox = ({
 				</Text>
 			)}
 			<Box>
-				<Text bold>{t.user.name}</Text>
+				<Text color="#00acee">{t.user.name}</Text>
 				<Box paddingX={1}>
-					<Text>@{t.user.screen_name}</Text>
+					<Text color="#00acee">@{t.user.screen_name}</Text>
 				</Box>
 				{t.user.protected && <Text>🔒</Text>}
 				<Text dimColor>{ago}</Text>
