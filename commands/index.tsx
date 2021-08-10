@@ -265,11 +265,9 @@ const TweetBox = ({
 }) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(
-		new Date(
-			tweet.retweeted_status
-				? tweet.retweeted_status.created_at
-				: tweet.created_at
-		).getTime()
+		tweet.retweeted_status
+			? tweet.retweeted_status.created_at
+			: tweet.created_at
 	);
 
 	return (
