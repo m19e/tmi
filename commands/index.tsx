@@ -50,8 +50,8 @@ const Hello = ({ name = "" }) => {
 	const [status, setStatus] = useState<"init" | "wait" | "select" | "timeline">(
 		"init"
 	);
-	const [lists, setLists] = useState<List[]>([]);
-	const [currentList, setCurrentList] = useState<List | null>(null);
+	const [lists, setLists] = useState<TrimmedList[]>([]);
+	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 	const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
 
 	useEffect(() => {
@@ -68,8 +68,9 @@ const Hello = ({ name = "" }) => {
 				setOT(oauth_token);
 				setStatus("wait");
 			} else {
+				setFilePath(fp);
 				setConfig(conf);
-				await getUserLists(conf);
+				await getUserLists(conf, fp);
 				setStatus("select");
 			}
 		};
@@ -135,15 +136,31 @@ const Hello = ({ name = "" }) => {
 		return [file, config, null];
 	};
 
-	const getUserLists = async (options: TwitterOptions) => {
+	const getUserLists = async (config: Config, fp: string) => {
+		const { lists, ...options } = config;
 		const user = new TL(options);
 
 		try {
 			const data: List[] = await user.get("lists/list");
-			setLists(data);
+			const trim: TrimmedList[] = data.map((l) => ({
+				id_str: l.id_str,
+				name: l.name,
+				mode: l.mode,
+			}));
+			await writeJson(fp, Object.assign(options, { lists: trim }));
+			setLists(trim);
 			setStatus("select");
-		} catch (error) {
-			console.error(error);
+		} catch (err) {
+			if (
+				(err as TwitterErrorResponse).errors.map((e) => e.code).includes(88)
+			) {
+				console.error("rate limit exceeded.");
+				setLists(lists);
+				setStatus("select");
+			} else {
+				console.error(err);
+				process.exit(0);
+			}
 		}
 	};
 
@@ -169,18 +186,24 @@ const Hello = ({ name = "" }) => {
 			oauth_token: ot,
 		});
 
-		const options = Object.assign(defaultOptions, {
+		const conf = Object.assign(defaultOptions, {
 			access_token_key: token.oauth_token,
 			access_token_secret: token.oauth_token_secret,
+			lists: [],
 		});
 
-		await writeJson(filePath, options);
-		await getUserLists(options);
-		setConfig(options);
+		await writeJson(filePath, conf);
+		await getUserLists(conf, filePath);
+		setConfig(conf);
 		setStatus("select");
 	};
 
-	const handleSelect = async ({ value }: { label: string; value: List }) => {
+	const handleSelect = async ({
+		value,
+	}: {
+		label: string;
+		value: TrimmedList;
+	}) => {
 		await getListTimeline(value.id_str);
 		setCurrentList(value);
 		setStatus("timeline");
