@@ -170,7 +170,7 @@ const Hello = ({ name = "" }) => {
 		try {
 			const data: Tweet[] = await user.get("lists/statuses", {
 				list_id,
-				count: 30,
+				count: 100,
 				tweet_mode: "extended",
 				include_entities: true,
 			});
