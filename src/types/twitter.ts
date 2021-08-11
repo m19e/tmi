@@ -14,6 +14,12 @@ export interface List {
 	user: User;
 }
 
+export interface TrimmedList {
+	id_str: string;
+	name: string;
+	mode: "public" | "private";
+}
+
 export interface Tweet {
 	contributors?: null;
 	coordinates?: Coordinates | null;

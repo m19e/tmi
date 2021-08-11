@@ -14,7 +14,7 @@ import SelectInput from "ink-select-input";
 import TL, { TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
-import { List, Tweet } from "../src/types/twitter";
+import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { getDisplayTimeAgo } from "../src/lib";
 
 config();
@@ -25,7 +25,7 @@ const defaultOptions = {
 };
 
 interface Config extends TwitterOptions {
-	lists: List[];
+	lists: TrimmedList[];
 }
 
 /// Hello world command
