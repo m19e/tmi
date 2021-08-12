@@ -9,6 +9,7 @@ import {
 	writeJson,
 } from "fs-extra";
 import { Text, Box, useInput } from "ink";
+import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
 import TL, { TwitterOptions } from "twitter-lite";
@@ -53,6 +54,8 @@ const Hello = ({ name = "" }) => {
 	const [lists, setLists] = useState<TrimmedList[]>([]);
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 	const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
+
+	const [cols, rows] = useDimensions();
 
 	useEffect(() => {
 		const init = async () => {
@@ -210,7 +213,12 @@ const Hello = ({ name = "" }) => {
 	};
 
 	return (
-		<Box flexDirection="column" marginY={1}>
+		<Box
+			flexDirection="column"
+			justifyContent="center"
+			minHeight={rows}
+			marginY={1}
+		>
 			{status === "wait" && (
 				<>
 					<Text>Open URL and enter PIN.</Text>
