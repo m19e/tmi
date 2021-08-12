@@ -314,14 +314,13 @@ const TweetBox = ({
 					{tweet.user.protected && "🔒"} RT
 				</Text>
 			)}
-			<Box>
-				<Text color="#00acee">{t.user.name}</Text>
-				<Box paddingX={1}>
-					<Text color="#00acee">@{t.user.screen_name}</Text>
-				</Box>
-				{t.user.protected && <Text>🔒</Text>}
+			<Text>
+				<Text color={tweet.retweeted_status ? "green" : "#00acee"}>
+					{`${t.user.name} @${t.user.screen_name} `}
+					{t.user.protected && "🔒 "}
+				</Text>
 				<Text dimColor>{ago}</Text>
-			</Box>
+			</Text>
 			<Text>{t.full_text}</Text>
 			{isFocused && (
 				<Box>
