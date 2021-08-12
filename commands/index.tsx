@@ -213,12 +213,7 @@ const Hello = ({ name = "" }) => {
 	};
 
 	return (
-		<Box
-			flexDirection="column"
-			justifyContent="center"
-			minHeight={rows}
-			marginY={1}
-		>
+		<Box flexDirection="column" minHeight={rows} paddingY={1}>
 			{status === "wait" && (
 				<>
 					<Text>Open URL and enter PIN.</Text>
