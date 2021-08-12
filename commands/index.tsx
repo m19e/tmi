@@ -233,7 +233,7 @@ const Hello = ({ name = "" }) => {
 					<SelectInput
 						items={lists.map((l) => ({
 							key: l.id_str,
-							label: l.name,
+							label: l.name + (l.mode === "private" ? " 🔒" : ""),
 							value: l,
 						}))}
 						onSelect={handleSelect}
