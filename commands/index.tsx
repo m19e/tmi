@@ -282,9 +282,6 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 
 	return (
 		<>
-			<Text>
-				cursor:{cursor} focus:{focus}
-			</Text>
 			{displayTimeline.map((t, i) => (
 				<TweetBox key={i} tweet={t} isFocused={focus === i} />
 			))}
