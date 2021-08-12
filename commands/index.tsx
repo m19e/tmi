@@ -321,7 +321,10 @@ const TweetBox = ({
 				</Text>
 				<Text dimColor>{ago}</Text>
 			</Text>
-			<Text>{t.full_text}</Text>
+			<Text>
+				{t.full_text}
+				{tweet.entities.media && <Text dimColor> (with Media)</Text>}
+			</Text>
 			{isFocused && (
 				<Box>
 					<Text>{t.retweet_count ? t.retweet_count + " " : ""}</Text>
