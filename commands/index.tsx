@@ -307,7 +307,11 @@ const TweetBox = ({
 	);
 
 	return (
-		<Box flexDirection="column" borderStyle="single" borderColor="gray">
+		<Box
+			flexDirection="column"
+			borderStyle={isFocused ? "singleDouble" : "single"}
+			borderColor={isFocused ? "white" : "gray"}
+		>
 			{tweet.retweeted_status && (
 				<Text dimColor>
 					🔄 {tweet.user.name}
