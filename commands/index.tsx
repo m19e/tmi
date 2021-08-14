@@ -181,7 +181,7 @@ const Hello = ({ name = "" }) => {
 
 	const getListTimeline = async (
 		list_id: string,
-		options: { backward: boolean } = { backward: false }
+		{ backward }: { backward: boolean } = { backward: false }
 	) => {
 		const user = new TL(config);
 
@@ -193,7 +193,7 @@ const Hello = ({ name = "" }) => {
 				include_entities: true,
 			});
 			setCurrentTimeline((prev) =>
-				options.backward ? prev.concat(data) : data.concat(prev)
+				backward ? prev.concat(data) : data.concat(prev)
 			);
 		} catch (error) {
 			console.log(error);
