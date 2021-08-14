@@ -46,6 +46,8 @@ interface DefaultTwitterRequestParams {
 interface GetListTimelineParams extends DefaultTwitterRequestParams {
 	list_id: string;
 	count: number;
+	since_id?: string;
+	max_id?: string;
 }
 
 /// Hello world command
