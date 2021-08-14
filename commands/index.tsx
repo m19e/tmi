@@ -291,6 +291,7 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 	const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
 		timeline.slice(0, DISPLAY_TWEETS_COUNT)
 	);
+	const [fetching, setFetching] = useState(false);
 
 	useInput((_, key) => {
 		if (key.upArrow || (key.shift && key.tab)) {
