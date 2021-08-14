@@ -200,6 +200,26 @@ const Hello = ({ name = "" }) => {
 		}
 	};
 
+	const createGetListTimelineParams = (
+		list_id: string,
+		backward: boolean = false,
+		count: number = 200
+	): GetListTimelineParams => {
+		const params: GetListTimelineParams = {
+			tweet_mode: "extended",
+			include_entities: true,
+			list_id,
+			count,
+		};
+		if (!currentTimeline.length) return params;
+		if (backward) {
+			const oldest = currentTimeline.slice(-1)[0];
+			return { ...params, max_id: oldest.id_str };
+		}
+		const newest = currentTimeline[0];
+		return { ...params, since_id: newest.id_str };
+	};
+
 	const handleSubmitPinAuth = async (p: string) => {
 		const token = await client.getAccessToken({
 			oauth_verifier: p,
