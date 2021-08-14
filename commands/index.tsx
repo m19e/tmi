@@ -283,6 +283,8 @@ const Hello = ({ name = "" }) => {
 	);
 };
 
+const DISPLAY_TWEETS_COUNT = 5;
+
 const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 	const [cursor, setCursor] = useState(0);
 	const [focus, setFocus] = useState(0);
