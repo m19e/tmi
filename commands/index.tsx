@@ -167,8 +167,12 @@ const Hello = ({ name = "" }) => {
 		}
 	};
 
-	const getListTimeline = async (list_id: string) => {
+	const getListTimeline = async (
+		list_id: string,
+		options: { backward: boolean } = { backward: false }
+	) => {
 		const user = new TL(config);
+
 
 		try {
 			const data: Tweet[] = await user.get("lists/statuses", {
@@ -177,7 +181,9 @@ const Hello = ({ name = "" }) => {
 				tweet_mode: "extended",
 				include_entities: true,
 			});
-			setCurrentTimeline(data);
+			setCurrentTimeline((prev) =>
+				options.backward ? prev.concat(data) : data.concat(prev)
+			);
 		} catch (error) {
 			console.log(error);
 		}
