@@ -38,6 +38,16 @@ interface Config extends TwitterOptions {
 	lists: TrimmedList[];
 }
 
+interface DefaultTwitterRequestParams {
+	tweet_mode: "extended";
+	include_entities: true;
+}
+
+interface GetListTimelineParams extends DefaultTwitterRequestParams {
+	list_id: string;
+	count: number;
+}
+
 /// Hello world command
 const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
@@ -172,7 +182,6 @@ const Hello = ({ name = "" }) => {
 		options: { backward: boolean } = { backward: false }
 	) => {
 		const user = new TL(config);
-
 
 		try {
 			const data: Tweet[] = await user.get("lists/statuses", {
