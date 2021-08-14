@@ -202,7 +202,7 @@ const Hello = ({ name = "" }) => {
 
 	const createGetListTimelineParams = (
 		list_id: string,
-		backward: boolean = false,
+		backward: boolean,
 		count: number = 200
 	): GetListTimelineParams => {
 		const params: GetListTimelineParams = {
