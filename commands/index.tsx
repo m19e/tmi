@@ -289,7 +289,7 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 	const [cursor, setCursor] = useState(0);
 	const [focus, setFocus] = useState(0);
 	const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
-		timeline.slice(0, 5)
+		timeline.slice(0, DISPLAY_TWEETS_COUNT)
 	);
 
 	useInput((_, key) => {
@@ -299,19 +299,23 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 					if (prev === 0) {
 						return prev;
 					}
-					setDisplayTimeline(timeline.slice(prev - 1, prev + 4));
+					setDisplayTimeline(
+						timeline.slice(prev - 1, prev + DISPLAY_TWEETS_COUNT - 1)
+					);
 					return prev - 1;
 				});
 			} else {
 				setFocus((prev) => prev - 1);
 			}
 		} else if (key.downArrow || key.tab) {
-			if (focus === 4) {
+			if (focus === DISPLAY_TWEETS_COUNT - 1) {
 				setCursor((prev) => {
 					if (prev === timeline.length - 1) {
 						return prev;
 					}
-					setDisplayTimeline(timeline.slice(prev + 1, prev + 6));
+					setDisplayTimeline(
+						timeline.slice(prev + 1, prev + DISPLAY_TWEETS_COUNT + 1)
+					);
 					return prev + 1;
 				});
 			} else {
