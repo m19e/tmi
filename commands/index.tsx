@@ -56,9 +56,10 @@ const Hello = ({ name = "" }) => {
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
-	const [config, setConfig] = useState<Config>(
-		Object.assign(defaultOptions, { lists: [] })
-	);
+	const [config, setConfig] = useState<Config>({
+		...defaultOptions,
+		lists: [],
+	});
 
 	const [status, setStatus] = useState<"init" | "wait" | "select" | "timeline">(
 		"init"
@@ -143,7 +144,7 @@ const Hello = ({ name = "" }) => {
 			if (existsSync(file)) {
 				return ["", null, "CANNOT READ JSON"];
 			}
-			config = Object.assign(defaultOptions, { lists: [] });
+			config = { ...defaultOptions, lists: [] };
 		} else {
 			config = json;
 		}
@@ -162,7 +163,7 @@ const Hello = ({ name = "" }) => {
 				name: l.name,
 				mode: l.mode,
 			}));
-			await writeJson(fp, Object.assign(options, { lists: trim }));
+			await writeJson(fp, { ...options, lists: trim });
 			setLists(trim);
 			setStatus("select");
 		} catch (err) {
@@ -222,11 +223,12 @@ const Hello = ({ name = "" }) => {
 			oauth_token: ot,
 		});
 
-		const conf = Object.assign(defaultOptions, {
+		const conf = {
+			...defaultOptions,
 			access_token_key: token.oauth_token,
 			access_token_secret: token.oauth_token_secret,
 			lists: [],
-		});
+		};
 
 		await writeJson(filePath, conf);
 		await getUserLists(conf, filePath);
