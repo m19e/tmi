@@ -293,37 +293,40 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 	);
 	const [fetching, setFetching] = useState(false);
 
-	useInput((_, key) => {
-		if (key.upArrow || (key.shift && key.tab)) {
-			if (focus === 0) {
-				setCursor((prev) => {
-					if (prev === 0) {
-						return prev;
-					}
-					setDisplayTimeline(
-						timeline.slice(prev - 1, prev + DISPLAY_TWEETS_COUNT - 1)
-					);
-					return prev - 1;
-				});
-			} else {
-				setFocus((prev) => prev - 1);
+	useInput(
+		(_, key) => {
+			if (key.upArrow || (key.shift && key.tab)) {
+				if (focus === 0) {
+					setCursor((prev) => {
+						if (prev === 0) {
+							return prev;
+						}
+						setDisplayTimeline(
+							timeline.slice(prev - 1, prev + DISPLAY_TWEETS_COUNT - 1)
+						);
+						return prev - 1;
+					});
+				} else {
+					setFocus((prev) => prev - 1);
+				}
+			} else if (key.downArrow || key.tab) {
+				if (focus === DISPLAY_TWEETS_COUNT - 1) {
+					setCursor((prev) => {
+						if (prev === timeline.length - 1) {
+							return prev;
+						}
+						setDisplayTimeline(
+							timeline.slice(prev + 1, prev + DISPLAY_TWEETS_COUNT + 1)
+						);
+						return prev + 1;
+					});
+				} else {
+					setFocus((prev) => prev + 1);
+				}
 			}
-		} else if (key.downArrow || key.tab) {
-			if (focus === DISPLAY_TWEETS_COUNT - 1) {
-				setCursor((prev) => {
-					if (prev === timeline.length - 1) {
-						return prev;
-					}
-					setDisplayTimeline(
-						timeline.slice(prev + 1, prev + DISPLAY_TWEETS_COUNT + 1)
-					);
-					return prev + 1;
-				});
-			} else {
-				setFocus((prev) => prev + 1);
-			}
-		}
-	}, {});
+		},
+		{ isActive: !fetching }
+	);
 
 	return (
 		<>
