@@ -184,14 +184,10 @@ const Hello = ({ name = "" }) => {
 		{ backward }: { backward: boolean } = { backward: false }
 	) => {
 		const user = new TL(config);
+		const params = createGetListTimelineParams(list_id, backward);
 
 		try {
-			const data: Tweet[] = await user.get("lists/statuses", {
-				list_id,
-				count: 200,
-				tweet_mode: "extended",
-				include_entities: true,
-			});
+			const data: Tweet[] = await user.get("lists/statuses", params);
 			setCurrentTimeline((prev) =>
 				backward ? prev.concat(data) : data.concat(prev)
 			);
