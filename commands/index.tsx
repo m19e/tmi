@@ -285,7 +285,12 @@ const Hello = ({ name = "" }) => {
 				</>
 			)}
 			{status === "timeline" && (
-				<Timeline timeline={currentTimeline} onUpdate={handleUpdate} />
+				<>
+					<Text>
+						list-name:<Text color="green">{currentList.name}</Text>
+					</Text>
+					<Timeline timeline={currentTimeline} onUpdate={handleUpdate} />
+				</>
 			)}
 		</Box>
 	);
