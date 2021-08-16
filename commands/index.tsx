@@ -318,41 +318,34 @@ const Timeline = ({
 		(_, key) => {
 			if (key.upArrow || (key.shift && key.tab)) {
 				if (focus === 0) {
-					setCursor((prev) => {
-						if (prev === 0) {
-							let len = 0;
-							const f = async () => {
-								const l = await update(false);
-								len = l;
-							};
-							f();
-
-							return prev + len;
-						}
+					if (cursor === 0) {
+						const f = async () => {
+							const len = await update(false);
+							setCursor(cursor + len);
+						};
+						f();
+					} else {
 						setDisplayTimeline(
-							timeline.slice(prev - 1, prev + DISPLAY_TWEETS_COUNT - 1)
+							timeline.slice(cursor - 1, cursor + DISPLAY_TWEETS_COUNT - 1)
 						);
-						return prev - 1;
-					});
+						setCursor((prev) => prev - 1);
+					}
 				} else {
 					setFocus((prev) => prev - 1);
 				}
 			} else if (key.downArrow || key.tab) {
 				if (focus === DISPLAY_TWEETS_COUNT - 1) {
-					setCursor((prev) => {
-						if (prev === timeline.length - 1) {
-							const f = async () => {
-								await update(true);
-							};
-							f();
-
-							return prev;
-						}
+					if (cursor === timeline.length - 1) {
+						const f = async () => {
+							await update(true);
+						};
+						f();
+					} else {
 						setDisplayTimeline(
-							timeline.slice(prev + 1, prev + DISPLAY_TWEETS_COUNT + 1)
+							timeline.slice(cursor + 1, cursor + DISPLAY_TWEETS_COUNT + 1)
 						);
-						return prev + 1;
-					});
+						setCursor((prev) => prev + 1);
+					}
 				} else {
 					setFocus((prev) => prev + 1);
 				}
