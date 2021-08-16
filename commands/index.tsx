@@ -183,17 +183,19 @@ const Hello = ({ name = "" }) => {
 	const getListTimeline = async (
 		list_id: string,
 		{ backward }: { backward: boolean } = { backward: false }
-	) => {
+	): Promise<number> => {
 		const user = new TL(config);
-		const params = createGetListTimelineParams(list_id, backward);
+		const params = createGetListTimelineParams(list_id, backward, 20);
 
 		try {
 			const data: Tweet[] = await user.get("lists/statuses", params);
 			setCurrentTimeline((prev) =>
-				backward ? prev.concat(data) : data.concat(prev)
+				backward ? prev.slice(0, -1).concat(data) : data.concat(prev)
 			);
+			return data.length;
 		} catch (error) {
 			console.log(error);
+			return 0;
 		}
 	};
 
@@ -247,6 +249,10 @@ const Hello = ({ name = "" }) => {
 		setStatus("timeline");
 	};
 
+	const handleUpdate = async (backward: boolean): Promise<number> => {
+		return await getListTimeline(currentList.id_str, { backward });
+	};
+
 	return (
 		<Box flexDirection="column" justifyContent="center" minHeight={rows}>
 			{status === "wait" && (
@@ -278,14 +284,22 @@ const Hello = ({ name = "" }) => {
 					/>
 				</>
 			)}
-			{status === "timeline" && <Timeline timeline={currentTimeline} />}
+			{status === "timeline" && (
+				<Timeline timeline={currentTimeline} onUpdate={handleUpdate} />
+			)}
 		</Box>
 	);
 };
 
 const DISPLAY_TWEETS_COUNT = 5;
 
-const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
+const Timeline = ({
+	timeline,
+	onUpdate,
+}: {
+	timeline: Tweet[];
+	onUpdate: (backward: boolean) => Promise<number>;
+}) => {
 	const [cursor, setCursor] = useState(0);
 	const [focus, setFocus] = useState(0);
 	const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
@@ -293,13 +307,27 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 	);
 	const [fetching, setFetching] = useState(false);
 
+	const update = async (backward: boolean): Promise<number> => {
+		setFetching(true);
+		const len = await onUpdate(backward);
+		setFetching(false);
+		return len;
+	};
+
 	useInput(
 		(_, key) => {
 			if (key.upArrow || (key.shift && key.tab)) {
 				if (focus === 0) {
 					setCursor((prev) => {
 						if (prev === 0) {
-							return prev;
+							let len = 0;
+							const f = async () => {
+								const l = await update(false);
+								len = l;
+							};
+							f();
+
+							return prev + len;
 						}
 						setDisplayTimeline(
 							timeline.slice(prev - 1, prev + DISPLAY_TWEETS_COUNT - 1)
@@ -313,6 +341,11 @@ const Timeline = ({ timeline }: { timeline: Tweet[] }) => {
 				if (focus === DISPLAY_TWEETS_COUNT - 1) {
 					setCursor((prev) => {
 						if (prev === timeline.length - 1) {
+							const f = async () => {
+								await update(true);
+							};
+							f();
+
 							return prev;
 						}
 						setDisplayTimeline(
