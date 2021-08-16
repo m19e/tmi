@@ -318,45 +318,44 @@ const Timeline = ({
 		return len;
 	};
 
-	useInput(
-		(_, key) => {
-			if (key.upArrow || (key.shift && key.tab)) {
-				if (focus === 0) {
-					if (cursor === 0) {
-						const f = async () => {
-							const len = await update(false);
-							setCursor(cursor + len);
-						};
-						f();
-					} else {
-						setDisplayTimeline(
-							timeline.slice(cursor - 1, cursor + DISPLAY_TWEETS_COUNT - 1)
-						);
-						setCursor((prev) => prev - 1);
-					}
+	useInput((_, key) => {
+		if (key.upArrow || (key.shift && key.tab)) {
+			if (fetching) return;
+			if (focus === 0) {
+				if (cursor === 0) {
+					const f = async () => {
+						const len = await update(false);
+						setCursor(cursor + len);
+					};
+					f();
 				} else {
-					setFocus((prev) => prev - 1);
+					setDisplayTimeline(
+						timeline.slice(cursor - 1, cursor + DISPLAY_TWEETS_COUNT - 1)
+					);
+					setCursor((prev) => prev - 1);
 				}
-			} else if (key.downArrow || key.tab) {
-				if (focus === DISPLAY_TWEETS_COUNT - 1) {
-					if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
-						const f = async () => {
-							await update(true);
-						};
-						f();
-					} else {
-						setDisplayTimeline(
-							timeline.slice(cursor + 1, cursor + DISPLAY_TWEETS_COUNT + 1)
-						);
-						setCursor((prev) => prev + 1);
-					}
-				} else {
-					setFocus((prev) => prev + 1);
-				}
+			} else {
+				setFocus((prev) => prev - 1);
 			}
-		},
-		{ isActive: !fetching }
-	);
+		} else if (key.downArrow || key.tab) {
+			if (fetching) return;
+			if (focus === DISPLAY_TWEETS_COUNT - 1) {
+				if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
+					const f = async () => {
+						await update(true);
+					};
+					f();
+				} else {
+					setDisplayTimeline(
+						timeline.slice(cursor + 1, cursor + DISPLAY_TWEETS_COUNT + 1)
+					);
+					setCursor((prev) => prev + 1);
+				}
+			} else {
+				setFocus((prev) => prev + 1);
+			}
+		}
+	}, {});
 
 	return (
 		<>
