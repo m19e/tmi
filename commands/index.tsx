@@ -339,7 +339,7 @@ const Timeline = ({
 				}
 			} else if (key.downArrow || key.tab) {
 				if (focus === DISPLAY_TWEETS_COUNT - 1) {
-					if (cursor === timeline.length - 1) {
+					if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
 						const f = async () => {
 							await update(true);
 						};
