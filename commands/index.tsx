@@ -257,7 +257,7 @@ const Hello = ({ name = "" }) => {
 		<Box flexDirection="column" justifyContent="center" minHeight={rows}>
 			{status === "wait" && (
 				<>
-					<Text>Open URL and enter PIN.</Text>
+					<Text color="redBright">Open URL and enter PIN.</Text>
 					<Text>
 						{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
 					</Text>
