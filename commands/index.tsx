@@ -360,9 +360,22 @@ const Timeline = ({
 
 	return (
 		<>
+			<Text>
+				cursor:{cursor} focus:{focus} len:{timeline.length}
+			</Text>
+			{fetching && !isBackward && (
+				<Box>
+					<Text>Fetching...</Text>
+				</Box>
+			)}
 			{displayTimeline.map((t, i) => (
 				<TweetBox key={i} tweet={t} isFocused={focus === i} />
 			))}
+			{fetching && isBackward && (
+				<Box>
+					<Text>Fetching...</Text>
+				</Box>
+			)}
 		</>
 	);
 };
