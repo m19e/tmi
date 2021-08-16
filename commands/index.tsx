@@ -306,11 +306,15 @@ const Timeline = ({
 		timeline.slice(0, DISPLAY_TWEETS_COUNT)
 	);
 	const [fetching, setFetching] = useState(false);
+	const [isBackward, setIsBackward] = useState(false);
 
 	const update = async (backward: boolean): Promise<number> => {
+		setIsBackward(backward);
 		setFetching(true);
 		const len = await onUpdate(backward);
-		setFetching(false);
+		setTimeout(() => {
+			setFetching(false);
+		}, 1000);
 		return len;
 	};
 
