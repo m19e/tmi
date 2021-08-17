@@ -411,7 +411,7 @@ const TweetBox = ({
 				</Text>
 			)}
 			<Text>
-				<Text color={tweet.retweeted_status ? "green" : "#00acee"}>
+				<Text color={tweet.retweeted_status ? "greenBright" : "#00acee"}>
 					{`${t.user.name} @${t.user.screen_name} `}
 					{t.user.protected && "🔒 "}
 				</Text>
