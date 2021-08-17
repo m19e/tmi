@@ -17,6 +17,7 @@ import { config } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { getDisplayTimeAgo } from "../src/lib";
+import Spinner from "../src/components/Spinner";
 
 config();
 
@@ -368,9 +369,12 @@ const Timeline = ({
 				cursor:{cursor} focus:{focus} len:{timeline.length}
 			</Text>
 			{fetching && (
-				<Box>
-					<Text> Fetching...</Text>
-				</Box>
+				<Text>
+					<Text color="green">
+						<Spinner type="aesthetic" />
+					</Text>
+					<Text>{" Fetching..."}</Text>
+				</Text>
 			)}
 			{displayTimeline.map((t, i) => (
 				<TweetBox key={i} tweet={t} isFocused={focus === i} />
