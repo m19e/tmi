@@ -363,6 +363,7 @@ const Timeline = ({
 		setIsBackward(backward);
 		setFetching(true);
 		const len = await onUpdate(backward);
+		if (!backward) setCursor(cursor + len);
 		setFetching(false);
 		return len;
 	};
@@ -387,8 +388,7 @@ const Timeline = ({
 			if (focus === 0) {
 				if (cursor === 0) {
 					const f = async () => {
-						const len = await update(false);
-						setCursor(cursor + len);
+						await update(false);
 					};
 					f();
 				} else {
