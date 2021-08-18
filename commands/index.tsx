@@ -329,8 +329,9 @@ const Timeline = ({
 	};
 
 	useInput((_, key) => {
+		if (fetching) return;
+
 		if (key.upArrow || (key.shift && key.tab)) {
-			if (fetching) return;
 			if (focus === 0) {
 				if (cursor === 0) {
 					const f = async () => {
@@ -348,7 +349,6 @@ const Timeline = ({
 				setFocus((prev) => prev - 1);
 			}
 		} else if (key.downArrow || key.tab) {
-			if (fetching) return;
 			if (focus === DISPLAY_TWEETS_COUNT - 1) {
 				if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
 					const f = async () => {
