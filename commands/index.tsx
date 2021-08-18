@@ -220,6 +220,10 @@ const Hello = ({ name = "" }) => {
 		return { ...params, since_id: newest.id_str };
 	};
 
+	const postFavorite = () => {};
+
+	const postRetweet = () => {};
+
 	const handleSubmitPinAuth = async (p: string) => {
 		const token = await client.getAccessToken({
 			oauth_verifier: p,
