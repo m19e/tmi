@@ -363,7 +363,18 @@ const Timeline = ({
 		return len;
 	};
 
-	useInput((_, key) => {
+	const fav = async () => {
+		setFetching(true);
+		const res = await onFav(displayTimeline[focus]);
+		setTimeout(() => {
+			setFetching(false);
+		}, 1000);
+		setDisplayTimeline((prev) =>
+			prev.map((t) => (t.id_str === res.id_str ? res : t))
+		);
+	};
+
+	useInput((input, key) => {
 		if (fetching) return;
 
 		if (key.upArrow || (key.shift && key.tab)) {
@@ -399,6 +410,8 @@ const Timeline = ({
 			} else {
 				setFocus((prev) => prev + 1);
 			}
+		} else if (input === "f") {
+			fav();
 		}
 	}, {});
 
