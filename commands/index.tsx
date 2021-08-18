@@ -372,7 +372,9 @@ const Timeline = ({
 	const fav = async () => {
 		setFetching(true);
 		const res = await onFav(displayTimeline[focus]);
-		if (res !== null) {
+		if (res === null) {
+			// onError()
+		} else {
 			setDisplayTimeline((prev) =>
 				prev.map((t) => (t.id_str === res.id_str ? res : t))
 			);
