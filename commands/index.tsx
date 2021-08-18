@@ -372,12 +372,10 @@ const Timeline = ({
 	const fav = async () => {
 		setFetching(true);
 		const res = await onFav(displayTimeline[focus]);
-		setTimeout(() => {
-			setFetching(false);
-		}, 1000);
 		setDisplayTimeline((prev) =>
 			prev.map((t) => (t.id_str === res.id_str ? res : t))
 		);
+		setFetching(false);
 	};
 
 	useInput((input, key) => {
