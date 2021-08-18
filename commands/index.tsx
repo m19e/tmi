@@ -226,21 +226,27 @@ const Hello = ({ name = "" }) => {
 	}: Tweet): Promise<Tweet | null> => {
 		const user = new TL(config);
 		try {
-			let res: Tweet;
 			if (favorited) {
-				res = await user.post("favorites/destroy", {
+				await user.post("favorites/destroy", {
 					id: id_str,
 					tweet_mode: "extended",
 					include_entities: true,
 				});
 			} else {
-				res = await user.post("favorites/create", {
+				await user.post("favorites/create", {
 					id: id_str,
 					tweet_mode: "extended",
 					include_entities: true,
 				});
 			}
 
+			const res = await user.get("statuses/show", {
+				id: id_str,
+				trim_user: false,
+				include_my_retweet: true,
+				tweet_mode: "extended",
+				include_entities: true,
+			});
 			setCurrentTimeline((prev) =>
 				prev.map((t) => (t.id_str === id_str ? res : t))
 			);
