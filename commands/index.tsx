@@ -323,7 +323,11 @@ const Hello = ({ name = "" }) => {
 					<Text>
 						list-name:<Text color="green">{currentList.name}</Text>
 					</Text>
-					<Timeline timeline={currentTimeline} onUpdate={handleUpdate} />
+					<Timeline
+						timeline={currentTimeline}
+						onUpdate={handleUpdate}
+						onFav={handleFavorite}
+					/>
 				</>
 			)}
 		</Box>
