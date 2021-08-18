@@ -387,10 +387,7 @@ const Timeline = ({
 		if (key.upArrow || (key.shift && key.tab)) {
 			if (focus === 0) {
 				if (cursor === 0) {
-					const f = async () => {
-						await update(false);
-					};
-					f();
+					update(false);
 				} else {
 					setDisplayTimeline(
 						timeline.slice(cursor - 1, cursor + DISPLAY_TWEETS_COUNT - 1)
@@ -403,10 +400,7 @@ const Timeline = ({
 		} else if (key.downArrow || key.tab) {
 			if (focus === DISPLAY_TWEETS_COUNT - 1) {
 				if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
-					const f = async () => {
-						await update(true);
-					};
-					f();
+					update(true);
 				} else {
 					setDisplayTimeline(
 						timeline.slice(cursor + 1, cursor + DISPLAY_TWEETS_COUNT + 1)
