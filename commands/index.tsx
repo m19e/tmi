@@ -335,9 +335,11 @@ const DISPLAY_TWEETS_COUNT = 5;
 const Timeline = ({
 	timeline,
 	onUpdate,
+	onFav,
 }: {
 	timeline: Tweet[];
 	onUpdate: (backward: boolean) => Promise<number>;
+	onFav: (t: Tweet) => Promise<Tweet | null>;
 }) => {
 	const [cursor, setCursor] = useState(0);
 	const [focus, setFocus] = useState(0);
