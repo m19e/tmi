@@ -363,9 +363,7 @@ const Timeline = ({
 		setIsBackward(backward);
 		setFetching(true);
 		const len = await onUpdate(backward);
-		setTimeout(() => {
-			setFetching(false);
-		}, 1000);
+		setFetching(false);
 		return len;
 	};
 
