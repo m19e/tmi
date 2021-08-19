@@ -186,7 +186,7 @@ const Hello = ({ name = "" }) => {
 		{ backward }: { backward: boolean } = { backward: false }
 	): Promise<number> => {
 		const user = new TL(config);
-		const params = createGetListTimelineParams(list_id, backward, 20);
+		const params = createGetListTimelineParams(list_id, backward, 200);
 
 		try {
 			const data: Tweet[] = await user.get("lists/statuses", params);
