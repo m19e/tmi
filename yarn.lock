@@ -5579,6 +5579,11 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.9.tgz#8a595135def9592bda69709474f1cbeea7c2467f"
   integrity sha512-Ki212dKK4ogX+xDo4CtOZBVIwhsKBEfsEEcwmJfLQzirgc2jIWdzg40Unxz/HzEUqM1WFzVlQSMF9kZZ2HboLQ==
 
+split-graphemes@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/split-graphemes/-/split-graphemes-0.5.0.tgz#56380eec1609fa488c728ebd8693a974f0d5cb8c"
+  integrity sha512-TTZ4IPmxuGZOPqhKLHscOeVf568gDP8JE8FxaZU/k30Q3Ra1BRhMv8d9jq1R6A/6T8wSz6ozYn3aJ5skgP6omA==
+
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/split-string/-/split-string-3.1.0.tgz#7cb09dda3a86585705c64b39a6466038682e8fe2"

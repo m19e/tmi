@@ -25,6 +25,7 @@
 		"pastel": "^1.1.1",
 		"prop-types": "^15.7.2",
 		"react": "^16.14.0",
+		"split-graphemes": "^0.5.0",
 		"twitter-lite": "^1.1.0"
 	},
 	"devDependencies": {
