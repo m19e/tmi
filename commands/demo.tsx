@@ -4,7 +4,7 @@ import { splitGraphemes } from "split-graphemes";
 
 const Demo = () => (
 	<Box flexDirection="column">
-		{splitGraphemes("𝙧𝙖𝐑𝐫𝙄𝙉𝙐🧙‍♀🌤🤏🏻🙆🏻‍♀️🙇🏻‍♀️🤲🏻").map((line, i) => (
+		{splitGraphemes("𝙧𝙖𝐑𝐫𝙄𝙉𝙐🧙‍♀🌤🤏🏻🙆🏻‍♀️🙇🏻‍♀️🤲🏻🥲").map((line, i) => (
 			<Box key={i} borderStyle="round" borderColor="white">
 				{/* {([...line].length !== 1 || /[\u{1d400}-\u{1d7ff}]/u.test(line)) && (
 					<Text>
