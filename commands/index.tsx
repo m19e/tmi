@@ -15,6 +15,7 @@ import SelectInput from "ink-select-input";
 import TL, { TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
+import { splitGraphemes } from "split-graphemes";
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { getDisplayTimeAgo } from "../src/lib";
 import Spinner from "../src/components/Spinner";
@@ -50,6 +51,30 @@ interface GetListTimelineParams extends DefaultTwitterRequestParams {
 	since_id?: string;
 	max_id?: string;
 }
+
+const splitWithGraphemes = (text: string): string[] => {
+	return splitGraphemes(text);
+};
+
+const convertToCorrectWidthText = (text: string): string =>
+	splitWithGraphemes(text)
+		.map((c) => {
+			const spread = [...c];
+			if (spread.length === 1) {
+				if (
+					/[\u{1d400}-\u{1d7ff}\u{1f972}\u{3297}\u{1fab6}\u{1f54a}\u{1f6cf}]/u.test(
+						c
+					)
+				)
+					return "▯";
+				if (/[\u{fe0f}]/u.test(c)) return "";
+				return c;
+			}
+			return spread
+				.filter((f) => !/[\u{1f3fb}-\u{1f3ff}\u{fe0f}]/u.test(f))
+				.join("");
+		})
+		.join("");
 
 /// Hello world command
 const Hello = ({ name = "" }) => {
