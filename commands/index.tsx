@@ -255,7 +255,7 @@ const Hello = ({ name = "" }) => {
 				return tweet;
 			});
 			setCurrentTimeline((prev) =>
-				backward ? converted.slice(0, -1).concat(data) : data.concat(converted)
+				backward ? prev.slice(0, -1).concat(converted) : converted.concat(prev)
 			);
 			return data.length;
 		} catch (error) {
