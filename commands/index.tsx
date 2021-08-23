@@ -56,25 +56,43 @@ const splitWithGraphemes = (text: string): string[] => {
 	return splitGraphemes(text);
 };
 
-const convertToCorrectWidthText = (text: string): string =>
-	splitWithGraphemes(text)
-		.map((c) => {
-			const spread = [...c];
-			if (spread.length === 1) {
-				if (
-					/[\u{1d400}-\u{1d7ff}\u{1f972}\u{3297}\u{1fab6}\u{1f54a}\u{1f6cf}]/u.test(
-						c
-					)
-				)
-					return "▯";
-				if (/[\u{fe0f}]/u.test(c)) return "";
-				return c;
-			}
-			return spread
-				.filter((f) => !/[\u{1f3fb}-\u{1f3ff}\u{fe0f}]/u.test(f))
-				.join("");
-		})
-		.join("");
+const convertToCorrectWidthText = (text: string): string => {
+	if (
+		!text.match(
+			/[\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{13000}-\u{1342f}\u{fe0f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}]/u
+		)
+	)
+		return text;
+
+	return text
+		.split(/\n|\r\n|\r/)
+		.map((line) =>
+			splitWithGraphemes(line)
+				.map((g) => {
+					const arr = [...g];
+					if (arr.length === 1) {
+						if (
+							/[\u{1d400}-\u{1d7ff}\u{13000}-\u{1342f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}]/u.test(
+								g
+							)
+						)
+							return "☒";
+						if (/[\u{fe0f}]/u.test(g)) return "";
+						return g;
+					}
+					return arr
+						.filter(
+							(c) =>
+								!/[\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{13000}-\u{1342f}\u{fe0f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}]/u.test(
+									c
+								)
+						)
+						.join("");
+				})
+				.join("")
+		)
+		.join("\n");
+};
 
 /// Hello world command
 const Hello = ({ name = "" }) => {
