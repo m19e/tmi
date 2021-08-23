@@ -59,7 +59,7 @@ const splitWithGraphemes = (text: string): string[] => {
 const convertToCorrectWidthText = (text: string): string => {
 	if (
 		!text.match(
-			/[\u{270c}\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1fa70}-\u{1faff}\u{13000}-\u{1342f}\u{fe0f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}\u{1f324}\u{1f43f}]/u
+			/[\u{270c}\u{0300}-\u{036f}\u{11000}-\u{1107f}\u{13000}-\u{1342f}\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1fa70}-\u{1faff}\u{fe0f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}\u{1f324}\u{1f43f}]/u
 		)
 	)
 		return text;
@@ -72,7 +72,7 @@ const convertToCorrectWidthText = (text: string): string => {
 					const arr = [...g];
 					if (arr.length === 1) {
 						if (
-							/[\u{270c}\u{1d400}-\u{1d7ff}\u{1fa70}-\u{1faff}\u{13000}-\u{1342f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}\u{1f324}\u{1f43f}]/u.test(
+							/[\u{270c}\u{11000}-\u{1107f}\u{13000}-\u{1342f}\u{1d400}-\u{1d7ff}\u{1fa70}-\u{1faff}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}\u{1f324}\u{1f43f}]/u.test(
 								g
 							)
 						)
@@ -83,7 +83,7 @@ const convertToCorrectWidthText = (text: string): string => {
 					return arr
 						.filter(
 							(c) =>
-								!/[\u{270c}\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1fa70}-\u{1faff}\u{13000}-\u{1342f}\u{fe0f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}\u{1f324}\u{1f43f}]/u.test(
+								!/[\u{270c}\u{0300}-\u{036f}\u{11000}-\u{1107f}\u{13000}-\u{1342f}\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1fa70}-\u{1faff}\u{fe0f}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}\u{1f324}\u{1f43f}]/u.test(
 									c
 								)
 						)
