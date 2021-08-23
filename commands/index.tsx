@@ -94,6 +94,28 @@ const convertToCorrectWidthText = (text: string): string => {
 		.join("\n");
 };
 
+const convertTweetToDisplayable = (t: Tweet): Tweet => {
+	const full_text = convertToCorrectWidthText(t.full_text);
+	const name = convertToCorrectWidthText(t.user.name);
+	let tweet: Tweet = {
+		...t,
+		full_text,
+		user: { ...t.user, name },
+	};
+
+	if (t.retweeted_status) {
+		const rt = t.retweeted_status;
+		const rt_full_text = convertToCorrectWidthText(rt.full_text);
+		const rt_user_name = convertToCorrectWidthText(rt.user.name);
+		tweet.retweeted_status = {
+			...rt,
+			full_text: rt_full_text,
+			user: { ...rt.user, name: rt_user_name },
+		};
+	}
+	return tweet;
+};
+
 /// Hello world command
 const Hello = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
