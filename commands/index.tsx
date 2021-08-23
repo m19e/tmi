@@ -360,7 +360,7 @@ const Hello = ({ name = "" }) => {
 	};
 
 	return (
-		<Box flexDirection="column" height={rows} paddingTop={2}>
+		<Box flexDirection="column" minHeight={rows} paddingTop={2}>
 			{status === "wait" && (
 				<>
 					<Text color="redBright">Open URL and enter PIN.</Text>
