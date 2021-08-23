@@ -255,27 +255,7 @@ const Hello = ({ name = "" }) => {
 
 		try {
 			const data: Tweet[] = await user.get("lists/statuses", params);
-			const converted = data.map((t) => {
-				const full_text = convertToCorrectWidthText(t.full_text);
-				const name = convertToCorrectWidthText(t.user.name);
-				let tweet: Tweet = {
-					...t,
-					full_text,
-					user: { ...t.user, name },
-				};
-
-				if (t.retweeted_status) {
-					const rt = t.retweeted_status;
-					const rt_full_text = convertToCorrectWidthText(rt.full_text);
-					const rt_user_name = convertToCorrectWidthText(rt.user.name);
-					tweet.retweeted_status = {
-						...rt,
-						full_text: rt_full_text,
-						user: { ...rt.user, name: rt_user_name },
-					};
-				}
-				return tweet;
-			});
+			const converted = data.map((t) => convertTweetToDisplayable(t));
 			setCurrentTimeline((prev) =>
 				backward ? prev.slice(0, -1).concat(converted) : converted.concat(prev)
 			);
