@@ -17,6 +17,7 @@ const block_reg = new RegExp(
 		"\u{1f3f1}-\u{1f3f3}" +
 		"\u{1f3f5}-\u{1f3f7}" +
 		"\u{1f43f}\u{1f441}" +
+		"\u{1f4fe}\u{1f4fd}" +
 		"\u{1f53e}-\u{1f54a}" +
 		"\u{1f54f}" +
 		"\u{1f568}-\u{1f579}" +
