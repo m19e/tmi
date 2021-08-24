@@ -6,7 +6,7 @@ const general_reg =
 	/[\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1f43f}\u{270c}\u{fe0f}\u{1f3d6}\u{1fad6}\u{1fa9a}\u{1fa98}\u{361}\u{35c}\u{32e}]/u;
 
 // Block = “Miscellaneous Symbols and Pictographs”
-const block_reg = new RegExp(
+const msap_reg = new RegExp(
 	"[" +
 		"\u{1f321}-\u{1f32c}" +
 		"\u{1f336}" +
@@ -39,7 +39,7 @@ const Demo = () => (
 				</Text>
 				<Text>
 					{[...line]
-						.filter((c) => !general_reg.test(c) && !block_reg.test(c))
+						.filter((c) => !(general_reg.test(c) || msap_reg.test(c)))
 						.join("")}
 				</Text>
 			</Box>
