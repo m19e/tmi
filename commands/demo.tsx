@@ -44,20 +44,27 @@ const tmp =
 
 const Demo = () => (
 	<Box flexDirection="column" paddingY={2}>
-		{splitGraphemes(
-			"🧙‍♀🤏🏻🙆🏻‍♀️🙇🏻‍♀️🤲🏻𓈒𓂂✌🩰🪘🪚🫖🐿(◜‧̮◝ )( ͡° ͜ʖ ͡°)🏖🌡🌣🌥🌦🌨🌪🌬🌭🎔🎖🎘🎚🎜🎞🎠🏔🏗🏚🏝🏱🏲🏳🏵🏶🏷🐿📾📽🔾🕀🕃🕈🕏🕪🕰🕶🖈🖔🗐🗺🌶🍽🏍🏎👁🕭"
-		).map((line, i) => (
-			<Box key={i} borderStyle="round" borderColor="white">
-				<Text>
-					{[...line].map((c) => c.codePointAt(0).toString(16)).join() + "　"}
-				</Text>
-				<Text>
-					{[...line]
-						.filter((c) => !(general_reg.test(c) || msap_reg.test(c)))
-						.join("")}
-				</Text>
-			</Box>
-		))}
+		{splitGraphemes(generateEmojiArray("\u{2776}", 100).join("")).map(
+			(line, i) => (
+				<Box key={i} borderStyle="round" borderColor="white">
+					<Text>
+						{[...line].map((c) => c.codePointAt(0).toString(16)).join() + "　"}
+					</Text>
+					<Text>
+						{[...line]
+							.filter(
+								(c) =>
+									!(
+										general_reg.test(c) ||
+										msap_reg.test(c) ||
+										dingbats_reg.test(c)
+									)
+							)
+							.join("")}
+					</Text>
+				</Box>
+			)
+		)}
 	</Box>
 );
 
