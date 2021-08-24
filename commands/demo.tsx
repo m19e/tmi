@@ -61,7 +61,9 @@ const Demo = () => (
 										dingbats_reg.test(c)
 									)
 							)
-							.join("")}
+							.join("") +
+							" " +
+							line}
 					</Text>
 				</Box>
 			)
