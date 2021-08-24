@@ -71,13 +71,13 @@ const convertToCorrectWidthText = (text: string): string => {
 				.map((g) => {
 					const arr = [...g];
 					if (arr.length === 1) {
+						if (/[\u{fe0f}]/u.test(g)) return "";
 						if (
 							/[\u{270c}\u{11000}-\u{1107f}\u{13000}-\u{1342f}\u{1d400}-\u{1d7ff}\u{1fa70}-\u{1faff}\u{3297}\u{1f54a}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1f441}\u{1f324}\u{1f43f}]/u.test(
 								g
 							)
 						)
 							return "☒";
-						if (/[\u{fe0f}]/u.test(g)) return "";
 						return g;
 					}
 					return arr
