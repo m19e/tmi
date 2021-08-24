@@ -47,9 +47,9 @@ const Demo = () => (
 	<Box flexDirection="column" paddingY={2}>
 		{splitGraphemes(generateEmojiArray("\u{2776}", 100).join("")).map(
 			(line, i) => (
-				<Box key={i} borderStyle="round" borderColor="white">
+				<Box key={i} width={16} borderStyle="round" borderColor="white">
 					<Text>
-						{[...line].map((c) => c.codePointAt(0).toString(16)).join() + "　"}
+						{[...line].map((c) => c.codePointAt(0).toString(16)).join() + " "}
 					</Text>
 					<Text>
 						{[...line]
