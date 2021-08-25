@@ -3,7 +3,7 @@ import { Box, Text } from "ink";
 import { splitGraphemes } from "split-graphemes";
 
 const general_reg =
-	/[\u{1}-\u{6}\u{8}-\u{c}\u{10}-\u{1f}\u{84}\u{85}\u{8c}\u{90}\u{98}\u{9b}\u{9d}-\u{9f}\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1f700}-\u{1f77f}\u{1f780}-\u{1f7df}\u{1f800}-\u{1f8ff}\u{1fa00}-\u{1fa6f}\u{1fb00}-\u{1fbff}\u{e0100}-\u{e01ef}\u{300}-\u{36f}]/u;
+	/[\u{1}-\u{6}\u{8}-\u{c}\u{10}-\u{1f}\u{84}\u{85}\u{8c}\u{90}\u{98}\u{9b}\u{9d}-\u{9f}\u{300}-\u{36f}\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1f700}-\u{1f77f}\u{1f780}-\u{1f7df}\u{1f800}-\u{1f8ff}\u{1fa00}-\u{1fa6f}\u{1fb00}-\u{1fbff}\u{e0100}-\u{e01ef}]/u;
 
 // Block = "Basic Latin"
 const bl_reg = new RegExp(
