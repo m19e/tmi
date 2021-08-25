@@ -96,8 +96,9 @@ const tmp =
 
 const Demo = () => (
 	<Box flexDirection="column" paddingY={2}>
-		{splitGraphemes(generateEmojiArray("\u{2776}", 100).join("")).map(
-			(line, i) => (
+		{splitGraphemes(generateEmojiArray("\u{500}", 300).join(""))
+			.reverse()
+			.map((line, i) => (
 				<Box key={i} width={16} borderStyle="round" borderColor="white">
 					<Text>
 						{[...line].map((c) => c.codePointAt(0).toString(16)).join() + " "}
@@ -120,8 +121,7 @@ const Demo = () => (
 							line}
 					</Text>
 				</Box>
-			)
-		)}
+			))}
 	</Box>
 );
 
