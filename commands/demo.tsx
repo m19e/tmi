@@ -3,7 +3,7 @@ import { Box, Text } from "ink";
 import { splitGraphemes } from "split-graphemes";
 
 const general_reg =
-	/[\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{300}-\u{36f}\u{fe0f}\u{1fad6}\u{1fa9a}\u{1fa98}]/u;
+	/[\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{300}-\u{36f}\u{fe0f}]/u;
 
 // Block = “Miscellaneous Symbols and Pictographs”
 const msap_reg = new RegExp(
