@@ -76,6 +76,13 @@ const reg = new RegExp(
 		"\u{1f57b}-\u{1f594}" +
 		"\u{1f597}-\u{1f5a3}" +
 		"\u{1f5a5}-\u{1f5fa}" +
+		/// Block = "Symbols and Pictographs Extended-A"
+		"\u{1fa74}" +
+		"\u{1fa83}-\u{1fa86}" +
+		"\u{1fa96}-\u{1faa8}" +
+		"\u{1fab0}-\u{1fab6}" +
+		"\u{1fac0}-\u{1fac2}" +
+		"\u{1fad0}-\u{1fad6}" +
 		// General regex
 		"\u{270c}\u{0300}-\u{036f}\u{11000}-\u{1107f}\u{13000}-\u{1342f}\u{1d400}-\u{1d7ff}\u{1fa70}-\u{1faff}\u{fe0f}\u{3297}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1fad6}\u{1fa9a}\u{1fa98}\u{361}\u{35c}\u{32e}" +
 		"]",
