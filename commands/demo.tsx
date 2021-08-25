@@ -96,7 +96,7 @@ const tmp =
 
 const Demo = () => (
 	<Box flexDirection="column" paddingY={2}>
-		{splitGraphemes(generateEmojiArray("\u{500}", 300).join(""))
+		{splitGraphemes(generateEmojiArray("\u{700}", 100).join(""))
 			.reverse()
 			.map((line, i) => (
 				<Box key={i} width={16} borderStyle="round" borderColor="white">
