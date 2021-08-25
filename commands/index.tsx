@@ -83,6 +83,8 @@ const reg = new RegExp(
 		"\u{1fab0}-\u{1fab6}" +
 		"\u{1fac0}-\u{1fac2}" +
 		"\u{1fad0}-\u{1fad6}" +
+		// Block = "Combining Diacritical Marks"
+		"\u{300}-\u{36f}" +
 		// Block = "Dingbats"
 		"\u{270c}\u{270d}" +
 		// General regex
