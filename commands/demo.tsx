@@ -3,7 +3,13 @@ import { Box, Text } from "ink";
 import { splitGraphemes } from "split-graphemes";
 
 const general_reg =
-	/[\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1f700}-\u{1f77f}\u{1f780}-\u{1f7df}\u{1f800}-\u{1f8ff}\u{1fa00}-\u{1fa6f}\u{1fb00}-\u{1fbff}\u{e0100}-\u{e01ef}\u{300}-\u{36f}]/u;
+	/[\u{1}-\u{6}\u{8}-\u{c}\u{10}-\u{1f}\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{1f700}-\u{1f77f}\u{1f780}-\u{1f7df}\u{1f800}-\u{1f8ff}\u{1fa00}-\u{1fa6f}\u{1fb00}-\u{1fbff}\u{e0100}-\u{e01ef}\u{300}-\u{36f}]/u;
+
+// Block = "Basic Latin"
+const bl_reg = new RegExp(
+	"[" + "\u{1}-\u{6}" + "\u{8}-\u{c}" + "\u{10}-\u{1f}" + "]",
+	"u"
+);
 
 // Block = “Miscellaneous Symbols and Pictographs”
 const m_reg = new RegExp(
