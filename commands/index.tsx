@@ -504,6 +504,8 @@ const Timeline = ({
 			}
 		} else if (input === "f") {
 			fav();
+		} else if (key.pageUp) {
+		} else if (key.pageDown) {
 		}
 	}, {});
 
