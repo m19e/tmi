@@ -109,7 +109,7 @@ const convertToCorrectWidthText = (text: string): string => {
 				.map((g) => {
 					const arr = [...g];
 					if (arr.length === 1) {
-						if (/[\u{fe0f}]/u.test(g)) return "";
+						// if (/[\u{fe0f}]/u.test(g)) return "";
 						if (reg.test(g)) return "☒";
 						return g;
 					}
