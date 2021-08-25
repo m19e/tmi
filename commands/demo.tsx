@@ -29,6 +29,18 @@ const msap_reg = new RegExp(
 	"u"
 );
 
+// Block = "Transport and Map Symbols"
+const tm_reg = new RegExp(
+	"[" +
+		"\u{1f6c6}-\u{1f6cb}" +
+		"\u{1f6cd}-\u{1f6cf}" +
+		"\u{1f6d6}-\u{1f6ea}" +
+		"\u{1f6f0}-\u{1f6f3}" +
+		"\u{1f6fb}-\u{1f6fc}" +
+		"]",
+	"u"
+);
+
 /// Block = "Symbols and Pictographs Extended-A"
 const extend_a_reg = new RegExp(
 	"[" +
