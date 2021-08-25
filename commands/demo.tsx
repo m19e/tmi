@@ -29,6 +29,19 @@ const msap_reg = new RegExp(
 	"u"
 );
 
+/// Block = "Symbols and Pictographs Extended-A"
+const extend_a_reg = new RegExp(
+	"[" +
+		"\u{1fa74}" +
+		"\u{1fa83}-\u{1fa86}" +
+		"\u{1fa96}-\u{1faa8}" +
+		"\u{1fab0}-\u{1fab6}" +
+		"\u{1fac0}-\u{1fac2}" +
+		"\u{1fad0}-\u{1fad6}" +
+		"]",
+	"u"
+);
+
 const dingbats_reg = new RegExp("[" + "\u{270c}\u{270d}" + "]", "u");
 
 const generateEmojiArray = (emoji: string, range: number): string[] => {
@@ -58,6 +71,7 @@ const Demo = () => (
 									!(
 										general_reg.test(c) ||
 										msap_reg.test(c) ||
+										extend_a_reg.test(c) ||
 										dingbats_reg.test(c)
 									)
 							)
