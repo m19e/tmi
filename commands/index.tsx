@@ -88,7 +88,7 @@ const reg = new RegExp(
 		// Block = "Dingbats"
 		"\u{270c}\u{270d}" +
 		// General regex
-		"\u{0300}-\u{036f}\u{11000}-\u{1107f}\u{13000}-\u{1342f}\u{1d400}-\u{1d7ff}\u{1fa70}-\u{1faff}\u{fe0f}\u{3297}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1fad6}\u{1fa9a}\u{1fa98}\u{361}\u{35c}\u{32e}" +
+		"\u{11000}-\u{1107f}\u{13000}-\u{1342f}\u{1d400}-\u{1d7ff}\u{1fa70}-\u{1faff}\u{fe0f}\u{3297}\u{1f6cf}\u{1fab6}\u{1f972}\u{1f977}\u{1f978}\u{1fad6}\u{1fa9a}\u{1fa98}" +
 		"]",
 	"u"
 );
