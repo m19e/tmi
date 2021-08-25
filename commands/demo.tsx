@@ -6,7 +6,7 @@ const general_reg =
 	/[\u{1d400}-\u{1d7ff}\u{1f3fb}-\u{1f3ff}\u{300}-\u{36f}\u{fe0f}]/u;
 
 // Block = “Miscellaneous Symbols and Pictographs”
-const msap_reg = new RegExp(
+const m_reg = new RegExp(
 	"[" +
 		"\u{1f321}-\u{1f32c}" +
 		"\u{1f336}" +
@@ -82,7 +82,7 @@ const Demo = () => (
 								(c) =>
 									!(
 										general_reg.test(c) ||
-										msap_reg.test(c) ||
+										m_reg.test(c) ||
 										extend_a_reg.test(c) ||
 										dingbats_reg.test(c)
 									)
