@@ -41,6 +41,21 @@ const tm_reg = new RegExp(
 	"u"
 );
 
+// Block = "Supplemental Symbols and Pictographs"
+const s_reg = new RegExp(
+	"[" +
+		"\u{1f900}-\u{1f90c}" +
+		"\u{1f93b}\u{1f946}\u{1f972}" +
+		"\u{1f977}-\u{1f979}" +
+		"\u{1f9a3}\u{1f9a4}" +
+		"\u{1f9ab}-\u{1f9ad}" +
+		"\u{1f9cb}\u{1f9cc}" +
+		"\u{1f9}-\u{1f9}" +
+		"\u{1f9}-\u{1f9}" +
+		"]",
+	"u"
+);
+
 /// Block = "Symbols and Pictographs Extended-A"
 const extend_a_reg = new RegExp(
 	"[" +
@@ -84,6 +99,7 @@ const Demo = () => (
 										general_reg.test(c) ||
 										m_reg.test(c) ||
 										tm_reg.test(c) ||
+										s_reg.test(c) ||
 										extend_a_reg.test(c) ||
 										dingbats_reg.test(c)
 									)
