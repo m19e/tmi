@@ -83,6 +83,7 @@ const Demo = () => (
 									!(
 										general_reg.test(c) ||
 										m_reg.test(c) ||
+										tm_reg.test(c) ||
 										extend_a_reg.test(c) ||
 										dingbats_reg.test(c)
 									)
