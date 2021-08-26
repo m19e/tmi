@@ -41,6 +41,8 @@ const reg = new RegExp(
 		"\u{1f800}-\u{1f8ff}" +
 		// "Chess Symbols"
 		"\u{1fa00}-\u{1fa6f}" +
+		// "Symbols and Pictographs Extended-A"
+		"\u{1fa74}\u{1fa83}-\u{1fa86}\u{1fa96}-\u{1faa8}\u{1fab0}-\u{1fab6}\u{1fac0}-\u{1fac2}\u{1fad0}-\u{1fad6}" +
 		// "Symbols for Legacy Computing"
 		"\u{1fb00}-\u{1fbff}" +
 		// "Variation Selectors Supplement"
@@ -60,19 +62,6 @@ const s_reg = new RegExp(
 		"\u{1f9cb}\u{1f9cc}" +
 		"\u{1f9}-\u{1f9}" +
 		"\u{1f9}-\u{1f9}" +
-		"]",
-	"u"
-);
-
-/// Block = "Symbols and Pictographs Extended-A"
-const extend_a_reg = new RegExp(
-	"[" +
-		"\u{1fa74}" +
-		"\u{1fa83}-\u{1fa86}" +
-		"\u{1fa96}-\u{1faa8}" +
-		"\u{1fab0}-\u{1fab6}" +
-		"\u{1fac0}-\u{1fac2}" +
-		"\u{1fad0}-\u{1fad6}" +
 		"]",
 	"u"
 );
