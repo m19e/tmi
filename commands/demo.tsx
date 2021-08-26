@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import { Box, Text } from "ink";
 import { splitGraphemes } from "split-graphemes";
 
-const general_reg =
-	/[\u{1f780}-\u{1f7df}\u{1f800}-\u{1f8ff}\u{1fa00}-\u{1fa6f}\u{1fb00}-\u{1fbff}\u{e0100}-\u{e01ef}]/u;
-
 const reg = new RegExp(
 	"[" +
 		// "Basic Latin"
