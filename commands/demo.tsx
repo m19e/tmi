@@ -45,17 +45,6 @@ const reg = new RegExp(
 	"u"
 );
 
-// Block = "Basic Latin"
-const bl_reg = new RegExp(
-	"[" +
-		"\u{1}-\u{6}" +
-		"\u{8}-\u{c}" +
-		"\u{10}-\u{1f}" +
-		"\u{84}\u{85}\u{8c}\u{90}\u{98}\u{9b}\u{9d}-\u{9f}" +
-		"]",
-	"u"
-);
-
 // Block = “Miscellaneous Symbols and Pictographs”
 const m_reg = new RegExp(
 	"[" +
