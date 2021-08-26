@@ -128,6 +128,14 @@ const Demo = ({ start, count = 100 }: { start: string; count: number }) => {
 					</Text>
 				</Box>
 			))}
+			<Box width={16} borderStyle="round" borderColor="cyan">
+				<Text>
+					LastIndex:{" "}
+					{[...array[0]].map((c) => c.codePointAt(0).toString(16)).join() +
+						" " +
+						array[0]}
+				</Text>
+			</Box>
 		</Box>
 	);
 };
