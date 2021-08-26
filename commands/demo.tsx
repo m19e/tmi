@@ -135,4 +135,9 @@ Demo.propTypes = {
 	count: PT.number,
 };
 
+Demo.shortFlags = {
+	start: "s",
+	count: "c",
+};
+
 export default Demo;
