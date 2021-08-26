@@ -95,15 +95,16 @@ const generateEmojiArray = (emoji: string, range: number): string[] => {
 const tmp =
 	"🧙‍♀🤏🏻🙆🏻‍♀️🙇🏻‍♀️🤲🏻𓈒𓂂✌🩰🪘🪚🫖🐿(◜‧̮◝ )( ͡° ͜ʖ ͡°)🏖🌡🌣🌥🌦🌨🌪🌬🌭🎔🎖🎘🎚🎜🎞🎠🏔🏗🏚🏝🏱🏲🏳🏵🏶🏷🐿📾📽🔾🕀🕃🕈🕏🕪🕰🕶🖈🖔🗐🗺🌶🍽🏍🏎👁🕭✍";
 
-const Demo = ({ start, count = 100 }: { start: string; count: number }) => (
-	<Box flexDirection="column" paddingY={2}>
-		{splitGraphemes(
-			generateEmojiArray(String.fromCodePoint(parseInt(start, 16)), count).join(
-				""
-			)
+const Demo = ({ start, count = 100 }: { start: string; count: number }) => {
+	const array = splitGraphemes(
+		generateEmojiArray(String.fromCodePoint(parseInt(start, 16)), count).join(
+			""
 		)
-			.reverse()
-			.map((line, i) => (
+	).reverse();
+
+	return (
+		<Box flexDirection="column" paddingY={2}>
+			{array.map((line, i) => (
 				<Box key={i} width={16} borderStyle="round" borderColor="white">
 					<Text>
 						{[...line].map((c) => c.codePointAt(0).toString(16)).join() + " "}
@@ -127,8 +128,9 @@ const Demo = ({ start, count = 100 }: { start: string; count: number }) => (
 					</Text>
 				</Box>
 			))}
-	</Box>
-);
+		</Box>
+	);
+};
 
 Demo.propTypes = {
 	start: PropTypes.string.isRequired,
