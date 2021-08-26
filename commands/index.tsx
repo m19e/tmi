@@ -67,13 +67,14 @@ const reg = new RegExp(
 		"\u{1f3d4}-\u{1f3df}" +
 		"\u{1f3f1}-\u{1f3f3}" +
 		"\u{1f3f5}-\u{1f3f7}" +
-		"\u{1f3fb}-\u{1f3ff}" +
 		"\u{1f43f}\u{1f441}" +
 		"\u{1f4fe}\u{1f4fd}" +
 		"\u{1f53e}-\u{1f54a}" +
 		"\u{1f54f}" +
-		"\u{1f568}-\u{1f579}" +
-		"\u{1f57b}-\u{1f594}" +
+		"\u{1f568}-\u{1f573}" +
+		"\u{1f576}-\u{1f579}" +
+		"\u{1f57b}-\u{1f58f}" +
+		"\u{1f591}-\u{1f594}" +
 		"\u{1f597}-\u{1f5a3}" +
 		"\u{1f5a5}-\u{1f5fa}" +
 		/// Block = "Symbols and Pictographs Extended-A"
