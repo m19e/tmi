@@ -39,6 +39,8 @@ const reg = new RegExp(
 		"\u{1f780}-\u{1f7df}" +
 		// "Supplemental Arrows-C"
 		"\u{1f800}-\u{1f8ff}" +
+		// "Supplemental Symbols and Pictographs"
+		"\u{1f900}-\u{1f90c}\u{1f93b}\u{1f946}\u{1f972}\u{1f977}-\u{1f979}\u{1f9a3}\u{1f9a4}\u{1f9ab}-\u{1f9ad}\u{1f9cb}\u{1f9cc}\u{1f9}-\u{1f9}\u{1f9}-\u{1f9}" +
 		// "Chess Symbols"
 		"\u{1fa00}-\u{1fa6f}" +
 		// "Symbols and Pictographs Extended-A"
@@ -47,21 +49,6 @@ const reg = new RegExp(
 		"\u{1fb00}-\u{1fbff}" +
 		// "Variation Selectors Supplement"
 		"\u{e0100}-\u{e01ef}" +
-		"]",
-	"u"
-);
-
-// Block = "Supplemental Symbols and Pictographs"
-const s_reg = new RegExp(
-	"[" +
-		"\u{1f900}-\u{1f90c}" +
-		"\u{1f93b}\u{1f946}\u{1f972}" +
-		"\u{1f977}-\u{1f979}" +
-		"\u{1f9a3}\u{1f9a4}" +
-		"\u{1f9ab}-\u{1f9ad}" +
-		"\u{1f9cb}\u{1f9cc}" +
-		"\u{1f9}-\u{1f9}" +
-		"\u{1f9}-\u{1f9}" +
 		"]",
 	"u"
 );
