@@ -1,5 +1,5 @@
 import React from "react";
-import PT from "prop-types";
+import PropTypes from "prop-types";
 import { Box, Text } from "ink";
 import { splitGraphemes } from "split-graphemes";
 
@@ -131,8 +131,8 @@ const Demo = ({ start, count = 100 }: { start: string; count: number }) => (
 );
 
 Demo.propTypes = {
-	start: PT.string.isRequired,
-	count: PT.number,
+	start: PropTypes.string.isRequired,
+	count: PropTypes.number,
 };
 
 Demo.shortFlags = {
