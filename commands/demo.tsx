@@ -1,4 +1,5 @@
 import React from "react";
+import PT from "prop-types";
 import { Box, Text } from "ink";
 import { splitGraphemes } from "split-graphemes";
 
@@ -124,5 +125,10 @@ const Demo = () => (
 			))}
 	</Box>
 );
+
+Demo.propTypes = {
+	start: PT.string.isRequired,
+	count: PT.number,
+};
 
 export default Demo;
