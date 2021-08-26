@@ -79,21 +79,7 @@ const Demo = ({ start, count = 100 }: { start: string; count: number }) => {
 						{[...line].map((c) => c.codePointAt(0).toString(16)).join() + " "}
 					</Text>
 					<Text>
-						{[...line]
-							.filter(
-								(c) =>
-									!(
-										reg.test(c) ||
-										m_reg.test(c) ||
-										tm_reg.test(c) ||
-										s_reg.test(c) ||
-										extend_a_reg.test(c) ||
-										dingbats_reg.test(c)
-									)
-							)
-							.join("") +
-							" " +
-							line}
+						{[...line].filter((c) => !reg.test(c)).join("") + " " + line}
 					</Text>
 				</Box>
 			))}
