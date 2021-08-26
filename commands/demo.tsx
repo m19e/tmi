@@ -88,8 +88,6 @@ const extend_a_reg = new RegExp(
 	"u"
 );
 
-const dingbats_reg = new RegExp("[" + "\u{270c}\u{270d}" + "]", "u");
-
 const generateEmojiArray = (emoji: string, range: number): string[] => {
 	const cp = emoji.codePointAt(0).toString(16);
 	const int = parseInt(cp, 16);
