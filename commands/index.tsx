@@ -87,8 +87,8 @@ const reg = new RegExp(
 		"\u{300}-\u{36f}" +
 		// Block = "Brahmi"
 		"\u{11000}-\u{1107f}" +
-		// Block = "Egyptian Hieroglyphs"
-		"\u{13000}-\u{1342f}" +
+		// Block = "Egyptian Hieroglyphs" ~ "Anatolian Hieroglyphs"
+		"\u{13000}-\u{1467f}" +
 		// Block = "Mathematical Alphanumeric Symbols"
 		"\u{1d400}-\u{1d7ff}" +
 		// Block = "Dingbats"
