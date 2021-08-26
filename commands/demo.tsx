@@ -4,7 +4,49 @@ import { Box, Text } from "ink";
 import { splitGraphemes } from "split-graphemes";
 
 const general_reg =
-	/[\u{1}-\u{6}\u{8}-\u{c}\u{10}-\u{1f}\u{84}\u{85}\u{8c}\u{90}\u{98}\u{9b}\u{9d}-\u{9f}\u{300}-\u{36f}\u{10000}-\u{1254f}\u{13000}-\u{1467f}\u{16800}-\u{18d8f}\u{1b002}-\u{1bcaf}\u{1d000}-\u{1daaf}\u{1e000}-\u{1f003}\u{1f005}-\u{1f18d}\u{1f18f}\u{1f190}\u{1f19b}-\u{1f1e5}\u{1f260}-\u{1f265}\u{1f650}-\u{1f67f}\u{1f700}-\u{1f77f}\u{1f780}-\u{1f7df}\u{1f800}-\u{1f8ff}\u{1fa00}-\u{1fa6f}\u{1fb00}-\u{1fbff}\u{e0100}-\u{e01ef}]/u;
+	/[\u{1f780}-\u{1f7df}\u{1f800}-\u{1f8ff}\u{1fa00}-\u{1fa6f}\u{1fb00}-\u{1fbff}\u{e0100}-\u{e01ef}]/u;
+
+const reg = new RegExp(
+	"[" +
+		// "Basic Latin"
+		"\u{1}-\u{6}\u{8}-\u{c}\u{10}-\u{1f}" +
+		// "Latin-1 Supplement"
+		"\u{84}\u{85}\u{8c}\u{90}\u{98}\u{9b}\u{9d}-\u{9f}" +
+		// "Combining Diacritical Marks"
+		"\u{300}-\u{36f}" +
+		// "Dingbats"
+		"\u{270c}\u{270d}" +
+		// "Linear B Syllabary" ~ "Early Dynastic Cuneiform"
+		"\u{10000}-\u{1254f}" +
+		// "Egyptian Hieroglyphs" ~ "Anatolian Hieroglyphs"
+		"\u{13000}-\u{1467f}" +
+		// "Bamum Supplement" ~ "Tangut Supplement"
+		"\u{16800}-\u{18d8f}" +
+		// "Kana Supplement" ~ "Duployan"
+		"\u{1b002}-\u{1bcaf}" +
+		// "Byzantine Musical Symbols" ~ "Sutton SignWriting"
+		"\u{1d000}-\u{1daaf}" +
+		// "Glagolitic Supplement" ~ "Enclosed Alphanumeric Supplement"
+		"\u{1e000}-\u{1f003}\u{1f005}-\u{1f18d}\u{1f18f}\u{1f190}\u{1f19b}-\u{1f1e5}" +
+		// "Enclosed Ideographic Supplement"
+		"\u{1f260}-\u{1f265}" +
+		// "Ornamental Dingbats"
+		"\u{1f650}-\u{1f67f}" +
+		// "Alchemical Symbols"
+		"\u{1f700}-\u{1f77f}" +
+		// "Geometric Shapes Extended"
+		"\u{1f780}-\u{1f7df}" +
+		// "Supplemental Arrows-C"
+		"\u{1f800}-\u{1f8ff}" +
+		// "Chess Symbols"
+		"\u{1fa00}-\u{1fa6f}" +
+		// "Symbols for Legacy Computing"
+		"\u{1fb00}-\u{1fbff}" +
+		// "Variation Selectors Supplement"
+		"\u{e0100}-\u{e01ef}" +
+		"]",
+	"u"
+);
 
 // Block = "Basic Latin"
 const bl_reg = new RegExp(
