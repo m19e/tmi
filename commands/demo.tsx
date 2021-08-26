@@ -154,7 +154,7 @@ const Demo = ({ start, count = 100 }: { start: string; count: number }) => {
 							.filter(
 								(c) =>
 									!(
-										general_reg.test(c) ||
+										reg.test(c) ||
 										m_reg.test(c) ||
 										tm_reg.test(c) ||
 										s_reg.test(c) ||
