@@ -96,7 +96,7 @@ const tmp =
 	"🧙‍♀🤏🏻🙆🏻‍♀️🙇🏻‍♀️🤲🏻𓈒𓂂✌🩰🪘🪚🫖🐿(◜‧̮◝ )( ͡° ͜ʖ ͡°)🏖🌡🌣🌥🌦🌨🌪🌬🌭🎔🎖🎘🎚🎜🎞🎠🏔🏗🏚🏝🏱🏲🏳🏵🏶🏷🐿📾📽🔾🕀🕃🕈🕏🕪🕰🕶🖈🖔🗐🗺🌶🍽🏍🏎👁🕭✍";
 
 const Demo = ({ start, count = 100 }: { start: string; count: number }) => {
-	const array = splitGraphemes(
+	const array: string[] = splitGraphemes(
 		generateEmojiArray(String.fromCodePoint(parseInt(start, 16)), count).join(
 			""
 		)
