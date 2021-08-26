@@ -95,9 +95,13 @@ const generateEmojiArray = (emoji: string, range: number): string[] => {
 const tmp =
 	"🧙‍♀🤏🏻🙆🏻‍♀️🙇🏻‍♀️🤲🏻𓈒𓂂✌🩰🪘🪚🫖🐿(◜‧̮◝ )( ͡° ͜ʖ ͡°)🏖🌡🌣🌥🌦🌨🌪🌬🌭🎔🎖🎘🎚🎜🎞🎠🏔🏗🏚🏝🏱🏲🏳🏵🏶🏷🐿📾📽🔾🕀🕃🕈🕏🕪🕰🕶🖈🖔🗐🗺🌶🍽🏍🏎👁🕭✍";
 
-const Demo = () => (
+const Demo = ({ start, count = 100 }: { start: string; count: number }) => (
 	<Box flexDirection="column" paddingY={2}>
-		{splitGraphemes(generateEmojiArray("\u{700}", 100).join(""))
+		{splitGraphemes(
+			generateEmojiArray(String.fromCodePoint(parseInt(start, 16)), count).join(
+				""
+			)
+		)
 			.reverse()
 			.map((line, i) => (
 				<Box key={i} width={16} borderStyle="round" borderColor="white">
