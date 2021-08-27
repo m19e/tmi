@@ -152,7 +152,7 @@ const convertTweetToDisplayable = (t: Tweet): Tweet => {
 };
 
 /// Hello world command
-const Hello = ({ name = "" }) => {
+const Tink = ({ name = "" }) => {
 	const client = new TL(defaultOptions);
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
@@ -596,9 +596,9 @@ const TweetBox = ({
 	);
 };
 
-Hello.propTypes = {
+Tink.propTypes = {
 	/// Name of the person to greet
 	name: PropTypes.string,
 };
 
-export default Hello;
+export default Tink;
