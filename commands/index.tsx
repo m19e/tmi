@@ -169,6 +169,8 @@ const Hello = ({ name = "" }) => {
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 	const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
 
+	const [error, setError] = useState("");
+
 	const [cols, rows] = useDimensions();
 	const { exit } = useApp();
 
