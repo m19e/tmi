@@ -529,7 +529,18 @@ const Timeline = ({
 				setCursor(newCursor);
 			}
 		} else if (key.pageDown) {
-			// Scroll page down
+			if (cursor + DISPLAY_TWEETS_COUNT * 2 > timeline.length) {
+				update(true);
+			} else {
+				const newCursor = Math.min(
+					cursor + DISPLAY_TWEETS_COUNT,
+					timeline.length - DISPLAY_TWEETS_COUNT - 1
+				);
+				setDisplayTimeline(
+					timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
+				);
+				setCursor(newCursor);
+			}
 		}
 	}, {});
 
