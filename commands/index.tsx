@@ -102,6 +102,8 @@ const reg = new RegExp(
 		"\u{1fb00}-\u{1fbff}" +
 		// "Variation Selectors Supplement"
 		"\u{e0100}-\u{e01ef}" +
+		// "Variation Selectors"
+		"\u{fe00}-\u{fe0f}" +
 		"]",
 	"u"
 );
@@ -116,7 +118,7 @@ const convertToCorrectWidthText = (text: string): string => {
 				.map((g) => {
 					const arr = [...g];
 					if (arr.length === 1) {
-						// if (/[\u{fe0f}]/u.test(g)) return "";
+						if (/[\u{fe00}-\u{fe0f}]/u.test(g)) return "";
 						if (reg.test(g)) return "☒";
 						return g;
 					}
