@@ -232,7 +232,7 @@ const Hello = ({ name = "" }) => {
 					.map((d) => path.parse(d.name).name.replace("settings-", ""));
 
 				console.log(names.length ? names.join("\n") : "tink has no accounts.");
-				process.exit(0);
+				exit();
 			} catch (err) {
 				return ["", null, err];
 			}
@@ -277,7 +277,7 @@ const Hello = ({ name = "" }) => {
 				setStatus("select");
 			} else {
 				console.error(err);
-				process.exit(0);
+				exit();
 			}
 		}
 	};
