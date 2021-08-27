@@ -352,7 +352,9 @@ const Hello = ({ name = "" }) => {
 				include_entities: true,
 			});
 			setCurrentTimeline((prev) =>
-				prev.map((t) => (t.id_str === id_str ? res : t))
+				prev.map((t) =>
+					t.id_str === id_str ? convertTweetToDisplayable(res) : t
+				)
 			);
 
 			return res;
