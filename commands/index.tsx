@@ -580,18 +580,20 @@ const TweetBox = ({
 				{t.full_text}
 				{tweet.entities.media && <Text dimColor> (with Media)</Text>}
 			</Text>
-			{isFocused && (
-				<Box>
-					<Box marginRight={2}>
-						<Text>{t.retweet_count ? t.retweet_count + " " : ""}</Text>
-						<Text color={t.retweeted ? "green" : "white"}>RT</Text>
-					</Box>
-					<Box marginRight={2}>
-						<Text>{t.favorite_count ? t.favorite_count + " " : ""}</Text>
-						<Text color={t.favorited ? "yellow" : "white"}>fav</Text>
-					</Box>
-				</Box>
-			)}
+			<Box height={1}>
+				{isFocused && (
+					<>
+						<Box marginRight={2}>
+							<Text>{t.retweet_count ? t.retweet_count + " " : ""}</Text>
+							<Text color={t.retweeted ? "green" : "white"}>RT</Text>
+						</Box>
+						<Box marginRight={2}>
+							<Text>{t.favorite_count ? t.favorite_count + " " : ""}</Text>
+							<Text color={t.favorited ? "yellow" : "white"}>fav</Text>
+						</Box>
+					</>
+				)}
+			</Box>
 		</Box>
 	);
 };
