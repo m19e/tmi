@@ -296,8 +296,8 @@ const Hello = ({ name = "" }) => {
 				backward ? prev.slice(0, -1).concat(converted) : converted.concat(prev)
 			);
 			return data.length;
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			console.log(err);
 			return 0;
 		}
 	};
@@ -354,7 +354,7 @@ const Hello = ({ name = "" }) => {
 			);
 
 			return res;
-		} catch (error) {
+		} catch (err) {
 			return null;
 		}
 	};
