@@ -400,7 +400,7 @@ const Tink = ({ name = "" }) => {
 	};
 
 	return (
-		<Box flexDirection="column" minHeight={rows} paddingTop={2}>
+		<Box flexDirection="column" minHeight={rows}>
 			{status === "wait" && (
 				<>
 					<Text color="redBright">Open URL and enter PIN.</Text>
