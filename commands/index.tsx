@@ -8,7 +8,7 @@ import {
 	readJsonSync,
 	writeJson,
 } from "fs-extra";
-import { Text, Box, useInput } from "ink";
+import { Text, Box, useInput, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
@@ -170,6 +170,7 @@ const Hello = ({ name = "" }) => {
 	const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
 
 	const [cols, rows] = useDimensions();
+	const { exit } = useApp();
 
 	useEffect(() => {
 		const init = async () => {
