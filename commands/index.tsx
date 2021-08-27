@@ -519,7 +519,17 @@ const Timeline = ({
 		} else if (input === "f") {
 			fav();
 		} else if (key.pageUp) {
+			if (cursor + focus < DISPLAY_TWEETS_COUNT) {
+				update(false);
+			} else {
+				const newCursor = Math.max(cursor - DISPLAY_TWEETS_COUNT, 0);
+				setDisplayTimeline(
+					timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
+				);
+				setCursor(newCursor);
+			}
 		} else if (key.pageDown) {
+			// Scroll page down
 		}
 	}, {});
 
