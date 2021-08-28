@@ -477,6 +477,7 @@ const Tink = ({ name = "" }) => {
 						timeline={currentTimeline}
 						onUpdate={handleUpdate}
 						onFav={handleFavorite}
+						onRT={handleRetweet}
 					/>
 				</>
 			)}
