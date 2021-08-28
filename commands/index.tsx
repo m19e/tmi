@@ -251,18 +251,18 @@ const Tink = ({ name = "" }) => {
 			file = path.join(dir, "settings-" + profile + ".json");
 		}
 
-		let config: Config;
+		let conf: Config;
 		const json = readJsonSync(file, { throws: false });
 		if (json === null) {
 			if (existsSync(file)) {
 				return ["", null, "CANNOT READ JSON"];
 			}
-			config = { ...defaultOptions, lists: [] };
+			conf = { ...defaultOptions, lists: [] };
 		} else {
-			config = json;
+			conf = json;
 		}
 
-		return [file, config, null];
+		return [file, conf, null];
 	};
 
 	const getUserLists = async (config: Config, fp: string) => {
