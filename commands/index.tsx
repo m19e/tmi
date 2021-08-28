@@ -372,7 +372,36 @@ const Tink = ({ name = "" }) => {
 		}
 	};
 
-	const handleRetweet = () => {};
+	const handleRetweet = async ({
+		id_str,
+		retweeted,
+	}: Tweet): Promise<Tweet | null> => {
+		const user = new TL(config);
+
+		try {
+			if (retweeted) {
+				await user.post("statuses/retweet", {
+					id: id_str,
+				});
+			} else {
+				await user.post("statuses/unretweet", {
+					id: id_str,
+				});
+			}
+
+			const res = await user.get("statuses/show", {
+				id: id_str,
+				trim_user: false,
+				include_my_retweet: true,
+				tweet_mode: "extended",
+				include_entities: true,
+			});
+
+			return res;
+		} catch (err) {
+			return null;
+		}
+	};
 
 	const handleSubmitPinAuth = async (p: string) => {
 		const token = await client.getAccessToken({
