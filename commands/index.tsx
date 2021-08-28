@@ -56,6 +56,15 @@ const splitWithGraphemes = (text: string): string[] => {
 	return splitGraphemes(text);
 };
 
+const UNESCAPE_PATTERNS = {
+	"&lt;": "<",
+	"&gt;": ">",
+	"&amp;": "&",
+};
+
+const unescape = (target: string) =>
+	target.replace(/&(lt|gt|amp);/g, (match: string) => UNESCAPE_PATTERNS[match]);
+
 const reg = new RegExp(
 	"[" +
 		// "Basic Latin"
