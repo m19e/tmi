@@ -353,7 +353,7 @@ const Tink = ({ name = "" }) => {
 				});
 			}
 
-			const res = await user.get("statuses/show", {
+			const res: Tweet = await user.get("statuses/show", {
 				id: id_str,
 				trim_user: false,
 				include_my_retweet: true,
@@ -389,7 +389,7 @@ const Tink = ({ name = "" }) => {
 				});
 			}
 
-			const res = await user.get("statuses/show", {
+			const res: Tweet = await user.get("statuses/show", {
 				id: id_str,
 				trim_user: false,
 				include_my_retweet: true,
