@@ -118,9 +118,9 @@ const reg = new RegExp(
 );
 
 const convertToCorrectWidthText = (text: string): string => {
-	if (!text.match(reg)) return text;
+	if (!text.match(reg)) return unescape(text);
 
-	return text
+	return unescape(text)
 		.split(/\n|\r\n|\r/)
 		.map((line) =>
 			splitWithGraphemes(line)
