@@ -8,7 +8,7 @@ import {
 	readJsonSync,
 	writeJson,
 } from "fs-extra";
-import { Text, Box, useInput, useApp } from "ink";
+import { Text, Box, Newline, useInput, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
@@ -505,6 +505,7 @@ const Timeline = ({
 	);
 	const [fetching, setFetching] = useState(false);
 	const [isBackward, setIsBackward] = useState(false);
+	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 
 	const update = async (backward: boolean): Promise<number> => {
 		setIsBackward(backward);
@@ -544,6 +545,10 @@ const Timeline = ({
 	useInput((input, key) => {
 		if (fetching) return;
 
+		if (isNewTweetOpen && key.escape) {
+			setIsNewTweetOpen(false);
+		} else if (isNewTweetOpen) return;
+
 		if (key.upArrow || (key.shift && key.tab)) {
 			if (focus === 0) {
 				if (cursor === 0) {
@@ -570,6 +575,8 @@ const Timeline = ({
 			} else {
 				setFocus((prev) => prev + 1);
 			}
+		} else if (input === "n") {
+			setIsNewTweetOpen(true);
 		} else if (input === "f") {
 			fav();
 		} else if (input === "r") {
@@ -616,6 +623,14 @@ const Timeline = ({
 			{displayTimeline.map((t, i) => (
 				<TweetBox key={i} tweet={t} isFocused={focus === i} />
 			))}
+			{isNewTweetOpen && (
+				<Box flexDirection="column" justifyContent="flex-end" flexGrow={1}>
+					<Box flexDirection="column" borderStyle="classic" borderColor="white">
+						<Text>What's happening?</Text>
+						<Newline count={2} />
+					</Box>
+				</Box>
+			)}
 		</>
 	);
 };
