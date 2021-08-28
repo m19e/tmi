@@ -380,11 +380,11 @@ const Tink = ({ name = "" }) => {
 
 		try {
 			if (retweeted) {
-				await user.post("statuses/retweet", {
+				await user.post("statuses/unretweet", {
 					id: id_str,
 				});
 			} else {
-				await user.post("statuses/unretweet", {
+				await user.post("statuses/retweet", {
 					id: id_str,
 				});
 			}
