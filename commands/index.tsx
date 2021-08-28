@@ -12,7 +12,7 @@ import { Text, Box, useInput, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
-import TL, { TwitterOptions } from "twitter-lite";
+import Twitter, { TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
 import { splitGraphemes } from "split-graphemes";
@@ -162,7 +162,7 @@ const convertTweetToDisplayable = (t: Tweet): Tweet => {
 
 /// Hello world command
 const Tink = ({ name = "" }) => {
-	const client = new TL(defaultOptions);
+	const client = new Twitter(defaultOptions);
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
@@ -267,7 +267,7 @@ const Tink = ({ name = "" }) => {
 
 	const getUserLists = async (config: Config, fp: string) => {
 		const { lists, ...options } = config;
-		const user = new TL(options);
+		const user = new Twitter(options);
 
 		try {
 			const data: List[] = await user.get("lists/list");
@@ -297,7 +297,7 @@ const Tink = ({ name = "" }) => {
 		list_id: string,
 		{ backward }: { backward: boolean } = { backward: false }
 	): Promise<number> => {
-		const user = new TL(config);
+		const user = new Twitter(config);
 		const params = createGetListTimelineParams(list_id, backward, 200);
 
 		try {
@@ -337,7 +337,7 @@ const Tink = ({ name = "" }) => {
 		id_str,
 		favorited,
 	}: Tweet): Promise<Tweet | null> => {
-		const user = new TL(config);
+		const user = new Twitter(config);
 		try {
 			if (favorited) {
 				await user.post("favorites/destroy", {
@@ -376,7 +376,7 @@ const Tink = ({ name = "" }) => {
 		id_str,
 		retweeted,
 	}: Tweet): Promise<Tweet | null> => {
-		const user = new TL(config);
+		const user = new Twitter(config);
 
 		try {
 			if (retweeted) {
