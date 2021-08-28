@@ -490,10 +490,12 @@ const Timeline = ({
 	timeline,
 	onUpdate,
 	onFav,
+	onRT,
 }: {
 	timeline: Tweet[];
 	onUpdate: (backward: boolean) => Promise<number>;
 	onFav: (t: Tweet) => Promise<Tweet | null>;
+	onRT: (t: Tweet) => Promise<Tweet | null>;
 }) => {
 	const [cursor, setCursor] = useState(0);
 	const [focus, setFocus] = useState(0);
