@@ -13,14 +13,14 @@ import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
 import Twitter, { TwitterOptions } from "twitter-lite";
-import { config } from "dotenv";
+import { config as dotenvConfig } from "dotenv";
 
 import { splitGraphemes } from "split-graphemes";
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { getDisplayTimeAgo } from "../src/lib";
 import Spinner from "../src/components/Spinner";
 
-config();
+dotenvConfig();
 
 const defaultOptions = {
 	consumer_key: process.env.TWITTER_CONSUMER_KEY,
