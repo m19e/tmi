@@ -528,6 +528,19 @@ const Timeline = ({
 		setFetching(false);
 	};
 
+	const rt = async () => {
+		setFetching(true);
+		const res = await onRT(displayTimeline[focus]);
+		if (res === null) {
+			// onError()
+		} else {
+			setDisplayTimeline((prev) =>
+				prev.map((t) => (t.id_str === res.id_str ? res : t))
+			);
+		}
+		setFetching(false);
+	};
+
 	useInput((input, key) => {
 		if (fetching) return;
 
@@ -559,6 +572,8 @@ const Timeline = ({
 			}
 		} else if (input === "f") {
 			fav();
+		} else if (input === "r") {
+			rt();
 		} else if (key.pageUp) {
 			if (cursor + focus < DISPLAY_TWEETS_COUNT) {
 				update(false);
