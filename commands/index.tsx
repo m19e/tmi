@@ -505,7 +505,9 @@ const Timeline = ({
 	);
 	const [fetching, setFetching] = useState(false);
 	const [isBackward, setIsBackward] = useState(false);
+
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
+	const [tweetText, setTweetText] = useState("");
 
 	const update = async (backward: boolean): Promise<number> => {
 		setIsBackward(backward);
@@ -627,8 +629,11 @@ const Timeline = ({
 			</Box>
 			{isNewTweetOpen && (
 				<Box flexDirection="column" borderStyle="classic" borderColor="white">
-					<Text>What's happening?</Text>
-					<Newline count={2} />
+					<TextInput
+						placeholder="What's happening?"
+						value={tweetText}
+						onChange={setTweetText}
+					/>
 				</Box>
 			)}
 		</>
