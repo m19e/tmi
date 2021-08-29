@@ -583,11 +583,11 @@ const Timeline = ({
 			</Box>
 			{isNewTweetOpen && (
 				<>
-					<Box justifyContent="space-between">
+					<Box justifyContent="space-between" paddingX={1}>
 						<Text>New Tweet</Text>
 						<Text>{280 - weightedLength}</Text>
 					</Box>
-					<Box borderStyle="classic" borderColor="white">
+					<Box borderStyle="round" borderColor="white">
 						<TextInput
 							placeholder="What's happening?"
 							value={tweetText}
@@ -596,7 +596,7 @@ const Timeline = ({
 							focus={!waitReturn}
 						/>
 					</Box>
-					<Box justifyContent="flex-end" height={1}>
+					<Box justifyContent="flex-end" paddingX={1}>
 						{waitReturn ? (
 							<Text>
 								Enter(<Text underline>AGAIN</Text>):tweet　ESC:cancel
