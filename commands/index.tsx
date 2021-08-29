@@ -256,13 +256,12 @@ const Tink = ({ name = "" }) => {
 				tweet_mode: "extended",
 				include_entities: true,
 			});
-			setCurrentTimeline((prev) =>
-				prev.map((t) =>
-					t.id_str === id_str ? convertTweetToDisplayable(res) : t
-				)
-			);
 
-			return res;
+			const converted = convertTweetToDisplayable(res);
+			setCurrentTimeline((prev) =>
+				prev.map((t) => (t.id_str === id_str ? converted : t))
+			);
+			return converted;
 		} catch (err) {
 			return null;
 		}
@@ -293,7 +292,11 @@ const Tink = ({ name = "" }) => {
 				include_entities: true,
 			});
 
-			return res;
+			const converted = convertTweetToDisplayable(res);
+			setCurrentTimeline((prev) =>
+				prev.map((t) => (t.id_str === id_str ? converted : t))
+			);
+			return converted;
 		} catch (err) {
 			return null;
 		}
