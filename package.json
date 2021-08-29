@@ -26,7 +26,8 @@
 		"prop-types": "^15.7.2",
 		"react": "^16.14.0",
 		"split-graphemes": "^0.5.0",
-		"twitter-lite": "^1.1.0"
+		"twitter-lite": "^1.1.0",
+		"twitter-text": "^3.1.0"
 	},
 	"devDependencies": {
 		"@types/dotenv": "^8.2.0",
@@ -35,6 +36,7 @@
 		"@types/ink-select-input": "^3.0.1",
 		"@types/ink-text-input": "^2.0.2",
 		"@types/react": "^17.0.15",
+		"@types/twitter-text": "^3.1.1",
 		"dotenv": "^10.0.0",
 		"twitter-d": "^0.4.0",
 		"typescript": "^4.3.5"
