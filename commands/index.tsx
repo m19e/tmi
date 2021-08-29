@@ -585,10 +585,7 @@ const Timeline = ({
 				<>
 					<Box justifyContent="space-between">
 						<Text>New Tweet</Text>
-						<Text>
-							RemainLength:{280 - weightedLength} Valid:
-							{"" + valid}
-						</Text>
+						<Text>{280 - weightedLength}</Text>
 					</Box>
 					<Box borderStyle="classic" borderColor="white">
 						<TextInput
