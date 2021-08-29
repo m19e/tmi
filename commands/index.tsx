@@ -620,15 +620,15 @@ const Timeline = ({
 					<Text>{" Fetching..."}</Text>
 				</Text>
 			)}
-			{displayTimeline.map((t, i) => (
-				<TweetBox key={i} tweet={t} isFocused={focus === i} />
-			))}
+			<Box flexGrow={1} flexDirection="column">
+				{displayTimeline.map((t, i) => (
+					<TweetBox key={i} tweet={t} isFocused={focus === i} />
+				))}
+			</Box>
 			{isNewTweetOpen && (
-				<Box flexDirection="column" justifyContent="flex-end" flexGrow={1}>
-					<Box flexDirection="column" borderStyle="classic" borderColor="white">
-						<Text>What's happening?</Text>
-						<Newline count={2} />
-					</Box>
+				<Box flexDirection="column" borderStyle="classic" borderColor="white">
+					<Text>What's happening?</Text>
+					<Newline count={2} />
 				</Box>
 			)}
 		</>
