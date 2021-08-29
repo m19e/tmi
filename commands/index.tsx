@@ -13,7 +13,7 @@ import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
 import Twitter, { TwitterOptions } from "twitter-lite";
-import { parseTweet } from "twitter-text";
+import { parseTweet, ParsedTweet } from "twitter-text";
 import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
@@ -421,7 +421,11 @@ const Timeline = ({
 	const [fetching, setFetching] = useState(false);
 
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
+	const [waitReturn, setWaitReturn] = useState(false);
 	const [tweetText, setTweetText] = useState("");
+	const [{ weightedLength, valid }, setParsedTweet] = useState<ParsedTweet>(
+		parseTweet("")
+	);
 
 	const update = async (backward: boolean) => {
 		setFetching(true);
@@ -431,10 +435,14 @@ const Timeline = ({
 	};
 
 	const newTweet = async () => {
+		if (!valid) return;
 		setFetching(true);
 		const err = await onNewTweet(tweetText);
 		if (err !== null) {
 			// onError()
+		} else {
+			setIsNewTweetOpen(false);
+			setTweetText("");
 		}
 		setFetching(false);
 	};
@@ -465,71 +473,93 @@ const Timeline = ({
 		setFetching(false);
 	};
 
-	useInput((input, key) => {
-		if (fetching) return;
+	useInput(
+		(input, key) => {
+			if (fetching) return;
 
-		if (isNewTweetOpen && key.escape) {
-			setIsNewTweetOpen(false);
-			setTweetText("");
-		} else if (isNewTweetOpen) return;
-
-		if (key.upArrow || (key.shift && key.tab)) {
-			if (focus === 0) {
-				if (cursor === 0) {
+			if (key.upArrow || (key.shift && key.tab)) {
+				if (focus === 0) {
+					if (cursor === 0) {
+						update(false);
+					} else {
+						setDisplayTimeline(
+							timeline.slice(cursor - 1, cursor + DISPLAY_TWEETS_COUNT - 1)
+						);
+						setCursor((prev) => prev - 1);
+					}
+				} else {
+					setFocus((prev) => prev - 1);
+				}
+			} else if (key.downArrow || key.tab) {
+				if (focus === DISPLAY_TWEETS_COUNT - 1) {
+					if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
+						update(true);
+					} else {
+						setDisplayTimeline(
+							timeline.slice(cursor + 1, cursor + DISPLAY_TWEETS_COUNT + 1)
+						);
+						setCursor((prev) => prev + 1);
+					}
+				} else {
+					setFocus((prev) => prev + 1);
+				}
+			} else if (input === "n") {
+				setIsNewTweetOpen(true);
+			} else if (input === "f") {
+				fav();
+			} else if (input === "r") {
+				rt();
+			} else if (key.pageUp) {
+				if (cursor + focus < DISPLAY_TWEETS_COUNT) {
 					update(false);
 				} else {
+					const newCursor = Math.max(cursor - DISPLAY_TWEETS_COUNT, 0);
 					setDisplayTimeline(
-						timeline.slice(cursor - 1, cursor + DISPLAY_TWEETS_COUNT - 1)
+						timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
 					);
-					setCursor((prev) => prev - 1);
+					setCursor(newCursor);
 				}
-			} else {
-				setFocus((prev) => prev - 1);
-			}
-		} else if (key.downArrow || key.tab) {
-			if (focus === DISPLAY_TWEETS_COUNT - 1) {
-				if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
+			} else if (key.pageDown) {
+				if (cursor + DISPLAY_TWEETS_COUNT * 2 > timeline.length) {
 					update(true);
 				} else {
-					setDisplayTimeline(
-						timeline.slice(cursor + 1, cursor + DISPLAY_TWEETS_COUNT + 1)
+					const newCursor = Math.min(
+						cursor + DISPLAY_TWEETS_COUNT,
+						timeline.length - DISPLAY_TWEETS_COUNT - 1
 					);
-					setCursor((prev) => prev + 1);
+					setDisplayTimeline(
+						timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
+					);
+					setCursor(newCursor);
 				}
-			} else {
-				setFocus((prev) => prev + 1);
 			}
-		} else if (input === "n") {
-			setIsNewTweetOpen(true);
-		} else if (input === "f") {
-			fav();
-		} else if (input === "r") {
-			rt();
-		} else if (key.pageUp) {
-			if (cursor + focus < DISPLAY_TWEETS_COUNT) {
-				update(false);
-			} else {
-				const newCursor = Math.max(cursor - DISPLAY_TWEETS_COUNT, 0);
-				setDisplayTimeline(
-					timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
-				);
-				setCursor(newCursor);
+		},
+		{ isActive: !isNewTweetOpen }
+	);
+
+	useInput(
+		(_, key) => {
+			if (fetching) return;
+
+			if (key.escape) {
+				if (waitReturn) {
+					setWaitReturn(false);
+					return;
+				}
+				setIsNewTweetOpen(false);
+				setTweetText("");
+			} else if (waitReturn && key.return) {
+				newTweet();
+				setWaitReturn(false);
 			}
-		} else if (key.pageDown) {
-			if (cursor + DISPLAY_TWEETS_COUNT * 2 > timeline.length) {
-				update(true);
-			} else {
-				const newCursor = Math.min(
-					cursor + DISPLAY_TWEETS_COUNT,
-					timeline.length - DISPLAY_TWEETS_COUNT - 1
-				);
-				setDisplayTimeline(
-					timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
-				);
-				setCursor(newCursor);
-			}
-		}
-	}, {});
+		},
+		{ isActive: isNewTweetOpen }
+	);
+
+	const handleNewTweetChange = (value: string) => {
+		setTweetText(value);
+		setParsedTweet(parseTweet(value));
+	};
 
 	return (
 		<>
@@ -554,16 +584,21 @@ const Timeline = ({
 					<Box justifyContent="space-between">
 						<Text>New Tweet</Text>
 						<Text>
-							RemainLength:{280 - parseTweet(tweetText).weightedLength} Valid:
-							{"" + parseTweet(tweetText).valid}
+							RemainLength:{280 - weightedLength} Valid:
+							{"" + valid}
 						</Text>
 					</Box>
 					<Box borderStyle="classic" borderColor="white">
 						<TextInput
 							placeholder="What's happening?"
 							value={tweetText}
-							onChange={setTweetText}
+							onChange={handleNewTweetChange}
+							onSubmit={() => setWaitReturn(true)}
+							focus={!waitReturn}
 						/>
+					</Box>
+					<Box justifyContent="flex-end" height={1}>
+						{waitReturn && <Text>Press Enter to Tweet</Text>}
 					</Box>
 				</>
 			)}
