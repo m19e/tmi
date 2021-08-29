@@ -302,6 +302,19 @@ const Tink = ({ name = "" }) => {
 		}
 	};
 
+	const handleNewTweet = async (status: string): Promise<null | any> => {
+		const user = new Twitter(config);
+
+		try {
+			await user.post("statuses/update", {
+				status,
+			});
+			return null;
+		} catch (err) {
+			return err;
+		}
+	};
+
 	const handleSubmitPinAuth = async (p: string) => {
 		const token = await client.getAccessToken({
 			oauth_verifier: p,
@@ -375,6 +388,7 @@ const Tink = ({ name = "" }) => {
 					<Timeline
 						timeline={currentTimeline}
 						onUpdate={handleUpdate}
+						onNewTweet={handleNewTweet}
 						onFav={handleFavorite}
 						onRT={handleRetweet}
 					/>
@@ -389,11 +403,13 @@ const DISPLAY_TWEETS_COUNT = 5;
 const Timeline = ({
 	timeline,
 	onUpdate,
+	onNewTweet,
 	onFav,
 	onRT,
 }: {
 	timeline: Tweet[];
 	onUpdate: (backward: boolean) => Promise<number>;
+	onNewTweet: (s: string) => Promise<null | any>;
 	onFav: (t: Tweet) => Promise<Tweet | null>;
 	onRT: (t: Tweet) => Promise<Tweet | null>;
 }) => {
@@ -411,6 +427,15 @@ const Timeline = ({
 		setFetching(true);
 		const len = await onUpdate(backward);
 		if (!backward) setCursor(cursor + len);
+		setFetching(false);
+	};
+
+	const newTweet = async () => {
+		setFetching(true);
+		const err = await onNewTweet(tweetText);
+		if (err !== null) {
+			// onError()
+		}
 		setFetching(false);
 	};
 
