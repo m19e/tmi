@@ -16,7 +16,6 @@ import Twitter, { TwitterOptions } from "twitter-lite";
 import { parseTweet } from "twitter-text";
 import { config as dotenvConfig } from "dotenv";
 
-import { splitGraphemes } from "split-graphemes";
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { splitWithGraphemes } from "../src/lib";
 import Spinner from "../src/components/Spinner";
