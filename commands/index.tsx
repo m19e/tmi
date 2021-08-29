@@ -593,7 +593,7 @@ const Timeline = ({
 							placeholder="What's happening?"
 							value={tweetText}
 							onChange={handleNewTweetChange}
-							onSubmit={() => setWaitReturn(true)}
+							onSubmit={() => setWaitReturn(valid)}
 							focus={!waitReturn}
 						/>
 					</Box>
