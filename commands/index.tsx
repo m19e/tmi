@@ -13,6 +13,7 @@ import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
 import Twitter, { TwitterOptions } from "twitter-lite";
+import { parseTweet } from "twitter-text";
 import { config as dotenvConfig } from "dotenv";
 
 import { splitGraphemes } from "split-graphemes";
@@ -549,6 +550,7 @@ const Timeline = ({
 
 		if (isNewTweetOpen && key.escape) {
 			setIsNewTweetOpen(false);
+			setTweetText("");
 		} else if (isNewTweetOpen) return;
 
 		if (key.upArrow || (key.shift && key.tab)) {
@@ -628,13 +630,24 @@ const Timeline = ({
 				))}
 			</Box>
 			{isNewTweetOpen && (
-				<Box flexDirection="column" borderStyle="classic" borderColor="white">
-					<TextInput
-						placeholder="What's happening?"
-						value={tweetText}
-						onChange={setTweetText}
-					/>
-				</Box>
+				<>
+					<Box justifyContent="space-between">
+						<Text>New Tweet</Text>
+						<Text>
+							RemainLength:{280 - parseTweet(tweetText).weightedLength} Valid:
+							{"" + parseTweet(tweetText).valid}
+						</Text>
+					</Box>
+					<Box borderStyle="classic" borderColor="white">
+						<Box flexGrow={1}>
+							<TextInput
+								placeholder="What's happening?"
+								value={tweetText}
+								onChange={setTweetText}
+							/>
+						</Box>
+					</Box>
+				</>
 			)}
 		</>
 	);
