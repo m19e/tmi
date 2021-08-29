@@ -24,7 +24,7 @@ const TweetItem = ({ tweet, isFocused }: Props) => {
 		<>
 			<Box
 				flexDirection="column"
-				paddingLeft={isFocused ? 2 : 0}
+				paddingLeft={isFocused ? 4 : 0}
 				// borderStyle={isFocused ? "singleDouble" : "single"}
 				// borderColor={isFocused ? "white" : "gray"}
 			>
