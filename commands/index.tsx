@@ -20,6 +20,7 @@ import { splitGraphemes } from "split-graphemes";
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { getDisplayTimeAgo } from "../src/lib";
 import Spinner from "../src/components/Spinner";
+import TweetItem from "../src/components/TweetItem";
 
 dotenvConfig();
 
@@ -626,7 +627,7 @@ const Timeline = ({
 			)}
 			<Box flexGrow={1} flexDirection="column">
 				{displayTimeline.map((t, i) => (
-					<TweetBox key={i} tweet={t} isFocused={focus === i} />
+					<TweetItem key={i} tweet={t} isFocused={focus === i} />
 				))}
 			</Box>
 			{isNewTweetOpen && (
