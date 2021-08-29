@@ -407,12 +407,11 @@ const Timeline = ({
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [tweetText, setTweetText] = useState("");
 
-	const update = async (backward: boolean): Promise<number> => {
+	const update = async (backward: boolean) => {
 		setFetching(true);
 		const len = await onUpdate(backward);
 		if (!backward) setCursor(cursor + len);
 		setFetching(false);
-		return len;
 	};
 
 	const fav = async () => {
