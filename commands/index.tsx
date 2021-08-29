@@ -382,9 +382,11 @@ const Tink = ({ name = "" }) => {
 			)}
 			{status === "timeline" && (
 				<>
-					<Text>
-						list-name:<Text color="green">{currentList.name}</Text>
-					</Text>
+					<Box justifyContent="center" borderStyle="double" borderColor="gray">
+						<Text>
+							[LIST]<Text color="green">{currentList.name}</Text>
+						</Text>
+					</Box>
 					<Timeline
 						timeline={currentTimeline}
 						onUpdate={handleUpdate}
@@ -563,17 +565,17 @@ const Timeline = ({
 
 	return (
 		<>
-			<Text>
+			{/* <Text>
 				cursor:{cursor} focus:{focus} len:{timeline.length}
-			</Text>
-			{fetching && (
+			</Text> */}
+			{/* {fetching && (
 				<Text>
 					<Text color="green">
 						<Spinner type="aesthetic" />
 					</Text>
 					<Text>{" Fetching..."}</Text>
 				</Text>
-			)}
+			)} */}
 			<Box flexGrow={1} flexDirection="column">
 				{displayTimeline.map((t, i) => (
 					<TweetItem key={i} tweet={t} isFocused={focus === i} />
