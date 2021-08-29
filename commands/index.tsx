@@ -598,10 +598,13 @@ const Timeline = ({
 						/>
 					</Box>
 					<Box justifyContent="flex-end" height={1}>
-						<Text>
-							Press Enter{" "}
-							{waitReturn ? <Text underline>AGAIN</Text> : "to Tweet"}
-						</Text>
+						{waitReturn ? (
+							<Text>
+								Enter(<Text underline>AGAIN</Text>):tweet　ESC:cancel
+							</Text>
+						) : (
+							<Text>Enter:tweet　ESC:close</Text>
+						)}
 					</Box>
 				</>
 			)}
