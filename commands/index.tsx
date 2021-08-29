@@ -506,13 +506,11 @@ const Timeline = ({
 		timeline.slice(0, DISPLAY_TWEETS_COUNT)
 	);
 	const [fetching, setFetching] = useState(false);
-	const [isBackward, setIsBackward] = useState(false);
 
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [tweetText, setTweetText] = useState("");
 
 	const update = async (backward: boolean): Promise<number> => {
-		setIsBackward(backward);
 		setFetching(true);
 		const len = await onUpdate(backward);
 		if (!backward) setCursor(cursor + len);
