@@ -598,7 +598,10 @@ const Timeline = ({
 						/>
 					</Box>
 					<Box justifyContent="flex-end" height={1}>
-						{waitReturn && <Text>Press Enter to Tweet</Text>}
+						<Text>
+							Press Enter{" "}
+							{waitReturn ? <Text underline>AGAIN</Text> : "to Tweet"}
+						</Text>
 					</Box>
 				</>
 			)}
