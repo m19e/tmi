@@ -639,13 +639,11 @@ const Timeline = ({
 						</Text>
 					</Box>
 					<Box borderStyle="classic" borderColor="white">
-						<Box flexGrow={1}>
-							<TextInput
-								placeholder="What's happening?"
-								value={tweetText}
-								onChange={setTweetText}
-							/>
-						</Box>
+						<TextInput
+							placeholder="What's happening?"
+							value={tweetText}
+							onChange={setTweetText}
+						/>
 					</Box>
 				</>
 			)}
