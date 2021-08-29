@@ -997,6 +997,13 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/ink-divider@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/ink-divider/-/ink-divider-2.0.2.tgz#ad1939a07d9d09ef2dc25f9531e2c6266461fd69"
+  integrity sha512-gY4kKSh1dNrZ++GQXW2KfMVexQfUsvE/LdUy7le5FSSeSemwk+u+ztHd+SMzfEjEHcCqpmRIQqKSrFOXLYCLHA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/ink-select-input@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/ink-select-input/-/ink-select-input-3.0.1.tgz#27182e084a7e1d8f07d9559398d3bf7d82f4f432"
@@ -3209,6 +3216,14 @@ inherits@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
+
+ink-divider@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ink-divider/-/ink-divider-3.0.0.tgz#00d11123a790d1d66ec599bf4636e1acb7a674e2"
+  integrity sha512-Mqb9WArtEZCtXw622aHhJqPK157QNc+8ssl9/RvAZlS6nZRCKyW4mYOYCudQh6dSuFGt9eG5yaqT1mJaGmwu+w==
+  dependencies:
+    prop-types "^15.7.2"
+    string-width "^4.0.0"
 
 ink-select-input@^4.2.0:
   version "4.2.0"
