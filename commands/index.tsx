@@ -18,7 +18,7 @@ import { config as dotenvConfig } from "dotenv";
 
 import { splitGraphemes } from "split-graphemes";
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
-import { getDisplayTimeAgo } from "../src/lib";
+import { splitWithGraphemes } from "../src/lib";
 import Spinner from "../src/components/Spinner";
 import TweetItem from "../src/components/TweetItem";
 
@@ -53,10 +53,6 @@ interface GetListTimelineParams extends DefaultTwitterRequestParams {
 	since_id?: string;
 	max_id?: string;
 }
-
-const splitWithGraphemes = (text: string): string[] => {
-	return splitGraphemes(text);
-};
 
 const UNESCAPE_PATTERNS = {
 	"&lt;": "<",
@@ -189,7 +185,10 @@ const Tink = ({ name = "" }) => {
 		const init = async () => {
 			const [fp, conf, err] = getConfig();
 			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
-				if (err !== null) console.error("cannot get configuration: ", err);
+				if (err !== null) {
+					console.error("cannot get configuration: ", err);
+					exit();
+				}
 				setFilePath(fp);
 
 				const rt = await client.getRequestToken("oob");
