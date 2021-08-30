@@ -364,6 +364,7 @@ const Tink = ({ name = "" }) => {
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>
+			<Text>{error}</Text>
 			{status === "wait" && (
 				<>
 					<Text color="redBright">Open URL and enter PIN.</Text>
