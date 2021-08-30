@@ -340,9 +340,14 @@ const Tink = ({ name = "" }) => {
 		label: string;
 		value: TrimmedList;
 	}) => {
+		setCurrentTimeline([]);
 		await getListTimeline(value.id_str);
 		setCurrentList(value);
 		setStatus("timeline");
+	};
+
+	const handleToggleList = () => {
+		setStatus("select");
 	};
 
 	const handleUpdate = async (backward: boolean): Promise<number> => {
@@ -389,6 +394,7 @@ const Tink = ({ name = "" }) => {
 					</Box>
 					<Timeline
 						timeline={currentTimeline}
+						onToggleList={handleToggleList}
 						onUpdate={handleUpdate}
 						onNewTweet={handleNewTweet}
 						onFav={handleFavorite}
@@ -404,12 +410,14 @@ const DISPLAY_TWEETS_COUNT = 5;
 
 const Timeline = ({
 	timeline,
+	onToggleList,
 	onUpdate,
 	onNewTweet,
 	onFav,
 	onRT,
 }: {
 	timeline: Tweet[];
+	onToggleList: () => void;
 	onUpdate: (backward: boolean) => Promise<number>;
 	onNewTweet: (s: string) => Promise<null | any>;
 	onFav: (t: Tweet) => Promise<Tweet | null>;
@@ -505,6 +513,10 @@ const Timeline = ({
 				} else {
 					setFocus((prev) => prev + 1);
 				}
+			} else if (input === "l") {
+				// onToggleList();
+				// setCursor(0);
+				// setFocus(0);
 			} else if (input === "n") {
 				setIsNewTweetOpen(true);
 			} else if (input === "f") {
