@@ -71,7 +71,7 @@ const TweetItem = ({ tweet, isFocused }: Props) => {
 };
 
 const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
-	if (tweet === null) return null;
+	if (!tweet) return null;
 
 	return (
 		<Box flexDirection="column" borderStyle="round" borderColor="gray">
