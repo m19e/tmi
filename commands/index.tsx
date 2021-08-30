@@ -191,17 +191,23 @@ const Tink = ({ name = "" }) => {
 
 	const getListTimeline = async (
 		list_id: string,
-		{ backward }: { backward: boolean } = { backward: false }
+		options: { backward: boolean; select: boolean }
 	): Promise<number> => {
 		const user = new Twitter(config);
-		const params = createGetListTimelineParams(list_id, backward, 200);
+		const params = createGetListTimelineParams(list_id, {
+			...options,
+			count: 200,
+		});
 
 		try {
 			const data: Tweet[] = await user.get("lists/statuses", params);
 			const converted = data.map((t) => convertTweetToDisplayable(t));
-			setCurrentTimeline((prev) =>
-				backward ? prev.slice(0, -1).concat(converted) : converted.concat(prev)
-			);
+			setCurrentTimeline((prev) => {
+				if (options.select) return converted;
+				return options.backward
+					? prev.slice(0, -1).concat(converted)
+					: converted.concat(prev);
+			});
 			return data.length;
 		} catch (err) {
 			console.log(err);
@@ -211,16 +217,16 @@ const Tink = ({ name = "" }) => {
 
 	const createGetListTimelineParams = (
 		list_id: string,
-		backward: boolean,
-		count: number = 200
+		options: { backward: boolean; count: number; select: boolean }
 	): GetListTimelineParams => {
+		const { backward, count, select } = options;
 		const params: GetListTimelineParams = {
 			tweet_mode: "extended",
 			include_entities: true,
 			list_id,
 			count,
 		};
-		if (!currentTimeline.length) return params;
+		if (select) return params;
 		if (backward) {
 			const oldest = currentTimeline.slice(-1)[0];
 			return { ...params, max_id: oldest.id_str };
@@ -340,8 +346,7 @@ const Tink = ({ name = "" }) => {
 		label: string;
 		value: TrimmedList;
 	}) => {
-		setCurrentTimeline([]);
-		await getListTimeline(value.id_str);
+		await getListTimeline(value.id_str, { backward: false, select: true });
 		setCurrentList(value);
 		setStatus("timeline");
 	};
@@ -351,7 +356,10 @@ const Tink = ({ name = "" }) => {
 	};
 
 	const handleUpdate = async (backward: boolean): Promise<number> => {
-		return await getListTimeline(currentList.id_str, { backward });
+		return await getListTimeline(currentList.id_str, {
+			backward,
+			select: false,
+		});
 	};
 
 	return (
@@ -514,9 +522,7 @@ const Timeline = ({
 					setFocus((prev) => prev + 1);
 				}
 			} else if (input === "l") {
-				// onToggleList();
-				// setCursor(0);
-				// setFocus(0);
+				onToggleList();
 			} else if (input === "n") {
 				setIsNewTweetOpen(true);
 			} else if (input === "f") {
