@@ -45,6 +45,7 @@ const TweetItem = ({ tweet, isFocused }: Props) => {
 					{t.full_text}
 					{tweet.entities.media && <Text dimColor> (with Media)</Text>}
 				</Text>
+				<Quoted tweet={t.quoted_status} />
 				<Box height={1}>
 					{isFocused && (
 						<>
@@ -66,6 +67,23 @@ const TweetItem = ({ tweet, isFocused }: Props) => {
 				dividerColor={isFocused ? "white" : "gray"}
 			/>
 		</>
+	);
+};
+
+const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
+	if (tweet === null) return null;
+
+	return (
+		<Box flexDirection="column" borderStyle="round" borderColor="gray">
+			<Text color="greenBright">
+				{`${tweet.user.name} @${tweet.user.screen_name} `}
+				{tweet.user.protected && "🔒 "}
+			</Text>
+			<Text>
+				{tweet.full_text}
+				{tweet.entities.media && <Text dimColor> (with Media)</Text>}
+			</Text>
+		</Box>
 	);
 };
 
