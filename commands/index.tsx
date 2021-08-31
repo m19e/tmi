@@ -437,6 +437,8 @@ const Timeline = ({
 		timeline.slice(0, DISPLAY_TWEETS_COUNT)
 	);
 	const [fetching, setFetching] = useState(false);
+	const [inFav, setInFav] = useState(false);
+	const [inRT, setInRT] = useState(false);
 
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [waitReturn, setWaitReturn] = useState(false);
@@ -467,6 +469,7 @@ const Timeline = ({
 
 	const fav = async () => {
 		setFetching(true);
+		setInFav(true);
 		const res = await onFav(displayTimeline[focus]);
 		if (res === null) {
 			// onError()
@@ -475,11 +478,13 @@ const Timeline = ({
 				prev.map((t) => (t.id_str === res.id_str ? res : t))
 			);
 		}
+		setInFav(false);
 		setFetching(false);
 	};
 
 	const rt = async () => {
 		setFetching(true);
+		setInRT(true);
 		const res = await onRT(displayTimeline[focus]);
 		if (res === null) {
 			// onError()
@@ -488,6 +493,7 @@ const Timeline = ({
 				prev.map((t) => (t.id_str === res.id_str ? res : t))
 			);
 		}
+		setInRT(false);
 		setFetching(false);
 	};
 
@@ -623,7 +629,20 @@ const Timeline = ({
 					</Box>
 				</>
 			) : (
-				<Text>[N] tweet [F] favorite [R] retweet</Text>
+				<Text>
+					[N] tweet [F] favorite
+					{inFav && (
+						<Text color="yellow">
+							<Spinner />
+						</Text>
+					)}{" "}
+					[R] retweet
+					{inRT && (
+						<Text color="green">
+							<Spinner />
+						</Text>
+					)}
+				</Text>
 			)}
 		</>
 	);
