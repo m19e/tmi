@@ -599,7 +599,7 @@ const Timeline = ({
 					<TweetItem key={i} tweet={t} isFocused={focus === i} />
 				))}
 			</Box>
-			{isNewTweetOpen && (
+			{isNewTweetOpen ? (
 				<>
 					<Box justifyContent="space-between" paddingX={1}>
 						<Text>New Tweet</Text>
@@ -624,6 +624,8 @@ const Timeline = ({
 						)}
 					</Box>
 				</>
+			) : (
+				<Text>[N] new tweet [F] favorite [R] retweet</Text>
 			)}
 		</>
 	);
