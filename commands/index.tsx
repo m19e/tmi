@@ -614,7 +614,7 @@ const Timeline = ({
 							focus={!waitReturn}
 						/>
 					</Box>
-					<Box justifyContent="flex-end" paddingX={1}>
+					<Box justifyContent="flex-start" paddingX={1}>
 						{waitReturn ? (
 							<Text>
 								[Enter](<Text underline>AGAIN</Text>) tweet [ESC] cancel
