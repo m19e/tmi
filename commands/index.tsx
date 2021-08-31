@@ -355,12 +355,11 @@ const Tink = ({ name = "" }) => {
 		setStatus("select");
 	};
 
-	const handleUpdate = async (backward: boolean): Promise<number> => {
-		return await getListTimeline(currentList.id_str, {
+	const handleUpdate = async (backward: boolean): Promise<number> =>
+		await getListTimeline(currentList.id_str, {
 			backward,
 			select: false,
 		});
-	};
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>
