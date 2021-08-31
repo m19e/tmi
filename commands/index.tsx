@@ -616,11 +616,9 @@ const Timeline = ({
 					</Box>
 					<Box justifyContent="flex-start" paddingX={1}>
 						{waitReturn ? (
-							<Text>
-								[Enter](<Text underline>AGAIN</Text>) tweet [ESC] cancel
-							</Text>
+							<Text>[Enter] tweet [ESC] cancel</Text>
 						) : (
-							<Text>[Enter] tweet [ESC] close</Text>
+							<Text>[Enter] done [ESC] close</Text>
 						)}
 					</Box>
 				</>
