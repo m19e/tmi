@@ -441,6 +441,7 @@ const Timeline = ({
 	const [fetching, setFetching] = useState(false);
 	const [inFav, setInFav] = useState(false);
 	const [inRT, setInRT] = useState(false);
+	const [inNewTweet, setInNewTweet] = useState(false);
 
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [waitReturn, setWaitReturn] = useState(false);
@@ -459,7 +460,9 @@ const Timeline = ({
 	const newTweet = async () => {
 		if (!valid) return;
 		setFetching(true);
+		setInNewTweet(true);
 		const err = await onNewTweet(tweetText);
+		setInNewTweet(false);
 		if (err !== null) {
 			// onError()
 		} else {
@@ -616,7 +619,14 @@ const Timeline = ({
 			{isNewTweetOpen ? (
 				<>
 					<Box justifyContent="space-between" paddingX={1}>
-						<Text>New Tweet</Text>
+						<Text>
+							New Tweet{" "}
+							{inNewTweet && (
+								<Text color="#00acee">
+									<Spinner />
+								</Text>
+							)}
+						</Text>
 						<Text>{280 - weightedLength}</Text>
 					</Box>
 					<Box borderStyle="round" borderColor="white">
