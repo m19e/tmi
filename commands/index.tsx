@@ -416,6 +416,15 @@ const Tink = ({ name = "" }) => {
 
 const DISPLAY_TWEETS_COUNT = 5;
 
+type Props = {
+	timeline: Tweet[];
+	onToggleList: () => void;
+	onUpdate: (backward: boolean) => Promise<number>;
+	onNewTweet: (s: string) => Promise<null | any>;
+	onFav: (t: Tweet) => Promise<Tweet | null>;
+	onRT: (t: Tweet) => Promise<Tweet | null>;
+};
+
 const Timeline = ({
 	timeline,
 	onToggleList,
@@ -423,14 +432,7 @@ const Timeline = ({
 	onNewTweet,
 	onFav,
 	onRT,
-}: {
-	timeline: Tweet[];
-	onToggleList: () => void;
-	onUpdate: (backward: boolean) => Promise<number>;
-	onNewTweet: (s: string) => Promise<null | any>;
-	onFav: (t: Tweet) => Promise<Tweet | null>;
-	onRT: (t: Tweet) => Promise<Tweet | null>;
-}) => {
+}: Props) => {
 	const [cursor, setCursor] = useState(0);
 	const [focus, setFocus] = useState(0);
 	const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
