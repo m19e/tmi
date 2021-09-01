@@ -190,14 +190,6 @@ const Timeline = ({
 			{/* <Text>
 				cursor:{cursor} focus:{focus} len:{timeline.length}
 			</Text> */}
-			{/* {fetching && (
-				<Text>
-					<Text color="green">
-						<Spinner type="aesthetic" />
-					</Text>
-					<Text>{" Fetching..."}</Text>
-				</Text>
-			)} */}
 			<Box flexGrow={1} flexDirection="column">
 				{displayTimeline.map((t, i) => (
 					<TweetItem
