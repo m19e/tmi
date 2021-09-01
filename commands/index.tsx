@@ -602,7 +602,13 @@ const Timeline = ({
 			)} */}
 			<Box flexGrow={1} flexDirection="column">
 				{displayTimeline.map((t, i) => (
-					<TweetItem key={i} tweet={t} isFocused={focus === i} />
+					<TweetItem
+						key={i}
+						tweet={t}
+						isFocused={focus === i}
+						inFav={focus === i && inFav}
+						inRT={focus === i && inRT}
+					/>
 				))}
 			</Box>
 			{isNewTweetOpen ? (
