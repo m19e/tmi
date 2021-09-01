@@ -8,19 +8,16 @@ import {
 	readJsonSync,
 	writeJson,
 } from "fs-extra";
-import { Text, Box, useInput, useApp } from "ink";
+import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import SelectInput from "ink-select-input";
 import Twitter, { TwitterOptions } from "twitter-lite";
-import { parseTweet, ParsedTweet } from "twitter-text";
 import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { convertTweetToDisplayable } from "../src/lib";
 import Timeline from "../src/components/Timeline";
-import Spinner from "../src/components/Spinner";
-import TweetItem from "../src/components/TweetItem";
 
 dotenvConfig();
 
