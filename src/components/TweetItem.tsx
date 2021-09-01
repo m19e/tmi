@@ -8,9 +8,11 @@ import { getDisplayTimeAgo } from "../lib";
 type Props = {
 	tweet: Tweet;
 	isFocused: boolean;
+	inFav: boolean;
+	inRT: boolean;
 };
 
-const TweetItem = ({ tweet, isFocused }: Props) => {
+const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(
 		tweet.retweeted_status
