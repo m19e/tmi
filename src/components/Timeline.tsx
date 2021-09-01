@@ -158,6 +158,8 @@ const Timeline = ({
 				fav();
 			} else if (input === "r") {
 				rt();
+			} else if (key.return) {
+				setStatus("detail");
 			}
 		},
 		{ isActive: status === "timeline" && !isNewTweetOpen }
@@ -184,6 +186,15 @@ const Timeline = ({
 			}
 		},
 		{ isActive: status === "timeline" && isNewTweetOpen }
+	);
+
+	useInput(
+		(input, key) => {
+			if (key.escape) {
+				setStatus("timeline");
+			}
+		},
+		{ isActive: status === "detail" }
 	);
 
 	const handleNewTweetChange = (value: string) => {
@@ -244,6 +255,7 @@ const Timeline = ({
 					)}
 				</>
 			)}
+			{status === "detail" && <Text>Display tweet detail</Text>}
 		</>
 	);
 };
