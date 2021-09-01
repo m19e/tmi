@@ -629,20 +629,7 @@ const Timeline = ({
 					</Box>
 				</>
 			) : (
-				<Text>
-					[N] tweet [F] favorite
-					{inFav && (
-						<Text color="yellow">
-							<Spinner />
-						</Text>
-					)}{" "}
-					[R] retweet
-					{inRT && (
-						<Text color="green">
-							<Spinner />
-						</Text>
-					)}
-				</Text>
+				<Text>[N] tweet [F] favorite [R] retweet</Text>
 			)}
 		</>
 	);
