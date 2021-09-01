@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, Box } from "ink";
 import Divider from "ink-divider";
+import Spinner from "./Spinner";
 import useDimensions from "ink-use-stdout-dimensions";
 import { Tweet } from "../types/twitter";
 import { getDisplayTimeAgo } from "../lib";
@@ -51,13 +52,31 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 				<Box height={1}>
 					{isFocused && (
 						<>
-							<Box marginRight={2}>
+							<Box>
 								<Text>{t.retweet_count ? t.retweet_count + " " : ""}</Text>
 								<Text color={t.retweeted ? "green" : "white"}>RT</Text>
+								<Box marginX={1}>
+									{inRT ? (
+										<Text color="green">
+											<Spinner />
+										</Text>
+									) : (
+										<Text> </Text>
+									)}
+								</Box>
 							</Box>
-							<Box marginRight={2}>
+							<Box>
 								<Text>{t.favorite_count ? t.favorite_count + " " : ""}</Text>
 								<Text color={t.favorited ? "yellow" : "white"}>fav</Text>
+								<Box marginX={1}>
+									{inFav ? (
+										<Text color="yellow">
+											<Spinner />
+										</Text>
+									) : (
+										<Text> </Text>
+									)}
+								</Box>
 							</Box>
 						</>
 					)}
