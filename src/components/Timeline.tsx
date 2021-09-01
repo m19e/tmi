@@ -43,6 +43,8 @@ const Timeline = ({
 		parseTweet("")
 	);
 
+	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
+
 	const update = async (backward: boolean) => {
 		setFetching(true);
 		const len = await onUpdate(backward);
@@ -187,52 +189,56 @@ const Timeline = ({
 
 	return (
 		<>
-			{/* <Text>
-				cursor:{cursor} focus:{focus} len:{timeline.length}
-			</Text> */}
-			<Box flexGrow={1} flexDirection="column">
-				{displayTimeline.map((t, i) => (
-					<TweetItem
-						key={i}
-						tweet={t}
-						isFocused={focus === i}
-						inFav={focus === i && inFav}
-						inRT={focus === i && inRT}
-					/>
-				))}
-			</Box>
-			{isNewTweetOpen ? (
+			{status === "timeline" && (
 				<>
-					<Box justifyContent="space-between" paddingX={1}>
-						<Text>
-							New Tweet{" "}
-							{inNewTweet && (
-								<Text color="#00acee">
-									<Spinner />
+					<Text>
+						{/* cursor:{cursor} focus:{focus} len:{timeline.length} */}
+					</Text>
+					<Box flexGrow={1} flexDirection="column">
+						{displayTimeline.map((t, i) => (
+							<TweetItem
+								key={i}
+								tweet={t}
+								isFocused={focus === i}
+								inFav={focus === i && inFav}
+								inRT={focus === i && inRT}
+							/>
+						))}
+					</Box>
+					{isNewTweetOpen ? (
+						<>
+							<Box justifyContent="space-between" paddingX={1}>
+								<Text>
+									New Tweet{" "}
+									{inNewTweet && (
+										<Text color="#00acee">
+											<Spinner />
+										</Text>
+									)}
 								</Text>
-							)}
-						</Text>
-						<Text>{280 - weightedLength}</Text>
-					</Box>
-					<Box borderStyle="round" borderColor="white">
-						<TextInput
-							placeholder="What's happening?"
-							value={tweetText}
-							onChange={handleNewTweetChange}
-							onSubmit={() => setWaitReturn(valid)}
-							focus={!waitReturn}
-						/>
-					</Box>
-					<Box justifyContent="flex-start" paddingX={1}>
-						{waitReturn ? (
-							<Text>[Enter] tweet [ESC] cancel</Text>
-						) : (
-							<Text>[Enter] done [ESC] close</Text>
-						)}
-					</Box>
+								<Text>{280 - weightedLength}</Text>
+							</Box>
+							<Box borderStyle="round" borderColor="white">
+								<TextInput
+									placeholder="What's happening?"
+									value={tweetText}
+									onChange={handleNewTweetChange}
+									onSubmit={() => setWaitReturn(valid)}
+									focus={!waitReturn}
+								/>
+							</Box>
+							<Box justifyContent="flex-start" paddingX={1}>
+								{waitReturn ? (
+									<Text>[Enter] tweet [ESC] cancel</Text>
+								) : (
+									<Text>[Enter] done [ESC] close</Text>
+								)}
+							</Box>
+						</>
+					) : (
+						<Text>[N] tweet [R] retweet [F] favorite</Text>
+					)}
 				</>
-			) : (
-				<Text>[N] tweet [R] retweet [F] favorite</Text>
 			)}
 		</>
 	);
