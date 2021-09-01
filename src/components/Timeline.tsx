@@ -172,8 +172,11 @@ const Timeline = ({
 					setWaitReturn(false);
 					return;
 				}
-				setIsNewTweetOpen(false);
-				setTweetText("");
+				// Avoid warning: state update on an unmounted TextInput
+				setTimeout(() => {
+					setTweetText("");
+					setIsNewTweetOpen(false);
+				});
 			} else if (waitReturn && key.return) {
 				newTweet();
 				setWaitReturn(false);
