@@ -173,6 +173,7 @@ const Timeline = ({
 					return;
 				}
 				// Avoid warning: state update on an unmounted TextInput
+				// Maybe caused by Node.js (single-threaded)?
 				setTimeout(() => {
 					setTweetText("");
 					setIsNewTweetOpen(false);
