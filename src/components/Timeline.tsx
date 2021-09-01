@@ -160,7 +160,7 @@ const Timeline = ({
 				rt();
 			}
 		},
-		{ isActive: !isNewTweetOpen }
+		{ isActive: status === "timeline" && !isNewTweetOpen }
 	);
 
 	useInput(
@@ -183,7 +183,7 @@ const Timeline = ({
 				setWaitReturn(false);
 			}
 		},
-		{ isActive: isNewTweetOpen }
+		{ isActive: status === "timeline" && isNewTweetOpen }
 	);
 
 	const handleNewTweetChange = (value: string) => {
