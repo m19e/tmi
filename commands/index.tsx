@@ -647,7 +647,7 @@ const Timeline = ({
 					</Box>
 				</>
 			) : (
-				<Text>[N] tweet [F] favorite [R] retweet</Text>
+				<Text>[N] tweet [R] retweet [F] favorite</Text>
 			)}
 		</>
 	);
