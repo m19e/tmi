@@ -527,14 +527,6 @@ const Timeline = ({
 				} else {
 					setFocus((prev) => prev + 1);
 				}
-			} else if (input === "l") {
-				onToggleList();
-			} else if (input === "n") {
-				setIsNewTweetOpen(true);
-			} else if (input === "f") {
-				fav();
-			} else if (input === "r") {
-				rt();
 			} else if (key.pageUp) {
 				if (cursor + focus < DISPLAY_TWEETS_COUNT) {
 					update(false);
@@ -558,6 +550,14 @@ const Timeline = ({
 					);
 					setCursor(newCursor);
 				}
+			} else if (input === "l") {
+				onToggleList();
+			} else if (input === "n") {
+				setIsNewTweetOpen(true);
+			} else if (input === "f") {
+				fav();
+			} else if (input === "r") {
+				rt();
 			}
 		},
 		{ isActive: !isNewTweetOpen }
