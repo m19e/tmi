@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Text, Box, useInput } from "ink";
+import Divider from "ink-divider";
+import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
@@ -263,18 +265,23 @@ const Timeline = ({
 const Detail = ({ tweet }: { tweet: Tweet }) => {
 	const t = tweet.retweeted_status ?? tweet;
 
+	const [cols] = useDimensions();
+
 	return (
-		<Box flexDirection="column">
-			<Text color="#00acee">{t.user.name}</Text>
-			<Text dimColor>
-				@{t.user.screen_name}
-				{t.user.protected && " 🔒"}
-			</Text>
-			<Box flexDirection="column" paddingY={1}>
-				<Text>{t.full_text}</Text>
-				{t.entities.media && <Text dimColor>(with Media)</Text>}
+		<Box flexDirection="column" alignItems="center">
+			<Box flexDirection="column" minWidth={30} width={Math.floor(cols / 2)}>
+				<Text color="#00acee">{t.user.name}</Text>
+				<Text dimColor>
+					@{t.user.screen_name}
+					{t.user.protected && " 🔒"}
+				</Text>
+				<Box flexDirection="column" paddingY={1}>
+					<Text>{t.full_text}</Text>
+					{t.entities.media && <Text dimColor>(with Media)</Text>}
+				</Box>
+				<Text dimColor>12:34・2021/9/3・Abs for Android (demo)</Text>
 			</Box>
-			<Text dimColor>12:34・2021/9/3・Abs for Android (demo)</Text>
+			<Divider width={Math.max(30, Math.floor(cols / 2))} />
 		</Box>
 	);
 };
