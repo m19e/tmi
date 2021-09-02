@@ -255,7 +255,7 @@ const Timeline = ({
 					)}
 				</>
 			)}
-			{status === "detail" && <Text>Display tweet detail</Text>}
+			{status === "detail" && <Detail tweet={displayTimeline[focus]} />}
 		</>
 	);
 };
