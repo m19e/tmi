@@ -267,12 +267,13 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 		<Box flexDirection="column">
 			<Text color="#00acee">{t.user.name}</Text>
 			<Text dimColor>
-				@{t.user.screen_name} {t.user.protected && "🔒"}
+				@{t.user.screen_name}
+				{t.user.protected && " 🔒"}
 			</Text>
-			<Text>
-				{t.full_text}
-				{t.entities.media && <Text dimColor> (with Media)</Text>}
-			</Text>
+			<Box flexDirection="column" paddingY={1}>
+				<Text>{t.full_text}</Text>
+				{t.entities.media && <Text dimColor>(with Media)</Text>}
+			</Box>
 			<Text dimColor>12:34・2021/9/3・Abs for Android (demo)</Text>
 		</Box>
 	);
