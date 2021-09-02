@@ -46,7 +46,7 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 				</Text>
 				<Text>
 					{t.full_text}
-					{tweet.entities.media && <Text dimColor> (with Media)</Text>}
+					{t.entities.media && <Text dimColor> (with Media)</Text>}
 				</Text>
 				<Quoted tweet={t.quoted_status} />
 				<Box height={1}>
