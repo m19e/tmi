@@ -260,4 +260,22 @@ const Timeline = ({
 	);
 };
 
+const Detail = ({ tweet }: { tweet: Tweet }) => {
+	const t = tweet.retweeted_status ?? tweet;
+
+	return (
+		<Box flexDirection="column">
+			<Text color="#00acee">{t.user.name}</Text>
+			<Text dimColor>
+				@{t.user.screen_name} {t.user.protected && "🔒"}
+			</Text>
+			<Text>
+				{t.full_text}
+				{t.entities.media && <Text dimColor> (with Media)</Text>}
+			</Text>
+			<Text dimColor>12:34・2021/9/3・Abs for Android (demo)</Text>
+		</Box>
+	);
+};
+
 export default Timeline;
