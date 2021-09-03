@@ -154,12 +154,12 @@ const Timeline = ({
 				}
 			} else if (input === "l") {
 				onToggleList();
-			} else if (input === "n") {
-				setIsNewTweetOpen(true);
-			} else if (input === "f") {
-				fav();
 			} else if (input === "t") {
 				rt();
+			} else if (input === "f") {
+				fav();
+			} else if (input === "n") {
+				setIsNewTweetOpen(true);
 			} else if (key.return) {
 				setStatus("detail");
 			}
