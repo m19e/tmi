@@ -264,6 +264,7 @@ const Timeline = ({
 
 const Detail = ({ tweet }: { tweet: Tweet }) => {
 	const t = tweet.retweeted_status ?? tweet;
+	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
 	const [cols] = useDimensions();
 
@@ -287,6 +288,27 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 				<Text dimColor>12:34・2021/9/3・Abs for Android (demo)</Text>
 			</Box>
 			<Divider width={Math.max(30, Math.floor(cols / 2))} />
+			{displayFavRT && (
+				<>
+					<Box minWidth={30} width={Math.floor(cols / 2)} paddingX={1}>
+						<Text>
+							{t.retweet_count !== 0 && (
+								<>
+									<Text>{t.retweet_count}</Text>
+									<Text color={t.retweeted ? "green" : "white"}> RT</Text>
+								</>
+							)}
+							{t.favorite_count !== 0 && (
+								<>
+									<Text>{t.favorite_count}</Text>
+									<Text color={t.favorited ? "yellow" : "white"}> fav</Text>
+								</>
+							)}
+						</Text>
+					</Box>
+					<Divider width={Math.max(30, Math.floor(cols / 2))} />
+				</>
+			)}
 		</Box>
 	);
 };
