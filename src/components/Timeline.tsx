@@ -158,7 +158,7 @@ const Timeline = ({
 				setIsNewTweetOpen(true);
 			} else if (input === "f") {
 				fav();
-			} else if (input === "r") {
+			} else if (input === "t") {
 				rt();
 			} else if (key.return) {
 				setStatus("detail");
@@ -253,7 +253,7 @@ const Timeline = ({
 							</Box>
 						</>
 					) : (
-						<Text>[N] tweet [R] retweet [F] favorite</Text>
+						<Text>[N] tweet [T] retweet [F] favorite</Text>
 					)}
 				</>
 			)}
@@ -311,7 +311,7 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 					</>
 				)}
 			</Box>
-			<Text>[M] mention [R] retweet [F] favorite [X] expand menu</Text>
+			<Text>[R] mention [T] retweet [F] favorite [X] expand menu</Text>
 		</>
 	);
 };
