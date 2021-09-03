@@ -269,7 +269,12 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 
 	return (
 		<Box flexDirection="column" alignItems="center">
-			<Box flexDirection="column" minWidth={30} width={Math.floor(cols / 2)}>
+			<Box
+				flexDirection="column"
+				minWidth={30}
+				width={Math.floor(cols / 2)}
+				paddingX={1}
+			>
 				<Text color="#00acee">{t.user.name}</Text>
 				<Text dimColor>
 					@{t.user.screen_name}
