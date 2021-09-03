@@ -125,5 +125,17 @@ export const convertTweetToDisplayable = (t: Tweet): Tweet => {
 			user: { ...rt.user, name: rt_user_name },
 		};
 	}
+
+	if (t.quoted_status) {
+		const qt = t.quoted_status;
+		const qt_full_text = convertToCorrectWidthText(qt.full_text);
+		const qt_user_name = convertToCorrectWidthText(qt.user.name);
+		tweet.quoted_status = {
+			...qt,
+			full_text: qt_full_text,
+			user: { ...qt.user, name: qt_user_name },
+		};
+	}
+
 	return tweet;
 };
