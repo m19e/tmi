@@ -292,7 +292,9 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 						<Text>{t.full_text}</Text>
 						{t.entities.media && <Text dimColor>(with Media)</Text>}
 					</Box>
-					<Text dimColor>{time}・Abs for Android (demo)</Text>
+					<Text dimColor>
+						{time}・{t.source.replace(/(<([^>]+)>)/gi, "")}
+					</Text>
 				</Box>
 				<Divider width={Math.max(30, Math.floor(cols / 2))} />
 				{displayFavRT && (
