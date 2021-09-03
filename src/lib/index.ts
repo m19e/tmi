@@ -22,6 +22,21 @@ export const getDisplayTimeAgo = (created_at: string): string => {
 	return "now";
 };
 
+export const getDisplayTime = (created_at: string): string => {
+	const dt = new Date(created_at);
+	return (
+		dt.getFullYear() +
+		"/" +
+		(dt.getMonth() + 1) +
+		"/" +
+		dt.getDate() +
+		" " +
+		dt.getHours() +
+		":" +
+		dt.getMinutes()
+	);
+};
+
 const splitWithGraphemes = (text: string): string[] => splitGraphemes(text);
 
 const UNESCAPE_PATTERNS = {
