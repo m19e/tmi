@@ -30,7 +30,7 @@ export const getDisplayTime = (created_at: string): string => {
 		(dt.getMonth() + 1) +
 		"/" +
 		dt.getDate() +
-		" " +
+		"・" +
 		dt.getHours() +
 		":" +
 		dt.getMinutes()
