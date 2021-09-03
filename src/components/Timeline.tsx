@@ -6,6 +6,7 @@ import TextInput from "ink-text-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
+import { getDisplayTime } from "../lib";
 import TweetItem from "./TweetItem";
 import Spinner from "./Spinner";
 
@@ -268,6 +269,7 @@ const Timeline = ({
 
 const Detail = ({ tweet }: { tweet: Tweet }) => {
 	const t = tweet.retweeted_status ?? tweet;
+	const time = getDisplayTime(t.created_at);
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
 	const [cols] = useDimensions();
@@ -290,7 +292,7 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 						<Text>{t.full_text}</Text>
 						{t.entities.media && <Text dimColor>(with Media)</Text>}
 					</Box>
-					<Text dimColor>12:34・2021/9/3・Abs for Android (demo)</Text>
+					<Text dimColor>{time}・Abs for Android (demo)</Text>
 				</Box>
 				<Divider width={Math.max(30, Math.floor(cols / 2))} />
 				{displayFavRT && (
