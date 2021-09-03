@@ -154,6 +154,8 @@ const Timeline = ({
 				}
 			} else if (input === "l") {
 				onToggleList();
+			} else if (input === "r") {
+				// reply();
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
