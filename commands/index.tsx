@@ -36,6 +36,7 @@ interface TwitterErrors {
 }
 
 interface Config extends TwitterOptions {
+	user_id: string;
 	lists: TrimmedList[];
 }
 
@@ -59,6 +60,7 @@ const Tink = ({ name = "" }) => {
 	const [filePath, setFilePath] = useState("");
 	const [config, setConfig] = useState<Config>({
 		...defaultOptions,
+		user_id: "",
 		lists: [],
 	});
 
@@ -151,7 +153,7 @@ const Tink = ({ name = "" }) => {
 			if (existsSync(file)) {
 				return ["", null, "CANNOT READ JSON"];
 			}
-			conf = { ...defaultOptions, lists: [] };
+			conf = { ...defaultOptions, user_id: "", lists: [] };
 		} else {
 			conf = json;
 		}
@@ -325,10 +327,11 @@ const Tink = ({ name = "" }) => {
 			oauth_token: ot,
 		});
 
-		const conf = {
+		const conf: Config = {
 			...defaultOptions,
 			access_token_key: token.oauth_token,
 			access_token_secret: token.oauth_token_secret,
+			user_id: token.user_id,
 			lists: [],
 		};
 
