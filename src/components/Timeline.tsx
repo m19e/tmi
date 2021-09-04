@@ -7,6 +7,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
+import { useUserId } from "../hooks";
 import TweetItem from "./TweetItem";
 import Spinner from "./Spinner";
 
@@ -273,6 +274,7 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
 	const [cols] = useDimensions();
+	const [userId] = useUserId();
 
 	return (
 		<>
@@ -283,6 +285,9 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 					width={Math.floor(cols / 2)}
 					paddingX={1}
 				>
+					<Text dimColor>
+						{t.user.id_str === userId && "This is my tweet."}
+					</Text>
 					<Text color="#00acee">{t.user.name}</Text>
 					<Text dimColor>
 						@{t.user.screen_name}
