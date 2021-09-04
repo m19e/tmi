@@ -3,6 +3,7 @@ import { Text, Box, useInput } from "ink";
 import Divider from "ink-divider";
 import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
+import SelectInput from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
@@ -275,6 +276,16 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 
 	const [cols] = useDimensions();
 	const [userId] = useUserId();
+	const selectItems = [
+		{ label: `Tweet to @${t.user.screen_name}`, value: "mention" },
+	].concat(
+		userId === t.user.id_str
+			? [
+					{ label: "Delete", value: "delete" },
+					{ label: "Re-draft", value: "redraft" },
+			  ]
+			: []
+	);
 
 	return (
 		<>
@@ -323,6 +334,15 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 						<Divider width={Math.max(30, Math.floor(cols / 2))} />
 					</>
 				)}
+				<Box
+					justifyContent="flex-end"
+					minWidth={30}
+					width={Math.floor(cols / 2)}
+				>
+					<Box paddingX={1} borderStyle="round" borderColor="gray">
+						<SelectInput items={selectItems} />
+					</Box>
+				</Box>
 			</Box>
 			<Text>[R] reply [T] retweet [F] favorite [X] expand menu</Text>
 		</>
