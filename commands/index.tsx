@@ -17,6 +17,7 @@ import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { convertTweetToDisplayable } from "../src/lib";
+import { useUserId } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 
 dotenvConfig();
@@ -74,6 +75,7 @@ const Tink = ({ name = "" }) => {
 	const [error, setError] = useState("");
 
 	const [_, rows] = useDimensions();
+	const [, setUserId] = useUserId();
 	const { exit } = useApp();
 
 	useEffect(() => {
@@ -95,6 +97,7 @@ const Tink = ({ name = "" }) => {
 			} else {
 				setFilePath(fp);
 				setConfig(conf);
+				setUserId(conf.user_id);
 				await getUserLists(conf, fp);
 				setStatus("select");
 			}
