@@ -337,7 +337,6 @@ const Tink = ({ name = "" }) => {
 			lists: [],
 		};
 
-		await writeJson(filePath, conf);
 		await getUserLists(conf, filePath);
 		setConfig(conf);
 		setStatus("select");
