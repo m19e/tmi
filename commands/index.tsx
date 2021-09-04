@@ -165,8 +165,7 @@ const Tink = ({ name = "" }) => {
 	};
 
 	const getUserLists = async (config: Config, fp: string) => {
-		const { lists, ...options } = config;
-		const user = new Twitter(options);
+		const user = new Twitter(config);
 
 		try {
 			const data: List[] = await user.get("lists/list");
@@ -175,7 +174,7 @@ const Tink = ({ name = "" }) => {
 				name: l.name,
 				mode: l.mode,
 			}));
-			await writeJson(fp, { ...options, lists: trim });
+			await writeJson(fp, { ...config, lists: trim });
 			setLists(trim);
 			setStatus("select");
 		} catch (err) {
@@ -183,7 +182,7 @@ const Tink = ({ name = "" }) => {
 				(err as TwitterErrorResponse).errors.map((e) => e.code).includes(88)
 			) {
 				console.error("rate limit exceeded.");
-				setLists(lists);
+				setLists(config.lists);
 				setStatus("select");
 			} else {
 				console.error(err);
