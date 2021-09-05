@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Text, Box, useInput } from "ink";
+import type { FC } from "react";
+import { Text, Box, Newline, useInput } from "ink";
 import Divider from "ink-divider";
 import useDimensions from "ink-use-stdout-dimensions";
 import TextInput from "ink-text-input";
-import SelectInput from "ink-select-input";
+import SelectInput, { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
@@ -276,16 +277,20 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 
 	const [cols] = useDimensions();
 	const [userId] = useUserId();
-	const selectItems = [
-		{ label: `Tweet to @${t.user.screen_name}`, value: "mention" },
-	].concat(
-		userId === t.user.id_str
-			? [
-					{ label: "Delete", value: "delete" },
-					{ label: "Re-draft", value: "redraft" },
-			  ]
-			: []
-	);
+	const myTweet = t.user.id_str === userId;
+	let selectItems: SelectItemProps[] = [
+		{
+			label: `Tweet to @${t.user.screen_name}`,
+			value: "mention",
+			newline: myTweet,
+		},
+	];
+	if (myTweet) {
+		selectItems = selectItems.concat([
+			{ label: "Delete", value: "delete" },
+			{ label: "Re-draft", value: "redraft" },
+		]);
+	}
 
 	return (
 		<>
@@ -340,7 +345,11 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 					width={Math.floor(cols / 2)}
 				>
 					<Box paddingX={1} borderStyle="round" borderColor="gray">
-						<SelectInput items={selectItems} />
+						<SelectInput
+							items={selectItems}
+							itemComponent={SelectItem}
+							indicatorComponent={Indicator}
+						/>
 					</Box>
 				</Box>
 			</Box>
@@ -348,5 +357,29 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 		</>
 	);
 };
+
+interface SelectItemProps extends ItemProps {
+	value: string;
+	newline?: boolean;
+}
+
+const SelectItem: FC<SelectItemProps> = ({
+	isSelected = false,
+	label,
+	newline = false,
+}) => (
+	<>
+		<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
+		{newline && <Newline />}
+	</>
+);
+
+const Indicator: FC<{
+	isSelected?: boolean;
+}> = ({ isSelected = false }) => (
+	<Box marginRight={1}>
+		{isSelected ? <Text color="#00acee">❯</Text> : <Text> </Text>}
+	</Box>
+);
 
 export default Timeline;
