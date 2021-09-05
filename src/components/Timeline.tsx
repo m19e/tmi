@@ -282,7 +282,7 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 		{
 			label: `Tweet to @${t.user.screen_name}`,
 			value: "mention",
-			newline: myTweet,
+			newline: true,
 		},
 	];
 	if (myTweet) {
@@ -290,7 +290,20 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 			{ label: "Delete", value: "delete" },
 			{ label: "Re-draft", value: "redraft" },
 		]);
+	} else {
+		selectItems = selectItems.concat([
+			{ label: `Mute @${t.user.screen_name}`, value: "mute-account" },
+			{ label: "Mute Retweets from user", value: "mute-retweets" },
+			{ label: "Mute Quotes from User", value: "mute-quotes" },
+			{ label: `Block @${t.user.screen_name}`, value: "block-account" },
+		]);
 	}
+	selectItems = selectItems.concat([
+		{
+			label: `Mute "${t.source.replace(/(<([^>]+)>)/gi, "")}"`,
+			value: "mute-client",
+		},
+	]);
 
 	return (
 		<>
