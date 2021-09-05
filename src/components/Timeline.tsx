@@ -344,7 +344,7 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 					minWidth={30}
 					width={Math.floor(cols / 2)}
 				>
-					<Box paddingX={1} borderStyle="round" borderColor="gray">
+					<Box paddingRight={2} borderStyle="round" borderColor="gray">
 						<SelectInput
 							items={selectItems}
 							itemComponent={SelectItem}
