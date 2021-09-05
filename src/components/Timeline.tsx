@@ -301,9 +301,6 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 					width={Math.floor(cols / 2)}
 					paddingX={1}
 				>
-					<Text dimColor>
-						{t.user.id_str === userId && "This is my tweet."}
-					</Text>
 					<Text color="#00acee">{t.user.name}</Text>
 					<Text dimColor>
 						@{t.user.screen_name}
