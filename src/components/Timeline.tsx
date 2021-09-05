@@ -343,6 +343,7 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 					justifyContent="flex-end"
 					minWidth={30}
 					width={Math.floor(cols / 2)}
+					paddingX={1}
 				>
 					<Box paddingRight={2} borderStyle="round" borderColor="gray">
 						<SelectInput
