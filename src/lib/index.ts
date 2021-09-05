@@ -33,7 +33,7 @@ export const getDisplayTime = (created_at: string): string => {
 		"・" +
 		dt.getHours() +
 		":" +
-		dt.getMinutes()
+		("00" + dt.getMinutes()).slice(-2)
 	);
 };
 
