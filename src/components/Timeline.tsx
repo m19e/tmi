@@ -364,7 +364,7 @@ const Detail = ({ tweet }: { tweet: Tweet }) => {
 					</Box>
 				</Box>
 			</Box>
-			<Text>[R] reply [T] retweet [F] favorite [X] expand menu</Text>
+			<Text>[R] reply [T] retweet [F] favorite</Text>
 		</>
 	);
 };
