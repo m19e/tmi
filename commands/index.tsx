@@ -58,11 +58,6 @@ const Tink = ({ name = "" }) => {
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
-	const [config, setConfig] = useState<Config>({
-		...defaultOptions,
-		user_id: "",
-		lists: [],
-	});
 
 	const [status, setStatus] = useState<"init" | "wait" | "select" | "timeline">(
 		"init"
@@ -98,7 +93,6 @@ const Tink = ({ name = "" }) => {
 			} else {
 				setClient(new Twitter(conf));
 				setFilePath(fp);
-				// setConfig(conf);
 				setUserId(conf.user_id);
 				await getUserLists(conf, fp);
 				setStatus("select");
@@ -197,7 +191,6 @@ const Tink = ({ name = "" }) => {
 		list_id: string,
 		options: { backward: boolean; select: boolean }
 	): Promise<number> => {
-		// const user = new Twitter(config);
 		const params = createGetListTimelineParams(list_id, {
 			...options,
 			count: 200,
@@ -243,7 +236,6 @@ const Tink = ({ name = "" }) => {
 		id_str,
 		favorited,
 	}: Tweet): Promise<Tweet | null> => {
-		// const user = new Twitter(config);
 		try {
 			if (favorited) {
 				await client.post("favorites/destroy", {
@@ -281,8 +273,6 @@ const Tink = ({ name = "" }) => {
 		id_str,
 		retweeted,
 	}: Tweet): Promise<Tweet | null> => {
-		// const user = new Twitter(config);
-
 		try {
 			if (retweeted) {
 				await client.post("statuses/unretweet", {
@@ -313,8 +303,6 @@ const Tink = ({ name = "" }) => {
 	};
 
 	const handleNewTweet = async (status: string): Promise<null | any> => {
-		// const user = new Twitter(config);
-
 		try {
 			await client.post("statuses/update", {
 				status,
@@ -341,7 +329,6 @@ const Tink = ({ name = "" }) => {
 
 		setClient(new Twitter(conf));
 		await getUserLists(conf, filePath);
-		// setConfig(conf);
 		setStatus("select");
 	};
 
