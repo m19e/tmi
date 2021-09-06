@@ -409,22 +409,58 @@ const Detail = ({
 						<Divider width={Math.max(30, Math.floor(cols / 2))} />
 					</>
 				)}
-				<Box
-					justifyContent="flex-end"
-					minWidth={30}
-					width={Math.floor(cols / 2)}
-					paddingX={1}
-				>
-					<Box paddingRight={2} borderStyle="round" borderColor="gray">
-						<SelectInput
-							items={selectItems}
-							itemComponent={SelectItem}
-							indicatorComponent={Indicator}
-						/>
+				{isReplyOpen && (
+					<Box
+						minWidth={30}
+						width={Math.floor(cols / 2)}
+						flexDirection="column"
+						borderColor="white"
+					>
+						<Box justifyContent="space-between" paddingX={1}>
+							<Text color="gray">
+								Replying to <Text color="#00acee">@{t.user.screen_name} </Text>
+							</Text>
+							<Text color="gray">{280 - weightedLength}</Text>
+						</Box>
+						<Box minHeight={5} borderStyle="round" borderColor="white">
+							<TextInput
+								placeholder="Tweet your reply"
+								value={replyText}
+								onChange={handleReplyChange}
+								onSubmit={() => setWaitReturn(valid)}
+								focus={!waitReturn}
+							/>
+						</Box>
 					</Box>
-				</Box>
+				)}
+				{!isReplyOpen && (
+					<Box
+						justifyContent="flex-end"
+						minWidth={30}
+						width={Math.floor(cols / 2)}
+						paddingX={1}
+					>
+						<Box paddingRight={2} borderStyle="round" borderColor="gray">
+							<SelectInput
+								items={selectItems}
+								itemComponent={SelectItem}
+								indicatorComponent={Indicator}
+							/>
+						</Box>
+					</Box>
+				)}
 			</Box>
-			<Text>[R] reply [T] retweet [F] favorite [ESC] back</Text>
+			{isReplyOpen ? (
+				<>
+					{waitReturn ? (
+						<Text>[Enter] reply [ESC] cancel</Text>
+					) : (
+						<Text>[Enter] done [ESC] close</Text>
+					)}
+				</>
+			) : (
+				<Text>[R] reply [T] retweet [F] favorite [ESC] back</Text>
+			)}
 		</>
 	);
 };
