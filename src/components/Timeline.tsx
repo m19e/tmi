@@ -51,6 +51,8 @@ const Timeline = ({
 
 	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
 
+	const [isReplyOpen, setIsReplyOpen] = useState(false);
+
 	const update = async (backward: boolean) => {
 		setFetching(true);
 		const len = await onUpdate(backward);
@@ -202,7 +204,7 @@ const Timeline = ({
 				setStatus("timeline");
 			}
 		},
-		{ isActive: status === "detail" }
+		{ isActive: status === "detail" && !isReplyOpen }
 	);
 
 	const handleNewTweetChange = (value: string) => {
