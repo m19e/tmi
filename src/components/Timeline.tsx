@@ -267,12 +267,26 @@ const Timeline = ({
 					)}
 				</>
 			)}
-			{status === "detail" && <Detail tweet={displayTimeline[focus]} />}
+			{status === "detail" && (
+				<Detail
+					tweet={displayTimeline[focus]}
+					isReplyOpen={isReplyOpen}
+					setIsReplyOpen={setIsReplyOpen}
+				/>
+			)}
 		</>
 	);
 };
 
-const Detail = ({ tweet }: { tweet: Tweet }) => {
+const Detail = ({
+	tweet,
+	isReplyOpen,
+	setIsReplyOpen,
+}: {
+	tweet: Tweet;
+	isReplyOpen: boolean;
+	setIsReplyOpen: (b: boolean) => void;
+}) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const time = getDisplayTime(t.created_at);
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
