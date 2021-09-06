@@ -298,7 +298,6 @@ const Detail = ({
 		{
 			label: `Tweet to @${t.user.screen_name}`,
 			value: "mention",
-			newline: true,
 		},
 	];
 	if (myTweet) {
