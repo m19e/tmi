@@ -96,8 +96,9 @@ const Tink = ({ name = "" }) => {
 				setOT(oauth_token);
 				setStatus("wait");
 			} else {
+				setClient(new Twitter(conf));
 				setFilePath(fp);
-				setConfig(conf);
+				// setConfig(conf);
 				setUserId(conf.user_id);
 				await getUserLists(conf, fp);
 				setStatus("select");
@@ -196,14 +197,14 @@ const Tink = ({ name = "" }) => {
 		list_id: string,
 		options: { backward: boolean; select: boolean }
 	): Promise<number> => {
-		const user = new Twitter(config);
+		// const user = new Twitter(config);
 		const params = createGetListTimelineParams(list_id, {
 			...options,
 			count: 200,
 		});
 
 		try {
-			const data: Tweet[] = await user.get("lists/statuses", params);
+			const data: Tweet[] = await client.get("lists/statuses", params);
 			const converted = data.map((t) => convertTweetToDisplayable(t));
 			setCurrentTimeline((prev) => {
 				if (options.select) return converted;
@@ -242,23 +243,23 @@ const Tink = ({ name = "" }) => {
 		id_str,
 		favorited,
 	}: Tweet): Promise<Tweet | null> => {
-		const user = new Twitter(config);
+		// const user = new Twitter(config);
 		try {
 			if (favorited) {
-				await user.post("favorites/destroy", {
+				await client.post("favorites/destroy", {
 					id: id_str,
 					tweet_mode: "extended",
 					include_entities: true,
 				});
 			} else {
-				await user.post("favorites/create", {
+				await client.post("favorites/create", {
 					id: id_str,
 					tweet_mode: "extended",
 					include_entities: true,
 				});
 			}
 
-			const res: Tweet = await user.get("statuses/show", {
+			const res: Tweet = await client.get("statuses/show", {
 				id: id_str,
 				trim_user: false,
 				include_my_retweet: true,
@@ -280,20 +281,20 @@ const Tink = ({ name = "" }) => {
 		id_str,
 		retweeted,
 	}: Tweet): Promise<Tweet | null> => {
-		const user = new Twitter(config);
+		// const user = new Twitter(config);
 
 		try {
 			if (retweeted) {
-				await user.post("statuses/unretweet", {
+				await client.post("statuses/unretweet", {
 					id: id_str,
 				});
 			} else {
-				await user.post("statuses/retweet", {
+				await client.post("statuses/retweet", {
 					id: id_str,
 				});
 			}
 
-			const res: Tweet = await user.get("statuses/show", {
+			const res: Tweet = await client.get("statuses/show", {
 				id: id_str,
 				trim_user: false,
 				include_my_retweet: true,
@@ -312,10 +313,10 @@ const Tink = ({ name = "" }) => {
 	};
 
 	const handleNewTweet = async (status: string): Promise<null | any> => {
-		const user = new Twitter(config);
+		// const user = new Twitter(config);
 
 		try {
-			await user.post("statuses/update", {
+			await client.post("statuses/update", {
 				status,
 			});
 			return null;
@@ -338,8 +339,9 @@ const Tink = ({ name = "" }) => {
 			lists: [],
 		};
 
+		setClient(new Twitter(conf));
 		await getUserLists(conf, filePath);
-		setConfig(conf);
+		// setConfig(conf);
 		setStatus("select");
 	};
 
