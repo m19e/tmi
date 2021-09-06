@@ -1,5 +1,7 @@
 import { useAtom } from "jotai";
 
-import { userIdAtom } from "../store";
+import { userIdAtom, clientAtom } from "../store";
 
 export const useUserId = () => useAtom(userIdAtom);
+
+export const useClient = () => useAtom(clientAtom);
