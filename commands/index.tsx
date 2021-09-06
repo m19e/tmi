@@ -74,7 +74,7 @@ const Tink = ({ name = "" }) => {
 
 	const [error, setError] = useState("");
 
-	const [_, rows] = useDimensions();
+	const [, rows] = useDimensions();
 	const [, setUserId] = useUserId();
 	const { exit } = useApp();
 
