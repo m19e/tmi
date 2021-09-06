@@ -17,7 +17,7 @@ import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { convertTweetToDisplayable } from "../src/lib";
-import { useUserId } from "../src/hooks";
+import { useUserId, useClient } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 
 dotenvConfig();
@@ -55,7 +55,6 @@ interface GetListTimelineParams extends DefaultTwitterRequestParams {
 
 /// Hello world command
 const Tink = ({ name = "" }) => {
-	const client = new Twitter(defaultOptions);
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
@@ -74,12 +73,14 @@ const Tink = ({ name = "" }) => {
 
 	const [error, setError] = useState("");
 
+	const [client, setClient] = useClient();
 	const [, rows] = useDimensions();
 	const [, setUserId] = useUserId();
 	const { exit } = useApp();
 
 	useEffect(() => {
 		const init = async () => {
+			setClient(new Twitter(defaultOptions));
 			const [fp, conf, err] = getConfig();
 			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
 				if (err !== null) {
