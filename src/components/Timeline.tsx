@@ -321,6 +321,50 @@ const Detail = ({
 		},
 	]);
 
+	const [waitReturn, setWaitReturn] = useState(false);
+	const [replyText, setReplyText] = useState("");
+	const [{ weightedLength, valid }, setParsedTweet] = useState<ParsedTweet>(
+		parseTweet("")
+	);
+
+	useInput(
+		(input, key) => {
+			if (input === "r") {
+				setIsReplyOpen(true);
+			}
+		},
+		{ isActive: !isReplyOpen }
+	);
+
+	useInput(
+		(input, key) => {
+			if (key.escape) {
+				if (waitReturn) {
+					setWaitReturn(false);
+					return;
+				}
+				// Avoid warning: state update on an unmounted TextInput
+				// Maybe caused by Node.js (single-threaded)?
+				setTimeout(() => {
+					setReplyText("");
+					setIsReplyOpen(false);
+				});
+			} else if (waitReturn && key.return) {
+				// reply();
+				setReplyText("");
+				setParsedTweet(parseTweet(""));
+				setIsReplyOpen(false);
+				setWaitReturn(false);
+			}
+		},
+		{ isActive: isReplyOpen }
+	);
+
+	const handleReplyChange = (value: string) => {
+		setReplyText(value);
+		setParsedTweet(parseTweet(value));
+	};
+
 	return (
 		<>
 			<Box flexGrow={1} flexDirection="column" alignItems="center">
