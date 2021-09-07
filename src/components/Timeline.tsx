@@ -292,6 +292,8 @@ const Detail = ({
 	const time = getDisplayTime(t.created_at);
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
+	const [fetching, setFetching] = useState(false);
+
 	const [cols] = useDimensions();
 	const client = getClient();
 	const [userId] = useUserId();
@@ -329,10 +331,12 @@ const Detail = ({
 	);
 
 	const reply = async () => {
+		setFetching(true);
 		const error = await postReply(client, {
 			status: replyText,
 			in_reply_to_status_id: t.id_str,
 		});
+		setFetching(false);
 		if (error !== null) {
 			// onError()
 			return;
@@ -349,7 +353,7 @@ const Detail = ({
 				setIsReplyOpen(true);
 			}
 		},
-		{ isActive: !isReplyOpen }
+		{ isActive: !isReplyOpen && !fetching }
 	);
 
 	useInput(
@@ -369,7 +373,7 @@ const Detail = ({
 				reply();
 			}
 		},
-		{ isActive: isReplyOpen }
+		{ isActive: isReplyOpen && !fetching }
 	);
 
 	const handleReplyChange = (value: string) => {
