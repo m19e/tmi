@@ -427,7 +427,6 @@ const Detail = ({
 						minWidth={30}
 						width={Math.floor(cols / 2)}
 						flexDirection="column"
-						borderColor="white"
 					>
 						<Box justifyContent="space-between" paddingX={1}>
 							<Text color="gray">
