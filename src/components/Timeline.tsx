@@ -13,6 +13,7 @@ import { postReply } from "../lib/twitter";
 import { useUserId, getClient } from "../hooks";
 import TweetItem from "./TweetItem";
 import Spinner from "./Spinner";
+import Loader from "./Loader";
 
 const DISPLAY_TWEETS_COUNT = 5;
 
@@ -435,6 +436,7 @@ const Detail = ({
 						<Box justifyContent="space-between" paddingX={1}>
 							<Text color="gray">
 								Replying to <Text color="#00acee">@{t.user.screen_name} </Text>
+								<Loader loading={fetching} color="#00acee" />
 							</Text>
 							<Text color="gray">{280 - weightedLength}</Text>
 						</Box>
