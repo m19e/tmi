@@ -25,12 +25,7 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 
 	return (
 		<>
-			<Box
-				flexDirection="column"
-				paddingLeft={isFocused ? 4 : 0}
-				// borderStyle={isFocused ? "singleDouble" : "single"}
-				// borderColor={isFocused ? "white" : "gray"}
-			>
+			<Box flexDirection="column" paddingLeft={isFocused ? 4 : 0}>
 				{tweet.retweeted_status && (
 					<Text dimColor>
 						🔄 {tweet.user.name}
