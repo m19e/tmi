@@ -235,7 +235,7 @@ const Timeline = ({
 						<>
 							<Box justifyContent="space-between" paddingX={1}>
 								<Text>
-									New Tweet <Loader loading={inNewTweet} color="#00acee" />
+									New Tweet <Loader loading={inNewTweet} rawColor="#00acee" />
 								</Text>
 								<Text>{280 - weightedLength}</Text>
 							</Box>
@@ -430,7 +430,7 @@ const Detail = ({
 						<Box justifyContent="space-between" paddingX={1}>
 							<Text color="gray">
 								Replying to <Text color="#00acee">@{t.user.screen_name} </Text>
-								<Loader loading={fetching} color="#00acee" />
+								<Loader loading={fetching} rawColor="#00acee" />
 							</Text>
 							<Text color="gray">{280 - weightedLength}</Text>
 						</Box>
