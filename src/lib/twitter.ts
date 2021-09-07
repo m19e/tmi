@@ -1,5 +1,4 @@
 import type Twitter from "twitter-lite";
-import { getClient } from "../hooks";
 
 export const postReply = async (
 	client: Twitter,
