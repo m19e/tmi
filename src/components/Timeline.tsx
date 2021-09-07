@@ -10,7 +10,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
 import { postReply } from "../lib/twitter";
-import { useUserId, getClient } from "../hooks";
+import { useUserId, useClient } from "../hooks";
 import TweetItem from "./TweetItem";
 import Loader from "./Loader";
 
@@ -290,7 +290,7 @@ const Detail = ({
 	const [fetching, setFetching] = useState(false);
 
 	const [cols] = useDimensions();
-	const client = getClient();
+	const [client] = useClient();
 	const [userId] = useUserId();
 	const myTweet = t.user.id_str === userId;
 	let selectItems: SelectItemProps[] = [
