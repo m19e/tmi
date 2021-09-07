@@ -24,13 +24,14 @@ type ForegroundColor =
 
 type Props = {
 	loading: boolean;
-	color: ForegroundColor | string;
+	namedColor?: ForegroundColor;
+	rawColor?: string;
 };
 
-const Loader = ({ loading, color }: Props) => (
+const Loader = ({ loading, namedColor, rawColor }: Props) => (
 	<>
 		{loading ? (
-			<Text color={color}>
+			<Text color={namedColor ?? rawColor}>
 				<Spinner />
 			</Text>
 		) : (
