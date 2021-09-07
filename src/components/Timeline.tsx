@@ -9,7 +9,8 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
-import { useUserId } from "../hooks";
+import { postReply } from "../lib/twitter";
+import { useUserId, getClient } from "../hooks";
 import TweetItem from "./TweetItem";
 import Spinner from "./Spinner";
 
@@ -292,6 +293,7 @@ const Detail = ({
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
 	const [cols] = useDimensions();
+	const client = getClient();
 	const [userId] = useUserId();
 	const myTweet = t.user.id_str === userId;
 	let selectItems: SelectItemProps[] = [
@@ -326,6 +328,21 @@ const Detail = ({
 		parseTweet("")
 	);
 
+	const reply = async () => {
+		const error = await postReply(client, {
+			status: replyText,
+			in_reply_to_status_id: t.id_str,
+		});
+		if (error !== null) {
+			// onError()
+			return;
+		}
+		setReplyText("");
+		setParsedTweet(parseTweet(""));
+		setWaitReturn(false);
+		setIsReplyOpen(false);
+	};
+
 	useInput(
 		(input, key) => {
 			if (input === "r") {
@@ -349,11 +366,7 @@ const Detail = ({
 					setIsReplyOpen(false);
 				});
 			} else if (waitReturn && key.return) {
-				// reply();
-				setReplyText("");
-				setParsedTweet(parseTweet(""));
-				setIsReplyOpen(false);
-				setWaitReturn(false);
+				reply();
 			}
 		},
 		{ isActive: isReplyOpen }
