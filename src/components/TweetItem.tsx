@@ -15,11 +15,7 @@ type Props = {
 
 const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 	const t = tweet.retweeted_status ?? tweet;
-	const ago = getDisplayTimeAgo(
-		tweet.retweeted_status
-			? tweet.retweeted_status.created_at
-			: tweet.created_at
-	);
+	const ago = getDisplayTimeAgo(t.created_at);
 
 	const [cols] = useDimensions();
 
