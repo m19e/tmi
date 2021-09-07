@@ -9,7 +9,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
-import { postReply } from "../lib/twitter";
+import { postReply, postDeleteTweet } from "../lib/twitter";
 import { useUserId, useClient } from "../hooks";
 import TweetItem from "./TweetItem";
 import Loader from "./Loader";
@@ -287,9 +287,9 @@ const Detail = ({
 	const time = getDisplayTime(t.created_at);
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
-	const [inProcess, setInProcess] = useState<"none" | "reply" | "rt" | "fav">(
-		"none"
-	);
+	const [inProcess, setInProcess] = useState<
+		"none" | "reply" | "rt" | "fav" | "delete"
+	>("none");
 
 	const [cols] = useDimensions();
 	const [client] = useClient();
@@ -344,6 +344,16 @@ const Detail = ({
 		setParsedTweet(parseTweet(""));
 	};
 
+	const deleteTweet = async () => {
+		setInProcess("delete");
+		const error = await postDeleteTweet(client, { id: t.id_str });
+		setInProcess("none");
+		if (error !== null) {
+			// onError
+			return;
+		}
+	};
+
 	useInput(
 		(input, key) => {
 			if (input === "r") {
@@ -376,6 +386,12 @@ const Detail = ({
 	const handleReplyChange = (value: string) => {
 		setReplyText(value);
 		setParsedTweet(parseTweet(value));
+	};
+
+	const handleSelectMenu = ({ value }: { label: string; value: string }) => {
+		if (value === "delete") {
+			deleteTweet();
+		}
 	};
 
 	return (
@@ -457,6 +473,7 @@ const Detail = ({
 								items={selectItems}
 								itemComponent={SelectItem}
 								indicatorComponent={Indicator}
+								onSelect={handleSelectMenu}
 							/>
 						</Box>
 					</Box>
