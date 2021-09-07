@@ -337,10 +337,10 @@ const Detail = ({
 			// onError()
 			return;
 		}
+		setIsReplyOpen(false);
+		setWaitReturn(false);
 		setReplyText("");
 		setParsedTweet(parseTweet(""));
-		setWaitReturn(false);
-		setIsReplyOpen(false);
 	};
 
 	useInput(
