@@ -287,7 +287,6 @@ const Detail = ({
 	const time = getDisplayTime(t.created_at);
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
-	const [fetching, setFetching] = useState(false);
 	const [inProcess, setInProcess] = useState<"none" | "reply" | "rt" | "fav">(
 		"none"
 	);
