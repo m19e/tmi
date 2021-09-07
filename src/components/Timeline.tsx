@@ -435,7 +435,7 @@ const Detail = ({
 							</Text>
 							<Text color="gray">{280 - weightedLength}</Text>
 						</Box>
-						<Box minHeight={5} borderStyle="round" borderColor="white">
+						<Box minHeight={5} borderStyle="round" borderColor="#777777">
 							<TextInput
 								placeholder="Tweet your reply"
 								value={replyText}
