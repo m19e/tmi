@@ -236,12 +236,7 @@ const Timeline = ({
 						<>
 							<Box justifyContent="space-between" paddingX={1}>
 								<Text>
-									New Tweet{" "}
-									{inNewTweet && (
-										<Text color="#00acee">
-											<Spinner />
-										</Text>
-									)}
+									New Tweet <Loader loading={inNewTweet} color="#00acee" />
 								</Text>
 								<Text>{280 - weightedLength}</Text>
 							</Box>
