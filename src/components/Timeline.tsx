@@ -288,6 +288,9 @@ const Detail = ({
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
 	const [fetching, setFetching] = useState(false);
+	const [inProcess, setInProcess] = useState<"none" | "reply" | "rt" | "fav">(
+		"none"
+	);
 
 	const [cols] = useDimensions();
 	const [client] = useClient();
@@ -326,12 +329,12 @@ const Detail = ({
 	);
 
 	const reply = async () => {
-		setFetching(true);
+		setInProcess("reply");
 		const error = await postReply(client, {
 			status: replyText,
 			in_reply_to_status_id: t.id_str,
 		});
-		setFetching(false);
+		setInProcess("none");
 		if (error !== null) {
 			// onError()
 			return;
@@ -348,7 +351,7 @@ const Detail = ({
 				setIsReplyOpen(true);
 			}
 		},
-		{ isActive: !isReplyOpen && !fetching }
+		{ isActive: !isReplyOpen && inProcess === "none" }
 	);
 
 	useInput(
@@ -368,7 +371,7 @@ const Detail = ({
 				reply();
 			}
 		},
-		{ isActive: isReplyOpen && !fetching }
+		{ isActive: isReplyOpen && inProcess === "none" }
 	);
 
 	const handleReplyChange = (value: string) => {
@@ -430,7 +433,7 @@ const Detail = ({
 						<Box justifyContent="space-between" paddingX={1}>
 							<Text color="gray">
 								Replying to <Text color="#00acee">@{t.user.screen_name} </Text>
-								<Loader loading={fetching} rawColor="#00acee" />
+								<Loader loading={inProcess === "reply"} rawColor="#00acee" />
 							</Text>
 							<Text color="gray">{280 - weightedLength}</Text>
 						</Box>
