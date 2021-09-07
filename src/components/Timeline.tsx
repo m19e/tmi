@@ -12,7 +12,6 @@ import { getDisplayTime } from "../lib";
 import { postReply } from "../lib/twitter";
 import { useUserId, getClient } from "../hooks";
 import TweetItem from "./TweetItem";
-import Spinner from "./Spinner";
 import Loader from "./Loader";
 
 const DISPLAY_TWEETS_COUNT = 5;
