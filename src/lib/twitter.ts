@@ -14,3 +14,17 @@ export const postReply = async (
 		return error;
 	}
 };
+
+export const postDeleteTweet = async (
+	client: Twitter,
+	params: {
+		id: string;
+	}
+): Promise<null | any> => {
+	try {
+		await client.post("statuses/destroy", params);
+		return null;
+	} catch (error) {
+		return error;
+	}
+};
