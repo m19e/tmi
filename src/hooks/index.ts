@@ -9,6 +9,7 @@ import {
 	cursorIndexAtom,
 	focusIndexAtom,
 	displayTweetsCountAtom,
+	focusedPositionAtom,
 } from "../store";
 
 export const useUserId = () => useAtom(userIdAtom);
@@ -27,6 +28,8 @@ export const useCursorIndex = () => useAtom(cursorIndexAtom);
 export const useFocusIndex = () => useAtom(focusIndexAtom);
 
 export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
+
+export const getFocusedPosition = () => useAtom(focusedPositionAtom)[0];
 
 export const useMover = (): {
 	prev: (update: () => void) => void;
