@@ -17,7 +17,7 @@ import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { convertTweetToDisplayable } from "../src/lib";
-import { useUserId, useClient } from "../src/hooks";
+import { useUserId, useClient, useTimeline } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 
 dotenvConfig();
@@ -64,7 +64,8 @@ const Tink = ({ name = "" }) => {
 	);
 	const [lists, setLists] = useState<TrimmedList[]>([]);
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
-	const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
+	// const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
+	const [timeline, setTimeline] = useTimeline();
 
 	const [error, setError] = useState("");
 
@@ -199,7 +200,7 @@ const Tink = ({ name = "" }) => {
 		try {
 			const data: Tweet[] = await client.get("lists/statuses", params);
 			const converted = data.map((t) => convertTweetToDisplayable(t));
-			setCurrentTimeline((prev) => {
+			setTimeline((prev) => {
 				if (options.select) return converted;
 				return options.backward
 					? prev.slice(0, -1).concat(converted)
@@ -225,10 +226,10 @@ const Tink = ({ name = "" }) => {
 		};
 		if (select) return params;
 		if (backward) {
-			const oldest = currentTimeline.slice(-1)[0];
+			const oldest = timeline.slice(-1)[0];
 			return { ...params, max_id: oldest.id_str };
 		}
-		const newest = currentTimeline[0];
+		const newest = timeline[0];
 		return { ...params, since_id: newest.id_str };
 	};
 
@@ -260,7 +261,7 @@ const Tink = ({ name = "" }) => {
 			});
 
 			const converted = convertTweetToDisplayable(res);
-			setCurrentTimeline((prev) =>
+			setTimeline((prev) =>
 				prev.map((t) => (t.id_str === id_str ? converted : t))
 			);
 			return converted;
@@ -293,7 +294,7 @@ const Tink = ({ name = "" }) => {
 			});
 
 			const converted = convertTweetToDisplayable(res);
-			setCurrentTimeline((prev) =>
+			setTimeline((prev) =>
 				prev.map((t) => (t.id_str === id_str ? converted : t))
 			);
 			return converted;
@@ -393,7 +394,7 @@ const Tink = ({ name = "" }) => {
 						</Text>
 					</Box>
 					<Timeline
-						timeline={currentTimeline}
+						timeline={timeline}
 						onToggleList={handleToggleList}
 						onUpdate={handleUpdate}
 						onNewTweet={handleNewTweet}
