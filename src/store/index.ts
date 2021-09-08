@@ -24,3 +24,13 @@ export const displayTimelineAtom = atom<Tweet[]>((get) => {
 export const focusedTweetAtom = atom<Tweet>(
 	(get) => get(displayTimelineAtom)[get(focusIndexAtom)]
 );
+
+export const focusedPositionAtom = atom<{ position: number; total: number }>(
+	(get) => {
+		const cursor = get(cursorIndexAtom);
+		const focus = get(focusIndexAtom);
+		const { length } = get(timelineAtom);
+
+		return { position: cursor + focus, total: length };
+	}
+);
