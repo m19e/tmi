@@ -5,6 +5,7 @@ import {
 	clientAtom,
 	timelineAtom,
 	displayTimelineAtom,
+	focusedTweetAtom,
 	cursorIndexAtom,
 	focusIndexAtom,
 	displayTweetsCountAtom,
@@ -24,6 +25,8 @@ export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
 export const useCursorIndex = () => useAtom(cursorIndexAtom);
 
 export const useFocusIndex = () => useAtom(focusIndexAtom);
+
+export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
 
 export const useMover = (): {
 	prev: (update: () => void) => void;
