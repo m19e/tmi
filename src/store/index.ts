@@ -14,7 +14,7 @@ export const focusIndexAtom = atom(0);
 
 export const displayTweetsCountAtom = atom(5);
 
-export const displayTimeline = atom<Tweet[]>((get) => {
+export const displayTimelineAtom = atom<Tweet[]>((get) => {
 	const cursor = get(cursorIndexAtom);
 	const count = get(displayTweetsCountAtom);
 
