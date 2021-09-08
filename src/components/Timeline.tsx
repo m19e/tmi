@@ -10,11 +10,18 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
 import { postReply, postDeleteTweet } from "../lib/twitter";
-import { useUserId, useClient } from "../hooks";
+import {
+	useUserId,
+	useClient,
+	useMover,
+	useCursorIndex,
+	getDisplayTimeline,
+	getFocusedTweet,
+} from "../hooks";
 import TweetItem from "./TweetItem";
 import Loader from "./Loader";
 
-const DISPLAY_TWEETS_COUNT = 5;
+// const DISPLAY_TWEETS_COUNT = 5;
 
 type Props = {
 	timeline: Tweet[];
@@ -33,11 +40,16 @@ const Timeline = ({
 	onFav,
 	onRT,
 }: Props) => {
-	const [cursor, setCursor] = useState(0);
-	const [focus, setFocus] = useState(0);
-	const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
-		timeline.slice(0, DISPLAY_TWEETS_COUNT)
-	);
+	// const [cursor, setCursor] = useState(0);
+	// const [focus, setFocus] = useState(0);
+	// const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
+	// 	timeline.slice(0, DISPLAY_TWEETS_COUNT)
+	// );
+	const displayTimeline = getDisplayTimeline();
+	const mover = useMover();
+	const [, setCursor] = useCursorIndex();
+	const focusedTweet = getFocusedTweet();
+
 	const [fetching, setFetching] = useState(false);
 	const [inFav, setInFav] = useState(false);
 	const [inRT, setInRT] = useState(false);
@@ -57,7 +69,7 @@ const Timeline = ({
 	const update = async (backward: boolean) => {
 		setFetching(true);
 		const len = await onUpdate(backward);
-		if (!backward) setCursor(cursor + len);
+		if (!backward) setCursor((prev) => prev + len);
 		setFetching(false);
 	};
 
@@ -79,13 +91,13 @@ const Timeline = ({
 	const fav = async () => {
 		setFetching(true);
 		setInFav(true);
-		const res = await onFav(displayTimeline[focus]);
+		const res = await onFav(focusedTweet);
 		if (res === null) {
 			// onError()
 		} else {
-			setDisplayTimeline((prev) =>
-				prev.map((t) => (t.id_str === res.id_str ? res : t))
-			);
+			// setDisplayTimeline((prev) =>
+			// 	prev.map((t) => (t.id_str === res.id_str ? res : t))
+			// );
 		}
 		setInFav(false);
 		setFetching(false);
@@ -94,13 +106,13 @@ const Timeline = ({
 	const rt = async () => {
 		setFetching(true);
 		setInRT(true);
-		const res = await onRT(displayTimeline[focus]);
+		const res = await onRT(focusedTweet);
 		if (res === null) {
 			// onError()
 		} else {
-			setDisplayTimeline((prev) =>
-				prev.map((t) => (t.id_str === res.id_str ? res : t))
-			);
+			// setDisplayTimeline((prev) =>
+			// 	prev.map((t) => (t.id_str === res.id_str ? res : t))
+			// );
 		}
 		setInRT(false);
 		setFetching(false);
@@ -111,54 +123,13 @@ const Timeline = ({
 			if (fetching) return;
 
 			if (key.upArrow || (key.shift && key.tab)) {
-				if (focus === 0) {
-					if (cursor === 0) {
-						update(false);
-					} else {
-						setDisplayTimeline(
-							timeline.slice(cursor - 1, cursor + DISPLAY_TWEETS_COUNT - 1)
-						);
-						setCursor((prev) => prev - 1);
-					}
-				} else {
-					setFocus((prev) => prev - 1);
-				}
+				mover.prev(() => update(false));
 			} else if (key.downArrow || key.tab) {
-				if (focus === DISPLAY_TWEETS_COUNT - 1) {
-					if (cursor + DISPLAY_TWEETS_COUNT + 1 > timeline.length) {
-						update(true);
-					} else {
-						setDisplayTimeline(
-							timeline.slice(cursor + 1, cursor + DISPLAY_TWEETS_COUNT + 1)
-						);
-						setCursor((prev) => prev + 1);
-					}
-				} else {
-					setFocus((prev) => prev + 1);
-				}
+				mover.next(() => update(true));
 			} else if (key.pageUp) {
-				if (cursor + focus < DISPLAY_TWEETS_COUNT) {
-					update(false);
-				} else {
-					const newCursor = Math.max(cursor - DISPLAY_TWEETS_COUNT, 0);
-					setDisplayTimeline(
-						timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
-					);
-					setCursor(newCursor);
-				}
+				mover.pageUp(() => update(false));
 			} else if (key.pageDown) {
-				if (cursor + DISPLAY_TWEETS_COUNT * 2 > timeline.length) {
-					update(true);
-				} else {
-					const newCursor = Math.min(
-						cursor + DISPLAY_TWEETS_COUNT,
-						timeline.length - DISPLAY_TWEETS_COUNT - 1
-					);
-					setDisplayTimeline(
-						timeline.slice(newCursor, newCursor + DISPLAY_TWEETS_COUNT)
-					);
-					setCursor(newCursor);
-				}
+				mover.pageDown(() => update(true));
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
@@ -225,9 +196,9 @@ const Timeline = ({
 							<TweetItem
 								key={i}
 								tweet={t}
-								isFocused={focus === i}
-								inFav={focus === i && inFav}
-								inRT={focus === i && inRT}
+								isFocused={t.id_str === focusedTweet.id_str}
+								inFav={t.id_str === focusedTweet.id_str && inFav}
+								inRT={t.id_str === focusedTweet.id_str && inRT}
 							/>
 						))}
 					</Box>
@@ -265,7 +236,7 @@ const Timeline = ({
 			)}
 			{status === "detail" && (
 				<Detail
-					tweet={displayTimeline[focus]}
+					tweet={focusedTweet}
 					isReplyOpen={isReplyOpen}
 					setIsReplyOpen={setIsReplyOpen}
 				/>
