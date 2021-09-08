@@ -21,8 +21,6 @@ import {
 import TweetItem from "./TweetItem";
 import Loader from "./Loader";
 
-// const DISPLAY_TWEETS_COUNT = 5;
-
 type Props = {
 	timeline: Tweet[];
 	onToggleList: () => void;
@@ -40,11 +38,6 @@ const Timeline = ({
 	onFav,
 	onRT,
 }: Props) => {
-	// const [cursor, setCursor] = useState(0);
-	// const [focus, setFocus] = useState(0);
-	// const [displayTimeline, setDisplayTimeline] = useState<Tweet[]>(
-	// 	timeline.slice(0, DISPLAY_TWEETS_COUNT)
-	// );
 	const displayTimeline = getDisplayTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
@@ -94,10 +87,6 @@ const Timeline = ({
 		const res = await onFav(focusedTweet);
 		if (res === null) {
 			// onError()
-		} else {
-			// setDisplayTimeline((prev) =>
-			// 	prev.map((t) => (t.id_str === res.id_str ? res : t))
-			// );
 		}
 		setInFav(false);
 		setFetching(false);
@@ -109,10 +98,6 @@ const Timeline = ({
 		const res = await onRT(focusedTweet);
 		if (res === null) {
 			// onError()
-		} else {
-			// setDisplayTimeline((prev) =>
-			// 	prev.map((t) => (t.id_str === res.id_str ? res : t))
-			// );
 		}
 		setInRT(false);
 		setFetching(false);
