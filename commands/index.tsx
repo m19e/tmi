@@ -64,7 +64,6 @@ const Tink = ({ name = "" }) => {
 	);
 	const [lists, setLists] = useState<TrimmedList[]>([]);
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
-	// const [currentTimeline, setCurrentTimeline] = useState<Tweet[]>([]);
 	const [timeline, setTimeline] = useTimeline();
 
 	const [error, setError] = useState("");
