@@ -43,10 +43,13 @@ const Timeline = ({
 	const [, setCursor] = useCursorIndex();
 	const focusedTweet = getFocusedTweet();
 
-	const [fetching, setFetching] = useState(false);
-	const [inFav, setInFav] = useState(false);
-	const [inRT, setInRT] = useState(false);
-	const [inNewTweet, setInNewTweet] = useState(false);
+	// const [fetching, setFetching] = useState(false);
+	// const [inFav, setInFav] = useState(false);
+	// const [inRT, setInRT] = useState(false);
+	// const [inNewTweet, setInNewTweet] = useState(false);
+	const [inProcess, setInProcess] = useState<
+		"none" | "update" | "fav" | "rt" | "tweet"
+	>("none");
 
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [waitReturn, setWaitReturn] = useState(false);
@@ -60,52 +63,46 @@ const Timeline = ({
 	const [isReplyOpen, setIsReplyOpen] = useState(false);
 
 	const update = async (backward: boolean) => {
-		setFetching(true);
+		setInProcess("update");
 		const len = await onUpdate(backward);
 		if (!backward) setCursor((prev) => prev + len);
-		setFetching(false);
+		setInProcess("none");
 	};
 
 	const newTweet = async () => {
 		if (!valid) return;
-		setFetching(true);
-		setInNewTweet(true);
+		setInProcess("tweet");
 		const err = await onNewTweet(tweetText);
-		setInNewTweet(false);
 		if (err !== null) {
 			// onError()
 		} else {
 			setIsNewTweetOpen(false);
 			setTweetText("");
 		}
-		setFetching(false);
+		setInProcess("none");
 	};
 
 	const fav = async () => {
-		setFetching(true);
-		setInFav(true);
+		setInProcess("fav");
 		const res = await onFav(focusedTweet);
 		if (res === null) {
 			// onError()
 		}
-		setInFav(false);
-		setFetching(false);
+		setInProcess("none");
 	};
 
 	const rt = async () => {
-		setFetching(true);
-		setInRT(true);
+		setInProcess("rt");
 		const res = await onRT(focusedTweet);
 		if (res === null) {
 			// onError()
 		}
-		setInRT(false);
-		setFetching(false);
+		setInProcess("none");
 	};
 
 	useInput(
 		(input, key) => {
-			if (fetching) return;
+			if (inProcess !== "none") return;
 
 			if (key.upArrow || (key.shift && key.tab)) {
 				mover.prev(() => update(false));
@@ -134,7 +131,7 @@ const Timeline = ({
 
 	useInput(
 		(_, key) => {
-			if (fetching) return;
+			if (inProcess !== "none") return;
 
 			if (key.escape) {
 				if (waitReturn) {
@@ -182,8 +179,8 @@ const Timeline = ({
 								key={i}
 								tweet={t}
 								isFocused={t.id_str === focusedTweet.id_str}
-								inFav={t.id_str === focusedTweet.id_str && inFav}
-								inRT={t.id_str === focusedTweet.id_str && inRT}
+								inFav={inProcess === "fav"}
+								inRT={inProcess === "rt"}
 							/>
 						))}
 					</Box>
@@ -191,7 +188,8 @@ const Timeline = ({
 						<>
 							<Box justifyContent="space-between" paddingX={1}>
 								<Text>
-									New Tweet <Loader loading={inNewTweet} rawColor="#00acee" />
+									New Tweet{" "}
+									<Loader loading={inProcess === "tweet"} rawColor="#00acee" />
 								</Text>
 								<Text>{280 - weightedLength}</Text>
 							</Box>
