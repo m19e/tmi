@@ -181,9 +181,10 @@ const Tink = ({ name = "" }) => {
 		list_id: string,
 		options: { backward: boolean; select: boolean }
 	): Promise<Tweet[]> => {
-		const params = createGetListTimelineParams(list_id, {
-			...options,
+		const params = createGetListTimelineParams({
+			list_id,
 			count: 200,
+			...options,
 		});
 
 		const data: Tweet[] | string = await getListTweetsApi(client, params);
@@ -193,16 +194,22 @@ const Tink = ({ name = "" }) => {
 		return converted;
 	};
 
-	const createGetListTimelineParams = (
-		list_id: string,
-		options: { backward: boolean; count: number; select: boolean }
-	): GetListTweetsParams => {
-		const { backward, count, select } = options;
+	const createGetListTimelineParams = ({
+		list_id,
+		count,
+		backward,
+		select,
+	}: {
+		list_id: string;
+		count: number;
+		backward: boolean;
+		select: boolean;
+	}): GetListTweetsParams => {
 		const params: GetListTweetsParams = {
-			tweet_mode: "extended",
-			include_entities: true,
 			list_id,
 			count,
+			tweet_mode: "extended",
+			include_entities: true,
 		};
 		if (select) return params;
 		if (backward) {
