@@ -1,4 +1,6 @@
 import type Twitter from "twitter-lite";
+import type { GetListTweetsParams } from "../types";
+import type { Tweet } from "../types/twitter";
 
 export const postReply = async (
 	client: Twitter,
@@ -24,6 +26,17 @@ export const postDeleteTweet = async (
 	try {
 		await client.post("statuses/destroy", params);
 		return null;
+	} catch (error) {
+		return error;
+	}
+};
+
+export const getListTweets = async (
+	client: Twitter,
+	params: GetListTweetsParams
+): Promise<Tweet[] | any> => {
+	try {
+		return await client.get("lists/statuses", params);
 	} catch (error) {
 		return error;
 	}
