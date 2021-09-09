@@ -34,10 +34,10 @@ export const postDeleteTweet = async (
 export const getListTweets = async (
 	client: Twitter,
 	params: GetListTweetsParams
-): Promise<Tweet[] | any> => {
+): Promise<Tweet[] | string> => {
 	try {
 		return await client.get("lists/statuses", params);
 	} catch (error) {
-		return error;
+		return "Get ListsStatuses Error";
 	}
 };
