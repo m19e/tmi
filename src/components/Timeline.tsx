@@ -9,7 +9,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime, convertTweetToDisplayable } from "../lib";
-import { postReplyApi, postDeleteTweetApi } from "../lib/api";
+import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import {
 	useUserId,
 	useClient,
@@ -57,21 +57,10 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("none");
 	};
 
-	const onNewTweet = async (status: string): Promise<null | any> => {
-		try {
-			await client.post("statuses/update", {
-				status,
-			});
-			return null;
-		} catch (err) {
-			return err;
-		}
-	};
-
 	const newTweet = async () => {
 		if (!valid) return;
 		setInProcess("tweet");
-		const err = await onNewTweet(tweetText);
+		const err = await postTweetApi(client, { status: tweetText });
 		if (err !== null) {
 			// onError()
 		} else {
