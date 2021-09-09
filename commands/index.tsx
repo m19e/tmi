@@ -391,7 +391,6 @@ const Tink = ({ name = "" }) => {
 						</Text>
 					</Box>
 					<Timeline
-						timeline={timeline}
 						onToggleList={handleToggleList}
 						onUpdate={handleUpdate}
 						onNewTweet={handleNewTweet}

@@ -22,7 +22,6 @@ import TweetItem from "./TweetItem";
 import Loader from "./Loader";
 
 type Props = {
-	timeline: Tweet[];
 	onToggleList: () => void;
 	onUpdate: (backward: boolean) => Promise<number>;
 	onNewTweet: (s: string) => Promise<null | any>;
@@ -31,7 +30,6 @@ type Props = {
 };
 
 const Timeline = ({
-	timeline,
 	onToggleList,
 	onUpdate,
 	onNewTweet,
