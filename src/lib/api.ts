@@ -14,6 +14,23 @@ export const getListTweetsApi = async (
 	}
 };
 
+export const getTweetApi = async (
+	client: Twitter,
+	params: { id: string }
+): Promise<Tweet | string> => {
+	try {
+		return await client.get("statuses/show", {
+			...params,
+			trim_user: false,
+			include_my_retweet: true,
+			tweet_mode: "extended",
+			include_entities: true,
+		});
+	} catch (_error) {
+		return "Error: GET statuses/show";
+	}
+};
+
 // POST request
 export const postTweetApi = async (
 	client: Twitter,
