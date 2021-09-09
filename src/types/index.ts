@@ -3,7 +3,7 @@ interface DefaultTwitterRequestParams {
 	include_entities: true;
 }
 
-export interface GetListTimelineParams extends DefaultTwitterRequestParams {
+export interface GetListTweetsParams extends DefaultTwitterRequestParams {
 	list_id: string;
 	count: number;
 	since_id?: string;
