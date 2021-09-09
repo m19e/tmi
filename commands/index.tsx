@@ -16,6 +16,7 @@ import Twitter, { TwitterOptions } from "twitter-lite";
 import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
+import { GetListTweetsParams } from "../src/types";
 import { convertTweetToDisplayable } from "../src/lib";
 import { getListTweets as getListTweetsApi } from "../src/lib/api";
 import { useUserId, useClient, useTimeline } from "../src/hooks";
@@ -207,9 +208,9 @@ const Tink = ({ name = "" }) => {
 	const createGetListTimelineParams = (
 		list_id: string,
 		options: { backward: boolean; count: number; select: boolean }
-	): GetListTimelineParams => {
+	): GetListTweetsParams => {
 		const { backward, count, select } = options;
-		const params: GetListTimelineParams = {
+		const params: GetListTweetsParams = {
 			tweet_mode: "extended",
 			include_entities: true,
 			list_id,
