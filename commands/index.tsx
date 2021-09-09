@@ -17,6 +17,7 @@ import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { convertTweetToDisplayable } from "../src/lib";
+import { getListTweets as getListTweetsApi } from "../src/lib/twitter";
 import { useUserId, useClient, useTimeline } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 
@@ -190,26 +191,17 @@ const Tink = ({ name = "" }) => {
 	const getListTimeline = async (
 		list_id: string,
 		options: { backward: boolean; select: boolean }
-	): Promise<number> => {
+	): Promise<Tweet[]> => {
 		const params = createGetListTimelineParams(list_id, {
 			...options,
 			count: 200,
 		});
 
-		try {
-			const data: Tweet[] = await client.get("lists/statuses", params);
-			const converted = data.map((t) => convertTweetToDisplayable(t));
-			setTimeline((prev) => {
-				if (options.select) return converted;
-				return options.backward
-					? prev.slice(0, -1).concat(converted)
-					: converted.concat(prev);
-			});
-			return data.length;
-		} catch (err) {
-			console.log(err);
-			return 0;
-		}
+		const data: Tweet[] | string = await getListTweetsApi(client, params);
+		if (!Array.isArray(data) || data.length === 0) return [];
+
+		const converted = data.map((t) => convertTweetToDisplayable(t));
+		return converted;
 	};
 
 	const createGetListTimelineParams = (
