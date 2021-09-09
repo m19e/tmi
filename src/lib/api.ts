@@ -37,8 +37,8 @@ export const getListTweets = async (
 ): Promise<Tweet[] | string> => {
 	try {
 		return await client.get("lists/statuses", params);
-	} catch (error) {
-		return "Get ListsStatuses Error";
+	} catch (_error) {
+		return "Error: GET lists/statuses";
 	}
 };
 
@@ -50,6 +50,6 @@ export const postTweet = async (
 		await client.post("statuses/update", params);
 		return null;
 	} catch (_error) {
-		return "Post StatusesUpdate Error";
+		return "Error: POST statuses/update";
 	}
 };
