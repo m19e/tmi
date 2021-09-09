@@ -366,7 +366,7 @@ const Tink = ({ name = "" }) => {
 						<Text>PIN: </Text>
 						<TextInput
 							value={pin}
-							onChange={(value) => setPIN(value)}
+							onChange={setPIN}
 							onSubmit={handleSubmitPinAuth}
 						/>
 					</Box>
