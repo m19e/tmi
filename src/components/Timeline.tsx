@@ -8,11 +8,12 @@ import SelectInput, { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
-import { getDisplayTime } from "../lib";
+import { getDisplayTime, convertTweetToDisplayable } from "../lib";
 import { postReply, postDeleteTweet } from "../lib/api";
 import {
 	useUserId,
 	useClient,
+	useTimeline,
 	useMover,
 	useCursorIndex,
 	getDisplayTimeline,
@@ -24,18 +25,11 @@ import Loader from "./Loader";
 type Props = {
 	onToggleList: () => void;
 	onUpdate: (backward: boolean) => Promise<number>;
-	onNewTweet: (s: string) => Promise<null | any>;
-	onFav: (t: Tweet) => Promise<Tweet | null>;
-	onRT: (t: Tweet) => Promise<Tweet | null>;
 };
 
-const Timeline = ({
-	onToggleList,
-	onUpdate,
-	onNewTweet,
-	onFav,
-	onRT,
-}: Props) => {
+const Timeline = ({ onToggleList, onUpdate }: Props) => {
+	const [client] = useClient();
+	const [, setTimeline] = useTimeline();
 	const displayTimeline = getDisplayTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
@@ -63,6 +57,17 @@ const Timeline = ({
 		setInProcess("none");
 	};
 
+	const onNewTweet = async (status: string): Promise<null | any> => {
+		try {
+			await client.post("statuses/update", {
+				status,
+			});
+			return null;
+		} catch (err) {
+			return err;
+		}
+	};
+
 	const newTweet = async () => {
 		if (!valid) return;
 		setInProcess("tweet");
@@ -76,6 +81,40 @@ const Timeline = ({
 		setInProcess("none");
 	};
 
+	const onFav = async ({ id_str, favorited }: Tweet): Promise<Tweet | null> => {
+		try {
+			if (favorited) {
+				await client.post("favorites/destroy", {
+					id: id_str,
+					tweet_mode: "extended",
+					include_entities: true,
+				});
+			} else {
+				await client.post("favorites/create", {
+					id: id_str,
+					tweet_mode: "extended",
+					include_entities: true,
+				});
+			}
+
+			const res: Tweet = await client.get("statuses/show", {
+				id: id_str,
+				trim_user: false,
+				include_my_retweet: true,
+				tweet_mode: "extended",
+				include_entities: true,
+			});
+
+			const converted = convertTweetToDisplayable(res);
+			setTimeline((prev) =>
+				prev.map((t) => (t.id_str === id_str ? converted : t))
+			);
+			return converted;
+		} catch (err) {
+			return null;
+		}
+	};
+
 	const fav = async () => {
 		setInProcess("fav");
 		const res = await onFav(focusedTweet);
@@ -83,6 +122,36 @@ const Timeline = ({
 			// onError()
 		}
 		setInProcess("none");
+	};
+
+	const onRT = async ({ id_str, retweeted }: Tweet): Promise<Tweet | null> => {
+		try {
+			if (retweeted) {
+				await client.post("statuses/unretweet", {
+					id: id_str,
+				});
+			} else {
+				await client.post("statuses/retweet", {
+					id: id_str,
+				});
+			}
+
+			const res: Tweet = await client.get("statuses/show", {
+				id: id_str,
+				trim_user: false,
+				include_my_retweet: true,
+				tweet_mode: "extended",
+				include_entities: true,
+			});
+
+			const converted = convertTweetToDisplayable(res);
+			setTimeline((prev) =>
+				prev.map((t) => (t.id_str === id_str ? converted : t))
+			);
+			return converted;
+		} catch (err) {
+			return null;
+		}
 	};
 
 	const rt = async () => {
