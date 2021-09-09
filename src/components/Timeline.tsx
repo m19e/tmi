@@ -43,10 +43,6 @@ const Timeline = ({
 	const [, setCursor] = useCursorIndex();
 	const focusedTweet = getFocusedTweet();
 
-	// const [fetching, setFetching] = useState(false);
-	// const [inFav, setInFav] = useState(false);
-	// const [inRT, setInRT] = useState(false);
-	// const [inNewTweet, setInNewTweet] = useState(false);
 	const [inProcess, setInProcess] = useState<
 		"none" | "update" | "fav" | "rt" | "tweet"
 	>("none");
