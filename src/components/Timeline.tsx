@@ -9,7 +9,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
-import { postReply, postDeleteTweet } from "../lib/twitter";
+import { postReply, postDeleteTweet } from "../lib/api";
 import {
 	useUserId,
 	useClient,
