@@ -3,7 +3,7 @@ import type { GetListTweetsParams } from "../types";
 import type { Tweet } from "../types/twitter";
 
 // GET request
-export const getListTweets = async (
+export const getListTweetsApi = async (
 	client: Twitter,
 	params: GetListTweetsParams
 ): Promise<Tweet[] | string> => {
@@ -15,7 +15,7 @@ export const getListTweets = async (
 };
 
 // POST request
-export const postTweet = async (
+export const postTweetApi = async (
 	client: Twitter,
 	params: { status: string }
 ): Promise<null | string> => {
@@ -27,7 +27,7 @@ export const postTweet = async (
 	}
 };
 
-export const postReply = async (
+export const postReplyApi = async (
 	client: Twitter,
 	params: {
 		status: string;
@@ -42,7 +42,7 @@ export const postReply = async (
 	}
 };
 
-export const postDeleteTweet = async (
+export const postDeleteTweetApi = async (
 	client: Twitter,
 	params: {
 		id: string;
