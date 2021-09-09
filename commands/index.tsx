@@ -187,7 +187,7 @@ const Tink = ({ name = "" }) => {
 			...options,
 		});
 
-		const data: Tweet[] | string = await getListTweetsApi(client, params);
+		const data = await getListTweetsApi(client, params);
 		if (!Array.isArray(data) || data.length === 0) return [];
 
 		const converted = data.map((t) => convertTweetToDisplayable(t));
