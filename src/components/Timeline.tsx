@@ -9,7 +9,12 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime, convertTweetToDisplayable } from "../lib";
-import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
+import {
+	getTweetApi,
+	postTweetApi,
+	postReplyApi,
+	postDeleteTweetApi,
+} from "../lib/api";
 import {
 	useUserId,
 	useClient,
@@ -86,15 +91,9 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				});
 			}
 
-			const res: Tweet = await client.get("statuses/show", {
-				id: id_str,
-				trim_user: false,
-				include_my_retweet: true,
-				tweet_mode: "extended",
-				include_entities: true,
-			});
-
-			const converted = convertTweetToDisplayable(res);
+			const tweet = await getTweetApi(client, { id: id_str });
+			if (typeof tweet === "string") return null;
+			const converted = convertTweetToDisplayable(tweet);
 			setTimeline((prev) =>
 				prev.map((t) => (t.id_str === id_str ? converted : t))
 			);
@@ -125,15 +124,9 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				});
 			}
 
-			const res: Tweet = await client.get("statuses/show", {
-				id: id_str,
-				trim_user: false,
-				include_my_retweet: true,
-				tweet_mode: "extended",
-				include_entities: true,
-			});
-
-			const converted = convertTweetToDisplayable(res);
+			const tweet = await getTweetApi(client, { id: id_str });
+			if (typeof tweet === "string") return null;
+			const converted = convertTweetToDisplayable(tweet);
 			setTimeline((prev) =>
 				prev.map((t) => (t.id_str === id_str ? converted : t))
 			);
