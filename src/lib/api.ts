@@ -41,3 +41,15 @@ export const getListTweets = async (
 		return "Get ListsStatuses Error";
 	}
 };
+
+export const postTweet = async (
+	client: Twitter,
+	params: { status: string }
+): Promise<null | string> => {
+	try {
+		await client.post("statuses/update", params);
+		return null;
+	} catch (_error) {
+		return "Post StatusesUpdate Error";
+	}
+};
