@@ -18,7 +18,7 @@ import { config as dotenvConfig } from "dotenv";
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { GetListTweetsParams } from "../src/types";
 import { convertTweetToDisplayable } from "../src/lib";
-import { getListTweets as getListTweetsApi } from "../src/lib/api";
+import { getListTweetsApi } from "../src/lib/api";
 import { useUserId, useClient, useTimeline } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 

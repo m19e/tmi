@@ -9,7 +9,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime, convertTweetToDisplayable } from "../lib";
-import { postReply, postDeleteTweet } from "../lib/api";
+import { postReplyApi, postDeleteTweetApi } from "../lib/api";
 import {
 	useUserId,
 	useClient,
@@ -346,7 +346,7 @@ const Detail = ({
 
 	const reply = async () => {
 		setInProcess("reply");
-		const error = await postReply(client, {
+		const error = await postReplyApi(client, {
 			status: replyText,
 			in_reply_to_status_id: t.id_str,
 		});
@@ -363,7 +363,7 @@ const Detail = ({
 
 	const deleteTweet = async () => {
 		setInProcess("delete");
-		const error = await postDeleteTweet(client, { id: t.id_str });
+		const error = await postDeleteTweetApi(client, { id: t.id_str });
 		setInProcess("none");
 		if (error !== null) {
 			// onError
