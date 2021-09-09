@@ -390,13 +390,7 @@ const Tink = ({ name = "" }) => {
 							[LIST]<Text color="green">{currentList.name}</Text>
 						</Text>
 					</Box>
-					<Timeline
-						onToggleList={handleToggleList}
-						onUpdate={handleUpdate}
-						onNewTweet={handleNewTweet}
-						onFav={handleFavorite}
-						onRT={handleRetweet}
-					/>
+					<Timeline onToggleList={handleToggleList} onUpdate={handleUpdate} />
 				</>
 			)}
 		</Box>
