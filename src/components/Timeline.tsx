@@ -213,7 +213,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		} = { redraft: false }
 	) => {
 		if (redraft) {
-			setTweetText(focusedTweet.full_text);
+			handleNewTweetChange(focusedTweet.full_text);
 			setIsNewTweetOpen(true);
 		}
 		setTimeline((prev) =>
