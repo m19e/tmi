@@ -109,18 +109,21 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("none");
 	};
 
-	const onRT = async ({ id_str, retweeted }: Tweet): Promise<Tweet | null> => {
+	const onRT = async ({
+		id_str,
+		retweeted,
+	}: Tweet): Promise<Tweet | string> => {
 		let err: null | string;
 		if (retweeted) {
 			err = await postUnretweetApi(client, { id: id_str });
 		} else {
 			err = await postRetweetApi(client, { id: id_str });
 		}
-		if (err !== null) return null;
+		if (err !== null) return err;
 
-		const tweet = await getTweetApi(client, { id: id_str });
-		if (typeof tweet === "string") return null;
-		const converted = convertTweetToDisplayable(tweet);
+		const res = await getTweetApi(client, { id: id_str });
+		if (typeof res === "string") return res;
+		const converted = convertTweetToDisplayable(res);
 		setTimeline((prev) =>
 			prev.map((t) => (t.id_str === id_str ? converted : t))
 		);
@@ -130,8 +133,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const rt = async () => {
 		setInProcess("rt");
 		const res = await onRT(focusedTweet);
-		if (res === null) {
-			// onError()
+		if (typeof res === "string") {
+			// onError(res)
 		}
 		setInProcess("none");
 	};
