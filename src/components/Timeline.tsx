@@ -16,6 +16,8 @@ import {
 	postDeleteTweetApi,
 	postFavoriteApi,
 	postUnfavoriteApi,
+	postRetweetApi,
+	postUnretweetApi,
 } from "../lib/api";
 import {
 	useUserId,
@@ -105,27 +107,21 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	};
 
 	const onRT = async ({ id_str, retweeted }: Tweet): Promise<Tweet | null> => {
-		try {
-			if (retweeted) {
-				await client.post("statuses/unretweet", {
-					id: id_str,
-				});
-			} else {
-				await client.post("statuses/retweet", {
-					id: id_str,
-				});
-			}
-
-			const tweet = await getTweetApi(client, { id: id_str });
-			if (typeof tweet === "string") return null;
-			const converted = convertTweetToDisplayable(tweet);
-			setTimeline((prev) =>
-				prev.map((t) => (t.id_str === id_str ? converted : t))
-			);
-			return converted;
-		} catch (err) {
-			return null;
+		let err: null | string;
+		if (retweeted) {
+			err = await postUnretweetApi(client, { id: id_str });
+		} else {
+			err = await postRetweetApi(client, { id: id_str });
 		}
+		if (err !== null) return null;
+
+		const tweet = await getTweetApi(client, { id: id_str });
+		if (typeof tweet === "string") return null;
+		const converted = convertTweetToDisplayable(tweet);
+		setTimeline((prev) =>
+			prev.map((t) => (t.id_str === id_str ? converted : t))
+		);
+		return converted;
 	};
 
 	const rt = async () => {
