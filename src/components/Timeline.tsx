@@ -205,6 +205,23 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setParsedTweet(parseTweet(value));
 	};
 
+	const removeFocusedTweetFromTimeline = (
+		{
+			redraft,
+		}: {
+			redraft: boolean;
+		} = { redraft: false }
+	) => {
+		if (redraft) {
+			setTweetText(focusedTweet.full_text);
+			setIsNewTweetOpen(true);
+		}
+		setTimeline((prev) =>
+			prev.filter((tw) => tw.id_str !== focusedTweet.id_str)
+		);
+		setStatus("timeline");
+	};
+
 	return (
 		<>
 			{status === "timeline" && (
