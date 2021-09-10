@@ -320,6 +320,13 @@ const Detail = ({
 		parseTweet("")
 	);
 
+	const resetReplyState = () => {
+		setIsReplyOpen(false);
+		setWaitReturn(false);
+		setReplyText("");
+		setParsedTweet(parseTweet(""));
+	};
+
 	const reply = async () => {
 		setInProcess("reply");
 		const error = await postReplyApi(client, {
@@ -331,10 +338,7 @@ const Detail = ({
 			// onError()
 			return;
 		}
-		setIsReplyOpen(false);
-		setWaitReturn(false);
-		setReplyText("");
-		setParsedTweet(parseTweet(""));
+		resetReplyState();
 	};
 
 	const deleteTweet = async () => {
