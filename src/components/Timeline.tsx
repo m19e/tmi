@@ -277,7 +277,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 						</>
 					) : (
 						<Text>
-							[R] reply [T] retweet [F] favorite [N] tweet [Enter] detail
+							[R] reply [T] retweet [F] favorite [N] tweet [Enter] detail [L]
+							list
 						</Text>
 					)}
 				</>
