@@ -292,7 +292,7 @@ const Detail = ({
 	setIsReplyOpen,
 }: {
 	tweet: Tweet;
-	onRemove: () => void;
+	onRemove: (options?: { redraft: boolean }) => void;
 	isReplyOpen: boolean;
 	setIsReplyOpen: (b: boolean) => void;
 }) => {
@@ -361,7 +361,13 @@ const Detail = ({
 		resetReplyState();
 	};
 
-	const deleteTweet = async () => {
+	const deleteTweet = async (
+		{
+			redraft,
+		}: {
+			redraft: boolean;
+		} = { redraft: false }
+	) => {
 		setInProcess("delete");
 		const error = await postDeleteTweetApi(client, { id: t.id_str });
 		setInProcess("none");
@@ -369,6 +375,8 @@ const Detail = ({
 			// onError
 			return;
 		}
+		onRemove({ redraft });
+		resetReplyState();
 	};
 
 	useInput(
