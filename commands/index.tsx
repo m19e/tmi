@@ -258,17 +258,11 @@ const Tink = ({ name = "" }) => {
 		setStatus("select");
 	};
 
-	const handleUpdate = async (backward: boolean): Promise<number> => {
-		const data = await getListTimeline(currentList.id_str, {
+	const handleUpdate = async (backward: boolean): Promise<Tweet[]> =>
+		await getListTimeline(currentList.id_str, {
 			backward,
 			select: false,
 		});
-		if (data.length)
-			setTimeline((prev) =>
-				backward ? prev.slice(0, -1).concat(data) : data.concat(prev)
-			);
-		return data.length;
-	};
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>

@@ -33,7 +33,7 @@ import Loader from "./Loader";
 
 type Props = {
 	onToggleList: () => void;
-	onUpdate: (backward: boolean) => Promise<number>;
+	onUpdate: (backward: boolean) => Promise<Tweet[]>;
 };
 
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
@@ -61,8 +61,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const update = async (backward: boolean) => {
 		setInProcess("update");
-		const len = await onUpdate(backward);
-		if (!backward) setCursor((prev) => prev + len);
+		const res = await onUpdate(backward);
+		if (res.length) {
+			if (!backward) setCursor((prev) => prev + res.length);
+			setTimeline((prev) =>
+				backward ? prev.slice(0, -1).concat(res) : res.concat(prev)
+			);
+		}
 		setInProcess("none");
 	};
 
