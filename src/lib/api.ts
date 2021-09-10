@@ -72,3 +72,59 @@ export const postDeleteTweetApi = async (
 		return "Error: POST statuses/destroy";
 	}
 };
+
+export const postFavoriteApi = async (
+	client: Twitter,
+	params: {
+		id: string;
+	}
+): Promise<null | string> => {
+	try {
+		await client.post("favorites/create", params);
+		return null;
+	} catch (_error) {
+		return "Error: POST favorites/create";
+	}
+};
+
+export const postUnfavoriteApi = async (
+	client: Twitter,
+	params: {
+		id: string;
+	}
+): Promise<null | string> => {
+	try {
+		await client.post("favorites/destroy", params);
+		return null;
+	} catch (_error) {
+		return "Error: POST favorites/destroy";
+	}
+};
+
+export const postRetweetApi = async (
+	client: Twitter,
+	params: {
+		id: string;
+	}
+): Promise<null | string> => {
+	try {
+		await client.post("statuses/retweet", params);
+		return null;
+	} catch (_error) {
+		return "Error: POST statuses/retweet";
+	}
+};
+
+export const postUnretweetApi = async (
+	client: Twitter,
+	params: {
+		id: string;
+	}
+): Promise<null | string> => {
+	try {
+		await client.post("statuses/unretweet", params);
+		return null;
+	} catch (_error) {
+		return "Error: POST statuses/unretweet";
+	}
+};
