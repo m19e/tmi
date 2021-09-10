@@ -416,6 +416,8 @@ const Detail = ({
 	const handleSelectMenu = ({ value }: { label: string; value: string }) => {
 		if (value === "delete") {
 			deleteTweet();
+		} else if (value === "redraft") {
+			deleteTweet({ redraft: true });
 		}
 	};
 
