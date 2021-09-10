@@ -276,6 +276,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			{status === "detail" && (
 				<Detail
 					tweet={focusedTweet}
+					onRemove={removeFocusedTweetFromTimeline}
 					isReplyOpen={isReplyOpen}
 					setIsReplyOpen={setIsReplyOpen}
 				/>
@@ -286,10 +287,12 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 const Detail = ({
 	tweet,
+	onRemove,
 	isReplyOpen,
 	setIsReplyOpen,
 }: {
 	tweet: Tweet;
+	onRemove: () => void;
 	isReplyOpen: boolean;
 	setIsReplyOpen: (b: boolean) => void;
 }) => {
