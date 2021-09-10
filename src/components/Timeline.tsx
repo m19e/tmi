@@ -79,18 +79,21 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("none");
 	};
 
-	const onFav = async ({ id_str, favorited }: Tweet): Promise<Tweet | null> => {
+	const onFav = async ({
+		id_str,
+		favorited,
+	}: Tweet): Promise<Tweet | string> => {
 		let err: null | string;
 		if (favorited) {
 			err = await postUnfavoriteApi(client, { id: id_str });
 		} else {
 			err = await postFavoriteApi(client, { id: id_str });
 		}
-		if (err !== null) return null;
+		if (err !== null) return err;
 
-		const tweet = await getTweetApi(client, { id: id_str });
-		if (typeof tweet === "string") return null;
-		const converted = convertTweetToDisplayable(tweet);
+		const res = await getTweetApi(client, { id: id_str });
+		if (typeof res === "string") return res;
+		const converted = convertTweetToDisplayable(res);
 		setTimeline((prev) =>
 			prev.map((t) => (t.id_str === id_str ? converted : t))
 		);
