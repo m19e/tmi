@@ -31,6 +31,6 @@ export const focusedPositionAtom = atom<{ position: number; total: number }>(
 		const focus = get(focusIndexAtom);
 		const { length } = get(timelineAtom);
 
-		return { position: cursor + focus, total: length };
+		return { position: cursor + focus + 1, total: length };
 	}
 );
