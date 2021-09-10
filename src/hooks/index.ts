@@ -67,7 +67,7 @@ export const useMover = (): {
 		}
 	};
 	const pageUp = (update: () => void) => {
-		if (cursor + focus < count) {
+		if (cursor + focus <= count) {
 			update();
 		} else {
 			setCursor(Math.max(cursor - count, 0));
