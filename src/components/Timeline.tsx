@@ -156,6 +156,10 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				mover.pageUp(() => update(false));
 			} else if (key.pageDown) {
 				mover.pageDown(() => update(true));
+			} else if (input === "0") {
+				mover.top();
+			} else if (input === "9") {
+				mover.bottom();
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
