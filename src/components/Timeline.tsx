@@ -14,6 +14,8 @@ import {
 	postTweetApi,
 	postReplyApi,
 	postDeleteTweetApi,
+	postFavoriteApi,
+	postUnfavoriteApi,
 } from "../lib/api";
 import {
 	useUserId,
@@ -76,31 +78,21 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	};
 
 	const onFav = async ({ id_str, favorited }: Tweet): Promise<Tweet | null> => {
-		try {
-			if (favorited) {
-				await client.post("favorites/destroy", {
-					id: id_str,
-					tweet_mode: "extended",
-					include_entities: true,
-				});
-			} else {
-				await client.post("favorites/create", {
-					id: id_str,
-					tweet_mode: "extended",
-					include_entities: true,
-				});
-			}
-
-			const tweet = await getTweetApi(client, { id: id_str });
-			if (typeof tweet === "string") return null;
-			const converted = convertTweetToDisplayable(tweet);
-			setTimeline((prev) =>
-				prev.map((t) => (t.id_str === id_str ? converted : t))
-			);
-			return converted;
-		} catch (err) {
-			return null;
+		let err: null | string;
+		if (favorited) {
+			err = await postUnfavoriteApi(client, { id: id_str });
+		} else {
+			err = await postFavoriteApi(client, { id: id_str });
 		}
+		if (err !== null) return null;
+
+		const tweet = await getTweetApi(client, { id: id_str });
+		if (typeof tweet === "string") return null;
+		const converted = convertTweetToDisplayable(tweet);
+		setTimeline((prev) =>
+			prev.map((t) => (t.id_str === id_str ? converted : t))
+		);
+		return converted;
 	};
 
 	const fav = async () => {
