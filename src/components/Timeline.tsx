@@ -103,8 +103,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const fav = async () => {
 		setInProcess("fav");
 		const res = await onFav(focusedTweet);
-		if (res === null) {
-			// onError()
+		if (typeof res === "string") {
+			// onError(res)
 		}
 		setInProcess("none");
 	};
