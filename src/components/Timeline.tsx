@@ -480,12 +480,17 @@ const Detail = ({
 									<>
 										<Text>{t.retweet_count} </Text>
 										<Text color={t.retweeted ? "green" : "white"}>RT </Text>
+										<Loader
+											loading={inProcess === "rt"}
+											namedColor="green"
+										/>{" "}
 									</>
 								)}
 								{t.favorite_count !== 0 && (
 									<>
 										<Text>{t.favorite_count} </Text>
 										<Text color={t.favorited ? "yellow" : "white"}>fav </Text>
+										<Loader loading={inProcess === "fav"} namedColor="yellow" />
 									</>
 								)}
 							</Text>
