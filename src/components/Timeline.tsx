@@ -1,26 +1,19 @@
 import React, { useState } from "react";
-import type { FC } from "react";
-import { Text, Box, Newline, useInput } from "ink";
-import Divider from "ink-divider";
-import useDimensions from "ink-use-stdout-dimensions";
+import { Text, Box, useInput } from "ink";
 import TextInput from "ink-text-input";
-import SelectInput, { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
-import { getDisplayTime, convertTweetToDisplayable } from "../lib";
+import { convertTweetToDisplayable } from "../lib";
 import {
 	getTweetApi,
 	postTweetApi,
-	postReplyApi,
-	postDeleteTweetApi,
 	postFavoriteApi,
 	postUnfavoriteApi,
 	postRetweetApi,
 	postUnretweetApi,
 } from "../lib/api";
 import {
-	useUserId,
 	useClient,
 	useTimeline,
 	useMover,
