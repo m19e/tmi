@@ -196,7 +196,9 @@ const Tink = ({ name = "" }) => {
 		const data = await getListTweetsApi(client, params);
 		if (!Array.isArray(data) || data.length === 0) return [];
 
-		const converted = await Promise.all(data.map(convertTweetToDisplayable));
+		const converted = await Promise.all(
+			data.map(async (t) => await convertTweetToDisplayable(client, t))
+		);
 		return converted;
 	};
 

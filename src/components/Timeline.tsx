@@ -79,7 +79,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 		const res = await getTweetApi(client, { id: id_str });
 		if (typeof res === "string") return res;
-		const converted = await convertTweetToDisplayable(res);
+		const converted = await convertTweetToDisplayable(client, res);
 		setTimeline((prev) =>
 			prev.map((t) => (t.id_str === id_str ? converted : t))
 		);
@@ -100,7 +100,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 		const res = await getTweetApi(client, { id: id_str });
 		if (typeof res === "string") return res;
-		const converted = await convertTweetToDisplayable(res);
+		const converted = await convertTweetToDisplayable(client, res);
 		setTimeline((prev) =>
 			prev.map((t) => (t.id_str === id_str ? converted : t))
 		);
