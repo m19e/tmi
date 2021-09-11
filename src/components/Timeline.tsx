@@ -169,7 +169,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
-				// reply();
+				setIsReplyOpen(true);
+				setStatus("detail");
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
