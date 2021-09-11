@@ -319,13 +319,20 @@ const Detail = ({
 	inProcess: TimelineProcess;
 	setInProcess: (p: TimelineProcess) => void;
 }) => {
+	const [client] = useClient();
+	const [userId] = useUserId();
+	const [cols] = useDimensions();
+
+	const [waitReturn, setWaitReturn] = useState(false);
+	const [replyText, setReplyText] = useState("");
+	const [{ weightedLength, valid }, setParsedTweet] = useState<ParsedTweet>(
+		parseTweet("")
+	);
+
 	const t = tweet.retweeted_status ?? tweet;
 	const time = getDisplayTime(t.created_at);
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
 
-	const [cols] = useDimensions();
-	const [client] = useClient();
-	const [userId] = useUserId();
 	const myTweet = t.user.id_str === userId;
 	let selectItems: SelectItemProps[] = [
 		{
@@ -352,12 +359,6 @@ const Detail = ({
 			value: "mute-client",
 		},
 	]);
-
-	const [waitReturn, setWaitReturn] = useState(false);
-	const [replyText, setReplyText] = useState("");
-	const [{ weightedLength, valid }, setParsedTweet] = useState<ParsedTweet>(
-		parseTweet("")
-	);
 
 	const resetReplyState = () => {
 		setIsReplyOpen(false);
