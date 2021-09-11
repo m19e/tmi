@@ -121,7 +121,7 @@ const convertToCorrectWidthText = (text: string): string => {
 		.join("\n");
 };
 
-export const convertTweetToDisplayable = (t: Tweet): Tweet => {
+export const convertTweetToDisplayable = async (t: Tweet): Promise<Tweet> => {
 	const full_text = convertToCorrectWidthText(t.full_text);
 	const name = convertToCorrectWidthText(t.user.name);
 	let tweet: Tweet = {
