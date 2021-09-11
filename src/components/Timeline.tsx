@@ -296,6 +296,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 					onRemove={removeFocusedTweetFromTimeline}
 					isReplyOpen={isReplyOpen}
 					setIsReplyOpen={setIsReplyOpen}
+					inProcess={inProcess}
+					setInProcess={setInProcess}
 				/>
 			)}
 		</>
@@ -307,19 +309,19 @@ const Detail = ({
 	onRemove,
 	isReplyOpen,
 	setIsReplyOpen,
+	inProcess,
+	setInProcess,
 }: {
 	tweet: Tweet;
 	onRemove: (options?: { redraft: boolean }) => void;
 	isReplyOpen: boolean;
 	setIsReplyOpen: (b: boolean) => void;
+	inProcess: TimelineProcess;
+	setInProcess: (p: TimelineProcess) => void;
 }) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const time = getDisplayTime(t.created_at);
 	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
-
-	const [inProcess, setInProcess] = useState<
-		"none" | "reply" | "rt" | "fav" | "delete"
-	>("none");
 
 	const [cols] = useDimensions();
 	const [client] = useClient();
