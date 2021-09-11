@@ -211,6 +211,10 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		(input, key) => {
 			if (key.escape) {
 				setStatus("timeline");
+			} else if (input === "t") {
+				rt();
+			} else if (input === "f") {
+				fav();
 			}
 		},
 		{ isActive: status === "detail" && !isReplyOpen }
