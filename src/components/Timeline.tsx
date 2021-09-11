@@ -476,9 +476,9 @@ const Detail = ({
 					<>
 						<Box minWidth={30} width={Math.floor(cols / 2)} paddingX={1}>
 							<Text>
-								{t.retweet_count !== 0 && (
+								{t.retweet_count !== 0 && <Text>{t.retweet_count} </Text>}
+								{(t.retweet_count !== 0 || inProcess === "rt") && (
 									<>
-										<Text>{t.retweet_count} </Text>
 										<Text color={t.retweeted ? "green" : "white"}>RT </Text>
 										<Loader
 											loading={inProcess === "rt"}
@@ -486,13 +486,11 @@ const Detail = ({
 										/>{" "}
 									</>
 								)}
-								{t.favorite_count !== 0 && (
-									<>
-										<Text>{t.favorite_count} </Text>
-										<Text color={t.favorited ? "yellow" : "white"}>fav </Text>
-										<Loader loading={inProcess === "fav"} namedColor="yellow" />
-									</>
+								{t.favorite_count !== 0 && <Text>{t.favorite_count} </Text>}
+								{(t.favorite_count !== 0 || inProcess === "fav") && (
+									<Text color={t.favorited ? "yellow" : "white"}>fav </Text>
 								)}
+								<Loader loading={inProcess === "fav"} namedColor="yellow" />
 							</Text>
 						</Box>
 						<Divider width={Math.max(30, Math.floor(cols / 2))} />
