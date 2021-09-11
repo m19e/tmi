@@ -35,6 +35,12 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 					</Text>
 					<Text dimColor>{ago}</Text>
 				</Text>
+				{t.in_reply_to_screen_name && (
+					<Text>
+						<Text dimColor>Replying to </Text>
+						<Text color="#00acee">@{t.in_reply_to_screen_name}</Text>
+					</Text>
+				)}
 				<Text>
 					{t.full_text}
 					{t.entities.media && <Text dimColor> (with Media)</Text>}
