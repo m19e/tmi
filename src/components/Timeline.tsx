@@ -477,7 +477,7 @@ const Detail = ({
 						<Box minWidth={30} width={Math.floor(cols / 2)} paddingX={1}>
 							<Text>
 								{t.retweet_count !== 0 && <Text>{t.retweet_count} </Text>}
-								{(t.retweet_count !== 0 || inProcess === "rt") && (
+								{(inProcess === "rt" || t.retweet_count !== 0) && (
 									<>
 										<Text color={t.retweeted ? "green" : "white"}>RT </Text>
 										<Loader
@@ -487,7 +487,7 @@ const Detail = ({
 									</>
 								)}
 								{t.favorite_count !== 0 && <Text>{t.favorite_count} </Text>}
-								{(t.favorite_count !== 0 || inProcess === "fav") && (
+								{(inProcess === "fav" || t.favorite_count !== 0) && (
 									<Text color={t.favorited ? "yellow" : "white"}>fav </Text>
 								)}
 								<Loader loading={inProcess === "fav"} namedColor="yellow" />
