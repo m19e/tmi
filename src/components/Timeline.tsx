@@ -48,11 +48,12 @@ type TimelineProcess =
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [client] = useClient();
 	const [, setTimeline] = useTimeline();
-	const displayTimeline = getDisplayTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
+	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
 
+	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
 	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
 
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
@@ -62,9 +63,49 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		parseTweet("")
 	);
 
-	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
-
 	const [isReplyOpen, setIsReplyOpen] = useState(false);
+
+	const requestRetweet = async ({
+		id_str,
+		retweeted,
+	}: Tweet): Promise<Tweet | string> => {
+		let err: null | string;
+		if (retweeted) {
+			err = await postUnretweetApi(client, { id: id_str });
+		} else {
+			err = await postRetweetApi(client, { id: id_str });
+		}
+		if (err !== null) return err;
+
+		const res = await getTweetApi(client, { id: id_str });
+		if (typeof res === "string") return res;
+		const converted = convertTweetToDisplayable(res);
+		setTimeline((prev) =>
+			prev.map((t) => (t.id_str === id_str ? converted : t))
+		);
+		return converted;
+	};
+
+	const requestFavorite = async ({
+		id_str,
+		favorited,
+	}: Tweet): Promise<Tweet | string> => {
+		let err: null | string;
+		if (favorited) {
+			err = await postUnfavoriteApi(client, { id: id_str });
+		} else {
+			err = await postFavoriteApi(client, { id: id_str });
+		}
+		if (err !== null) return err;
+
+		const res = await getTweetApi(client, { id: id_str });
+		if (typeof res === "string") return res;
+		const converted = convertTweetToDisplayable(res);
+		setTimeline((prev) =>
+			prev.map((t) => (t.id_str === id_str ? converted : t))
+		);
+		return converted;
+	};
 
 	const update = async (backward: boolean) => {
 		setInProcess("update");
@@ -91,27 +132,6 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("none");
 	};
 
-	const requestFavorite = async ({
-		id_str,
-		favorited,
-	}: Tweet): Promise<Tweet | string> => {
-		let err: null | string;
-		if (favorited) {
-			err = await postUnfavoriteApi(client, { id: id_str });
-		} else {
-			err = await postFavoriteApi(client, { id: id_str });
-		}
-		if (err !== null) return err;
-
-		const res = await getTweetApi(client, { id: id_str });
-		if (typeof res === "string") return res;
-		const converted = convertTweetToDisplayable(res);
-		setTimeline((prev) =>
-			prev.map((t) => (t.id_str === id_str ? converted : t))
-		);
-		return converted;
-	};
-
 	const fav = async () => {
 		setInProcess("fav");
 		const res = await requestFavorite(focusedTweet);
@@ -119,27 +139,6 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			// onError(res)
 		}
 		setInProcess("none");
-	};
-
-	const requestRetweet = async ({
-		id_str,
-		retweeted,
-	}: Tweet): Promise<Tweet | string> => {
-		let err: null | string;
-		if (retweeted) {
-			err = await postUnretweetApi(client, { id: id_str });
-		} else {
-			err = await postRetweetApi(client, { id: id_str });
-		}
-		if (err !== null) return err;
-
-		const res = await getTweetApi(client, { id: id_str });
-		if (typeof res === "string") return res;
-		const converted = convertTweetToDisplayable(res);
-		setTimeline((prev) =>
-			prev.map((t) => (t.id_str === id_str ? converted : t))
-		);
-		return converted;
 	};
 
 	const rt = async () => {
