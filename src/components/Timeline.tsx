@@ -36,6 +36,15 @@ type Props = {
 	onUpdate: (backward: boolean) => Promise<Tweet[]>;
 };
 
+type TimelineProcess =
+	| "none"
+	| "update"
+	| "reply"
+	| "rt"
+	| "fav"
+	| "tweet"
+	| "delete";
+
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [client] = useClient();
 	const [, setTimeline] = useTimeline();
@@ -44,9 +53,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [, setCursor] = useCursorIndex();
 	const focusedTweet = getFocusedTweet();
 
-	const [inProcess, setInProcess] = useState<
-		"none" | "update" | "fav" | "rt" | "tweet"
-	>("none");
+	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
 
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [waitReturn, setWaitReturn] = useState(false);
