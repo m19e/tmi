@@ -335,7 +335,11 @@ const Detail = ({
 
 	const t = tweet.retweeted_status ?? tweet;
 	const time = getDisplayTime(t.created_at);
-	const displayFavRT = t.retweet_count !== 0 || t.favorite_count !== 0;
+	const displayFavRT =
+		t.retweet_count !== 0 ||
+		t.favorite_count !== 0 ||
+		inProcess === "rt" ||
+		inProcess === "fav";
 
 	const myTweet = t.user.id_str === userId;
 	let selectItems: SelectItemProps[] = [
