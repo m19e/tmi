@@ -78,12 +78,16 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 
 const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
 	if (!tweet) return null;
+	const ago = getDisplayTimeAgo(tweet.created_at);
 
 	return (
 		<Box flexDirection="column" borderStyle="round" borderColor="gray">
-			<Text color="greenBright">
-				{`${tweet.user.name} @${tweet.user.screen_name} `}
-				{tweet.user.protected && "🔒 "}
+			<Text>
+				<Text color="greenBright">
+					{`${tweet.user.name} @${tweet.user.screen_name} `}
+					{tweet.user.protected && "🔒 "}
+				</Text>
+				<Text dimColor>{ago}</Text>
 			</Text>
 			<Text>
 				{tweet.full_text}
