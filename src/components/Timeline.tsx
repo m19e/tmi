@@ -91,7 +91,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("none");
 	};
 
-	const onFav = async ({
+	const requestFavorite = async ({
 		id_str,
 		favorited,
 	}: Tweet): Promise<Tweet | string> => {
@@ -114,14 +114,14 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const fav = async () => {
 		setInProcess("fav");
-		const res = await onFav(focusedTweet);
+		const res = await requestFavorite(focusedTweet);
 		if (typeof res === "string") {
 			// onError(res)
 		}
 		setInProcess("none");
 	};
 
-	const onRT = async ({
+	const requestRetweet = async ({
 		id_str,
 		retweeted,
 	}: Tweet): Promise<Tweet | string> => {
@@ -144,7 +144,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const rt = async () => {
 		setInProcess("rt");
-		const res = await onRT(focusedTweet);
+		const res = await requestRetweet(focusedTweet);
 		if (typeof res === "string") {
 			// onError(res)
 		}
