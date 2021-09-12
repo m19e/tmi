@@ -1,10 +1,11 @@
 import React from "react";
 import { Text, Box } from "ink";
 import Divider from "ink-divider";
-import Loader from "./Loader";
 import useDimensions from "ink-use-stdout-dimensions";
 import { Tweet } from "../types/twitter";
 import { getDisplayTimeAgo } from "../lib";
+import Loader from "./Loader";
+import Quoted from "./Quoted";
 
 type Props = {
 	tweet: Tweet;
@@ -35,6 +36,12 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 					</Text>
 					<Text dimColor>{ago}</Text>
 				</Text>
+				{t.in_reply_to_screen_name && (
+					<Text>
+						<Text dimColor>Replying to </Text>
+						<Text color="#00acee">@{t.in_reply_to_screen_name}</Text>
+					</Text>
+				)}
 				<Text>
 					{t.full_text}
 					{t.entities.media && <Text dimColor> (with Media)</Text>}
@@ -67,23 +74,6 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 				dividerColor={isFocused ? "white" : "gray"}
 			/>
 		</>
-	);
-};
-
-const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
-	if (!tweet) return null;
-
-	return (
-		<Box flexDirection="column" borderStyle="round" borderColor="gray">
-			<Text color="greenBright">
-				{`${tweet.user.name} @${tweet.user.screen_name} `}
-				{tweet.user.protected && "🔒 "}
-			</Text>
-			<Text>
-				{tweet.full_text}
-				{tweet.entities.media && <Text dimColor> (with Media)</Text>}
-			</Text>
-		</Box>
 	);
 };
 

@@ -33,6 +33,7 @@ export interface Tweet {
 	full_text: string;
 	id_str: string;
 	id: number;
+	in_reply_to_status?: Tweet | string | null;
 	in_reply_to_screen_name?: string | null;
 	in_reply_to_status_id_str?: string | null;
 	in_reply_to_status_id?: number | null;
