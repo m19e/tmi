@@ -236,6 +236,12 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setStatus("timeline");
 	};
 
+	const handleMention = () => {
+		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
+		setIsNewTweetOpen(true);
+		setStatus("timeline");
+	};
+
 	return (
 		<>
 			{status === "timeline" && (
@@ -291,6 +297,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			{status === "detail" && (
 				<Detail
 					tweet={focusedTweet}
+					onMention={handleMention}
 					onRemove={removeFocusedTweetFromTimeline}
 					isReplyOpen={isReplyOpen}
 					setIsReplyOpen={setIsReplyOpen}

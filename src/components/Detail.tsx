@@ -24,6 +24,7 @@ type TimelineProcess =
 
 const Detail = ({
 	tweet,
+	onMention,
 	onRemove,
 	isReplyOpen,
 	setIsReplyOpen,
@@ -31,6 +32,7 @@ const Detail = ({
 	setInProcess,
 }: {
 	tweet: Tweet;
+	onMention: () => void;
 	onRemove: (options?: { redraft: boolean }) => void;
 	isReplyOpen: boolean;
 	setIsReplyOpen: (b: boolean) => void;
@@ -157,6 +159,7 @@ const Detail = ({
 
 	const handleSelectMenu = ({ value }: SelectItemProps) => {
 		if (value === "mention") {
+			onMention();
 		} else if (value === "delete") {
 			deleteTweet();
 		} else if (value === "re-draft") {
