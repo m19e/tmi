@@ -44,7 +44,7 @@ const Detail = ({
 	const [cols] = useDimensions();
 
 	const [waitReturn, setWaitReturn] = useState(false);
-	const [replyText, setReplyText] = useState("");
+	const [tweetText, setTweetText] = useState("");
 	const [{ weightedLength, valid }, setParsedTweet] = useState<ParsedTweet>(
 		parseTweet("")
 	);
@@ -87,14 +87,14 @@ const Detail = ({
 	const resetReplyState = () => {
 		setIsTweetOpen(false);
 		setWaitReturn(false);
-		setReplyText("");
+		setTweetText("");
 		setParsedTweet(parseTweet(""));
 	};
 
 	const reply = async () => {
 		setInProcess("reply");
 		const error = await postReplyApi(client, {
-			status: replyText,
+			status: tweetText,
 			in_reply_to_status_id: t.id_str,
 		});
 		setInProcess("none");
@@ -143,7 +143,7 @@ const Detail = ({
 				// Avoid warning: state update on an unmounted TextInput
 				// Maybe caused by Node.js (single-threaded)?
 				setTimeout(() => {
-					setReplyText("");
+					setTweetText("");
 					setIsTweetOpen(false);
 				});
 			} else if (waitReturn && key.return) {
@@ -153,8 +153,8 @@ const Detail = ({
 		{ isActive: isTweetOpen && inProcess === "none" }
 	);
 
-	const handleReplyChange = (value: string) => {
-		setReplyText(value);
+	const handleTweetChange = (value: string) => {
+		setTweetText(value);
 		setParsedTweet(parseTweet(value));
 	};
 
@@ -231,8 +231,8 @@ const Detail = ({
 						<Box minHeight={5} borderStyle="round" borderColor="#777777">
 							<TextInput
 								placeholder="Tweet your reply"
-								value={replyText}
-								onChange={handleReplyChange}
+								value={tweetText}
+								onChange={handleTweetChange}
 								onSubmit={() => setWaitReturn(valid)}
 								focus={!waitReturn}
 							/>
