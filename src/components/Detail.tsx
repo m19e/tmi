@@ -65,14 +65,14 @@ const Detail = ({
 	if (myTweet) {
 		selectItems = selectItems.concat([
 			{ label: "Delete", value: "delete" },
-			{ label: "Re-draft", value: "redraft" },
+			{ label: "Re-draft", value: "re-draft" },
 		]);
 	} else {
 		selectItems = selectItems.concat([
-			{ label: `Mute @${t.user.screen_name}`, value: "mute-account" },
-			{ label: "Mute Retweets from user", value: "mute-retweets" },
+			{ label: `Mute @${t.user.screen_name}`, value: "mute-user" },
+			{ label: "Mute Retweets from User", value: "mute-retweets" },
 			{ label: "Mute Quotes from User", value: "mute-quotes" },
-			{ label: `Block @${t.user.screen_name}`, value: "block-account" },
+			{ label: `Block @${t.user.screen_name}`, value: "block" },
 		]);
 	}
 	selectItems = selectItems.concat([
@@ -155,10 +155,11 @@ const Detail = ({
 		setParsedTweet(parseTweet(value));
 	};
 
-	const handleSelectMenu = ({ value }: { label: string; value: string }) => {
-		if (value === "delete") {
+	const handleSelectMenu = ({ value }: SelectItemProps) => {
+		if (value === "mention") {
+		} else if (value === "delete") {
 			deleteTweet();
-		} else if (value === "redraft") {
+		} else if (value === "re-draft") {
 			deleteTweet({ redraft: true });
 		}
 	};
@@ -277,8 +278,17 @@ const Detail = ({
 	);
 };
 
+type TweetMenuActionTarget = "user" | "retweets" | "quotes" | "client";
+
+type TweetMenuAction =
+	| "mention"
+	| "delete"
+	| "re-draft"
+	| "block"
+	| `mute-${TweetMenuActionTarget}`;
+
 interface SelectItemProps extends ItemProps {
-	value: string;
+	value: TweetMenuAction;
 	newline?: boolean;
 }
 
