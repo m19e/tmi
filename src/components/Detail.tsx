@@ -26,16 +26,16 @@ const Detail = ({
 	tweet,
 	onMention,
 	onRemove,
-	isReplyOpen,
-	setIsReplyOpen,
+	isTweetOpen,
+	setIsTweetOpen,
 	inProcess,
 	setInProcess,
 }: {
 	tweet: Tweet;
 	onMention: () => void;
 	onRemove: (options?: { redraft: boolean }) => void;
-	isReplyOpen: boolean;
-	setIsReplyOpen: (b: boolean) => void;
+	isTweetOpen: boolean;
+	setIsTweetOpen: (b: boolean) => void;
 	inProcess: TimelineProcess;
 	setInProcess: (p: TimelineProcess) => void;
 }) => {
@@ -85,7 +85,7 @@ const Detail = ({
 	]);
 
 	const resetReplyState = () => {
-		setIsReplyOpen(false);
+		setIsTweetOpen(false);
 		setWaitReturn(false);
 		setReplyText("");
 		setParsedTweet(parseTweet(""));
@@ -126,10 +126,11 @@ const Detail = ({
 	useInput(
 		(input, key) => {
 			if (input === "r") {
-				setIsReplyOpen(true);
+				setIsTweetOpen(true);
+			} else if (input === "q") {
 			}
 		},
-		{ isActive: !isReplyOpen && inProcess === "none" }
+		{ isActive: !isTweetOpen && inProcess === "none" }
 	);
 
 	useInput(
@@ -143,13 +144,13 @@ const Detail = ({
 				// Maybe caused by Node.js (single-threaded)?
 				setTimeout(() => {
 					setReplyText("");
-					setIsReplyOpen(false);
+					setIsTweetOpen(false);
 				});
 			} else if (waitReturn && key.return) {
 				reply();
 			}
 		},
-		{ isActive: isReplyOpen && inProcess === "none" }
+		{ isActive: isTweetOpen && inProcess === "none" }
 	);
 
 	const handleReplyChange = (value: string) => {
@@ -214,7 +215,7 @@ const Detail = ({
 						<Divider width={Math.max(30, Math.floor(cols / 2))} />
 					</>
 				)}
-				{isReplyOpen && (
+				{isTweetOpen && (
 					<Box
 						minWidth={30}
 						width={Math.floor(cols / 2)}
@@ -238,7 +239,7 @@ const Detail = ({
 						</Box>
 					</Box>
 				)}
-				{!isReplyOpen && (
+				{!isTweetOpen && (
 					<Box
 						justifyContent="flex-end"
 						minWidth={30}
@@ -266,7 +267,7 @@ const Detail = ({
 					</Box>
 				)}
 			</Box>
-			{isReplyOpen ? (
+			{isTweetOpen ? (
 				<>
 					{waitReturn ? (
 						<Text>[Enter] reply [ESC] cancel</Text>

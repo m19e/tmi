@@ -57,7 +57,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		parseTweet("")
 	);
 
-	const [isReplyOpen, setIsReplyOpen] = useState(false);
+	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
 
 	const requestRetweet = async ({
 		id_str,
@@ -163,7 +163,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
-				setIsReplyOpen(true);
+				setIsTweetInDetailOpen(true);
 				setStatus("detail");
 			} else if (input === "t") {
 				rt();
@@ -211,7 +211,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				fav();
 			}
 		},
-		{ isActive: status === "detail" && !isReplyOpen }
+		{ isActive: status === "detail" && !isTweetInDetailOpen }
 	);
 
 	const handleNewTweetChange = (value: string) => {
@@ -299,8 +299,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 					tweet={focusedTweet}
 					onMention={handleMention}
 					onRemove={removeFocusedTweetFromTimeline}
-					isReplyOpen={isReplyOpen}
-					setIsReplyOpen={setIsReplyOpen}
+					isTweetOpen={isTweetInDetailOpen}
+					setIsTweetOpen={setIsTweetInDetailOpen}
 					inProcess={inProcess}
 					setInProcess={setInProcess}
 				/>
