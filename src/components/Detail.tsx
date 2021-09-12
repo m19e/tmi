@@ -275,7 +275,7 @@ const Detail = ({
 					)}
 				</>
 			) : (
-				<Text>[R] reply [T] retweet [F] favorite [ESC] back</Text>
+				<Text>[R] reply [Q] quote [T] retweet [F] favorite [ESC] back</Text>
 			)}
 		</>
 	);
