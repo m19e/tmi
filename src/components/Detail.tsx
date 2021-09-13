@@ -173,6 +173,11 @@ const Detail = ({
 		setParsedTweet(parseTweet(value));
 	};
 
+	const handleQuoteChange = (value: string) => {
+		setTweetText(value);
+		setParsedTweet(parseTweet(`${value} ${quoteUrl}`));
+	};
+
 	const handleSelectMenu = ({ value }: SelectItemProps) => {
 		if (value === "mention") {
 			onMention();
