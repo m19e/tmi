@@ -143,8 +143,9 @@ const Detail = ({
 	useInput(
 		(input, key) => {
 			if (input === "r") {
-				setIsTweetOpen(true);
+				openReplyTweet();
 			} else if (input === "q") {
+				openQuoteTweet();
 			}
 		},
 		{ isActive: !isTweetOpen && inProcess === "none" }
