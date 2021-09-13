@@ -102,6 +102,7 @@ const Detail = ({
 
 	const resetTweetState = () => {
 		setIsTweetOpen(false);
+		setTweetMode("none");
 		setWaitReturn(false);
 		setTweetText("");
 		setParsedTweet(parseTweet(""));
