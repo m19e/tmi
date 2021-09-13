@@ -255,22 +255,56 @@ const Detail = ({
 						width={Math.floor(cols / 2)}
 						flexDirection="column"
 					>
-						<Box justifyContent="space-between" paddingX={1}>
-							<Text color="gray">
-								Replying to <Text color="#00acee">@{t.user.screen_name} </Text>
-								<Loader loading={inProcess === "reply"} rawColor="#00acee" />
-							</Text>
-							<Text color="gray">{280 - weightedLength}</Text>
-						</Box>
-						<Box minHeight={5} borderStyle="round" borderColor="#777777">
-							<TextInput
-								placeholder="Tweet your reply"
-								value={tweetText}
-								onChange={handleTweetChange}
-								onSubmit={() => setWaitReturn(valid)}
-								focus={!waitReturn}
-							/>
-						</Box>
+						{tweetMode === "reply" && (
+							<>
+								<Box justifyContent="space-between" paddingX={1}>
+									<Text color="gray">
+										Replying to{" "}
+										<Text color="#00acee">@{t.user.screen_name} </Text>
+										<Loader
+											loading={inProcess === "reply"}
+											rawColor="#00acee"
+										/>
+									</Text>
+									<Text color="gray">{280 - weightedLength}</Text>
+								</Box>
+								<Box minHeight={5} borderStyle="round" borderColor="#777777">
+									<TextInput
+										placeholder="Tweet your reply"
+										value={tweetText}
+										onChange={handleTweetChange}
+										onSubmit={() => setWaitReturn(valid)}
+										focus={!waitReturn}
+									/>
+								</Box>
+							</>
+						)}
+						{tweetMode === "quote" && (
+							<>
+								<Box justifyContent="space-between" paddingX={1}>
+									<Text color="gray">
+										Quote Tweet{" "}
+										<Loader
+											loading={inProcess === "quote"}
+											namedColor="green"
+										/>
+									</Text>
+									<Text color="gray">{280 - weightedLength}</Text>
+								</Box>
+								<Box minHeight={5} borderStyle="round" borderColor="#777777">
+									<TextInput
+										placeholder="Add a comment"
+										value={tweetText}
+										onChange={handleQuoteChange}
+										onSubmit={() => setWaitReturn(valid)}
+										focus={!waitReturn}
+									/>
+									<Box>
+										<Text>(Display quote target area)</Text>
+									</Box>
+								</Box>
+							</>
+						)}
 					</Box>
 				)}
 				{!isTweetOpen && (
@@ -304,7 +338,7 @@ const Detail = ({
 			{isTweetOpen ? (
 				<>
 					{waitReturn ? (
-						<Text>[Enter] reply [ESC] cancel</Text>
+						<Text>[Enter] {tweetMode} [ESC] cancel</Text>
 					) : (
 						<Text>[Enter] done [ESC] close</Text>
 					)}
