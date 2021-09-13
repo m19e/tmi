@@ -43,6 +43,22 @@ const Detail = ({
 	const [userId] = useUserId();
 	const [cols] = useDimensions();
 
+	const [tweetMode, setTweetMode] = useState<"none" | "reply" | "quote">(
+		"none"
+	);
+	const openReplyTweet = () => {
+		setTweetMode("reply");
+		setIsTweetOpen(true);
+	};
+	const openQuoteTweet = () => {
+		setTweetMode("quote");
+		setIsTweetOpen(true);
+	};
+	const closeTweet = () => {
+		setIsTweetOpen(false);
+		setTweetMode("none");
+	};
+
 	const [waitReturn, setWaitReturn] = useState(false);
 	const [tweetText, setTweetText] = useState("");
 	const [{ weightedLength, valid }, setParsedTweet] = useState<ParsedTweet>(
