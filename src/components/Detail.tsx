@@ -84,7 +84,7 @@ const Detail = ({
 		},
 	]);
 
-	const resetReplyState = () => {
+	const resetTweetState = () => {
 		setIsTweetOpen(false);
 		setWaitReturn(false);
 		setTweetText("");
@@ -102,7 +102,7 @@ const Detail = ({
 			// onError()
 			return;
 		}
-		resetReplyState();
+		resetTweetState();
 	};
 
 	const deleteTweet = async (
@@ -120,7 +120,7 @@ const Detail = ({
 			return;
 		}
 		onRemove({ redraft });
-		resetReplyState();
+		resetTweetState();
 	};
 
 	useInput(
