@@ -12,6 +12,7 @@ import { getDisplayTime } from "../lib";
 import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import { useUserId, useClient } from "../hooks";
 import Loader from "./Loader";
+import Quoted from "./Quoted";
 
 type TimelineProcess =
 	| "none"
@@ -291,7 +292,12 @@ const Detail = ({
 									</Text>
 									<Text color="gray">{280 - weightedLength}</Text>
 								</Box>
-								<Box minHeight={5} borderStyle="round" borderColor="#777777">
+								<Box
+									minHeight={5}
+									flexDirection="column"
+									borderStyle="round"
+									borderColor="#777777"
+								>
 									<TextInput
 										placeholder="Add a comment"
 										value={tweetText}
@@ -299,9 +305,7 @@ const Detail = ({
 										onSubmit={() => setWaitReturn(valid)}
 										focus={!waitReturn}
 									/>
-									<Box>
-										<Text>(Display quote target area)</Text>
-									</Box>
+									<Quoted tweet={t} />
 								</Box>
 							</>
 						)}
