@@ -175,7 +175,8 @@ const Detail = ({
 					});
 				}
 			} else if (waitReturn && key.return) {
-				reply();
+				if (tweetMode === "reply") reply();
+				if (tweetMode === "quote") quote();
 			}
 		},
 		{ isActive: isTweetOpen && inProcess === "none" }
