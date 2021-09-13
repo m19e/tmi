@@ -55,10 +55,6 @@ const Detail = ({
 		setTweetMode("quote");
 		setIsTweetOpen(true);
 	};
-	const closeTweet = () => {
-		setIsTweetOpen(false);
-		setTweetMode("none");
-	};
 
 	const [waitReturn, setWaitReturn] = useState(false);
 	const [tweetText, setTweetText] = useState("");
