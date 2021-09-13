@@ -34,6 +34,7 @@ type TimelineProcess =
 	| "none"
 	| "update"
 	| "reply"
+	| "quote"
 	| "rt"
 	| "fav"
 	| "tweet"
