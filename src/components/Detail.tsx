@@ -9,7 +9,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
-import { postReplyApi, postDeleteTweetApi } from "../lib/api";
+import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import { useUserId, useClient } from "../hooks";
 import Loader from "./Loader";
 
@@ -111,6 +111,19 @@ const Detail = ({
 		const error = await postReplyApi(client, {
 			status: tweetText,
 			in_reply_to_status_id: t.id_str,
+		});
+		setInProcess("none");
+		if (error !== null) {
+			// onError()
+			return;
+		}
+		resetTweetState();
+	};
+
+	const quote = async () => {
+		setInProcess("quote");
+		const error = await postTweetApi(client, {
+			status: `${tweetText} ${quoteUrl}`,
 		});
 		setInProcess("none");
 		if (error !== null) {
