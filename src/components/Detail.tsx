@@ -154,14 +154,13 @@ const Detail = ({
 			if (key.escape) {
 				if (waitReturn) {
 					setWaitReturn(false);
-					return;
+				} else {
+					// Avoid warning: state update on an unmounted TextInput
+					// Maybe caused by Node.js (single-threaded)?
+					setTimeout(() => {
+						resetTweetState();
+					});
 				}
-				// Avoid warning: state update on an unmounted TextInput
-				// Maybe caused by Node.js (single-threaded)?
-				setTimeout(() => {
-					setTweetText("");
-					setIsTweetOpen(false);
-				});
 			} else if (waitReturn && key.return) {
 				reply();
 			}
