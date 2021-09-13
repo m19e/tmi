@@ -69,6 +69,7 @@ const Detail = ({
 		t.favorite_count !== 0 ||
 		inProcess === "rt" ||
 		inProcess === "fav";
+	const quoteUrl = `https://twitter.com/${t.user.screen_name}/status/${t.id_str}`;
 
 	const myTweet = t.user.id_str === userId;
 	let selectItems: SelectItemProps[] = [
