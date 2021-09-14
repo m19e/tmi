@@ -28,6 +28,7 @@
 		"prop-types": "^15.7.2",
 		"react": "^16.14.0",
 		"split-graphemes": "^0.5.0",
+		"string-to-color": "^2.2.2",
 		"twitter-lite": "^1.1.0",
 		"twitter-text": "^3.1.0"
 	},
