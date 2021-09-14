@@ -256,8 +256,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 								key={i}
 								tweet={t}
 								isFocused={t.id_str === focusedTweet.id_str}
-								inFav={inProcess === "fav"}
-								inRT={inProcess === "rt"}
+								inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+								inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
 							/>
 						))}
 					</Box>
