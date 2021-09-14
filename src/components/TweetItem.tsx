@@ -84,7 +84,7 @@ const Borderless = ({ tweet, isFocused, inFav, inRT }: Props) => {
 	const generatedColor = stc(t.user.screen_name);
 
 	return (
-		<Box>
+		<Box marginBottom={1}>
 			<Box width={2} height={2} flexDirection="column">
 				{isFocused && (
 					<>
@@ -93,7 +93,7 @@ const Borderless = ({ tweet, isFocused, inFav, inRT }: Props) => {
 					</>
 				)}
 			</Box>
-			<Box flexDirection="column" flexGrow={1} marginBottom={1}>
+			<Box flexDirection="column" flexGrow={1}>
 				<Text>
 					<Text bold color={generatedColor}>
 						{t.user.name}{" "}
