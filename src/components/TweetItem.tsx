@@ -139,26 +139,6 @@ const Borderless = ({ tweet, isFocused, inFav, inRT }: Props) => {
 					{t.entities.media && <Text dimColor> (with Media)</Text>}
 				</Text>
 				<Quoted tweet={t.quoted_status} />
-				{/* <Box height={1}>
-					{isFocused && (
-						<>
-							<Box>
-								<Text>{t.retweet_count ? t.retweet_count + " " : ""}</Text>
-								<Text color={t.retweeted ? "green" : "white"}>RT</Text>
-								<Box marginX={1}>
-									<Loader loading={inRT} namedColor="green" />
-								</Box>
-							</Box>
-							<Box>
-								<Text>{t.favorite_count ? t.favorite_count + " " : ""}</Text>
-								<Text color={t.favorited ? "yellow" : "white"}>fav</Text>
-								<Box marginX={1}>
-									<Loader loading={inFav} namedColor="yellow" />
-								</Box>
-							</Box>
-						</>
-					)}
-				</Box> */}
 			</Box>
 		</Box>
 	);
