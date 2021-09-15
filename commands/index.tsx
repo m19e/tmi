@@ -24,6 +24,8 @@ import {
 	useClient,
 	useTimeline,
 	getFocusedPosition,
+	useCursorIndex,
+	useFocusIndex,
 } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 
@@ -61,6 +63,8 @@ const Tink = ({ name = "" }) => {
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 	const [timeline, setTimeline] = useTimeline();
 	const { position, total } = getFocusedPosition();
+	const [, setCursor] = useCursorIndex();
+	const [, setFocus] = useFocusIndex();
 
 	const [error, setError] = useState("");
 
@@ -262,6 +266,8 @@ const Tink = ({ name = "" }) => {
 
 	const handleToggleList = () => {
 		setStatus("select");
+		setCursor(0);
+		setFocus(0);
 	};
 
 	const handleUpdate = async (backward: boolean): Promise<Tweet[]> =>

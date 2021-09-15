@@ -18,6 +18,7 @@ import {
 	useTimeline,
 	useMover,
 	useCursorIndex,
+	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../hooks";
@@ -34,6 +35,7 @@ type TimelineProcess =
 	| "none"
 	| "update"
 	| "reply"
+	| "quote"
 	| "rt"
 	| "fav"
 	| "tweet"
@@ -44,6 +46,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [, setTimeline] = useTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
+	const [tweetsCount, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
 
@@ -57,7 +60,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		parseTweet("")
 	);
 
-	const [isReplyOpen, setIsReplyOpen] = useState(false);
+	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
 
 	const requestRetweet = async ({
 		id_str,
@@ -160,10 +163,14 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				mover.top();
 			} else if (input === "9") {
 				mover.bottom();
+			} else if (input === "+" || input === "=") {
+				countSetter.inc();
+			} else if (input === "-" || input === "_") {
+				countSetter.dec();
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
-				setIsReplyOpen(true);
+				setIsTweetInDetailOpen(true);
 				setStatus("detail");
 			} else if (input === "t") {
 				rt();
@@ -211,7 +218,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				fav();
 			}
 		},
-		{ isActive: status === "detail" && !isReplyOpen }
+		{ isActive: status === "detail" && !isTweetInDetailOpen }
 	);
 
 	const handleNewTweetChange = (value: string) => {
@@ -255,8 +262,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 								key={i}
 								tweet={t}
 								isFocused={t.id_str === focusedTweet.id_str}
-								inFav={inProcess === "fav"}
-								inRT={inProcess === "rt"}
+								inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+								inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
 							/>
 						))}
 					</Box>
@@ -299,8 +306,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 					tweet={focusedTweet}
 					onMention={handleMention}
 					onRemove={removeFocusedTweetFromTimeline}
-					isReplyOpen={isReplyOpen}
-					setIsReplyOpen={setIsReplyOpen}
+					isTweetOpen={isTweetInDetailOpen}
+					setIsTweetOpen={setIsTweetInDetailOpen}
 					inProcess={inProcess}
 					setInProcess={setInProcess}
 				/>
