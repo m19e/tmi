@@ -18,6 +18,7 @@ import {
 	useTimeline,
 	useMover,
 	useCursorIndex,
+	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../hooks";
@@ -45,6 +46,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [, setTimeline] = useTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
+	const [tweetsCount, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
 
@@ -161,6 +163,10 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				mover.top();
 			} else if (input === "9") {
 				mover.bottom();
+			} else if (input === "+" || input === "=") {
+				countSetter.inc();
+			} else if (input === "-" || input === "_") {
+				countSetter.dec();
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
