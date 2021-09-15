@@ -571,8 +571,11 @@ const Borderless = ({
 										</Text>
 										<Text color="gray">{280 - weightedLength}/280</Text>
 									</Box>
-									<Box minHeight={3}>
-										<Text color="white">
+									<Box>
+										<Box width={2} flexDirection="column">
+											<Text color="#00acee">▌</Text>
+										</Box>
+										<Box flexGrow={1} minHeight={3}>
 											<TextInput
 												placeholder="Tweet your reply"
 												value={tweetText}
@@ -580,7 +583,7 @@ const Borderless = ({
 												onSubmit={() => setWaitReturn(valid)}
 												focus={!waitReturn}
 											/>
-										</Text>
+										</Box>
 									</Box>
 								</>
 							)}
@@ -602,8 +605,11 @@ const Borderless = ({
 										</Text>
 										<Text color="gray">{280 - weightedLength}/280</Text>
 									</Box>
-									<Box minHeight={3} flexDirection="column">
-										<Text color="white">
+									<Box>
+										<Box width={2} flexDirection="column">
+											<Text color="#00acee">▌</Text>
+										</Box>
+										<Box flexGrow={1} flexDirection="column" minHeight={3}>
 											<TextInput
 												placeholder="Add a comment"
 												value={tweetText}
@@ -611,8 +617,8 @@ const Borderless = ({
 												onSubmit={() => setWaitReturn(valid)}
 												focus={!waitReturn}
 											/>
-										</Text>
-										<Quoted tweet={t} />
+											<Quoted tweet={t} />
+										</Box>
 									</Box>
 								</>
 							)}
