@@ -10,9 +10,9 @@ import Quoted from "./Quoted";
 
 type Props = {
 	tweet: Tweet;
-	isFocused?: boolean;
 	inFav: boolean;
 	inRT: boolean;
+	isFocused?: boolean;
 };
 
 const TweetItem = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
