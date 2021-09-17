@@ -270,11 +270,9 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 					</Box>
 					{isNewTweetOpen ? (
 						<>
-							<Box justifyContent="space-between">
-								<Text color="gray">
-									Tweet{" "}
-									<Loader loading={inProcess === "tweet"} rawColor="#00acee" />
-								</Text>
+							<Text color="gray">
+								Tweet{" "}
+								<Loader loading={inProcess === "tweet"} rawColor="#00acee" />{" "}
 								<Text
 									color={!valid && weightedLength !== 0 ? "redBright" : "gray"}
 								>
@@ -283,7 +281,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 									)}
 									{weightedLength}/280
 								</Text>
-							</Box>
+							</Text>
 							<Box marginY={1}>
 								<Box width={2} flexDirection="column">
 									<Text color="#00acee">▌</Text>
