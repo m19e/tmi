@@ -539,7 +539,6 @@ const Borderless = ({
 			<Box flexGrow={1} flexDirection="column">
 				<TweetItem
 					tweet={tweet}
-					isFocused={true}
 					inFav={inProcess === "fav"}
 					inRT={inProcess === "rt"}
 				/>
