@@ -235,17 +235,14 @@ const Detail = ({
 								{(inProcess === "rt" || t.retweet_count !== 0) && (
 									<>
 										<Text color={t.retweeted ? "green" : "white"}>RT </Text>
-										<Loader
-											loading={inProcess === "rt"}
-											namedColor="green"
-										/>{" "}
+										<Loader loading={inProcess === "rt"} color="green" />{" "}
 									</>
 								)}
 								{t.favorite_count !== 0 && <Text>{t.favorite_count} </Text>}
 								{(inProcess === "fav" || t.favorite_count !== 0) && (
 									<Text color={t.favorited ? "yellow" : "white"}>fav </Text>
 								)}
-								<Loader loading={inProcess === "fav"} namedColor="yellow" />
+								<Loader loading={inProcess === "fav"} color="yellow" />
 							</Text>
 						</Box>
 						<Divider width={Math.max(30, Math.floor(cols / 2))} />
@@ -263,10 +260,7 @@ const Detail = ({
 									<Text color="gray">
 										Replying to{" "}
 										<Text color="#00acee">@{t.user.screen_name} </Text>
-										<Loader
-											loading={inProcess === "reply"}
-											rawColor="#00acee"
-										/>
+										<Loader loading={inProcess === "reply"} color="#00acee" />
 									</Text>
 									<Text color="gray">{280 - weightedLength}</Text>
 								</Box>
@@ -286,10 +280,7 @@ const Detail = ({
 								<Box justifyContent="space-between" paddingX={1}>
 									<Text color="gray">
 										Quote Tweet{" "}
-										<Loader
-											loading={inProcess === "quote"}
-											namedColor="green"
-										/>
+										<Loader loading={inProcess === "quote"} color="green" />
 									</Text>
 									<Text color="gray">{280 - weightedLength}</Text>
 								</Box>
@@ -322,10 +313,7 @@ const Detail = ({
 							<Box paddingX={1}>
 								<Text color="gray">
 									Menu{" "}
-									<Loader
-										loading={inProcess === "delete"}
-										namedColor="redBright"
-									/>
+									<Loader loading={inProcess === "delete"} color="redBright" />
 								</Text>
 							</Box>
 							<Box paddingRight={2} borderStyle="round" borderColor="gray">
@@ -563,10 +551,7 @@ const Borderless = ({
 										<Text color="gray">
 											Replying to{" "}
 											<Text color="#00acee">@{t.user.screen_name} </Text>
-											<Loader
-												loading={inProcess === "reply"}
-												rawColor="#00acee"
-											/>
+											<Loader loading={inProcess === "reply"} color="#00acee" />
 										</Text>
 										<Text color="gray">{280 - weightedLength}/280</Text>
 									</Box>
@@ -597,10 +582,7 @@ const Borderless = ({
 											Quote{" "}
 											<Text color="#00acee">@{tweet.user.screen_name}</Text>'s
 											tweet{" "}
-											<Loader
-												loading={inProcess === "quote"}
-												namedColor="green"
-											/>
+											<Loader loading={inProcess === "quote"} color="green" />
 										</Text>
 										<Text color="gray">{280 - weightedLength}/280</Text>
 									</Box>

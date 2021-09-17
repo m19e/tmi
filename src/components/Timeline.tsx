@@ -271,8 +271,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 					{isNewTweetOpen ? (
 						<>
 							<Text color="gray">
-								Tweet{" "}
-								<Loader loading={inProcess === "tweet"} rawColor="#00acee" />{" "}
+								Tweet <Loader loading={inProcess === "tweet"} color="#00acee" />{" "}
 								<Counter
 									invalid={!valid && weightedLength !== 0}
 									length={weightedLength}
