@@ -290,7 +290,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 									/>
 								</Box>
 							</Box>
-							<Box justifyContent="flex-start" paddingX={1}>
+							<Box justifyContent="flex-start">
 								{waitReturn ? (
 									<Text>[Enter] tweet [ESC] cancel</Text>
 								) : (
