@@ -5,7 +5,6 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
-import { fallbackSymbols } from "../lib/sindresorhus/figures";
 import {
 	getTweetApi,
 	postTweetApi,
@@ -26,6 +25,7 @@ import {
 import TweetItem from "./TweetItem";
 import Detail from "./Detail";
 import Loader from "./Loader";
+import Counter from "./TweetCharCounter";
 
 type Props = {
 	onToggleList: () => void;
@@ -273,14 +273,10 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 							<Text color="gray">
 								Tweet{" "}
 								<Loader loading={inProcess === "tweet"} rawColor="#00acee" />{" "}
-								<Text
-									color={!valid && weightedLength !== 0 ? "redBright" : "gray"}
-								>
-									{!valid && weightedLength !== 0 && (
-										<>[{fallbackSymbols.warning}] </>
-									)}
-									{weightedLength}/280
-								</Text>
+								<Counter
+									invalid={!valid && weightedLength !== 0}
+									length={weightedLength}
+								/>
 							</Text>
 							<Box marginY={1}>
 								<Box width={2} flexDirection="column">
