@@ -7,6 +7,7 @@ import TextInput from "ink-text-input";
 import SelectInput, { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
+import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
 import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
@@ -14,16 +15,6 @@ import { useUserId, useClient } from "../hooks";
 import Loader from "./Loader";
 import TweetItem from "./TweetItem";
 import Quoted from "./Quoted";
-
-type TimelineProcess =
-	| "none"
-	| "update"
-	| "reply"
-	| "quote"
-	| "rt"
-	| "fav"
-	| "tweet"
-	| "delete";
 
 const Detail = ({
 	tweet,

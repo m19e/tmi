@@ -3,6 +3,7 @@ import { Text, Box, useInput } from "ink";
 import TextInput from "ink-text-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
+import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
 import {
@@ -31,16 +32,6 @@ type Props = {
 	onToggleList: () => void;
 	onUpdate: (backward: boolean) => Promise<Tweet[]>;
 };
-
-type TimelineProcess =
-	| "none"
-	| "update"
-	| "reply"
-	| "quote"
-	| "rt"
-	| "fav"
-	| "tweet"
-	| "delete";
 
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [client] = useClient();
