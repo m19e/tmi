@@ -5,6 +5,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { Tweet } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
+import { fallbackSymbols } from "../lib/sindresorhus/figures";
 import {
 	getTweetApi,
 	postTweetApi,
@@ -274,7 +275,14 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 									Tweet{" "}
 									<Loader loading={inProcess === "tweet"} rawColor="#00acee" />
 								</Text>
-								<Text color="gray">{280 - weightedLength}/280</Text>
+								<Text
+									color={!valid && weightedLength !== 0 ? "redBright" : "gray"}
+								>
+									{!valid && weightedLength !== 0 && (
+										<>[{fallbackSymbols.warning}] </>
+									)}
+									{weightedLength}/280
+								</Text>
 							</Box>
 							<Box marginY={1}>
 								<Box width={2} flexDirection="column">
