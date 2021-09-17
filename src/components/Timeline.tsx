@@ -276,14 +276,19 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 								</Text>
 								<Text>{280 - weightedLength}</Text>
 							</Box>
-							<Box borderStyle="round" borderColor="white">
-								<TextInput
-									placeholder="What's happening?"
-									value={tweetText}
-									onChange={handleNewTweetChange}
-									onSubmit={() => setWaitReturn(valid)}
-									focus={!waitReturn}
-								/>
+							<Box marginY={1}>
+								<Box width={2} flexDirection="column">
+									<Text color="#00acee">▌</Text>
+								</Box>
+								<Box flexGrow={1}>
+									<TextInput
+										placeholder="What's happening?"
+										value={tweetText}
+										onChange={handleNewTweetChange}
+										onSubmit={() => setWaitReturn(valid)}
+										focus={!waitReturn}
+									/>
+								</Box>
 							</Box>
 							<Box justifyContent="flex-start" paddingX={1}>
 								{waitReturn ? (
