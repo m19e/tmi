@@ -47,7 +47,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [, setTimeline] = useTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
-	const [tweetsCount, countSetter] = useDisplayTweetsCount();
+	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
 
