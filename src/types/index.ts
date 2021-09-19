@@ -9,3 +9,13 @@ export interface GetListTweetsParams extends DefaultTwitterRequestParams {
 	since_id?: string;
 	max_id?: string;
 }
+
+export type TimelineProcess =
+	| "none"
+	| "update"
+	| "reply"
+	| "quote"
+	| "rt"
+	| "fav"
+	| "tweet"
+	| "delete";

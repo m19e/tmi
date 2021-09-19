@@ -10,12 +10,12 @@ import Quoted from "./Quoted";
 
 type Props = {
 	tweet: Tweet;
-	isFocused: boolean;
 	inFav: boolean;
 	inRT: boolean;
+	isFocused?: boolean;
 };
 
-const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
+const TweetItem = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(t.created_at);
 
@@ -55,14 +55,14 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 								<Text>{t.retweet_count ? t.retweet_count + " " : ""}</Text>
 								<Text color={t.retweeted ? "green" : "white"}>RT</Text>
 								<Box marginX={1}>
-									<Loader loading={inRT} namedColor="green" />
+									<Loader loading={inRT} color="green" />
 								</Box>
 							</Box>
 							<Box>
 								<Text>{t.favorite_count ? t.favorite_count + " " : ""}</Text>
 								<Text color={t.favorited ? "yellow" : "white"}>fav</Text>
 								<Box marginX={1}>
-									<Loader loading={inFav} namedColor="yellow" />
+									<Loader loading={inFav} color="yellow" />
 								</Box>
 							</Box>
 						</>
@@ -78,7 +78,7 @@ const TweetItem = ({ tweet, isFocused, inFav, inRT }: Props) => {
 	);
 };
 
-const Borderless = ({ tweet, isFocused, inFav, inRT }: Props) => {
+const Borderless = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(t.created_at);
 	const generatedColor = stc(t.user.screen_name);
@@ -110,7 +110,7 @@ const Borderless = ({ tweet, isFocused, inFav, inRT }: Props) => {
 					<Text color="yellow">
 						{inFav ? (
 							<>
-								<Loader loading={inFav} namedColor="yellow" />{" "}
+								<Loader loading={inFav} color="yellow" />{" "}
 							</>
 						) : (
 							<>{t.favorited ? "█ " : ""}</>
@@ -120,7 +120,7 @@ const Borderless = ({ tweet, isFocused, inFav, inRT }: Props) => {
 					<Text color="green">
 						{inRT ? (
 							<>
-								<Loader loading={inRT} namedColor="green" />{" "}
+								<Loader loading={inRT} color="green" />{" "}
 							</>
 						) : (
 							<>{t.retweeted ? "█ " : ""}</>

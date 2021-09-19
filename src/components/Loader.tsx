@@ -1,37 +1,16 @@
 import React from "react";
-import { Text } from "ink";
+import { Text, TextProps } from "ink";
 import Spinner from "./Spinner";
-
-type ForegroundColor =
-	| "black"
-	| "red"
-	| "green"
-	| "yellow"
-	| "blue"
-	| "magenta"
-	| "cyan"
-	| "white"
-	| "gray"
-	| "grey"
-	| "blackBright"
-	| "redBright"
-	| "greenBright"
-	| "yellowBright"
-	| "blueBright"
-	| "magentaBright"
-	| "cyanBright"
-	| "whiteBright";
 
 type Props = {
 	loading: boolean;
-	namedColor?: ForegroundColor;
-	rawColor?: string;
+	color: TextProps["color"];
 };
 
-const Loader = ({ loading, namedColor, rawColor }: Props) => (
+const Loader = ({ loading, color }: Props) => (
 	<>
 		{loading ? (
-			<Text color={namedColor ?? rawColor}>
+			<Text color={color}>
 				<Spinner />
 			</Text>
 		) : (
