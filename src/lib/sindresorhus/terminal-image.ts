@@ -218,4 +218,22 @@ terminalImage.gifBuffer = (buffer, options: any = {}) => {
 terminalImage.gifFile = (filePath, options = {}) =>
 	terminalImage.gifBuffer(fs.readFileSync(filePath), options);
 
+export const terminalImageFromBuffer = async (
+	buffer: Buffer,
+	{
+		width = "100%",
+		height = "100%",
+		preserveAspectRatio = true,
+	}: {
+		width?: number | string;
+		height?: number | string;
+		preserveAspectRatio?: boolean;
+	} = {}
+): Promise<string> =>
+	termImg(buffer, {
+		width,
+		height,
+		fallback: () => render(buffer, { height, width, preserveAspectRatio }),
+	});
+
 export default terminalImage;
