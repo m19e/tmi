@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Box, Text } from "ink";
+import { Box, Text, useInput } from "ink";
+import got from "got";
 import { splitGraphemes } from "split-graphemes";
+import terminalImage from "../src/lib/sindresorhus/terminal-image";
 
 const reg = new RegExp(
 	"[" +
@@ -105,4 +107,29 @@ Demo.shortFlags = {
 	count: "c",
 };
 
-export default Demo;
+const Image = () => {
+	const [image, setImage] = useState("");
+	useEffect(() => {
+		const f = async () => {
+			const body = await got("https://sindresorhus.com/unicorn").buffer();
+			const imageFromBuffer = await terminalImage.buffer(body, {
+				width: 40,
+				preserveAspectRatio: true,
+			});
+			setImage(imageFromBuffer);
+		};
+		f();
+	}, []);
+
+	useInput(() => {}, {});
+
+	return (
+		<Box>
+			<Box width="50%" borderStyle="round">
+				<Text>{image || "Loading..."}</Text>
+			</Box>
+		</Box>
+	);
+};
+
+export default Image;
