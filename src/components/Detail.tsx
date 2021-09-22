@@ -14,6 +14,7 @@ import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import figures from "../lib/sindresorhus/figures";
 import { useUserId, useClient } from "../hooks";
 import Loader from "./Loader";
+import Counter from "./TweetCharCounter";
 import TweetItem from "./TweetItem";
 import Quoted from "./Quoted";
 
@@ -538,7 +539,10 @@ const Borderless = ({
 											<Text color="#00acee">@{t.user.screen_name} </Text>
 											<Loader loading={inProcess === "reply"} color="#00acee" />
 										</Text>
-										<Text color="gray">{280 - weightedLength}/280</Text>
+										<Counter
+											invalid={!valid && weightedLength !== 0}
+											length={weightedLength}
+										/>
 									</Box>
 									<Box>
 										<Box width={2} flexDirection="column">
@@ -569,7 +573,10 @@ const Borderless = ({
 											tweet{" "}
 											<Loader loading={inProcess === "quote"} color="green" />
 										</Text>
-										<Text color="gray">{280 - weightedLength}/280</Text>
+										<Counter
+											invalid={!valid && weightedLength !== 0}
+											length={weightedLength}
+										/>
 									</Box>
 									<Box>
 										<Box width={2} flexDirection="column">
