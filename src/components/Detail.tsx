@@ -354,7 +354,6 @@ const Borderless = ({
 }) => {
 	const [client] = useClient();
 	const [userId] = useUserId();
-	const [cols] = useDimensions();
 
 	const [tweetMode, setTweetMode] = useState<"none" | "reply" | "quote">(
 		"none"
@@ -375,12 +374,6 @@ const Borderless = ({
 	);
 
 	const t = tweet.retweeted_status ?? tweet;
-	const time = getDisplayTime(t.created_at);
-	const displayFavRT =
-		t.retweet_count !== 0 ||
-		t.favorite_count !== 0 ||
-		inProcess === "rt" ||
-		inProcess === "fav";
 	const quoteUrl = `https://twitter.com/${t.user.screen_name}/status/${t.id_str}`;
 
 	const myTweet = t.user.id_str === userId;
