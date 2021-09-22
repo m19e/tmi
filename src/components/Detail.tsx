@@ -11,6 +11,7 @@ import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
 import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
+import figures from "../lib/sindresorhus/figures";
 import { useUserId, useClient } from "../hooks";
 import Loader from "./Loader";
 import TweetItem from "./TweetItem";
@@ -548,7 +549,7 @@ const Borderless = ({
 									</Box>
 									<Box>
 										<Box width={2} flexDirection="column">
-											<Text color="#00acee">▌</Text>
+											<Text color="#00acee">{figures.squareLeft}</Text>
 										</Box>
 										<Box flexGrow={1} minHeight={3}>
 											<TextInput
@@ -579,7 +580,7 @@ const Borderless = ({
 									</Box>
 									<Box>
 										<Box width={2} flexDirection="column">
-											<Text color="#00acee">▌</Text>
+											<Text color="#00acee">{figures.squareLeft}</Text>
 										</Box>
 										<Box flexGrow={1} flexDirection="column" minHeight={3}>
 											<TextInput

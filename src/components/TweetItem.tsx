@@ -5,6 +5,7 @@ import useDimensions from "ink-use-stdout-dimensions";
 import stc from "string-to-color";
 import { Tweet } from "../types/twitter";
 import { getDisplayTimeAgo } from "../lib";
+import figures from "../lib/sindresorhus/figures";
 import Loader from "./Loader";
 import Quoted from "./Quoted";
 
@@ -88,8 +89,8 @@ const Borderless = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
 			<Box width={2} height={2} flexDirection="column">
 				{isFocused && (
 					<>
-						<Text color="#00acee">█</Text>
-						<Text color="#00acee">█</Text>
+						<Text color="#00acee">{figures.square}</Text>
+						<Text color="#00acee">{figures.square}</Text>
 					</>
 				)}
 			</Box>
@@ -113,7 +114,7 @@ const Borderless = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
 								<Loader loading={inFav} color="yellow" />{" "}
 							</>
 						) : (
-							<>{t.favorited ? "█ " : ""}</>
+							<>{t.favorited ? `${figures.square} ` : ""}</>
 						)}
 						{t.favorite_count ? `${t.favorite_count}fav ` : " "}
 					</Text>
@@ -123,7 +124,7 @@ const Borderless = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
 								<Loader loading={inRT} color="green" />{" "}
 							</>
 						) : (
-							<>{t.retweeted ? "█ " : ""}</>
+							<>{t.retweeted ? `${figures.square} ` : ""}</>
 						)}
 						{t.retweet_count ? `${t.retweet_count}RT ` : " "}
 					</Text>

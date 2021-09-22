@@ -14,6 +14,7 @@ import {
 	postRetweetApi,
 	postUnretweetApi,
 } from "../lib/api";
+import figures from "../lib/sindresorhus/figures";
 import {
 	useClient,
 	useTimeline,
@@ -270,7 +271,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 							</Text>
 							<Box marginY={1}>
 								<Box width={2} flexDirection="column">
-									<Text color="#00acee">▌</Text>
+									<Text color="#00acee">{figures.squareLeft}</Text>
 								</Box>
 								<Box flexGrow={1}>
 									<TextInput

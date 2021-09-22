@@ -3,6 +3,7 @@ import { Text, Box } from "ink";
 import stc from "string-to-color";
 import { Tweet } from "../types/twitter";
 import { getDisplayTimeAgo } from "../lib";
+import figures from "../lib/sindresorhus/figures";
 
 const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
 	if (!tweet) return null;
@@ -33,8 +34,8 @@ const Borderless = ({ tweet }: { tweet: Tweet | null }) => {
 	return (
 		<Box marginTop={1} marginLeft={2}>
 			<Box width={2} flexDirection="column">
-				<Text color="greenBright">▌</Text>
-				<Text color="greenBright">▌</Text>
+				<Text color="greenBright">{figures.squareLeft}</Text>
+				<Text color="greenBright">{figures.squareLeft}</Text>
 			</Box>
 			<Box flexGrow={1} flexDirection="column">
 				<Text>
