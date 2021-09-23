@@ -17,6 +17,7 @@ import Loader from "./Loader";
 import Counter from "./TweetCharCounter";
 import TweetItem from "./TweetItem";
 import Quoted from "./Quoted";
+import NewTweetBox from "./NewTweetBox";
 
 const Detail = ({
 	tweet,
@@ -528,72 +529,34 @@ const Borderless = ({
 					{isTweetOpen && (
 						<>
 							{tweetMode === "reply" && (
-								<>
-									<Box
-										justifyContent="space-between"
-										width="50%"
-										marginBottom={1}
-									>
-										<Text color="gray">
-											Replying to{" "}
-											<Text color="#00acee">@{t.user.screen_name} </Text>
-											<Loader loading={inProcess === "reply"} color="#00acee" />
-										</Text>
-										<Counter
-											invalid={!valid && weightedLength !== 0}
-											length={weightedLength}
-										/>
-									</Box>
-									<Box>
-										<Box width={2} flexDirection="column">
-											<Text color="#00acee">{figures.squareLeft}</Text>
-										</Box>
-										<Box flexGrow={1} minHeight={3}>
-											<TextInput
-												placeholder="Tweet your reply"
-												value={tweetText}
-												onChange={handleTweetChange}
-												onSubmit={() => setWaitReturn(valid)}
-												focus={!waitReturn}
-											/>
-										</Box>
-									</Box>
-								</>
+								<NewTweetBox
+									type="reply"
+									loading={inProcess === "reply"}
+									tweet={tweet}
+									invalid={!valid && weightedLength !== 0}
+									length={weightedLength}
+									placeholder={
+										myTweet ? "Add another Tweet" : "Tweet your reply"
+									}
+									focus={!waitReturn}
+									value={tweetText}
+									onChange={handleTweetChange}
+									onSubmit={() => setWaitReturn(valid)}
+								/>
 							)}
 							{tweetMode === "quote" && (
-								<>
-									<Box
-										justifyContent="space-between"
-										width="50%"
-										marginBottom={1}
-									>
-										<Text color="gray">
-											Quote{" "}
-											<Text color="#00acee">@{tweet.user.screen_name}</Text>'s
-											tweet{" "}
-											<Loader loading={inProcess === "quote"} color="green" />
-										</Text>
-										<Counter
-											invalid={!valid && weightedLength !== 0}
-											length={weightedLength}
-										/>
-									</Box>
-									<Box>
-										<Box width={2} flexDirection="column">
-											<Text color="#00acee">{figures.squareLeft}</Text>
-										</Box>
-										<Box flexGrow={1} flexDirection="column" minHeight={3}>
-											<TextInput
-												placeholder="Add a comment"
-												value={tweetText}
-												onChange={handleQuoteChange}
-												onSubmit={() => setWaitReturn(valid)}
-												focus={!waitReturn}
-											/>
-											<Quoted tweet={t} />
-										</Box>
-									</Box>
-								</>
+								<NewTweetBox
+									type="quote"
+									loading={inProcess === "quote"}
+									tweet={tweet}
+									invalid={!valid && weightedLength !== 0}
+									length={weightedLength}
+									placeholder="Add a comment"
+									focus={!waitReturn}
+									value={tweetText}
+									onChange={handleQuoteChange}
+									onSubmit={() => setWaitReturn(valid)}
+								/>
 							)}
 						</>
 					)}
