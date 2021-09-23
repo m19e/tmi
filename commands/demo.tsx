@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Text, useInput } from "ink";
 import got from "got";
-import { splitGraphemes } from "split-graphemes";
-import terminalImage from "../src/lib/sindresorhus/terminal-image";
+import { terminalImageFromBuffer } from "../src/lib/sindresorhus/terminal-image";
 
 const reg = new RegExp(
 	"[" +
@@ -112,7 +111,7 @@ const Image = () => {
 	useEffect(() => {
 		const f = async () => {
 			const body = await got("https://sindresorhus.com/unicorn").buffer();
-			const imageFromBuffer = await terminalImage.buffer(body, {
+			const imageFromBuffer = await terminalImageFromBuffer(body, {
 				width: 40,
 				preserveAspectRatio: true,
 			});

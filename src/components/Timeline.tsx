@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Text, Box, useInput } from "ink";
-import TextInput from "ink-text-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
@@ -25,8 +24,7 @@ import {
 } from "../hooks";
 import TweetItem from "./TweetItem";
 import Detail from "./Detail";
-import Loader from "./Loader";
-import Counter from "./TweetCharCounter";
+import NewTweetBox from "./NewTweetBox";
 
 type Props = {
 	onToggleList: () => void;
@@ -261,27 +259,18 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 					</Box>
 					{isNewTweetOpen ? (
 						<>
-							<Text color="gray">
-								Tweet <Loader loading={inProcess === "tweet"} color="#00acee" />{" "}
-								<Counter
-									invalid={!valid && weightedLength !== 0}
-									length={weightedLength}
-								/>
-							</Text>
-							<Box marginY={1}>
-								<Box width={2} flexDirection="column">
-									<Text color="#00acee">▌</Text>
-								</Box>
-								<Box flexGrow={1}>
-									<TextInput
-										placeholder="What's happening?"
-										value={tweetText}
-										onChange={handleNewTweetChange}
-										onSubmit={() => setWaitReturn(valid)}
-										focus={!waitReturn}
-									/>
-								</Box>
-							</Box>
+							<NewTweetBox
+								type="new"
+								loading={inProcess === "tweet"}
+								tweet={focusedTweet}
+								invalid={!valid && weightedLength !== 0}
+								length={weightedLength}
+								placeholder="What's happening?"
+								focus={!waitReturn}
+								value={tweetText}
+								onChange={handleNewTweetChange}
+								onSubmit={() => setWaitReturn(valid)}
+							/>
 							<Text>
 								{waitReturn ? (
 									<>[Enter] tweet [ESC] cancel</>

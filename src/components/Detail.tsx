@@ -11,10 +11,12 @@ import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
 import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
+import figures from "../lib/sindresorhus/figures";
 import { useUserId, useClient } from "../hooks";
 import Loader from "./Loader";
 import TweetItem from "./TweetItem";
 import Quoted from "./Quoted";
+import NewTweetBox from "./NewTweetBox";
 
 const Detail = ({
 	tweet,
@@ -353,7 +355,6 @@ const Borderless = ({
 }) => {
 	const [client] = useClient();
 	const [userId] = useUserId();
-	const [cols] = useDimensions();
 
 	const [tweetMode, setTweetMode] = useState<"none" | "reply" | "quote">(
 		"none"
@@ -374,12 +375,6 @@ const Borderless = ({
 	);
 
 	const t = tweet.retweeted_status ?? tweet;
-	const time = getDisplayTime(t.created_at);
-	const displayFavRT =
-		t.retweet_count !== 0 ||
-		t.favorite_count !== 0 ||
-		inProcess === "rt" ||
-		inProcess === "fav";
 	const quoteUrl = `https://twitter.com/${t.user.screen_name}/status/${t.id_str}`;
 
 	const myTweet = t.user.id_str === userId;
@@ -533,66 +528,34 @@ const Borderless = ({
 					{isTweetOpen && (
 						<>
 							{tweetMode === "reply" && (
-								<>
-									<Box
-										justifyContent="space-between"
-										width="50%"
-										marginBottom={1}
-									>
-										<Text color="gray">
-											Replying to{" "}
-											<Text color="#00acee">@{t.user.screen_name} </Text>
-											<Loader loading={inProcess === "reply"} color="#00acee" />
-										</Text>
-										<Text color="gray">{280 - weightedLength}/280</Text>
-									</Box>
-									<Box>
-										<Box width={2} flexDirection="column">
-											<Text color="#00acee">▌</Text>
-										</Box>
-										<Box flexGrow={1} minHeight={3}>
-											<TextInput
-												placeholder="Tweet your reply"
-												value={tweetText}
-												onChange={handleTweetChange}
-												onSubmit={() => setWaitReturn(valid)}
-												focus={!waitReturn}
-											/>
-										</Box>
-									</Box>
-								</>
+								<NewTweetBox
+									type="reply"
+									loading={inProcess === "reply"}
+									tweet={tweet}
+									invalid={!valid && weightedLength !== 0}
+									length={weightedLength}
+									placeholder={
+										myTweet ? "Add another Tweet" : "Tweet your reply"
+									}
+									focus={!waitReturn}
+									value={tweetText}
+									onChange={handleTweetChange}
+									onSubmit={() => setWaitReturn(valid)}
+								/>
 							)}
 							{tweetMode === "quote" && (
-								<>
-									<Box
-										justifyContent="space-between"
-										width="50%"
-										marginBottom={1}
-									>
-										<Text color="gray">
-											Quote{" "}
-											<Text color="#00acee">@{tweet.user.screen_name}</Text>'s
-											tweet{" "}
-											<Loader loading={inProcess === "quote"} color="green" />
-										</Text>
-										<Text color="gray">{280 - weightedLength}/280</Text>
-									</Box>
-									<Box>
-										<Box width={2} flexDirection="column">
-											<Text color="#00acee">▌</Text>
-										</Box>
-										<Box flexGrow={1} flexDirection="column" minHeight={3}>
-											<TextInput
-												placeholder="Add a comment"
-												value={tweetText}
-												onChange={handleQuoteChange}
-												onSubmit={() => setWaitReturn(valid)}
-												focus={!waitReturn}
-											/>
-											<Quoted tweet={t} />
-										</Box>
-									</Box>
-								</>
+								<NewTweetBox
+									type="quote"
+									loading={inProcess === "quote"}
+									tweet={tweet}
+									invalid={!valid && weightedLength !== 0}
+									length={weightedLength}
+									placeholder="Add a comment"
+									focus={!waitReturn}
+									value={tweetText}
+									onChange={handleQuoteChange}
+									onSubmit={() => setWaitReturn(valid)}
+								/>
 							)}
 						</>
 					)}
@@ -642,7 +605,11 @@ const Indicator: FC<{
 	isSelected?: boolean;
 }> = ({ isSelected = false }) => (
 	<Box marginRight={1}>
-		{isSelected ? <Text color="#00acee">❯</Text> : <Text> </Text>}
+		{isSelected ? (
+			<Text color="#00acee">{figures.pointer}</Text>
+		) : (
+			<Text> </Text>
+		)}
 	</Box>
 );
 
