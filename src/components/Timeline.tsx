@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Text, Box, useInput } from "ink";
-import TextInput from "ink-text-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
@@ -14,7 +13,6 @@ import {
 	postRetweetApi,
 	postUnretweetApi,
 } from "../lib/api";
-import figures from "../lib/sindresorhus/figures";
 import {
 	useClient,
 	useTimeline,
@@ -26,8 +24,6 @@ import {
 } from "../hooks";
 import TweetItem from "./TweetItem";
 import Detail from "./Detail";
-import Loader from "./Loader";
-import Counter from "./TweetCharCounter";
 import NewTweetBox from "./NewTweetBox";
 
 type Props = {
