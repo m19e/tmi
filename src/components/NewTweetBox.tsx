@@ -5,6 +5,7 @@ import TextInput from "ink-text-input";
 
 import { Tweet } from "../types/twitter";
 import figures from "../lib/sindresorhus/figures";
+import Quoted from "./Quoted";
 import Loader from "./Loader";
 import Counter from "./TweetCharCounter";
 
@@ -43,7 +44,8 @@ const NewTweetHeader: FC<{
 		case "quote":
 			return (
 				<>
-					Quote Tweet <Loader loading={loading} color="green" />
+					Quote <Text color="#00acee">@{screenName}</Text>'s tweet{" "}
+					<Loader loading={loading} color="green" />
 				</>
 			);
 	}
@@ -74,7 +76,7 @@ const NewTweetBox: FC<Props> = ({
 			<Box width={2} flexDirection="column">
 				<Text color="#00acee">{figures.squareLeft}</Text>
 			</Box>
-			<Box flexGrow={1}>
+			<Box flexDirection="column" flexGrow={1}>
 				<TextInput
 					placeholder={placeholder}
 					focus={focus}
@@ -82,6 +84,7 @@ const NewTweetBox: FC<Props> = ({
 					onChange={onChange}
 					onSubmit={onSubmit}
 				/>
+				{type === "quote" && <Quoted tweet={tweet} />}
 			</Box>
 		</Box>
 	</>
