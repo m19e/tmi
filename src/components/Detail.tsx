@@ -14,7 +14,6 @@ import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import figures from "../lib/sindresorhus/figures";
 import { useUserId, useClient } from "../hooks";
 import Loader from "./Loader";
-import Counter from "./TweetCharCounter";
 import TweetItem from "./TweetItem";
 import Quoted from "./Quoted";
 import NewTweetBox from "./NewTweetBox";
