@@ -605,7 +605,11 @@ const Indicator: FC<{
 	isSelected?: boolean;
 }> = ({ isSelected = false }) => (
 	<Box marginRight={1}>
-		{isSelected ? <Text color="#00acee">❯</Text> : <Text> </Text>}
+		{isSelected ? (
+			<Text color="#00acee">{figures.pointer}</Text>
+		) : (
+			<Text> </Text>
+		)}
 	</Box>
 );
 
