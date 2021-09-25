@@ -18,7 +18,7 @@ import { config as dotenvConfig } from "dotenv";
 import { Tweet, List, TrimmedList } from "../src/types/twitter";
 import { GetListTweetsParams } from "../src/types";
 import { convertTweetToDisplayable } from "../src/lib";
-import { getListTweetsApi } from "../src/lib/api";
+import { getUserListsApi, getListTweetsApi } from "../src/lib/api";
 import {
 	useUserId,
 	useClient,
@@ -163,28 +163,26 @@ const Tink = ({ name = "" }) => {
 	const getUserLists = async (config: Config, fp: string) => {
 		const user = new Twitter(config);
 
-		try {
-			const data: List[] = await user.get("lists/list");
-			const trim: TrimmedList[] = data.map((l) => ({
-				id_str: l.id_str,
-				name: l.name,
-				mode: l.mode,
-			}));
-			await writeJson(fp, { ...config, lists: trim });
-			setLists(trim);
+		const res = await getUserListsApi(user);
+		if (typeof res === "string") {
+			setError(res);
+			exit();
+			return;
+		} else if (res.length === 0) {
+			setError("rate limit exceeded.");
+			setLists(config.lists);
 			setStatus("select");
-		} catch (err) {
-			if (
-				(err as TwitterErrorResponse).errors.map((e) => e.code).includes(88)
-			) {
-				console.error("rate limit exceeded.");
-				setLists(config.lists);
-				setStatus("select");
-			} else {
-				console.error(err);
-				exit();
-			}
+			return;
 		}
+
+		const trim: TrimmedList[] = res.map((l) => ({
+			id_str: l.id_str,
+			name: l.name,
+			mode: l.mode,
+		}));
+		await writeJson(fp, { ...config, lists: trim });
+		setLists(trim);
+		setStatus("select");
 	};
 
 	const getListTimeline = async (
