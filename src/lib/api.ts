@@ -1,8 +1,31 @@
 import type Twitter from "twitter-lite";
 import type { GetListTweetsParams } from "../types";
-import type { Tweet } from "../types/twitter";
+import type { Tweet, List } from "../types/twitter";
+
+interface TwitterErrorResponse {
+	errors: {
+		message: string;
+		code: number;
+	}[];
+}
 
 // GET request
+export const getUserListsApi = async (
+	client: Twitter
+): Promise<List[] | string> => {
+	try {
+		return await client.get("lists/list");
+	} catch (error) {
+		if (
+			(error as TwitterErrorResponse).errors.map((e) => e.code).includes(88)
+		) {
+			return [];
+		} else {
+			return `Error: GET lists/list\n${JSON.stringify(error, null, 4)}`;
+		}
+	}
+};
+
 export const getListTweetsApi = async (
 	client: Twitter,
 	params: GetListTweetsParams
