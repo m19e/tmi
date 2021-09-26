@@ -198,8 +198,7 @@ const Tink = ({ name = "" }) => {
 		const res = await getListTweetsApi(client, params);
 		if (!Array.isArray(res) || res.length === 0) return [];
 
-		const converted = res.map(convertTweetToDisplayable);
-		return converted;
+		return res.map(convertTweetToDisplayable);
 	};
 
 	const createGetListTimelineParams = ({
