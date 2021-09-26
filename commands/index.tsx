@@ -186,10 +186,10 @@ const Tink = ({ name = "" }) => {
 			...options,
 		});
 
-		const data = await getListTweetsApi(client, params);
-		if (!Array.isArray(data) || data.length === 0) return [];
+		const res = await getListTweetsApi(client, params);
+		if (!Array.isArray(res) || res.length === 0) return [];
 
-		const converted = data.map(convertTweetToDisplayable);
+		const converted = res.map(convertTweetToDisplayable);
 		return converted;
 	};
 
