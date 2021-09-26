@@ -36,15 +36,6 @@ const defaultOptions = {
 	consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
 };
 
-interface TwitterErrorResponse {
-	errors: TwitterErrors[];
-}
-
-interface TwitterErrors {
-	message: string;
-	code: number;
-}
-
 interface Config extends TwitterOptions {
 	user_id: string;
 	lists: TrimmedList[];
