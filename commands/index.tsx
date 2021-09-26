@@ -15,7 +15,7 @@ import SelectInput from "ink-select-input";
 import Twitter, { TwitterOptions } from "twitter-lite";
 import { config as dotenvConfig } from "dotenv";
 
-import { Tweet, List, TrimmedList } from "../src/types/twitter";
+import { Tweet, TrimmedList } from "../src/types/twitter";
 import { GetListTweetsParams } from "../src/types";
 import { convertTweetToDisplayable } from "../src/lib";
 import { getUserListsApi, getListTweetsApi } from "../src/lib/api";
