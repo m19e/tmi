@@ -57,6 +57,9 @@ const Tink = ({ name = "" }) => {
 	const [, setCursor] = useCursorIndex();
 	const [, setFocus] = useFocusIndex();
 
+	const [requestResult, setRequestResult] = useState<string | undefined>(
+		undefined
+	);
 	const [error, setError] = useState("");
 
 	const [client, setClient] = useClient();
@@ -273,7 +276,8 @@ const Tink = ({ name = "" }) => {
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			<Text>{error}</Text>
+			<Text>{requestResult}</Text>
+			<Text backgroundColor="red">{error}</Text>
 			{status === "wait" && (
 				<>
 					<Text color="redBright">Open URL and enter PIN.</Text>
