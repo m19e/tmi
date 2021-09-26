@@ -153,19 +153,25 @@ const Tink = ({ name = "" }) => {
 
 	const getUserLists = async (config: Config, fp: string) => {
 		const user = new Twitter(config);
-
 		const res = await getUserListsApi(user);
-		if (typeof res === "string") {
-			setError(res);
-			exit();
-			return;
-		} else if (res.length === 0) {
-			setError("rate limit exceeded.");
-			setLists(config.lists);
-			setStatus("select");
+		// onError
+		if (!Array.isArray(res)) {
+			setError(res.message);
+			if (res.rate_limit && config.lists.length) {
+				setLists(config.lists);
+				setStatus("select");
+			} else {
+				exit();
+			}
 			return;
 		}
-
+		// onEmpty
+		if (!res.length) {
+			setError("Empty: GET lists/list");
+			exit();
+			return;
+		}
+		// Valid response
 		const trim: TrimmedList[] = res.map((l) => ({
 			id_str: l.id_str,
 			name: l.name,
