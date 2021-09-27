@@ -275,8 +275,6 @@ const Tink = ({ name = "" }) => {
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			<Text>{requestResult}</Text>
-			<Text backgroundColor="red">{error}</Text>
 			{status === "wait" && (
 				<>
 					<Text color="redBright">Open URL and enter PIN.</Text>
@@ -316,6 +314,16 @@ const Tink = ({ name = "" }) => {
 					</Box>
 					<Timeline onToggleList={handleToggleList} onUpdate={handleUpdate} />
 				</>
+			)}
+			{!!requestResult && (
+				<Text color="black" backgroundColor="green">
+					<Text> {requestResult} </Text>
+				</Text>
+			)}
+			{!!error && (
+				<Text color="black" backgroundColor="red">
+					<Text> {error} </Text>
+				</Text>
 			)}
 		</Box>
 	);
