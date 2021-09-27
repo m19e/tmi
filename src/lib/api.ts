@@ -3,26 +3,48 @@ import type { GetListTweetsParams } from "../types";
 import type { Tweet, List } from "../types/twitter";
 
 interface TwitterErrorResponse {
-	errors: {
+	_headers: any;
+	errors?: {
 		message: string;
 		code: number;
 	}[];
 }
 
+interface HandledErrorResponse {
+	rate_limit: boolean;
+	message: string;
+}
+
+const handleErrorResponse = (
+	e: TwitterErrorResponse,
+	method: "GET" | "POST",
+	endpoint: string
+): HandledErrorResponse => {
+	if ("errors" in e && e.errors[0].code === 88) {
+		// Twitter API error, and rate limit exceeded
+		return {
+			rate_limit: true,
+			message: `${method} ${endpoint}: Rate limit will reset on ${new Date(
+				e._headers.get("x-rate-limit-reset") * 1000
+			)}`,
+		};
+	}
+	// some other kind of error, e.g. read-only API trying to POST
+	// or non-API error, e.g. network problem or invalid JSON in response
+	return {
+		rate_limit: false,
+		message: `Error: ${method} ${endpoint}\n${JSON.stringify(e, null, 4)}`,
+	};
+};
+
 // GET request
 export const getUserListsApi = async (
 	client: Twitter
-): Promise<List[] | string> => {
+): Promise<List[] | HandledErrorResponse> => {
 	try {
 		return await client.get("lists/list");
 	} catch (error) {
-		if (
-			(error as TwitterErrorResponse).errors.map((e) => e.code).includes(88)
-		) {
-			return [];
-		} else {
-			return `Error: GET lists/list\n${JSON.stringify(error, null, 4)}`;
-		}
+		return handleErrorResponse(error, "GET", "lists/list");
 	}
 };
 

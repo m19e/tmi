@@ -15,7 +15,7 @@ import SelectInput from "ink-select-input";
 import Twitter, { TwitterOptions } from "twitter-lite";
 import { config as dotenvConfig } from "dotenv";
 
-import { Tweet, List, TrimmedList } from "../src/types/twitter";
+import { Tweet, TrimmedList } from "../src/types/twitter";
 import { GetListTweetsParams } from "../src/types";
 import { convertTweetToDisplayable } from "../src/lib";
 import { getUserListsApi, getListTweetsApi } from "../src/lib/api";
@@ -26,6 +26,7 @@ import {
 	getFocusedPosition,
 	useCursorIndex,
 	useFocusIndex,
+	useDisplayTweetsCount,
 } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 
@@ -35,15 +36,6 @@ const defaultOptions = {
 	consumer_key: process.env.TWITTER_CONSUMER_KEY,
 	consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
 };
-
-interface TwitterErrorResponse {
-	errors: TwitterErrors[];
-}
-
-interface TwitterErrors {
-	message: string;
-	code: number;
-}
 
 interface Config extends TwitterOptions {
 	user_id: string;
@@ -63,9 +55,13 @@ const Tink = ({ name = "" }) => {
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 	const [timeline, setTimeline] = useTimeline();
 	const { position, total } = getFocusedPosition();
-	const [, setCursor] = useCursorIndex();
+	const [cursor, setCursor] = useCursorIndex();
 	const [, setFocus] = useFocusIndex();
+	const [count] = useDisplayTweetsCount();
 
+	const [requestResult, setRequestResult] = useState<string | undefined>(
+		undefined
+	);
 	const [error, setError] = useState("");
 
 	const [client, setClient] = useClient();
@@ -162,19 +158,25 @@ const Tink = ({ name = "" }) => {
 
 	const getUserLists = async (config: Config, fp: string) => {
 		const user = new Twitter(config);
-
 		const res = await getUserListsApi(user);
-		if (typeof res === "string") {
-			setError(res);
-			exit();
-			return;
-		} else if (res.length === 0) {
-			setError("rate limit exceeded.");
-			setLists(config.lists);
-			setStatus("select");
+		// onError
+		if (!Array.isArray(res)) {
+			setError(res.message);
+			if (res.rate_limit && config.lists.length) {
+				setLists(config.lists);
+				setStatus("select");
+			} else {
+				exit();
+			}
 			return;
 		}
-
+		// onEmpty
+		if (!res.length) {
+			setError("Empty: GET lists/list");
+			exit();
+			return;
+		}
+		// Valid response
 		const trim: TrimmedList[] = res.map((l) => ({
 			id_str: l.id_str,
 			name: l.name,
@@ -195,11 +197,10 @@ const Tink = ({ name = "" }) => {
 			...options,
 		});
 
-		const data = await getListTweetsApi(client, params);
-		if (!Array.isArray(data) || data.length === 0) return [];
+		const res = await getListTweetsApi(client, params);
+		if (!Array.isArray(res) || res.length === 0) return [];
 
-		const converted = data.map(convertTweetToDisplayable);
-		return converted;
+		return res.map(convertTweetToDisplayable);
 	};
 
 	const createGetListTimelineParams = ({
@@ -276,7 +277,6 @@ const Tink = ({ name = "" }) => {
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			<Text>{error}</Text>
 			{status === "wait" && (
 				<>
 					<Text color="redBright">Open URL and enter PIN.</Text>
@@ -310,12 +310,22 @@ const Tink = ({ name = "" }) => {
 				<>
 					<Box justifyContent="center" borderStyle="double" borderColor="gray">
 						<Text>
-							[LIST]<Text color="green">{currentList.name}</Text>({position}/
-							{total})
+							[LIST]<Text color="green">{currentList.name}</Text>({position}-
+							{cursor + count}/{total})
 						</Text>
 					</Box>
 					<Timeline onToggleList={handleToggleList} onUpdate={handleUpdate} />
 				</>
+			)}
+			{!!requestResult && (
+				<Text color="black" backgroundColor="green">
+					<Text> {requestResult} </Text>
+				</Text>
+			)}
+			{!!error && (
+				<Text color="black" backgroundColor="red">
+					<Text> {error} </Text>
+				</Text>
 			)}
 		</Box>
 	);
