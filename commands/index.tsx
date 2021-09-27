@@ -26,6 +26,7 @@ import {
 	getFocusedPosition,
 	useCursorIndex,
 	useFocusIndex,
+	useDisplayTweetsCount,
 } from "../src/hooks";
 import Timeline from "../src/components/Timeline";
 
@@ -54,8 +55,9 @@ const Tink = ({ name = "" }) => {
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 	const [timeline, setTimeline] = useTimeline();
 	const { position, total } = getFocusedPosition();
-	const [, setCursor] = useCursorIndex();
+	const [cursor, setCursor] = useCursorIndex();
 	const [, setFocus] = useFocusIndex();
+	const [count] = useDisplayTweetsCount();
 
 	const [requestResult, setRequestResult] = useState<string | undefined>(
 		undefined
@@ -308,8 +310,8 @@ const Tink = ({ name = "" }) => {
 				<>
 					<Box justifyContent="center" borderStyle="double" borderColor="gray">
 						<Text>
-							[LIST]<Text color="green">{currentList.name}</Text>({position}/
-							{total})
+							[LIST]<Text color="green">{currentList.name}</Text>({position}-
+							{cursor + count}/{total})
 						</Text>
 					</Box>
 					<Timeline onToggleList={handleToggleList} onUpdate={handleUpdate} />
