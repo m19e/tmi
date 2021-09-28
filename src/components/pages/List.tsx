@@ -276,46 +276,64 @@ const List: VFC = () => {
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			{status === "wait" && (
-				<>
-					<Text color="redBright">Open URL and enter PIN.</Text>
-					<Text>
-						{"https://api.twitter.com/oauth/authenticate?oauth_token=" + ot}
-					</Text>
-					<Box>
-						<Text>PIN: </Text>
-						<TextInput
-							value={pin}
-							onChange={setPIN}
-							onSubmit={handleSubmitPinAuth}
-						/>
-					</Box>
-				</>
-			)}
-			{status === "select" && (
-				<>
-					<Text>Select list to display.</Text>
-					<SelectInput
-						items={lists.map((l) => ({
-							key: l.id_str,
-							label: l.name + (l.mode === "private" ? " 🔒" : ""),
-							value: l,
-						}))}
-						onSelect={handleSelect}
-					/>
-				</>
-			)}
-			{status === "timeline" && (
-				<>
-					<Box justifyContent="center" borderStyle="double" borderColor="gray">
-						<Text>
-							[LIST]<Text color="green">{currentList.name}</Text>({position}-
-							{cursor + count}/{total})
-						</Text>
-					</Box>
-					<Timeline onToggleList={handleToggleList} onUpdate={handleUpdate} />
-				</>
-			)}
+			<>
+				{(() => {
+					if (status === "wait") {
+						return (
+							<>
+								<Text color="redBright">Open URL and enter PIN.</Text>
+								<Text>
+									{"https://api.twitter.com/oauth/authenticate?oauth_token=" +
+										ot}
+								</Text>
+								<Box>
+									<Text>PIN: </Text>
+									<TextInput
+										value={pin}
+										onChange={setPIN}
+										onSubmit={handleSubmitPinAuth}
+									/>
+								</Box>
+							</>
+						);
+					}
+					if (status === "select") {
+						return (
+							<>
+								<Text>Select list to display.</Text>
+								<SelectInput
+									items={lists.map((l) => ({
+										key: l.id_str,
+										label: l.name + (l.mode === "private" ? " 🔒" : ""),
+										value: l,
+									}))}
+									onSelect={handleSelect}
+								/>
+							</>
+						);
+					}
+					if (status === "timeline") {
+						return (
+							<>
+								<Box
+									justifyContent="center"
+									borderStyle="double"
+									borderColor="gray"
+								>
+									<Text>
+										[LIST]<Text color="green">{currentList.name}</Text>(
+										{position}-{cursor + count}/{total})
+									</Text>
+								</Box>
+								<Timeline
+									onToggleList={handleToggleList}
+									onUpdate={handleUpdate}
+								/>
+							</>
+						);
+					}
+				})()}
+			</>
 			{!!requestResult && (
 				<Text color="black" backgroundColor="green">
 					<Text> {requestResult} </Text>
