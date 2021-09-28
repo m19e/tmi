@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import type { VFC } from "react";
 import path from "path";
 import {
 	mkdirsSync,
@@ -41,7 +42,7 @@ interface Config extends TwitterOptions {
 	lists: TrimmedList[];
 }
 
-const List = () => {
+const List: VFC = () => {
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
