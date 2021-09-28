@@ -42,7 +42,6 @@ interface Config extends TwitterOptions {
 	lists: TrimmedList[];
 }
 
-/// Hello world command
 const List = () => {
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
