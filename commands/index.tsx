@@ -43,7 +43,7 @@ interface Config extends TwitterOptions {
 }
 
 /// Hello world command
-const Tink = ({ name = "" }) => {
+const Tink = () => {
 	const [ot, setOT] = useState("");
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
