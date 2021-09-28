@@ -70,7 +70,8 @@ const List: VFC = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			setClient(new Twitter(defaultOptions));
+			const app = new Twitter(defaultOptions);
+			setClient(app);
 			const [fp, conf, err] = getConfig();
 			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
 				if (err !== null) {
@@ -79,7 +80,7 @@ const List: VFC = () => {
 				}
 				setFilePath(fp);
 
-				const rt = await client.getRequestToken("oob");
+				const rt = await app.getRequestToken("oob");
 				const { oauth_token } = rt as {
 					oauth_token: string;
 				};
