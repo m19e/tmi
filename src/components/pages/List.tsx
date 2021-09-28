@@ -28,6 +28,7 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks";
+import PinAuthInput from "../../components/molecules/PinAuthInput";
 import Timeline from "../../components/Timeline";
 
 dotenvConfig();
@@ -281,21 +282,12 @@ const List: VFC = () => {
 				{(() => {
 					if (status === "wait") {
 						return (
-							<>
-								<Text color="redBright">Open URL and enter PIN.</Text>
-								<Text>
-									{"https://api.twitter.com/oauth/authenticate?oauth_token=" +
-										ot}
-								</Text>
-								<Box>
-									<Text>PIN: </Text>
-									<TextInput
-										value={pin}
-										onChange={setPIN}
-										onSubmit={handleSubmitPinAuth}
-									/>
-								</Box>
-							</>
+							<PinAuthInput
+								oauthToken={ot}
+								value={pin}
+								onChange={setPIN}
+								onSubmit={handleSubmitPinAuth}
+							/>
 						);
 					}
 					if (status === "select") {
