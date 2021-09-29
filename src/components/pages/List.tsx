@@ -71,8 +71,6 @@ const List: VFC = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const app = new Twitter(defaultOptions);
-			setClient(app);
 			const [fp, conf, err] = getConfig();
 			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
 				if (err !== null) {
@@ -80,7 +78,7 @@ const List: VFC = () => {
 					exit();
 				}
 				setFilePath(fp);
-
+				const app = new Twitter(defaultOptions);
 				const rt = await app.getRequestToken("oob");
 				const { oauth_token } = rt as {
 					oauth_token: string;
@@ -158,8 +156,8 @@ const List: VFC = () => {
 	};
 
 	const getUserLists = async (config: Config, fp: string) => {
-		const user = new Twitter(config);
-		const res = await getUserListsApi(user);
+		const app = new Twitter(config);
+		const res = await getUserListsApi(app);
 		// onError
 		if (!Array.isArray(res)) {
 			setError(res.message);
