@@ -253,12 +253,14 @@ const List: VFC = () => {
 		label: string;
 		value: TrimmedList;
 	}) => {
-		const data = await getListTimeline(value.id_str, {
-			backward: false,
-			select: true,
-		});
-		setTimeline(data);
-		setCurrentList(value);
+		if (currentList === null || currentList.id_str !== value.id_str) {
+			const data = await getListTimeline(value.id_str, {
+				backward: false,
+				select: true,
+			});
+			setTimeline(data);
+			setCurrentList(value);
+		}
 		setStatus("timeline");
 	};
 
