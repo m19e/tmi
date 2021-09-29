@@ -77,19 +77,20 @@ const List: VFC = () => {
 					console.error("cannot get configuration: ", err);
 					exit();
 				}
-				setFilePath(fp);
 				const app = new Twitter(defaultOptions);
 				const rt = await app.getRequestToken("oob");
 				const { oauth_token } = rt as {
 					oauth_token: string;
 				};
+				setClient(app);
+				setFilePath(fp);
 				setOT(oauth_token);
 				setStatus("wait");
 			} else {
+				await getUserLists(conf, fp);
 				setClient(new Twitter(conf));
 				setFilePath(fp);
 				setUserId(conf.user_id);
-				await getUserLists(conf, fp);
 				setStatus("select");
 			}
 		};
