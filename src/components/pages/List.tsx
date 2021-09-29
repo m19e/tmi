@@ -249,12 +249,7 @@ const List: VFC = () => {
 		setStatus("select");
 	};
 
-	const handleSelect = async ({
-		value,
-	}: {
-		label: string;
-		value: TrimmedList;
-	}) => {
+	const handleSelect = async ({ value }: { value: TrimmedList }) => {
 		if (currentList === null || currentList.id_str !== value.id_str) {
 			const data = await getListTimeline(value.id_str, {
 				backward: false,
