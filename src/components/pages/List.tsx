@@ -316,7 +316,7 @@ const List: VFC = () => {
 								>
 									<Text>
 										[LIST]<Text color="green">{currentList.name}</Text>(
-										{position}-{cursor + count}/{total})
+										{cursor + 1}-{cursor + count}/{total})
 									</Text>
 								</Box>
 								<Timeline
