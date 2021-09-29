@@ -29,6 +29,7 @@ import {
 	useDisplayTweetsCount,
 } from "../../hooks";
 import PinAuthInput from "../../components/molecules/PinAuthInput";
+import SelectList from "../../components/molecules/SelectList";
 import Timeline from "../../components/Timeline";
 
 dotenvConfig();
@@ -292,19 +293,7 @@ const List: VFC = () => {
 						);
 					}
 					if (status === "select") {
-						return (
-							<>
-								<Text>Select list to display.</Text>
-								<SelectInput
-									items={lists.map((l) => ({
-										key: l.id_str,
-										label: l.name + (l.mode === "private" ? " 🔒" : ""),
-										value: l,
-									}))}
-									onSelect={handleSelect}
-								/>
-							</>
-						);
+						return <SelectList lists={lists} onSelect={handleSelect} />;
 					}
 					if (status === "timeline") {
 						return (
