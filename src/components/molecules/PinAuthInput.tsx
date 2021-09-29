@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
 import TextInput from "ink-text-input";
@@ -16,16 +16,10 @@ const PinAuthInput: VFC<Props> = ({
 	onChange,
 	onSubmit,
 }) => {
-	const url = useMemo(
-		() =>
-			`https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken}`,
-		[oauthToken]
-	);
-
 	return (
 		<Box flexDirection="column">
 			<Text color="redBright">Open URL and enter PIN.</Text>
-			<Text>{url}</Text>
+			<Text>{`https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken}`}</Text>
 			<Text>
 				<Text>PIN: </Text>
 				<TextInput value={value} onChange={onChange} onSubmit={onSubmit} />
