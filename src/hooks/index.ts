@@ -10,6 +10,8 @@ import {
 	focusIndexAtom,
 	displayTweetsCountAtom,
 	focusedPositionAtom,
+	requestResultAtom,
+	errorAtom,
 } from "../store";
 
 export const useUserId = () => useAtom(userIdAtom);
@@ -112,4 +114,39 @@ export const useMover = (): {
 	};
 
 	return { prev, next, pageUp, pageDown, top, bottom };
+};
+
+export const getRequestResultHook = (): [
+	string | undefined,
+	(update?: SetStateAction<string | undefined>) => void | Promise<void>
+] => useAtom(requestResultAtom);
+
+export const getErrorHook = (): [
+	string | undefined,
+	(update?: SetStateAction<string | undefined>) => void | Promise<void>
+] => useAtom(errorAtom);
+
+export const useRequestResult = (): [
+	string | undefined,
+	(update: string) => void
+] => {
+	const [requestResult, setRequestResult] = getRequestResultHook();
+	const [error, setError] = getErrorHook();
+	const setResult = (r: string) => {
+		if (error) setError(undefined);
+		setRequestResult(r);
+	};
+
+	return [requestResult, setResult];
+};
+
+export const useError = (): [string | undefined, (update: string) => void] => {
+	const [error, setError] = getErrorHook();
+	const [requestResult, setRequestResult] = getRequestResultHook();
+	const setErrorMessage = (e: string) => {
+		if (requestResult) setRequestResult(undefined);
+		setError(e);
+	};
+
+	return [error, setErrorMessage];
 };
