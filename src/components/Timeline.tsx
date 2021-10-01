@@ -178,8 +178,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
-				setIsTweetInDetailOpen(true);
-				setStatus("detail");
+				// setIsTweetInDetailOpen(true);
+				// setStatus("detail");
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
