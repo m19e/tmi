@@ -21,6 +21,8 @@ import {
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
+	useRequestResult,
+	useError,
 } from "../hooks";
 import TweetItem from "./TweetItem";
 import Detail from "./Detail";
@@ -39,6 +41,9 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
+
+	const [, setRequestResult] = useRequestResult();
+	const [, setError] = useError();
 
 	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
 	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
@@ -114,6 +119,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			// onError()
 		} else {
 			setIsNewTweetOpen(false);
+			setRequestResult(`Successfully tweeted: "${tweetText}"`);
 			setTweetText("");
 		}
 		setInProcess("none");
@@ -124,6 +130,12 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		const res = await requestFavorite(focusedTweet);
 		if (typeof res === "string") {
 			// onError(res)
+		} else {
+			setRequestResult(
+				`Successfully ${res.favorited ? "" : "un"}favorited: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
 		}
 		setInProcess("none");
 	};
@@ -133,6 +145,12 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		const res = await requestRetweet(focusedTweet);
 		if (typeof res === "string") {
 			// onError(res)
+		} else {
+			setRequestResult(
+				`Successfully ${res.retweeted ? "" : "un"}retweeted: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
 		}
 		setInProcess("none");
 	};
