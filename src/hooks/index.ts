@@ -12,6 +12,7 @@ import {
 	focusedPositionAtom,
 	requestResultAtom,
 	errorAtom,
+	hintAtom,
 } from "../store";
 
 export const useUserId = () => useAtom(userIdAtom);
@@ -150,3 +151,8 @@ export const useError = (): [string | undefined, (update: string) => void] => {
 
 	return [error, setErrorMessage];
 };
+
+export const useHint = (): [
+	string | undefined,
+	(update: SetStateAction<string | undefined>) => void | Promise<void>
+] => useAtom(hintAtom);
