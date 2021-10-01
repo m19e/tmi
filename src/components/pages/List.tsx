@@ -27,10 +27,12 @@ import {
 	useCursorIndex,
 	useFocusIndex,
 	useDisplayTweetsCount,
+	useError,
 } from "../../hooks";
 import PinAuthInput from "../../components/molecules/PinAuthInput";
 import SelectList from "../../components/molecules/SelectList";
 import Timeline from "../../components/Timeline";
+import Footer from "../../components/organisms/Footer";
 
 dotenvConfig();
 
@@ -60,10 +62,7 @@ const List: VFC = () => {
 	const [, setFocus] = useFocusIndex();
 	const [count] = useDisplayTweetsCount();
 
-	const [requestResult, setRequestResult] = useState<string | undefined>(
-		undefined
-	);
-	const [error, setError] = useState("");
+	const [, setError] = useError();
 
 	const [client, setClient] = useClient();
 	const [, rows] = useDimensions();
@@ -312,16 +311,7 @@ const List: VFC = () => {
 					}
 				})()}
 			</>
-			{!!requestResult && (
-				<Text color="black" backgroundColor="green">
-					<Text> {requestResult} </Text>
-				</Text>
-			)}
-			{!!error && (
-				<Text color="black" backgroundColor="red">
-					<Text> {error} </Text>
-				</Text>
-			)}
+			<Footer />
 		</Box>
 	);
 };
