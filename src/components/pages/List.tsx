@@ -8,10 +8,8 @@ import {
 	readJsonSync,
 	writeJson,
 } from "fs-extra";
-import { Text, Box, useApp } from "ink";
+import { Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
-import TextInput from "ink-text-input";
-import SelectInput from "ink-select-input";
 import Twitter, { TwitterOptions } from "twitter-lite";
 import { config as dotenvConfig } from "dotenv";
 
