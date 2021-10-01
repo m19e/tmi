@@ -38,3 +38,5 @@ export const focusedPositionAtom = atom<{ position: number; total: number }>(
 export const requestResultAtom = atom<string | undefined>(undefined);
 
 export const errorAtom = atom<string | undefined>(undefined);
+
+export const hintAtom = atom<string | undefined>(undefined);
