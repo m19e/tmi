@@ -34,7 +34,7 @@ const RequestResult: VFC = () => {
 const Hint: VFC = () => {
 	const [hint] = useHint();
 	if (hint) {
-		<Text> {hint} </Text>;
+		return <Text> {hint} </Text>;
 	}
 	return null;
 };
