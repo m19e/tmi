@@ -116,7 +116,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("tweet");
 		const err = await postTweetApi(client, { status: tweetText });
 		if (err !== null) {
-			// onError()
+			setError(err);
 		} else {
 			setIsNewTweetOpen(false);
 			setRequestResult(`Successfully tweeted: "${tweetText}"`);
@@ -129,7 +129,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("fav");
 		const res = await requestFavorite(focusedTweet);
 		if (typeof res === "string") {
-			// onError(res)
+			setError(res);
 		} else {
 			setRequestResult(
 				`Successfully ${res.favorited ? "" : "un"}favorited: @${
@@ -144,7 +144,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("rt");
 		const res = await requestRetweet(focusedTweet);
 		if (typeof res === "string") {
-			// onError(res)
+			setError(res);
 		} else {
 			setRequestResult(
 				`Successfully ${res.retweeted ? "" : "un"}retweeted: @${
