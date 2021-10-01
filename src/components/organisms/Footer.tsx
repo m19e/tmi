@@ -1,15 +1,17 @@
 import React, { Fragment } from "react";
 import type { VFC } from "react";
-import { Text } from "ink";
+import { Box, Text } from "ink";
 import { useError, useRequestResult, useHint } from "../../hooks";
 
 const Error: VFC = () => {
 	const [error] = useError();
 	if (error) {
 		return (
-			<Text color="black" backgroundColor="red">
-				<Text> {error} </Text>
-			</Text>
+			<Box width="100%">
+				<Text wrap="truncate-end" color="black" backgroundColor="red">
+					<> {error} </>
+				</Text>
+			</Box>
 		);
 	}
 	return null;
@@ -19,9 +21,11 @@ const RequestResult: VFC = () => {
 	const [requestResult] = useRequestResult();
 	if (requestResult) {
 		return (
-			<Text color="black" backgroundColor="green">
-				<Text> {requestResult} </Text>
-			</Text>
+			<Box width="100%">
+				<Text wrap="truncate-end" color="black" backgroundColor="green">
+					<> {requestResult} </>
+				</Text>
+			</Box>
 		);
 	}
 	return null;
