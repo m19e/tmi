@@ -23,6 +23,7 @@ import {
 	getFocusedTweet,
 	useRequestResult,
 	useError,
+	useHint,
 } from "../hooks";
 import TweetItem from "./TweetItem";
 import Detail from "./Detail";
@@ -44,6 +45,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const [, setRequestResult] = useRequestResult();
 	const [, setError] = useError();
+	const [, setHintKey] = useHint();
 
 	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
 	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
@@ -121,6 +123,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			setIsNewTweetOpen(false);
 			setRequestResult(`Successfully tweeted: "${tweetText}"`);
 			setTweetText("");
+			setHintKey("timeline");
 		}
 		setWaitReturn(false);
 		setInProcess("none");
@@ -187,8 +190,10 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				fav();
 			} else if (input === "n") {
 				setIsNewTweetOpen(true);
+				setHintKey("timeline/new/input");
 			} else if (key.return) {
 				setStatus("detail");
+				setHintKey("timeline/detail");
 			}
 		},
 		{ isActive: status === "timeline" && !isNewTweetOpen }
@@ -200,7 +205,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 			if (key.escape) {
 				if (waitReturn) {
-					setWaitReturn(false);
+					handleWaitReturn(false);
 					return;
 				}
 				// Avoid warning: state update on an unmounted TextInput
@@ -208,6 +213,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				setTimeout(() => {
 					setTweetText("");
 					setIsNewTweetOpen(false);
+					setHintKey("timeline");
 				});
 			} else if (waitReturn && key.return) {
 				newTweet();
@@ -220,6 +226,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		(input, key) => {
 			if (key.escape) {
 				setStatus("timeline");
+				setHintKey("timeline");
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
@@ -249,12 +256,23 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			prev.filter((tw) => tw.id_str !== focusedTweet.id_str)
 		);
 		setStatus("timeline");
+		setHintKey("timeline");
 	};
 
 	const handleMention = () => {
 		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
 		setIsNewTweetOpen(true);
 		setStatus("timeline");
+		setHintKey("timeline");
+	};
+
+	const handleWaitReturn = (v: boolean) => {
+		setWaitReturn(v);
+		if (v) {
+			setHintKey("timeline/new/wait-return");
+		} else {
+			setHintKey("timeline/new/input");
+		}
 	};
 
 	return (
@@ -287,7 +305,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 								focus={!waitReturn}
 								value={tweetText}
 								onChange={handleNewTweetChange}
-								onSubmit={() => setWaitReturn(valid)}
+								onSubmit={() => handleWaitReturn(valid)}
 							/>
 							<Text>
 								{waitReturn ? (
