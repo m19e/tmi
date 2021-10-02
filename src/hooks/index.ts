@@ -119,16 +119,6 @@ export const useMover = (): {
 	return { prev, next, pageUp, pageDown, top, bottom };
 };
 
-const getRequestResultHook = (): [
-	string | undefined,
-	(update?: SetStateAction<string | undefined>) => void | Promise<void>
-] => useAtom(requestResultAtom);
-
-const getErrorHook = (): [
-	string | undefined,
-	(update?: SetStateAction<string | undefined>) => void | Promise<void>
-] => useAtom(errorAtom);
-
 export const useRequestResult = (): [
 	string | undefined,
 	(update: string) => void
