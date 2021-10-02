@@ -307,12 +307,12 @@ const List: VFC = () => {
 									onToggleList={handleToggleList}
 									onUpdate={handleUpdate}
 								/>
+								<Footer />
 							</>
 						);
 					}
 				})()}
 			</>
-			<Footer />
 		</Box>
 	);
 };
