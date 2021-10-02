@@ -293,33 +293,19 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 							/>
 						))}
 					</Box>
-					{isNewTweetOpen ? (
-						<>
-							<NewTweetBox
-								type="new"
-								loading={inProcess === "tweet"}
-								tweet={focusedTweet}
-								invalid={!valid && weightedLength !== 0}
-								length={weightedLength}
-								placeholder="What's happening?"
-								focus={!waitReturn}
-								value={tweetText}
-								onChange={handleNewTweetChange}
-								onSubmit={() => handleWaitReturn(valid)}
-							/>
-							<Text>
-								{waitReturn ? (
-									<>[Enter] tweet [ESC] cancel</>
-								) : (
-									<>[Enter] done [ESC] close</>
-								)}
-							</Text>
-						</>
-					) : (
-						<Text>
-							[R] reply [T] retweet [F] favorite [N] tweet [Enter] detail [L]
-							list
-						</Text>
+					{isNewTweetOpen && (
+						<NewTweetBox
+							type="new"
+							loading={inProcess === "tweet"}
+							tweet={focusedTweet}
+							invalid={!valid && weightedLength !== 0}
+							length={weightedLength}
+							placeholder="What's happening?"
+							focus={!waitReturn}
+							value={tweetText}
+							onChange={handleNewTweetChange}
+							onSubmit={() => handleWaitReturn(valid)}
+						/>
 					)}
 				</>
 			)}
