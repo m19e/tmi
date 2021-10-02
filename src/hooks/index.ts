@@ -123,7 +123,7 @@ export const useRequestResult = (): [
 	string | undefined,
 	(update: string) => void
 ] => {
-	const [requestResult, setRequestResult]: [
+	const [requestResult, setR]: [
 		string | undefined,
 		(update?: SetStateAction<string | undefined>) => void | Promise<void>
 	] = useAtom(requestResultAtom);
@@ -132,16 +132,16 @@ export const useRequestResult = (): [
 		(update?: SetStateAction<string | undefined>) => void | Promise<void>
 	] = useAtom(errorAtom);
 
-	const setResult = (r: string) => {
+	const setRequestResult = (r: string) => {
 		if (error) setError(undefined);
-		setRequestResult(r);
+		setR(r);
 	};
 
-	return [requestResult, setResult];
+	return [requestResult, setRequestResult];
 };
 
 export const useError = (): [string | undefined, (update: string) => void] => {
-	const [error, setError]: [
+	const [error, setE]: [
 		string | undefined,
 		(update?: SetStateAction<string | undefined>) => void | Promise<void>
 	] = useAtom(errorAtom);
@@ -150,12 +150,12 @@ export const useError = (): [string | undefined, (update: string) => void] => {
 		(update?: SetStateAction<string | undefined>) => void | Promise<void>
 	] = useAtom(requestResultAtom);
 
-	const setErrorMessage = (e: string) => {
+	const setError = (e: string) => {
 		if (requestResult) setRequestResult(undefined);
-		setError(e);
+		setE(e);
 	};
 
-	return [error, setErrorMessage];
+	return [error, setError];
 };
 
 export const useHint = (): [
