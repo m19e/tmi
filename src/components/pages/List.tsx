@@ -26,6 +26,7 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 	useError,
+	useHint,
 } from "../../hooks";
 import PinAuthInput from "../../components/molecules/PinAuthInput";
 import SelectList from "../../components/molecules/SelectList";
@@ -61,6 +62,7 @@ const List: VFC = () => {
 	const [count] = useDisplayTweetsCount();
 
 	const [, setError] = useError();
+	const [, setHintKey] = useHint();
 
 	const [client, setClient] = useClient();
 	const [, rows] = useDimensions();
@@ -256,6 +258,7 @@ const List: VFC = () => {
 			setCurrentList(value);
 		}
 		setStatus("timeline");
+		setHintKey("timeline");
 	};
 
 	const handleToggleList = () => {
