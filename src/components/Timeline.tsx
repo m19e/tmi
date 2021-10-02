@@ -277,46 +277,57 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	return (
 		<>
-			{status === "timeline" && (
-				<>
-					<Box flexGrow={1} flexDirection="column">
-						{displayTimeline.map((t, i) => (
-							<TweetItem
-								key={i}
-								tweet={t}
-								isFocused={t.id_str === focusedTweet.id_str}
-								inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-								inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-							/>
-						))}
-					</Box>
-					{isNewTweetOpen && (
-						<NewTweetBox
-							type="new"
-							loading={inProcess === "tweet"}
+			{(() => {
+				if (status === "timeline") {
+					return (
+						<>
+							<Box flexGrow={1} flexDirection="column">
+								{displayTimeline.map((t, i) => (
+									<TweetItem
+										key={i}
+										tweet={t}
+										isFocused={t.id_str === focusedTweet.id_str}
+										inFav={
+											t.id_str === focusedTweet.id_str && inProcess === "fav"
+										}
+										inRT={
+											t.id_str === focusedTweet.id_str && inProcess === "rt"
+										}
+									/>
+								))}
+							</Box>
+							{isNewTweetOpen && (
+								<NewTweetBox
+									type="new"
+									loading={inProcess === "tweet"}
+									tweet={focusedTweet}
+									invalid={!valid && weightedLength !== 0}
+									length={weightedLength}
+									placeholder="What's happening?"
+									focus={!waitReturn}
+									value={tweetText}
+									onChange={handleNewTweetChange}
+									onSubmit={() => handleWaitReturn(valid)}
+								/>
+							)}
+						</>
+					);
+				}
+
+				if (status === "detail") {
+					return (
+						<Detail
 							tweet={focusedTweet}
-							invalid={!valid && weightedLength !== 0}
-							length={weightedLength}
-							placeholder="What's happening?"
-							focus={!waitReturn}
-							value={tweetText}
-							onChange={handleNewTweetChange}
-							onSubmit={() => handleWaitReturn(valid)}
+							onMention={handleMention}
+							onRemove={removeFocusedTweetFromTimeline}
+							isTweetOpen={isTweetInDetailOpen}
+							setIsTweetOpen={setIsTweetInDetailOpen}
+							inProcess={inProcess}
+							setInProcess={setInProcess}
 						/>
-					)}
-				</>
-			)}
-			{status === "detail" && (
-				<Detail
-					tweet={focusedTweet}
-					onMention={handleMention}
-					onRemove={removeFocusedTweetFromTimeline}
-					isTweetOpen={isTweetInDetailOpen}
-					setIsTweetOpen={setIsTweetInDetailOpen}
-					inProcess={inProcess}
-					setInProcess={setInProcess}
-				/>
-			)}
+					);
+				}
+			})()}
 		</>
 	);
 };
