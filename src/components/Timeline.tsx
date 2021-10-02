@@ -279,9 +279,6 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		<>
 			{status === "timeline" && (
 				<>
-					<Text>
-						{/* cursor:{cursor} focus:{focus} len:{timeline.length} */}
-					</Text>
 					<Box flexGrow={1} flexDirection="column">
 						{displayTimeline.map((t, i) => (
 							<TweetItem
