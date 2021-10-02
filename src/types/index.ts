@@ -19,3 +19,17 @@ export type TimelineProcess =
 	| "fav"
 	| "tweet"
 	| "delete";
+
+type TweetStatus = "input" | "wait-return";
+
+type TimelineStatus = `new/${TweetStatus}`;
+
+type DetailTweetStatus = "reply" | "quote";
+
+type DetailStatus = "detail" | `detail/${DetailTweetStatus}/${TweetStatus}`;
+
+export type TimelineHintKey =
+	| "list"
+	| "timeline"
+	| `timeline/${TimelineStatus}`
+	| `timeline/${DetailStatus}`;
