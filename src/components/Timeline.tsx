@@ -122,6 +122,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			setRequestResult(`Successfully tweeted: "${tweetText}"`);
 			setTweetText("");
 		}
+		setWaitReturn(false);
 		setInProcess("none");
 	};
 
@@ -210,7 +211,6 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				});
 			} else if (waitReturn && key.return) {
 				newTweet();
-				setWaitReturn(false);
 			}
 		},
 		{ isActive: status === "timeline" && isNewTweetOpen }
