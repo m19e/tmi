@@ -29,7 +29,7 @@ type DetailTweetStatus = "reply" | "quote";
 type DetailStatus = "detail" | `detail/${DetailTweetStatus}/${TweetStatus}`;
 
 export type TimelineHintKey =
-	| "list"
+	| "none"
 	| "timeline"
 	| `timeline/${TimelineStatus}`
 	| `timeline/${DetailStatus}`;

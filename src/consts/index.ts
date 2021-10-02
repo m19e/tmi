@@ -5,7 +5,7 @@ type HintPair = [key: TimelineHintKey, value: string | undefined];
 type HintPairArray = Array<HintPair>;
 
 const hintPairArray: HintPairArray = [
-	["list", undefined],
+	["none", undefined],
 	[
 		"timeline",
 		"[R] reply [T] retweet [F] favorite [N] tweet [Enter] detail [L] list",
