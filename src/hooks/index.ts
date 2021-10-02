@@ -14,6 +14,8 @@ import {
 	errorAtom,
 	hintAtom,
 } from "../store";
+import { TimelineHintKey } from "../types";
+import { hintMap } from "../consts";
 
 export const useUserId = () => useAtom(userIdAtom);
 
@@ -154,5 +156,11 @@ export const useError = (): [string | undefined, (update: string) => void] => {
 
 export const useHint = (): [
 	string | undefined,
-	(update: SetStateAction<string | undefined>) => void | Promise<void>
-] => useAtom(hintAtom);
+	(key: TimelineHintKey) => void
+] => {
+	const [hint, setHint]: [string | undefined, (v: string | undefined) => void] =
+		useAtom(hintAtom);
+	const setHintKey = (key: TimelineHintKey) => setHint(hintMap.get(key));
+
+	return [hint, setHintKey];
+};
