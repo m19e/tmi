@@ -158,8 +158,11 @@ export const useHint = (): [
 	string | undefined,
 	(key: TimelineHintKey) => void
 ] => {
-	const [hint, setHint]: [string | undefined, (v: string | undefined) => void] =
-		useAtom(hintAtom);
+	const [hint, setHint]: [
+		string | undefined,
+		(update?: SetStateAction<string | undefined>) => void | Promise<void>
+	] = useAtom(hintAtom);
+
 	const setHintKey = (key: TimelineHintKey) => setHint(hintMap.get(key));
 
 	return [hint, setHintKey];
