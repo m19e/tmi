@@ -6,13 +6,13 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
-import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import figures from "../lib/sindresorhus/figures";
+import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import { useUserId, useClient, useHint } from "../hooks";
 import TweetItem from "./TweetItem";
 import NewTweetBox from "./NewTweetBox";
 
-const Borderless = ({
+const Detail = ({
 	tweet,
 	onMention,
 	onRemove,
@@ -291,4 +291,4 @@ const Indicator: FC<{
 	</Box>
 );
 
-export default Borderless;
+export default Detail;
