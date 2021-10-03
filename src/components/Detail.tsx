@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { FC } from "react";
+import type { FC, VFC } from "react";
 import { Text, Box, Newline, useInput } from "ink";
 import Divider from "ink-divider";
 import useDimensions from "ink-use-stdout-dimensions";
@@ -520,6 +520,50 @@ const Borderless = ({
 		if (v) setHintKey("timeline/detail/wait-return");
 	};
 
+	const Component: VFC = () => {
+		if (tweetMode === "reply") {
+			return (
+				<NewTweetBox
+					type="reply"
+					loading={inProcess === "reply"}
+					tweet={tweet}
+					invalid={!valid && weightedLength !== 0}
+					length={weightedLength}
+					placeholder={myTweet ? "Add another Tweet" : "Tweet your reply"}
+					focus={!waitReturn}
+					value={tweetText}
+					onChange={handleTweetChange}
+					onSubmit={() => handleWaitReturn(valid)}
+				/>
+			);
+		}
+		if (tweetMode === "quote") {
+			return (
+				<NewTweetBox
+					type="quote"
+					loading={inProcess === "quote"}
+					tweet={tweet}
+					invalid={!valid && weightedLength !== 0}
+					length={weightedLength}
+					placeholder="Add a comment"
+					focus={!waitReturn}
+					value={tweetText}
+					onChange={handleQuoteChange}
+					onSubmit={() => handleWaitReturn(valid)}
+				/>
+			);
+		}
+
+		return (
+			<SelectInput
+				items={selectItems}
+				itemComponent={SelectItem}
+				indicatorComponent={Indicator}
+				onSelect={handleSelectMenu}
+			/>
+		);
+	};
+
 	return (
 		<Box flexGrow={1} flexDirection="column">
 			<TweetItem
@@ -528,46 +572,7 @@ const Borderless = ({
 				inRT={inProcess === "rt"}
 			/>
 			<Box flexDirection="column" marginLeft={2} marginBottom={1}>
-				{!isTweetOpen && (
-					<SelectInput
-						items={selectItems}
-						itemComponent={SelectItem}
-						indicatorComponent={Indicator}
-						onSelect={handleSelectMenu}
-					/>
-				)}
-				{isTweetOpen && (
-					<>
-						{tweetMode === "reply" && (
-							<NewTweetBox
-								type="reply"
-								loading={inProcess === "reply"}
-								tweet={tweet}
-								invalid={!valid && weightedLength !== 0}
-								length={weightedLength}
-								placeholder={myTweet ? "Add another Tweet" : "Tweet your reply"}
-								focus={!waitReturn}
-								value={tweetText}
-								onChange={handleTweetChange}
-								onSubmit={() => handleWaitReturn(valid)}
-							/>
-						)}
-						{tweetMode === "quote" && (
-							<NewTweetBox
-								type="quote"
-								loading={inProcess === "quote"}
-								tweet={tweet}
-								invalid={!valid && weightedLength !== 0}
-								length={weightedLength}
-								placeholder="Add a comment"
-								focus={!waitReturn}
-								value={tweetText}
-								onChange={handleQuoteChange}
-								onSubmit={() => handleWaitReturn(valid)}
-							/>
-						)}
-					</>
-				)}
+				<Component />
 			</Box>
 		</Box>
 	);
