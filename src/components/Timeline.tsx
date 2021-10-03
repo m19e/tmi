@@ -256,7 +256,11 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			prev.filter((tw) => tw.id_str !== focusedTweet.id_str)
 		);
 		setStatus("timeline");
-		setHintKey("timeline");
+		if (redraft) {
+			setHintKey("timeline/new/input");
+		} else {
+			setHintKey("timeline");
+		}
 	};
 
 	const handleMention = () => {
