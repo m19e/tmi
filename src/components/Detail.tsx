@@ -12,15 +12,7 @@ import { useUserId, useClient, useHint } from "../hooks";
 import TweetItem from "./TweetItem";
 import NewTweetBox from "./NewTweetBox";
 
-const Detail = ({
-	tweet,
-	onMention,
-	onRemove,
-	isTweetOpen,
-	setIsTweetOpen,
-	inProcess,
-	setInProcess,
-}: {
+interface Props {
 	tweet: Tweet;
 	onMention: () => void;
 	onRemove: (options?: { redraft: boolean }) => void;
@@ -28,6 +20,16 @@ const Detail = ({
 	setIsTweetOpen: (b: boolean) => void;
 	inProcess: TimelineProcess;
 	setInProcess: (p: TimelineProcess) => void;
+}
+
+const Detail: VFC<Props> = ({
+	tweet,
+	onMention,
+	onRemove,
+	isTweetOpen,
+	setIsTweetOpen,
+	inProcess,
+	setInProcess,
 }) => {
 	const [client] = useClient();
 	const [userId] = useUserId();
