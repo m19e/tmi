@@ -26,7 +26,7 @@ type TimelineStatus = `new/${TweetStatus}`;
 
 type DetailTweetStatus = "reply" | "quote";
 
-type DetailStatus = "detail" | `detail/${DetailTweetStatus}/${TweetStatus}`;
+type DetailStatus = "detail" | `detail/${TweetStatus}`;
 
 export type TimelineHintKey =
 	| "none"
