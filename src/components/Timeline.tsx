@@ -205,7 +205,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 			if (key.escape) {
 				if (waitReturn) {
-					handleWaitReturn(false);
+					setWaitReturn(false);
+					setHintKey("timeline/new/input");
 					return;
 				}
 				// Avoid warning: state update on an unmounted TextInput
@@ -272,11 +273,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const handleWaitReturn = (v: boolean) => {
 		setWaitReturn(v);
-		if (v) {
-			setHintKey("timeline/new/wait-return");
-		} else {
-			setHintKey("timeline/new/input");
-		}
+		if (v) setHintKey("timeline/new/wait-return");
 	};
 
 	return (
