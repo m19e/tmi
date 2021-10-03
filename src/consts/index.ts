@@ -16,10 +16,8 @@ const hintPairArray: HintPairArray = [
 		"timeline/detail",
 		"[R] reply [Q] quote [T] retweet [F] favorite [ESC] back",
 	],
-	["timeline/detail/reply/input", "[Enter] done [ESC] close"],
-	["timeline/detail/reply/wait-return", "[Enter] reply [ESC] cancel"],
-	["timeline/detail/quote/input", "[Enter] done [ESC] close"],
-	["timeline/detail/quote/wait-return", "[Enter] quote [ESC] cancel"],
+	["timeline/detail/input", "[Enter] done [ESC] close"],
+	["timeline/detail/wait-return", "[Enter] tweet [ESC] cancel"],
 ];
 
 export const hintMap = new Map<TimelineHintKey, string | undefined>(
