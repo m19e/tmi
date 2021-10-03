@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import type { FC, VFC } from "react";
 import { Text, Box, Newline, useInput } from "ink";
-import Divider from "ink-divider";
-import useDimensions from "ink-use-stdout-dimensions";
-import TextInput from "ink-text-input";
 import SelectInput, { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
-import { getDisplayTime } from "../lib";
 import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import figures from "../lib/sindresorhus/figures";
 import { useUserId, useClient, useHint } from "../hooks";
-import Loader from "./Loader";
 import TweetItem from "./TweetItem";
-import Quoted from "./Quoted";
 import NewTweetBox from "./NewTweetBox";
 
 const Borderless = ({
