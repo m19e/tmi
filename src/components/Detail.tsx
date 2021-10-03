@@ -12,7 +12,7 @@ import { Tweet } from "../types/twitter";
 import { getDisplayTime } from "../lib";
 import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import figures from "../lib/sindresorhus/figures";
-import { useUserId, useClient } from "../hooks";
+import { useUserId, useClient, useHint } from "../hooks";
 import Loader from "./Loader";
 import TweetItem from "./TweetItem";
 import Quoted from "./Quoted";
@@ -355,6 +355,7 @@ const Borderless = ({
 }) => {
 	const [client] = useClient();
 	const [userId] = useUserId();
+	const [, setHintKey] = useHint();
 
 	const [tweetMode, setTweetMode] = useState<"none" | "reply" | "quote">(
 		"none"
@@ -424,6 +425,7 @@ const Borderless = ({
 			return;
 		}
 		resetTweetState();
+		setHintKey("timeline/detail");
 	};
 
 	const quote = async () => {
@@ -437,6 +439,7 @@ const Borderless = ({
 			return;
 		}
 		resetTweetState();
+		setHintKey("timeline/detail");
 	};
 
 	const deleteTweet = async (
@@ -461,8 +464,10 @@ const Borderless = ({
 		(input, key) => {
 			if (input === "r") {
 				openReplyTweet();
+				setHintKey("timeline/detail/input");
 			} else if (input === "q") {
 				openQuoteTweet();
+				setHintKey("timeline/detail/input");
 			}
 		},
 		{ isActive: !isTweetOpen && inProcess === "none" }
@@ -473,11 +478,13 @@ const Borderless = ({
 			if (key.escape) {
 				if (waitReturn) {
 					setWaitReturn(false);
+					setHintKey("timeline/detail/input");
 				} else {
 					// Avoid warning: state update on an unmounted TextInput
 					// Maybe caused by Node.js (single-threaded)?
 					setTimeout(() => {
 						resetTweetState();
+						setHintKey("timeline/detail");
 					});
 				}
 			} else if (waitReturn && key.return) {
@@ -506,6 +513,11 @@ const Borderless = ({
 		} else if (value === "re-draft") {
 			deleteTweet({ redraft: true });
 		}
+	};
+
+	const handleWaitReturn = (v: boolean) => {
+		setWaitReturn(v);
+		if (v) setHintKey("timeline/detail/wait-return");
 	};
 
 	return (
@@ -540,7 +552,7 @@ const Borderless = ({
 									focus={!waitReturn}
 									value={tweetText}
 									onChange={handleTweetChange}
-									onSubmit={() => setWaitReturn(valid)}
+									onSubmit={() => handleWaitReturn(valid)}
 								/>
 							)}
 							{tweetMode === "quote" && (
@@ -554,7 +566,7 @@ const Borderless = ({
 									focus={!waitReturn}
 									value={tweetText}
 									onChange={handleQuoteChange}
-									onSubmit={() => setWaitReturn(valid)}
+									onSubmit={() => handleWaitReturn(valid)}
 								/>
 							)}
 						</>
