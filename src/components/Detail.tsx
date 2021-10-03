@@ -573,17 +573,6 @@ const Borderless = ({
 					)}
 				</Box>
 			</Box>
-			{isTweetOpen ? (
-				<>
-					{waitReturn ? (
-						<Text>[Enter] {tweetMode} [ESC] cancel</Text>
-					) : (
-						<Text>[Enter] done [ESC] close</Text>
-					)}
-				</>
-			) : (
-				<Text>[R] reply [Q] quote [T] retweet [F] favorite [ESC] back</Text>
-			)}
 		</>
 	);
 };
