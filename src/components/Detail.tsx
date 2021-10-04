@@ -11,6 +11,7 @@ import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import { useUserId, useClient, useHint } from "../hooks";
 import TweetItem from "./TweetItem";
 import NewTweetBox from "./NewTweetBox";
+import LocalSelectInput from "./molecules/SelectInput";
 
 interface Props {
 	tweet: Tweet;
@@ -232,14 +233,7 @@ const Detail: VFC<Props> = ({
 			);
 		}
 
-		return (
-			<SelectInput
-				items={selectItems}
-				itemComponent={SelectItem}
-				indicatorComponent={Indicator}
-				onSelect={handleSelectMenu}
-			/>
-		);
+		return <LocalSelectInput items={selectItems} onSelect={handleSelectMenu} />;
 	};
 
 	return (
