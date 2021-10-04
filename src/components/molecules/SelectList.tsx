@@ -1,8 +1,8 @@
 import React from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
-import SelectInput from "ink-select-input";
 import { TrimmedList } from "../../types/twitter";
+import SelectInput from "../molecules/SelectInput";
 
 interface Item<V> {
 	key: string;
