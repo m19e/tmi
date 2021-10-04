@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import type { FC, VFC } from "react";
-import { Text, Box, Newline, useInput } from "ink";
+import type { VFC } from "react";
+import { Box, useInput } from "ink";
 import type { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
-import figures from "../lib/sindresorhus/figures";
 import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import { useUserId, useClient, useHint } from "../hooks";
 import TweetItem from "./TweetItem";
