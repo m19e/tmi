@@ -6,10 +6,7 @@ type HintPairArray = Array<HintPair>;
 
 const hintPairArray: HintPairArray = [
 	["none", undefined],
-	[
-		"timeline",
-		"[R] reply [T] retweet [F] favorite [N] tweet [Enter] detail [L] list",
-	],
+	["timeline", "[T] retweet [F] favorite [N] tweet [Enter] detail [L] list"],
 	["timeline/new/input", "[Enter] done [ESC] close"],
 	["timeline/new/wait-return", "[Enter] tweet [ESC] cancel"],
 	[
