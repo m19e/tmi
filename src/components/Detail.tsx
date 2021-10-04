@@ -21,6 +21,11 @@ type TweetMenuAction =
 	| "re-draft"
 	| "block"
 	| `mute-${TweetMenuActionTarget}`;
+
+interface SelectItemProps extends ItemProps {
+	value: TweetMenuAction;
+}
+
 interface Props {
 	tweet: Tweet;
 	onMention: () => void;
@@ -257,33 +262,5 @@ const Detail: VFC<Props> = ({
 		</Box>
 	);
 };
-
-interface SelectItemProps extends ItemProps {
-	value: TweetMenuAction;
-	newline?: boolean;
-}
-
-const SelectItem: FC<SelectItemProps> = ({
-	isSelected = false,
-	label,
-	newline = false,
-}) => (
-	<>
-		<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
-		{newline && <Newline />}
-	</>
-);
-
-const Indicator: FC<{
-	isSelected?: boolean;
-}> = ({ isSelected = false }) => (
-	<Box marginRight={1}>
-		{isSelected ? (
-			<Text color="#00acee">{figures.pointer}</Text>
-		) : (
-			<Text> </Text>
-		)}
-	</Box>
-);
 
 export default Detail;
