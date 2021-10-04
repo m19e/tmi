@@ -13,6 +13,14 @@ import TweetItem from "./TweetItem";
 import NewTweetBox from "./NewTweetBox";
 import LocalSelectInput from "./molecules/SelectInput";
 
+type TweetMenuActionTarget = "user" | "retweets" | "quotes" | "client";
+
+type TweetMenuAction =
+	| "mention"
+	| "delete"
+	| "re-draft"
+	| "block"
+	| `mute-${TweetMenuActionTarget}`;
 interface Props {
 	tweet: Tweet;
 	onMention: () => void;
@@ -249,15 +257,6 @@ const Detail: VFC<Props> = ({
 		</Box>
 	);
 };
-
-type TweetMenuActionTarget = "user" | "retweets" | "quotes" | "client";
-
-type TweetMenuAction =
-	| "mention"
-	| "delete"
-	| "re-draft"
-	| "block"
-	| `mute-${TweetMenuActionTarget}`;
 
 interface SelectItemProps extends ItemProps {
 	value: TweetMenuAction;
