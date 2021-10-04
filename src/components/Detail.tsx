@@ -211,43 +211,6 @@ const Detail: VFC<Props> = ({
 		if (v) setHintKey("timeline/detail/wait-return");
 	};
 
-	const Component: VFC = () => {
-		if (tweetMode === "reply") {
-			return (
-				<NewTweetBox
-					type="reply"
-					loading={inProcess === "reply"}
-					tweet={tweet}
-					invalid={!valid && weightedLength !== 0}
-					length={weightedLength}
-					placeholder={myTweet ? "Add another Tweet" : "Tweet your reply"}
-					focus={!waitReturn}
-					value={tweetText}
-					onChange={handleTweetChange}
-					onSubmit={() => handleWaitReturn(valid)}
-				/>
-			);
-		}
-		if (tweetMode === "quote") {
-			return (
-				<NewTweetBox
-					type="quote"
-					loading={inProcess === "quote"}
-					tweet={tweet}
-					invalid={!valid && weightedLength !== 0}
-					length={weightedLength}
-					placeholder="Add a comment"
-					focus={!waitReturn}
-					value={tweetText}
-					onChange={handleQuoteChange}
-					onSubmit={() => handleWaitReturn(valid)}
-				/>
-			);
-		}
-
-		return <SelectInput items={selectItems} onSelect={handleSelectMenu} />;
-	};
-
 	return (
 		<Box flexGrow={1} flexDirection="column">
 			<TweetItem
