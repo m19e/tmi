@@ -60,6 +60,13 @@ const NewTweetBox: VFC<Props> = ({
 		}
 	};
 
+	const Q: VFC = () => {
+		if (type === "quote") {
+			return <Quoted tweet={tweet} />;
+		}
+		return null;
+	};
+
 	return (
 		<>
 			<Text color="gray">
@@ -78,7 +85,7 @@ const NewTweetBox: VFC<Props> = ({
 						onChange={onChange}
 						onSubmit={onSubmit}
 					/>
-					{type === "quote" && <Quoted tweet={tweet} />}
+					<Q />
 				</Box>
 			</Box>
 		</>
