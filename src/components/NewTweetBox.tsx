@@ -22,35 +22,6 @@ interface Props {
 	onSubmit?: (value: string) => void;
 }
 
-const NewTweetHeader: FC<{
-	type: Props["type"];
-	loading: Props["loading"];
-	screenName?: string;
-}> = ({ type, loading, screenName }) => {
-	switch (type) {
-		case "new":
-			return (
-				<>
-					Tweet <Loader loading={loading} color="#00acee" />
-				</>
-			);
-		case "reply":
-			return (
-				<>
-					Replying to <Text color="#00acee">@{screenName} </Text>
-					<Loader loading={loading} color="#00acee" />
-				</>
-			);
-		case "quote":
-			return (
-				<>
-					Quote <Text color="#00acee">@{screenName}</Text>'s tweet{" "}
-					<Loader loading={loading} color="green" />
-				</>
-			);
-	}
-};
-
 const NewTweetBox: FC<Props> = ({
 	type,
 	loading,
