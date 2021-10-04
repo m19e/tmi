@@ -65,7 +65,7 @@ const ItemC: VFC<ItemProps> = ({ isSelected = false, label }) => (
 const IndicatorC: VFC<IndicatorProps> = ({ isSelected = false }) => (
 	<Box marginRight={1}>
 		{isSelected ? (
-			<Text color="#00acee">{figures.square}</Text>
+			<Text color="#00acee">{figures.squareLeft}</Text>
 		) : (
 			<Text> </Text>
 		)}
