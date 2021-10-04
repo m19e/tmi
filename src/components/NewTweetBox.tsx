@@ -1,5 +1,5 @@
 import React from "react";
-import type { FC } from "react";
+import type { VFC } from "react";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
 
@@ -22,7 +22,7 @@ interface Props {
 	onSubmit?: (value: string) => void;
 }
 
-const NewTweetBox: FC<Props> = ({
+const NewTweetBox: VFC<Props> = ({
 	type,
 	loading,
 	tweet,
@@ -34,7 +34,7 @@ const NewTweetBox: FC<Props> = ({
 	onChange,
 	onSubmit,
 }) => {
-	const Header: FC = () => {
+	const Header: VFC = () => {
 		if (type === "new") {
 			return (
 				<>
