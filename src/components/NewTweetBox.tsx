@@ -62,32 +62,56 @@ const NewTweetBox: FC<Props> = ({
 	value,
 	onChange,
 	onSubmit,
-}) => (
-	<>
-		<Text color="gray">
-			<NewTweetHeader
-				type={type}
-				loading={loading}
-				screenName={tweet.user.screen_name}
-			/>{" "}
-			<Counter invalid={invalid} length={length} />
-		</Text>
-		<Box marginY={1}>
-			<Box width={2} flexDirection="column">
-				<Text color="#00acee">{figures.squareLeft}</Text>
+}) => {
+	const Header: FC = () => {
+		if (type === "new") {
+			return (
+				<>
+					Tweet <Loader loading={loading} color="#00acee" />{" "}
+				</>
+			);
+		}
+		if (type === "reply") {
+			return (
+				<>
+					Replying to <Text color="#00acee">@{tweet.user.screen_name} </Text>
+					<Loader loading={loading} color="#00acee" />{" "}
+				</>
+			);
+		}
+		if (type === "quote") {
+			return (
+				<>
+					Quote <Text color="#00acee">@{tweet.user.screen_name}</Text>'s tweet{" "}
+					<Loader loading={loading} color="green" />{" "}
+				</>
+			);
+		}
+	};
+
+	return (
+		<>
+			<Text color="gray">
+				<Header />
+				<Counter invalid={invalid} length={length} />
+			</Text>
+			<Box marginY={1}>
+				<Box width={2} flexDirection="column">
+					<Text color="#00acee">{figures.squareLeft}</Text>
+				</Box>
+				<Box flexDirection="column" flexGrow={1}>
+					<TextInput
+						placeholder={placeholder}
+						focus={focus}
+						value={value}
+						onChange={onChange}
+						onSubmit={onSubmit}
+					/>
+					{type === "quote" && <Quoted tweet={tweet} />}
+				</Box>
 			</Box>
-			<Box flexDirection="column" flexGrow={1}>
-				<TextInput
-					placeholder={placeholder}
-					focus={focus}
-					value={value}
-					onChange={onChange}
-					onSubmit={onSubmit}
-				/>
-				{type === "quote" && <Quoted tweet={tweet} />}
-			</Box>
-		</Box>
-	</>
-);
+		</>
+	);
+};
 
 export default NewTweetBox;
