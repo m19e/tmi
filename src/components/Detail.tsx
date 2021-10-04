@@ -11,7 +11,7 @@ import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import { useUserId, useClient, useHint } from "../hooks";
 import TweetItem from "./TweetItem";
 import NewTweetBox from "./NewTweetBox";
-import LocalSelectInput from "./molecules/SelectInput";
+import SelectInput from "./molecules/SelectInput";
 
 type TweetMenuActionTarget = "user" | "retweets" | "quotes" | "client";
 
@@ -246,7 +246,7 @@ const Detail: VFC<Props> = ({
 			);
 		}
 
-		return <LocalSelectInput items={selectItems} onSelect={handleSelectMenu} />;
+		return <SelectInput items={selectItems} onSelect={handleSelectMenu} />;
 	};
 
 	return (
