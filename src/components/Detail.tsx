@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { FC, VFC } from "react";
 import { Text, Box, Newline, useInput } from "ink";
-import SelectInput, { ItemProps } from "ink-select-input";
+import type { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
