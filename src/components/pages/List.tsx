@@ -26,6 +26,7 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 	useError,
+	useRequestResult,
 	useHint,
 } from "../../hooks";
 import PinAuthInput from "../../components/molecules/PinAuthInput";
@@ -62,6 +63,7 @@ const List: VFC = () => {
 	const [count] = useDisplayTweetsCount();
 
 	const [, setError] = useError();
+	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 
 	const [client, setClient] = useClient();
@@ -263,6 +265,7 @@ const List: VFC = () => {
 
 	const handleToggleList = () => {
 		setStatus("select");
+		setRequestResult(undefined);
 		setCursor(0);
 		setFocus(0);
 	};
