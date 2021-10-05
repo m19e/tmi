@@ -21,9 +21,10 @@ export const displayTimelineAtom = atom<Tweet[]>((get) => {
 	return get(timelineAtom).slice(cursor, cursor + count);
 });
 
-export const focusedTweetAtom = atom<Tweet>(
-	(get) => get(displayTimelineAtom)[get(focusIndexAtom)]
-);
+export const focusedTweetAtom = atom<Tweet>((get) => {
+	const focused = get(displayTimelineAtom)[get(focusIndexAtom)];
+	return focused.retweeted_status ?? focused;
+});
 
 export const focusedPositionAtom = atom<{ position: number; total: number }>(
 	(get) => {
