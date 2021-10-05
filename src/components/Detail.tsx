@@ -219,9 +219,9 @@ const Detail: VFC<Props> = ({
 		}
 	};
 
-	const handleWaitReturn = (v: boolean) => {
-		setWaitReturn(v);
-		if (v) setHintKey("timeline/detail/wait-return");
+	const handleWaitReturn = () => {
+		setWaitReturn(valid);
+		if (valid) setHintKey("timeline/detail/wait-return");
 	};
 
 	return (
@@ -245,7 +245,7 @@ const Detail: VFC<Props> = ({
 								focus={!waitReturn}
 								value={tweetText}
 								onChange={handleTweetChange}
-								onSubmit={() => handleWaitReturn(valid)}
+								onSubmit={handleWaitReturn}
 							/>
 						);
 					}
@@ -261,7 +261,7 @@ const Detail: VFC<Props> = ({
 								focus={!waitReturn}
 								value={tweetText}
 								onChange={handleQuoteChange}
-								onSubmit={() => handleWaitReturn(valid)}
+								onSubmit={handleWaitReturn}
 							/>
 						);
 					}

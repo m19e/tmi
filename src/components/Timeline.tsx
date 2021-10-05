@@ -273,9 +273,9 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setHintKey("timeline");
 	};
 
-	const handleWaitReturn = (v: boolean) => {
-		setWaitReturn(v);
-		if (v) setHintKey("timeline/new/wait-return");
+	const handleWaitReturn = () => {
+		setWaitReturn(valid);
+		if (valid) setHintKey("timeline/new/wait-return");
 	};
 
 	return (
@@ -310,7 +310,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 									focus={!waitReturn}
 									value={tweetText}
 									onChange={handleNewTweetChange}
-									onSubmit={() => handleWaitReturn(valid)}
+									onSubmit={handleWaitReturn}
 								/>
 							)}
 						</>
