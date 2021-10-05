@@ -123,6 +123,7 @@ const Detail: VFC<Props> = ({
 			setError(error);
 			return;
 		}
+		setRequestResult(`Successfully replied: "${tweetText}"`);
 		resetTweetState();
 		setHintKey("timeline/detail");
 	};
@@ -137,6 +138,7 @@ const Detail: VFC<Props> = ({
 			setError(error);
 			return;
 		}
+		setRequestResult(`Successfully quoted: "${tweetText}"`);
 		resetTweetState();
 		setHintKey("timeline/detail");
 	};
@@ -155,6 +157,7 @@ const Detail: VFC<Props> = ({
 			setError(error);
 			return;
 		}
+		setRequestResult(`Successfully deleted: "${tweet.full_text}"`);
 		onRemove({ redraft });
 		resetTweetState();
 	};
