@@ -189,6 +189,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			} else if (input === "f") {
 				fav();
 			} else if (input === "n") {
+				setRequestResult(undefined);
 				setIsNewTweetOpen(true);
 				setHintKey("timeline/new/input");
 			} else if (key.return) {
@@ -266,6 +267,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const handleMention = () => {
 		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
+		setRequestResult(undefined);
 		setIsNewTweetOpen(true);
 		setStatus("timeline");
 		setHintKey("timeline");

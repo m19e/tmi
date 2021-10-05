@@ -61,10 +61,12 @@ const Detail: VFC<Props> = ({
 	);
 	const openReplyTweet = () => {
 		setTweetMode("reply");
+		setRequestResult(undefined);
 		setIsTweetOpen(true);
 	};
 	const openQuoteTweet = () => {
 		setTweetMode("quote");
+		setRequestResult(undefined);
 		setIsTweetOpen(true);
 	};
 
