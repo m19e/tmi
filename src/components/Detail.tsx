@@ -120,7 +120,7 @@ const Detail: VFC<Props> = ({
 		});
 		setInProcess("none");
 		if (error !== null) {
-			// onError()
+			setError(error);
 			return;
 		}
 		resetTweetState();
@@ -134,7 +134,7 @@ const Detail: VFC<Props> = ({
 		});
 		setInProcess("none");
 		if (error !== null) {
-			// onError()
+			setError(error);
 			return;
 		}
 		resetTweetState();
@@ -152,7 +152,7 @@ const Detail: VFC<Props> = ({
 		const error = await postDeleteTweetApi(client, { id: t.id_str });
 		setInProcess("none");
 		if (error !== null) {
-			// onError
+			setError(error);
 			return;
 		}
 		onRemove({ redraft });
