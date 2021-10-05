@@ -125,7 +125,9 @@ const Detail: VFC<Props> = ({
 			setError(error);
 			return;
 		}
-		setRequestResult(`Successfully replied: "${tweetText}"`);
+		setRequestResult(
+			`Successfully replied to @${tweet.user.screen_name}: "${tweetText}"`
+		);
 		resetTweetState();
 		setHintKey("timeline/detail");
 	};
