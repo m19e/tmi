@@ -66,7 +66,7 @@ const List: VFC = () => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 
-	const [client, setClient] = useClient();
+	const [client, setClient, api] = useClient();
 	const [, rows] = useDimensions();
 	const [, setUserId] = useUserId();
 	const { exit } = useApp();
@@ -199,7 +199,7 @@ const List: VFC = () => {
 			...options,
 		});
 
-		const res = await getListTweetsApi(client, params);
+		const res = await api.getListTimeline(params);
 		if (!Array.isArray(res) || res.length === 0) return [];
 
 		return res.map(convertTweetToDisplayable);
