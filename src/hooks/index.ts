@@ -14,15 +14,34 @@ import {
 	errorAtom,
 	hintAtom,
 } from "../store";
-import { TimelineHintKey } from "../types";
+import { GetListTweetsParams, TimelineHintKey } from "../types";
+import { List, Tweet } from "../types/twitter";
 import { hintMap } from "../consts";
+import {
+	HandledErrorResponse,
+	getUserListsApi,
+	getListTweetsApi,
+	getTweetApi,
+} from "../lib/api";
 
 export const useUserId = () => useAtom(userIdAtom);
 
 export const useClient = (): [
 	Twitter | null,
-	(update?: SetStateAction<Twitter | null>) => void
-] => useAtom(clientAtom);
+	(update?: SetStateAction<Twitter | null>) => void,
+	{
+		getListTimeline: (params: GetListTweetsParams) => Promise<Tweet[] | string>;
+		getTweet: (params: { id: string }) => Promise<Tweet | string>;
+	}
+] => {
+	const [client, setClient] = useAtom(clientAtom);
+	const getListTimeline = async (params: GetListTweetsParams) =>
+		await getListTweetsApi(client, params);
+	const getTweet = async (params: { id: string }): Promise<Tweet | string> =>
+		await getTweetApi(client, params);
+
+	return [client, setClient, { getListTimeline, getTweet }];
+};
 
 export const useTimeline = () => useAtom(timelineAtom);
 
