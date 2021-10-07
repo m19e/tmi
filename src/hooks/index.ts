@@ -15,14 +15,9 @@ import {
 	hintAtom,
 } from "../store";
 import { GetListTweetsParams, TimelineHintKey } from "../types";
-import { List, Tweet } from "../types/twitter";
+import { Tweet } from "../types/twitter";
 import { hintMap } from "../consts";
-import {
-	HandledErrorResponse,
-	getUserListsApi,
-	getListTweetsApi,
-	getTweetApi,
-} from "../lib/api";
+import { getListTweetsApi, getTweetApi } from "../lib/api";
 
 export const useUserId = () => useAtom(userIdAtom);
 
