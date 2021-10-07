@@ -10,7 +10,7 @@ interface TwitterErrorResponse {
 	}[];
 }
 
-export interface HandledErrorResponse {
+interface HandledErrorResponse {
 	rate_limit: boolean;
 	message: string;
 }
