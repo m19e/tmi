@@ -50,7 +50,7 @@ const Detail: VFC<Props> = ({
 	inProcess,
 	setInProcess,
 }) => {
-	const [, , api] = useClient();
+	const [api] = useClient();
 	const [userId] = useUserId();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();

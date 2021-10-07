@@ -49,9 +49,9 @@ interface ClientApi {
 }
 
 export const useClient = (): [
+	ClientApi,
 	Twitter | null,
-	(update?: SetStateAction<Twitter | null>) => void,
-	ClientApi
+	(update?: SetStateAction<Twitter | null>) => void
 ] => {
 	const [client, setClient] = useAtom(clientAtom);
 	const getTweet = async (params: { id: string }) =>
@@ -87,7 +87,7 @@ export const useClient = (): [
 		unretweet,
 	};
 
-	return [client, setClient, api];
+	return [api, client, setClient];
 };
 
 export const useTimeline = () => useAtom(timelineAtom);

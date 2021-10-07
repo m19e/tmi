@@ -66,7 +66,7 @@ const List: VFC = () => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 
-	const [client, setClient, api] = useClient();
+	const [api, client, setClient] = useClient();
 	const [, rows] = useDimensions();
 	const [, setUserId] = useUserId();
 	const { exit } = useApp();

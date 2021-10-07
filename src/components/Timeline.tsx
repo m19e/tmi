@@ -27,7 +27,7 @@ type Props = {
 };
 
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
-	const [, , api] = useClient();
+	const [api] = useClient();
 	const [, setTimeline] = useTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
