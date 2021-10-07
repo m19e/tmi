@@ -50,7 +50,7 @@ const Detail: VFC<Props> = ({
 	inProcess,
 	setInProcess,
 }) => {
-	const [client] = useClient();
+	const [, , api] = useClient();
 	const [userId] = useUserId();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
@@ -116,7 +116,7 @@ const Detail: VFC<Props> = ({
 
 	const reply = async () => {
 		setInProcess("reply");
-		const error = await postReplyApi(client, {
+		const error = await api.reply({
 			status: tweetText,
 			in_reply_to_status_id: t.id_str,
 		});
@@ -134,7 +134,7 @@ const Detail: VFC<Props> = ({
 
 	const quote = async () => {
 		setInProcess("quote");
-		const error = await postTweetApi(client, {
+		const error = await api.tweet({
 			status: `${tweetText} ${quoteUrl}`,
 		});
 		setInProcess("none");
@@ -155,7 +155,7 @@ const Detail: VFC<Props> = ({
 		} = { redraft: false }
 	) => {
 		setInProcess("delete");
-		const error = await postDeleteTweetApi(client, { id: t.id_str });
+		const error = await api.deleteTweet({ id: t.id_str });
 		setInProcess("none");
 		if (error !== null) {
 			setError(error);
