@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import { Text, Box, useInput } from "ink";
+import { Box, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
-import {
-	getTweetApi,
-	postTweetApi,
-	postFavoriteApi,
-	postUnfavoriteApi,
-	postRetweetApi,
-	postUnretweetApi,
-} from "../lib/api";
 import {
 	useClient,
 	useTimeline,
