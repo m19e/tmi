@@ -35,7 +35,7 @@ type Props = {
 };
 
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
-	const [client] = useClient();
+	const [client, _, api] = useClient();
 	const [, setTimeline] = useTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
@@ -65,13 +65,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	}: Tweet): Promise<Tweet | string> => {
 		let err: null | string;
 		if (retweeted) {
-			err = await postUnretweetApi(client, { id: id_str });
+			err = await api.unretweet({ id: id_str });
 		} else {
-			err = await postRetweetApi(client, { id: id_str });
+			err = await api.retweet({ id: id_str });
 		}
 		if (err !== null) return err;
 
-		const res = await getTweetApi(client, { id: id_str });
+		const res = await api.getTweet({ id: id_str });
 		if (typeof res === "string") return res;
 		const converted = convertTweetToDisplayable(res);
 		setTimeline((prev) =>
@@ -86,13 +86,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	}: Tweet): Promise<Tweet | string> => {
 		let err: null | string;
 		if (favorited) {
-			err = await postUnfavoriteApi(client, { id: id_str });
+			err = await api.unfavorite({ id: id_str });
 		} else {
-			err = await postFavoriteApi(client, { id: id_str });
+			err = await api.favorite({ id: id_str });
 		}
 		if (err !== null) return err;
 
-		const res = await getTweetApi(client, { id: id_str });
+		const res = await api.getTweet({ id: id_str });
 		if (typeof res === "string") return res;
 		const converted = convertTweetToDisplayable(res);
 		setTimeline((prev) =>
@@ -116,7 +116,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const newTweet = async () => {
 		if (!valid) return;
 		setInProcess("tweet");
-		const err = await postTweetApi(client, { status: tweetText });
+		const err = await api.tweet({ status: tweetText });
 		if (err !== null) {
 			setError(err);
 		} else {
