@@ -9,14 +9,14 @@ import type { AppConfig, GetListTweetsParams } from "../../types";
 import { convertTweetToDisplayable } from "../../lib";
 import {
 	useApi,
+	useError,
+	useRequestResult,
+	useHint,
 	useTimeline,
 	getFocusedPosition,
 	useCursorIndex,
 	useFocusIndex,
 	useDisplayTweetsCount,
-	useError,
-	useRequestResult,
-	useHint,
 } from "../../hooks";
 import SelectList from "../../components/molecules/SelectList";
 import Timeline from "../../components/Timeline";

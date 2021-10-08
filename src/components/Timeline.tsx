@@ -7,15 +7,15 @@ import { Tweet } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
 import {
 	useApi,
+	useError,
+	useRequestResult,
+	useHint,
 	useTimeline,
 	useMover,
 	useCursorIndex,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-	useRequestResult,
-	useError,
-	useHint,
 } from "../hooks";
 import TweetItem from "./TweetItem";
 import Detail from "./Detail";
