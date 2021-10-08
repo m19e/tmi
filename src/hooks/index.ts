@@ -29,8 +29,6 @@ import {
 	postUnretweetApi,
 } from "../lib/api";
 
-export const useUserId = () => useAtom(userIdAtom);
-
 type PostApiRequestWithID = (params: { id: string }) => Promise<null | string>;
 
 interface ClientApi {
@@ -47,6 +45,8 @@ interface ClientApi {
 	retweet: PostApiRequestWithID;
 	unretweet: PostApiRequestWithID;
 }
+
+export const useUserId = () => useAtom(userIdAtom);
 
 export const useClient = (): [
 	ClientApi,
@@ -88,6 +88,42 @@ export const useClient = (): [
 	};
 
 	return [api, client, setClient];
+};
+
+export const useApi = (): ClientApi => {
+	const [client] = useAtom(clientAtom);
+	const getTweet = async (params: { id: string }) =>
+		await getTweetApi(client, params);
+	const getListTimeline = async (params: GetListTweetsParams) =>
+		await getListTweetsApi(client, params);
+	const tweet = async (params: { status: string }) =>
+		await postTweetApi(client, params);
+	const reply = async (params: {
+		status: string;
+		in_reply_to_status_id: string;
+	}) => await postReplyApi(client, params);
+	const deleteTweet = async (params: { id: string }) =>
+		await postDeleteTweetApi(client, params);
+	const favorite = async (params: { id: string }) =>
+		await postFavoriteApi(client, params);
+	const unfavorite = async (params: { id: string }) =>
+		await postUnfavoriteApi(client, params);
+	const retweet = async (params: { id: string }) =>
+		await postRetweetApi(client, params);
+	const unretweet = async (params: { id: string }) =>
+		await postUnretweetApi(client, params);
+
+	return {
+		getTweet,
+		getListTimeline,
+		tweet,
+		reply,
+		deleteTweet,
+		favorite,
+		unfavorite,
+		retweet,
+		unretweet,
+	};
 };
 
 export const useTimeline = () => useAtom(timelineAtom);
