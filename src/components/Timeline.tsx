@@ -270,59 +270,47 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		if (valid) setHintKey("timeline/new/wait-return");
 	};
 
+	if (status === "detail") {
+		return (
+			<Detail
+				tweet={focusedTweet}
+				onMention={handleMention}
+				onRemove={removeFocusedTweetFromTimeline}
+				isTweetOpen={isTweetInDetailOpen}
+				setIsTweetOpen={setIsTweetInDetailOpen}
+				inProcess={inProcess}
+				setInProcess={setInProcess}
+			/>
+		);
+	}
+
 	return (
 		<>
-			{(() => {
-				if (status === "timeline") {
-					return (
-						<>
-							<Box flexGrow={1} flexDirection="column">
-								{displayTimeline.map((t, i) => (
-									<TweetItem
-										key={i}
-										tweet={t}
-										isFocused={t.id_str === focusedTweet.id_str}
-										inFav={
-											t.id_str === focusedTweet.id_str && inProcess === "fav"
-										}
-										inRT={
-											t.id_str === focusedTweet.id_str && inProcess === "rt"
-										}
-									/>
-								))}
-							</Box>
-							{isNewTweetOpen && (
-								<NewTweetBox
-									type="new"
-									loading={inProcess === "tweet"}
-									tweet={focusedTweet}
-									invalid={!valid && weightedLength !== 0}
-									length={weightedLength}
-									placeholder="What's happening?"
-									focus={!waitReturn}
-									value={tweetText}
-									onChange={handleNewTweetChange}
-									onSubmit={handleWaitReturn}
-								/>
-							)}
-						</>
-					);
-				}
-
-				if (status === "detail") {
-					return (
-						<Detail
-							tweet={focusedTweet}
-							onMention={handleMention}
-							onRemove={removeFocusedTweetFromTimeline}
-							isTweetOpen={isTweetInDetailOpen}
-							setIsTweetOpen={setIsTweetInDetailOpen}
-							inProcess={inProcess}
-							setInProcess={setInProcess}
-						/>
-					);
-				}
-			})()}
+			<Box flexGrow={1} flexDirection="column">
+				{displayTimeline.map((t, i) => (
+					<TweetItem
+						key={i}
+						tweet={t}
+						isFocused={t.id_str === focusedTweet.id_str}
+						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+					/>
+				))}
+			</Box>
+			{isNewTweetOpen && (
+				<NewTweetBox
+					type="new"
+					loading={inProcess === "tweet"}
+					tweet={focusedTweet}
+					invalid={!valid && weightedLength !== 0}
+					length={weightedLength}
+					placeholder="What's happening?"
+					focus={!waitReturn}
+					value={tweetText}
+					onChange={handleNewTweetChange}
+					onSubmit={handleWaitReturn}
+				/>
+			)}
 		</>
 	);
 };
