@@ -6,7 +6,6 @@ import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
 import {
-	useClient,
 	useApi,
 	useTimeline,
 	useMover,

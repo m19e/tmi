@@ -6,10 +6,8 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import { TimelineProcess } from "../types";
 import { Tweet } from "../types/twitter";
-import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import {
 	useUserId,
-	useClient,
 	useApi,
 	useError,
 	useRequestResult,
