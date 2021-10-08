@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
-import path from "path";
-import {
-	mkdirsSync,
-	readdirSync,
-	existsSync,
-	readJsonSync,
-	writeJson,
-} from "fs-extra";
+import { writeJson } from "fs-extra";
 import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import Twitter, { TwitterOptions } from "twitter-lite";
-import { config as dotenvConfig } from "dotenv";
 
 import { Tweet, TrimmedList } from "../../types/twitter";
 import { GetListTweetsParams } from "../../types";
 import { convertTweetToDisplayable } from "../../lib";
-import { getUserListsApi } from "../../lib/api";
 import {
-	useUserId,
-	useClient,
 	useApi,
 	useTimeline,
 	getFocusedPosition,
@@ -30,7 +19,6 @@ import {
 	useRequestResult,
 	useHint,
 } from "../../hooks";
-import PinAuthInput from "../../components/molecules/PinAuthInput";
 import SelectList from "../../components/molecules/SelectList";
 import Timeline from "../../components/Timeline";
 import Footer from "../../components/organisms/Footer";
