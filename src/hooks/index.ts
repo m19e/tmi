@@ -49,46 +49,9 @@ interface ClientApi {
 export const useUserId = () => useAtom(userIdAtom);
 
 export const useClient = (): [
-	ClientApi,
 	Twitter | null,
 	(update?: SetStateAction<Twitter | null>) => void
-] => {
-	const [client, setClient] = useAtom(clientAtom);
-	const getTweet = async (params: { id: string }) =>
-		await getTweetApi(client, params);
-	const getListTimeline = async (params: GetListTweetsParams) =>
-		await getListTweetsApi(client, params);
-	const tweet = async (params: { status: string }) =>
-		await postTweetApi(client, params);
-	const reply = async (params: {
-		status: string;
-		in_reply_to_status_id: string;
-	}) => await postReplyApi(client, params);
-	const deleteTweet = async (params: { id: string }) =>
-		await postDeleteTweetApi(client, params);
-	const favorite = async (params: { id: string }) =>
-		await postFavoriteApi(client, params);
-	const unfavorite = async (params: { id: string }) =>
-		await postUnfavoriteApi(client, params);
-	const retweet = async (params: { id: string }) =>
-		await postRetweetApi(client, params);
-	const unretweet = async (params: { id: string }) =>
-		await postUnretweetApi(client, params);
-
-	const api = {
-		getTweet,
-		getListTimeline,
-		tweet,
-		reply,
-		deleteTweet,
-		favorite,
-		unfavorite,
-		retweet,
-		unretweet,
-	};
-
-	return [api, client, setClient];
-};
+] => useAtom(clientAtom);
 
 export const useApi = (): ClientApi => {
 	const [client] = useAtom(clientAtom);
