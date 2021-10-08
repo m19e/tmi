@@ -8,7 +8,7 @@ import {
 	readJsonSync,
 	writeJson,
 } from "fs-extra";
-import { Box, useApp } from "ink";
+import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import Twitter, { TwitterOptions } from "twitter-lite";
 import { config as dotenvConfig } from "dotenv";
@@ -35,26 +35,16 @@ import SelectList from "../../components/molecules/SelectList";
 import Timeline from "../../components/Timeline";
 import Footer from "../../components/organisms/Footer";
 
-dotenvConfig();
-
-const defaultOptions = {
-	consumer_key: process.env.TWITTER_CONSUMER_KEY,
-	consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-};
-
-interface Config extends TwitterOptions {
+interface AppConfig extends TwitterOptions {
 	user_id: string;
 	lists: TrimmedList[];
 }
 
-const List: VFC = () => {
-	const [ot, setOT] = useState("");
-	const [pin, setPIN] = useState("");
-	const [filePath, setFilePath] = useState("");
-
-	const [status, setStatus] = useState<"init" | "wait" | "select" | "timeline">(
-		"init"
-	);
+const List: VFC<{
+	filePath: string;
+	config: AppConfig;
+}> = ({ filePath, config }) => {
+	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
 	const [lists, setLists] = useState<TrimmedList[]>([]);
 	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 	const [timeline, setTimeline] = useTimeline();
@@ -67,102 +57,16 @@ const List: VFC = () => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 
-	const [client, setClient] = useClient();
 	const api = useApi();
 	const [, rows] = useDimensions();
-	const [, setUserId] = useUserId();
 	const { exit } = useApp();
 
 	useEffect(() => {
-		const init = async () => {
-			const [fp, conf, err] = getConfig();
-			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
-				if (err !== null) {
-					console.error("cannot get configuration: ", err);
-					exit();
-				}
-				const app = new Twitter(defaultOptions);
-				const rt = await app.getRequestToken("oob");
-				const { oauth_token } = rt as {
-					oauth_token: string;
-				};
-				setClient(app);
-				setFilePath(fp);
-				setOT(oauth_token);
-				setStatus("wait");
-			} else {
-				await getUserLists(conf, fp);
-				setClient(new Twitter(conf));
-				setFilePath(fp);
-				setUserId(conf.user_id);
-				setStatus("select");
-			}
-		};
-
-		init();
+		getUserLists();
 	}, []);
 
-	const getConfig = (profile: string = ""): [string, Config | null, any] => {
-		let dir = process.env.HOME ?? "";
-		if (dir === "" && process.platform === "win32") {
-			dir = process.env.APPDATA ?? "";
-			if (dir === "") {
-				dir = path.join(
-					process.env.USERPROFILE ?? "",
-					"Application Data",
-					"tink"
-				);
-			}
-		} else {
-			dir = path.join(dir, ".config", "tink");
-		}
-
-		try {
-			mkdirsSync(dir);
-		} catch (err) {
-			return ["", null, err];
-		}
-
-		let file = "";
-		if (profile === "") {
-			file = path.join(dir, "settings.json");
-		} else if (profile === "?") {
-			try {
-				const names = readdirSync(dir, { withFileTypes: true })
-					.filter(
-						(d) =>
-							d.isFile() &&
-							path.extname(d.name) === ".json" &&
-							d.name.match(/^settings-/)
-					)
-					.map((d) => path.parse(d.name).name.replace("settings-", ""));
-
-				console.log(names.length ? names.join("\n") : "tink has no accounts.");
-				exit();
-			} catch (err) {
-				return ["", null, err];
-			}
-		} else {
-			file = path.join(dir, "settings-" + profile + ".json");
-		}
-
-		let conf: Config;
-		const json = readJsonSync(file, { throws: false });
-		if (json === null) {
-			if (existsSync(file)) {
-				return ["", null, "CANNOT READ JSON"];
-			}
-			conf = { ...defaultOptions, user_id: "", lists: [] };
-		} else {
-			conf = json;
-		}
-
-		return [file, conf, null];
-	};
-
-	const getUserLists = async (config: Config, fp: string) => {
-		const app = new Twitter(config);
-		const res = await getUserListsApi(app);
+	const getUserLists = async () => {
+		const res = await api.getUserLists();
 		// onError
 		if (!Array.isArray(res)) {
 			setError(res.message);
@@ -186,7 +90,7 @@ const List: VFC = () => {
 			name: l.name,
 			mode: l.mode,
 		}));
-		await writeJson(fp, { ...config, lists: trim });
+		await writeJson(filePath, { ...config, lists: trim });
 		setLists(trim);
 		setStatus("select");
 	};
@@ -233,25 +137,6 @@ const List: VFC = () => {
 		return { ...params, since_id: newest.id_str };
 	};
 
-	const handleSubmitPinAuth = async (p: string) => {
-		const token = await client.getAccessToken({
-			oauth_verifier: p,
-			oauth_token: ot,
-		});
-
-		const conf: Config = {
-			...defaultOptions,
-			access_token_key: token.oauth_token,
-			access_token_secret: token.oauth_token_secret,
-			user_id: token.user_id,
-			lists: [],
-		};
-
-		setClient(new Twitter(conf));
-		await getUserLists(conf, filePath);
-		setStatus("select");
-	};
-
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
 		if (currentList === null || currentList.id_str !== value.id_str) {
 			const data = await getListTimeline(value.id_str, {
@@ -278,46 +163,37 @@ const List: VFC = () => {
 			select: false,
 		});
 
+	if (status === "load") {
+		return <Text>Loading...</Text>;
+	}
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			<>
-				{(() => {
-					if (status === "wait") {
-						return (
-							<PinAuthInput
-								oauthToken={ot}
-								value={pin}
-								onChange={setPIN}
-								onSubmit={handleSubmitPinAuth}
+			{(() => {
+				if (status === "select") {
+					return <SelectList lists={lists} onSelect={handleSelect} />;
+				}
+				if (status === "timeline") {
+					return (
+						<>
+							{/* <Box
+								justifyContent="center"
+								borderStyle="double"
+								borderColor="gray"
+							>
+								<Text>
+									[LIST]<Text color="green">{currentList.name}</Text>(
+									{cursor + 1}-{cursor + count}/{total})
+								</Text>
+							</Box> */}
+							<Timeline
+								onToggleList={handleToggleList}
+								onUpdate={handleUpdate}
 							/>
-						);
-					}
-					if (status === "select") {
-						return <SelectList lists={lists} onSelect={handleSelect} />;
-					}
-					if (status === "timeline") {
-						return (
-							<>
-								{/* <Box
-									justifyContent="center"
-									borderStyle="double"
-									borderColor="gray"
-								>
-									<Text>
-										[LIST]<Text color="green">{currentList.name}</Text>(
-										{cursor + 1}-{cursor + count}/{total})
-									</Text>
-								</Box> */}
-								<Timeline
-									onToggleList={handleToggleList}
-									onUpdate={handleUpdate}
-								/>
-								<Footer />
-							</>
-						);
-					}
-				})()}
-			</>
+							<Footer />
+						</>
+					);
+				}
+			})()}
 		</Box>
 	);
 };
