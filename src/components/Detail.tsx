@@ -10,6 +10,7 @@ import { postTweetApi, postReplyApi, postDeleteTweetApi } from "../lib/api";
 import {
 	useUserId,
 	useClient,
+	useApi,
 	useError,
 	useRequestResult,
 	useHint,
@@ -50,7 +51,7 @@ const Detail: VFC<Props> = ({
 	inProcess,
 	setInProcess,
 }) => {
-	const [api] = useClient();
+	const api = useApi();
 	const [userId] = useUserId();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();

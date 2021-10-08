@@ -20,6 +20,7 @@ import { getUserListsApi } from "../../lib/api";
 import {
 	useUserId,
 	useClient,
+	useApi,
 	useTimeline,
 	getFocusedPosition,
 	useCursorIndex,
@@ -66,7 +67,8 @@ const List: VFC = () => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 
-	const [api, client, setClient] = useClient();
+	const [client, setClient] = useClient();
+	const api = useApi();
 	const [, rows] = useDimensions();
 	const [, setUserId] = useUserId();
 	const { exit } = useApp();

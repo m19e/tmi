@@ -7,6 +7,7 @@ import { Tweet } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
 import {
 	useClient,
+	useApi,
 	useTimeline,
 	useMover,
 	useCursorIndex,
@@ -27,7 +28,7 @@ type Props = {
 };
 
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
-	const [api] = useClient();
+	const api = useApi();
 	const [, setTimeline] = useTimeline();
 	const mover = useMover();
 	const [, setCursor] = useCursorIndex();
