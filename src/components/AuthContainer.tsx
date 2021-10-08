@@ -112,7 +112,7 @@ export const AuthContainer: VFC<Props> = (props) => {
 			file = path.join(dir, "settings-" + profile + ".json");
 		}
 
-		let conf: Config;
+		let conf: AppConfig;
 		const json = readJsonSync(file, { throws: false });
 		if (json === null) {
 			if (existsSync(file)) {
