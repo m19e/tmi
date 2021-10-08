@@ -5,8 +5,8 @@ import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import Twitter, { TwitterOptions } from "twitter-lite";
 
-import { Tweet, TrimmedList } from "../../types/twitter";
-import { GetListTweetsParams } from "../../types";
+import type { Tweet, TrimmedList } from "../../types/twitter";
+import type { AppConfig, GetListTweetsParams } from "../../types";
 import { convertTweetToDisplayable } from "../../lib";
 import {
 	useApi,
@@ -22,11 +22,6 @@ import {
 import SelectList from "../../components/molecules/SelectList";
 import Timeline from "../../components/Timeline";
 import Footer from "../../components/organisms/Footer";
-
-interface AppConfig extends TwitterOptions {
-	user_id: string;
-	lists: TrimmedList[];
-}
 
 const List: VFC<{
 	filePath: string;

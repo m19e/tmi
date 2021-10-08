@@ -6,6 +6,7 @@ import { Text, useApp } from "ink";
 import Twitter, { TwitterOptions } from "twitter-lite";
 import { config } from "dotenv";
 
+import type { AppConfig } from "../types";
 import { TrimmedList } from "../types/twitter";
 import { useClient, useUserId } from "../hooks";
 import PinAuthInput from "./molecules/PinAuthInput";
@@ -16,11 +17,6 @@ const defaultOptions = {
 	consumer_key: process.env.TWITTER_CONSUMER_KEY,
 	consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
 };
-
-interface AppConfig extends TwitterOptions {
-	user_id: string;
-	lists: TrimmedList[];
-}
 
 interface PageProps {
 	filePath: string;
