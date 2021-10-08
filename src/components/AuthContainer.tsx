@@ -3,11 +3,10 @@ import type { VFC } from "react";
 import path from "path";
 import { mkdirsSync, readdirSync, existsSync, readJsonSync } from "fs-extra";
 import { Text, useApp } from "ink";
-import Twitter, { TwitterOptions } from "twitter-lite";
+import Twitter from "twitter-lite";
 import { config } from "dotenv";
 
 import type { AppConfig } from "../types";
-import { TrimmedList } from "../types/twitter";
 import { useClient, useUserId } from "../hooks";
 import PinAuthInput from "./molecules/PinAuthInput";
 

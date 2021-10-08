@@ -3,7 +3,6 @@ import type { VFC } from "react";
 import { writeJson } from "fs-extra";
 import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
-import Twitter, { TwitterOptions } from "twitter-lite";
 
 import type { Tweet, TrimmedList } from "../../types/twitter";
 import type { AppConfig, GetListTweetsParams } from "../../types";
