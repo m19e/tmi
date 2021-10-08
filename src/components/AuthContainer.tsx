@@ -31,7 +31,7 @@ interface Props {
 	page: VFC<PageProps>;
 }
 
-export const AuthContainer = (props: Props) => {
+export const AuthContainer: VFC<Props> = (props) => {
 	const Page = props.page;
 
 	const { exit } = useApp();
