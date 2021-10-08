@@ -15,10 +15,12 @@ import {
 	hintAtom,
 } from "../store";
 import { GetListTweetsParams, TimelineHintKey } from "../types";
-import { Tweet } from "../types/twitter";
+import type { List, Tweet } from "../types/twitter";
+import type { HandledErrorResponse } from "../lib/api";
 import { hintMap } from "../consts";
 import {
 	getTweetApi,
+	getUserListsApi,
 	getListTweetsApi,
 	postTweetApi,
 	postReplyApi,
@@ -33,6 +35,7 @@ type PostApiRequestWithID = (params: { id: string }) => Promise<null | string>;
 
 interface ClientApi {
 	getTweet: (params: { id: string }) => Promise<Tweet | string>;
+	getUserLists: () => Promise<List[] | HandledErrorResponse>;
 	getListTimeline: (params: GetListTweetsParams) => Promise<Tweet[] | string>;
 	tweet: (params: { status: string }) => Promise<null | string>;
 	reply: (params: {
@@ -57,6 +60,7 @@ export const useApi = (): ClientApi => {
 	const [client] = useAtom(clientAtom);
 	const getTweet = async (params: { id: string }) =>
 		await getTweetApi(client, params);
+	const getUserLists = async () => await getUserListsApi(client);
 	const getListTimeline = async (params: GetListTweetsParams) =>
 		await getListTweetsApi(client, params);
 	const tweet = async (params: { status: string }) =>
@@ -78,6 +82,7 @@ export const useApi = (): ClientApi => {
 
 	return {
 		getTweet,
+		getUserLists,
 		getListTimeline,
 		tweet,
 		reply,
