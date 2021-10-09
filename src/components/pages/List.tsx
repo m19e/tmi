@@ -121,11 +121,11 @@ const List: VFC<{
 
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
 		if (currentList === null || currentList.id_str !== value.id_str) {
-			const data = await getListTimeline(value.id_str, {
+			const res = await getListTimeline(value.id_str, {
 				backward: false,
 				select: true,
 			});
-			setTimeline(data);
+			setTimeline(res);
 			setCurrentList(value);
 		}
 		setStatus("timeline");
