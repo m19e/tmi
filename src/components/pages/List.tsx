@@ -77,22 +77,6 @@ const List: VFC<{
 		setStatus("select");
 	};
 
-	const getListTimeline = async (
-		list_id: string,
-		options: { backward: boolean; select: boolean }
-	): Promise<Tweet[]> => {
-		const params = createGetListTimelineParams({
-			list_id,
-			count: 200,
-			...options,
-		});
-
-		const res = await api.getListTimeline(params);
-		if (!Array.isArray(res) || res.length === 0) return [];
-
-		return res.map(convertTweetToDisplayable);
-	};
-
 	const createGetListTimelineParams = ({
 		list_id,
 		count,
@@ -117,6 +101,22 @@ const List: VFC<{
 		}
 		const newest = timeline[0];
 		return { ...params, since_id: newest.id_str };
+	};
+
+	const getListTimeline = async (
+		list_id: string,
+		options: { backward: boolean; select: boolean }
+	): Promise<Tweet[]> => {
+		const params = createGetListTimelineParams({
+			list_id,
+			count: 200,
+			...options,
+		});
+
+		const res = await api.getListTimeline(params);
+		if (!Array.isArray(res) || res.length === 0) return [];
+
+		return res.map(convertTweetToDisplayable);
 	};
 
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
