@@ -2,7 +2,7 @@ import React from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
 import { TrimmedList } from "../../types/twitter";
-import SelectInput from "../molecules/SelectInput";
+import SelectInput from "./SelectInput";
 
 interface Item<V> {
 	key: string;
