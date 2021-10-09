@@ -26,9 +26,7 @@ interface Props {
 	page: VFC<PageProps>;
 }
 
-export const AuthContainer: VFC<Props> = (props) => {
-	const Page = props.page;
-
+export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 	const { exit } = useApp();
 	const [client, setClient] = useClient();
 	const [, setUserId] = useUserId();
