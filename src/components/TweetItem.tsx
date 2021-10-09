@@ -1,11 +1,9 @@
 import React from "react";
 import { Text, Box } from "ink";
-import Divider from "ink-divider";
-import useDimensions from "ink-use-stdout-dimensions";
 import stc from "string-to-color";
+import figures from "../lib/sindresorhus/figures";
 import { Tweet } from "../types/twitter";
 import { getDisplayTimeAgo } from "../lib";
-import figures from "../lib/sindresorhus/figures";
 import Loader from "./molecules/Loader";
 import Quoted from "./Quoted";
 
