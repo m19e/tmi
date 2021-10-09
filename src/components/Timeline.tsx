@@ -128,7 +128,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			setError(res);
 		} else {
 			setRequestResult(
-				`Successfully ${res.favorited ? "" : "un"}favorited: @${
+				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
 					res.user.screen_name
 				} "${res.full_text.split("\n").join(" ")}"`
 			);
@@ -143,7 +143,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			setError(res);
 		} else {
 			setRequestResult(
-				`Successfully ${res.retweeted ? "" : "un"}retweeted: @${
+				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
 					res.user.screen_name
 				} "${res.full_text.split("\n").join(" ")}"`
 			);
