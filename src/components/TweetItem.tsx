@@ -14,7 +14,7 @@ type Props = {
 	isFocused?: boolean;
 };
 
-const Borderless = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
+const TweetItem = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(t.created_at);
 	const generatedColor = stc(t.user.screen_name);
@@ -80,4 +80,4 @@ const Borderless = ({ tweet, isFocused = true, inFav, inRT }: Props) => {
 	);
 };
 
-export default Borderless;
+export default TweetItem;
