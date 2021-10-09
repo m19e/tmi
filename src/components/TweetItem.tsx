@@ -6,7 +6,7 @@ import stc from "string-to-color";
 import { Tweet } from "../types/twitter";
 import { getDisplayTimeAgo } from "../lib";
 import figures from "../lib/sindresorhus/figures";
-import Loader from "./Loader";
+import Loader from "./molecules/Loader";
 import Quoted from "./Quoted";
 
 type Props = {
