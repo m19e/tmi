@@ -1,7 +1,7 @@
 import React from "react";
 import type { FC } from "react";
 import { Text } from "ink";
-import { fallbackSymbols } from "../lib/sindresorhus/figures";
+import { fallbackSymbols } from "../../lib/sindresorhus/figures";
 
 type Props = {
 	invalid: boolean;
