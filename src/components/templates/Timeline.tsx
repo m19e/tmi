@@ -18,7 +18,7 @@ import {
 	getFocusedTweet,
 } from "../../hooks";
 import TweetItem from "../TweetItem";
-import Detail from "../Detail";
+import Detail from "../organisms/Detail";
 import NewTweetBox from "../NewTweetBox";
 
 type Props = {
