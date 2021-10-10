@@ -19,12 +19,12 @@ const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
 			<Box flexGrow={1} flexDirection="column">
 				<Text>
 					<Text bold color={generatedColor}>
-						{tweet.user.name}{" "}
+						<>{tweet.user.name} </>
 					</Text>
-					<Text>
+					<>
 						(@{tweet.user.screen_name}) {tweet.user.protected && "🔒 "}
-					</Text>
-					<Text>[{ago}] </Text>
+					</>
+					<>[{ago}] </>
 				</Text>
 				<Text>
 					{tweet.full_text}
