@@ -1,11 +1,11 @@
 import React from "react";
 import { Text, Box } from "ink";
 import stc from "string-to-color";
-import figures from "../lib/sindresorhus/figures";
-import { Tweet } from "../types/twitter";
-import { getDisplayTimeAgo } from "../lib";
-import Loader from "./molecules/Loader";
-import Quoted from "./Quoted";
+import figures from "../../lib/sindresorhus/figures";
+import { Tweet } from "../../types/twitter";
+import { getDisplayTimeAgo } from "../../lib";
+import Loader from "../molecules/Loader";
+import Quoted from "../Quoted";
 
 type Props = {
 	tweet: Tweet;

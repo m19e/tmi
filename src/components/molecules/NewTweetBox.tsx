@@ -3,11 +3,11 @@ import type { VFC } from "react";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
 
-import { Tweet } from "../types/twitter";
-import figures from "../lib/sindresorhus/figures";
-import Quoted from "./Quoted";
-import Loader from "./molecules/Loader";
-import Counter from "./TweetCharCounter";
+import { Tweet } from "../../types/twitter";
+import figures from "../../lib/sindresorhus/figures";
+import Quoted from "../Quoted";
+import Loader from "../molecules/Loader";
+import Counter from "../TweetCharCounter";
 
 interface Props {
 	type: "new" | "reply" | "quote";
