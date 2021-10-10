@@ -4,18 +4,18 @@ import { Box, useInput } from "ink";
 import type { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
-import { TimelineProcess } from "../types";
-import { Tweet } from "../types/twitter";
+import { TimelineProcess } from "../../types";
+import { Tweet } from "../../types/twitter";
 import {
 	useUserId,
 	useApi,
 	useError,
 	useRequestResult,
 	useHint,
-} from "../hooks";
-import TweetItem from "./TweetItem";
-import NewTweetBox from "./NewTweetBox";
-import SelectInput from "./molecules/SelectInput";
+} from "../../hooks";
+import TweetItem from "../molecules/TweetItem";
+import NewTweetBox from "../NewTweetBox";
+import SelectInput from "../molecules/SelectInput";
 
 type TweetMenuActionTarget = "user" | "retweets" | "quotes" | "client";
 
