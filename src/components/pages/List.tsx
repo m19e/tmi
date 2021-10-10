@@ -18,9 +18,9 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks";
-import SelectList from "../../components/molecules/SelectList";
 import Timeline from "../../components/templates/Timeline";
 import Footer from "../../components/organisms/Footer";
+import SelectList from "../../components/molecules/SelectList";
 
 const List: VFC<{
 	filePath: string;
