@@ -1,30 +1,25 @@
 import React, { useState } from "react";
-import { Text, Box, useInput } from "ink";
+import { Box, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
-import { TimelineProcess } from "../types";
-import { Tweet } from "../types/twitter";
-import { convertTweetToDisplayable } from "../lib";
+import type { TimelineProcess } from "../../types";
+import type { Tweet } from "../../types/twitter";
+import { convertTweetToDisplayable } from "../../lib";
 import {
-	getTweetApi,
-	postTweetApi,
-	postFavoriteApi,
-	postUnfavoriteApi,
-	postRetweetApi,
-	postUnretweetApi,
-} from "../lib/api";
-import {
-	useClient,
+	useApi,
+	useError,
+	useRequestResult,
+	useHint,
 	useTimeline,
 	useMover,
 	useCursorIndex,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-} from "../hooks";
-import TweetItem from "./TweetItem";
-import Detail from "./Detail";
-import NewTweetBox from "./NewTweetBox";
+} from "../../hooks";
+import Detail from "../organisms/Detail";
+import TweetItem from "../molecules/TweetItem";
+import NewTweetBox from "../molecules/NewTweetBox";
 
 type Props = {
 	onToggleList: () => void;
@@ -32,9 +27,12 @@ type Props = {
 };
 
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
-	const [client] = useClient();
-	const [, setTimeline] = useTimeline();
+	const api = useApi();
 	const mover = useMover();
+	const [, setError] = useError();
+	const [, setRequestResult] = useRequestResult();
+	const [, setHintKey] = useHint();
+	const [, setTimeline] = useTimeline();
 	const [, setCursor] = useCursorIndex();
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
@@ -58,13 +56,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	}: Tweet): Promise<Tweet | string> => {
 		let err: null | string;
 		if (retweeted) {
-			err = await postUnretweetApi(client, { id: id_str });
+			err = await api.unretweet({ id: id_str });
 		} else {
-			err = await postRetweetApi(client, { id: id_str });
+			err = await api.retweet({ id: id_str });
 		}
 		if (err !== null) return err;
 
-		const res = await getTweetApi(client, { id: id_str });
+		const res = await api.getTweet({ id: id_str });
 		if (typeof res === "string") return res;
 		const converted = convertTweetToDisplayable(res);
 		setTimeline((prev) =>
@@ -79,13 +77,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	}: Tweet): Promise<Tweet | string> => {
 		let err: null | string;
 		if (favorited) {
-			err = await postUnfavoriteApi(client, { id: id_str });
+			err = await api.unfavorite({ id: id_str });
 		} else {
-			err = await postFavoriteApi(client, { id: id_str });
+			err = await api.favorite({ id: id_str });
 		}
 		if (err !== null) return err;
 
-		const res = await getTweetApi(client, { id: id_str });
+		const res = await api.getTweet({ id: id_str });
 		if (typeof res === "string") return res;
 		const converted = convertTweetToDisplayable(res);
 		setTimeline((prev) =>
@@ -109,13 +107,16 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const newTweet = async () => {
 		if (!valid) return;
 		setInProcess("tweet");
-		const err = await postTweetApi(client, { status: tweetText });
+		const err = await api.tweet({ status: tweetText });
 		if (err !== null) {
-			// onError()
+			setError(err);
 		} else {
 			setIsNewTweetOpen(false);
+			setRequestResult(`Successfully tweeted: "${tweetText}"`);
 			setTweetText("");
+			setHintKey("timeline");
 		}
+		setWaitReturn(false);
 		setInProcess("none");
 	};
 
@@ -123,7 +124,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("fav");
 		const res = await requestFavorite(focusedTweet);
 		if (typeof res === "string") {
-			// onError(res)
+			setError(res);
+		} else {
+			setRequestResult(
+				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
 		}
 		setInProcess("none");
 	};
@@ -132,7 +139,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		setInProcess("rt");
 		const res = await requestRetweet(focusedTweet);
 		if (typeof res === "string") {
-			// onError(res)
+			setError(res);
+		} else {
+			setRequestResult(
+				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
 		}
 		setInProcess("none");
 	};
@@ -160,16 +173,19 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
-				setIsTweetInDetailOpen(true);
-				setStatus("detail");
+				// setIsTweetInDetailOpen(true);
+				// setStatus("detail");
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
 				fav();
 			} else if (input === "n") {
+				setRequestResult(undefined);
 				setIsNewTweetOpen(true);
+				setHintKey("timeline/new/input");
 			} else if (key.return) {
 				setStatus("detail");
+				setHintKey("timeline/detail");
 			}
 		},
 		{ isActive: status === "timeline" && !isNewTweetOpen }
@@ -182,6 +198,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			if (key.escape) {
 				if (waitReturn) {
 					setWaitReturn(false);
+					setHintKey("timeline/new/input");
 					return;
 				}
 				// Avoid warning: state update on an unmounted TextInput
@@ -189,10 +206,10 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 				setTimeout(() => {
 					setTweetText("");
 					setIsNewTweetOpen(false);
+					setHintKey("timeline");
 				});
 			} else if (waitReturn && key.return) {
 				newTweet();
-				setWaitReturn(false);
 			}
 		},
 		{ isActive: status === "timeline" && isNewTweetOpen }
@@ -202,6 +219,7 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		(input, key) => {
 			if (key.escape) {
 				setStatus("timeline");
+				setHintKey("timeline");
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
@@ -231,71 +249,65 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			prev.filter((tw) => tw.id_str !== focusedTweet.id_str)
 		);
 		setStatus("timeline");
+		if (redraft) {
+			setHintKey("timeline/new/input");
+		} else {
+			setHintKey("timeline");
+		}
 	};
 
 	const handleMention = () => {
 		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
+		setRequestResult(undefined);
 		setIsNewTweetOpen(true);
 		setStatus("timeline");
+		setHintKey("timeline");
 	};
+
+	const handleWaitReturn = () => {
+		setWaitReturn(valid);
+		if (valid) setHintKey("timeline/new/wait-return");
+	};
+
+	if (status === "detail") {
+		return (
+			<Detail
+				tweet={focusedTweet}
+				onMention={handleMention}
+				onRemove={removeFocusedTweetFromTimeline}
+				isTweetOpen={isTweetInDetailOpen}
+				setIsTweetOpen={setIsTweetInDetailOpen}
+				inProcess={inProcess}
+				setInProcess={setInProcess}
+			/>
+		);
+	}
 
 	return (
 		<>
-			{status === "timeline" && (
-				<>
-					<Text>
-						{/* cursor:{cursor} focus:{focus} len:{timeline.length} */}
-					</Text>
-					<Box flexGrow={1} flexDirection="column">
-						{displayTimeline.map((t, i) => (
-							<TweetItem
-								key={i}
-								tweet={t}
-								isFocused={t.id_str === focusedTweet.id_str}
-								inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-								inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-							/>
-						))}
-					</Box>
-					{isNewTweetOpen ? (
-						<>
-							<NewTweetBox
-								type="new"
-								loading={inProcess === "tweet"}
-								tweet={focusedTweet}
-								invalid={!valid && weightedLength !== 0}
-								length={weightedLength}
-								placeholder="What's happening?"
-								focus={!waitReturn}
-								value={tweetText}
-								onChange={handleNewTweetChange}
-								onSubmit={() => setWaitReturn(valid)}
-							/>
-							<Text>
-								{waitReturn ? (
-									<>[Enter] tweet [ESC] cancel</>
-								) : (
-									<>[Enter] done [ESC] close</>
-								)}
-							</Text>
-						</>
-					) : (
-						<Text>
-							[R] reply [T] retweet [F] favorite [N] tweet [Enter] detail [L]
-							list
-						</Text>
-					)}
-				</>
-			)}
-			{status === "detail" && (
-				<Detail
+			<Box flexGrow={1} flexDirection="column">
+				{displayTimeline.map((t, i) => (
+					<TweetItem
+						key={i}
+						tweet={t}
+						isFocused={t.id_str === focusedTweet.id_str}
+						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+					/>
+				))}
+			</Box>
+			{isNewTweetOpen && (
+				<NewTweetBox
+					type="new"
+					loading={inProcess === "tweet"}
 					tweet={focusedTweet}
-					onMention={handleMention}
-					onRemove={removeFocusedTweetFromTimeline}
-					isTweetOpen={isTweetInDetailOpen}
-					setIsTweetOpen={setIsTweetInDetailOpen}
-					inProcess={inProcess}
-					setInProcess={setInProcess}
+					invalid={!valid && weightedLength !== 0}
+					length={weightedLength}
+					placeholder="What's happening?"
+					focus={!waitReturn}
+					value={tweetText}
+					onChange={handleNewTweetChange}
+					onSubmit={handleWaitReturn}
 				/>
 			)}
 		</>

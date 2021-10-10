@@ -10,7 +10,44 @@ import {
 	focusIndexAtom,
 	displayTweetsCountAtom,
 	focusedPositionAtom,
+	requestResultAtom,
+	errorAtom,
+	hintAtom,
 } from "../store";
+import { GetListTweetsParams, TimelineHintKey } from "../types";
+import type { List, Tweet } from "../types/twitter";
+import type { HandledErrorResponse } from "../lib/api";
+import { hintMap } from "../consts";
+import {
+	getTweetApi,
+	getUserListsApi,
+	getListTweetsApi,
+	postTweetApi,
+	postReplyApi,
+	postDeleteTweetApi,
+	postFavoriteApi,
+	postUnfavoriteApi,
+	postRetweetApi,
+	postUnretweetApi,
+} from "../lib/api";
+
+type PostApiRequestWithID = (params: { id: string }) => Promise<null | string>;
+
+interface ClientApi {
+	getTweet: (params: { id: string }) => Promise<Tweet | string>;
+	getUserLists: () => Promise<List[] | HandledErrorResponse>;
+	getListTimeline: (params: GetListTweetsParams) => Promise<Tweet[] | string>;
+	tweet: (params: { status: string }) => Promise<null | string>;
+	reply: (params: {
+		status: string;
+		in_reply_to_status_id: string;
+	}) => Promise<null | string>;
+	deleteTweet: PostApiRequestWithID;
+	favorite: PostApiRequestWithID;
+	unfavorite: PostApiRequestWithID;
+	retweet: PostApiRequestWithID;
+	unretweet: PostApiRequestWithID;
+}
 
 export const useUserId = () => useAtom(userIdAtom);
 
@@ -18,6 +55,44 @@ export const useClient = (): [
 	Twitter | null,
 	(update?: SetStateAction<Twitter | null>) => void
 ] => useAtom(clientAtom);
+
+export const useApi = (): ClientApi => {
+	const [client] = useAtom(clientAtom);
+	const getTweet = async (params: { id: string }) =>
+		await getTweetApi(client, params);
+	const getUserLists = async () => await getUserListsApi(client);
+	const getListTimeline = async (params: GetListTweetsParams) =>
+		await getListTweetsApi(client, params);
+	const tweet = async (params: { status: string }) =>
+		await postTweetApi(client, params);
+	const reply = async (params: {
+		status: string;
+		in_reply_to_status_id: string;
+	}) => await postReplyApi(client, params);
+	const deleteTweet = async (params: { id: string }) =>
+		await postDeleteTweetApi(client, params);
+	const favorite = async (params: { id: string }) =>
+		await postFavoriteApi(client, params);
+	const unfavorite = async (params: { id: string }) =>
+		await postUnfavoriteApi(client, params);
+	const retweet = async (params: { id: string }) =>
+		await postRetweetApi(client, params);
+	const unretweet = async (params: { id: string }) =>
+		await postUnretweetApi(client, params);
+
+	return {
+		getTweet,
+		getUserLists,
+		getListTimeline,
+		tweet,
+		reply,
+		deleteTweet,
+		favorite,
+		unfavorite,
+		retweet,
+		unretweet,
+	};
+};
 
 export const useTimeline = () => useAtom(timelineAtom);
 
@@ -112,4 +187,57 @@ export const useMover = (): {
 	};
 
 	return { prev, next, pageUp, pageDown, top, bottom };
+};
+
+export const useRequestResult = (): [
+	string | undefined,
+	(update: string) => void
+] => {
+	const [requestResult, setR]: [
+		string | undefined,
+		(update?: SetStateAction<string | undefined>) => void | Promise<void>
+	] = useAtom(requestResultAtom);
+	const [error, setError]: [
+		string | undefined,
+		(update?: SetStateAction<string | undefined>) => void | Promise<void>
+	] = useAtom(errorAtom);
+
+	const setRequestResult = (r: string) => {
+		if (error) setError(undefined);
+		setR(r);
+	};
+
+	return [requestResult, setRequestResult];
+};
+
+export const useError = (): [string | undefined, (update: string) => void] => {
+	const [error, setE]: [
+		string | undefined,
+		(update?: SetStateAction<string | undefined>) => void | Promise<void>
+	] = useAtom(errorAtom);
+	const [requestResult, setRequestResult]: [
+		string | undefined,
+		(update?: SetStateAction<string | undefined>) => void | Promise<void>
+	] = useAtom(requestResultAtom);
+
+	const setError = (e: string) => {
+		if (requestResult) setRequestResult(undefined);
+		setE(e);
+	};
+
+	return [error, setError];
+};
+
+export const useHint = (): [
+	string | undefined,
+	(key: TimelineHintKey) => void
+] => {
+	const [hint, setHint]: [
+		string | undefined,
+		(update?: SetStateAction<string | undefined>) => void | Promise<void>
+	] = useAtom(hintAtom);
+
+	const setHintKey = (key: TimelineHintKey) => setHint(hintMap.get(key));
+
+	return [hint, setHintKey];
 };
