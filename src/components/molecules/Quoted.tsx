@@ -5,7 +5,7 @@ import type { Tweet } from "../../types/twitter";
 import { getDisplayTimeAgo } from "../../lib";
 import figures from "../../lib/sindresorhus/figures";
 
-const Borderless = ({ tweet }: { tweet: Tweet | null }) => {
+const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
 	if (!tweet) return null;
 	const ago = getDisplayTimeAgo(tweet.created_at);
 	const generatedColor = stc(tweet.user.screen_name);
@@ -35,4 +35,4 @@ const Borderless = ({ tweet }: { tweet: Tweet | null }) => {
 	);
 };
 
-export default Borderless;
+export default Quoted;
