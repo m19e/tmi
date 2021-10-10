@@ -28,16 +28,15 @@ type Props = {
 
 const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const api = useApi();
-	const [, setTimeline] = useTimeline();
 	const mover = useMover();
+	const [, setError] = useError();
+	const [, setRequestResult] = useRequestResult();
+	const [, setHintKey] = useHint();
+	const [, setTimeline] = useTimeline();
 	const [, setCursor] = useCursorIndex();
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
-
-	const [, setRequestResult] = useRequestResult();
-	const [, setError] = useError();
-	const [, setHintKey] = useHint();
 
 	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
 	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
