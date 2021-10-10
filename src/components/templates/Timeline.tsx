@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Box, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
-import type { TimelineProcess } from "../types";
-import type { Tweet } from "../types/twitter";
-import { convertTweetToDisplayable } from "../lib";
+import type { TimelineProcess } from "../../types";
+import type { Tweet } from "../../types/twitter";
+import { convertTweetToDisplayable } from "../../lib";
 import {
 	useApi,
 	useError,
@@ -16,10 +16,10 @@ import {
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-} from "../hooks";
-import TweetItem from "./TweetItem";
-import Detail from "./Detail";
-import NewTweetBox from "./NewTweetBox";
+} from "../../hooks";
+import TweetItem from "../TweetItem";
+import Detail from "../Detail";
+import NewTweetBox from "../NewTweetBox";
 
 type Props = {
 	onToggleList: () => void;
