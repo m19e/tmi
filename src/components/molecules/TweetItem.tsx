@@ -5,7 +5,7 @@ import figures from "../../lib/sindresorhus/figures";
 import { Tweet } from "../../types/twitter";
 import { getDisplayTimeAgo } from "../../lib";
 import Loader from "../molecules/Loader";
-import Quoted from "../Quoted";
+import Quoted from "../molecules/Quoted";
 
 type Props = {
 	tweet: Tweet;

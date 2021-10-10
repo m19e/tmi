@@ -5,7 +5,7 @@ import TextInput from "ink-text-input";
 
 import { Tweet } from "../../types/twitter";
 import figures from "../../lib/sindresorhus/figures";
-import Quoted from "../Quoted";
+import Quoted from "../molecules/Quoted";
 import Loader from "../molecules/Loader";
 import Counter from "../TweetCharCounter";
 
