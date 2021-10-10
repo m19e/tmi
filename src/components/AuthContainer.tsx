@@ -149,7 +149,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 	if (status === "pin") {
 		return (
 			<PinAuthInput
-				oauthToken={ot}
+				url={`https://api.twitter.com/oauth/authenticate?oauth_token=${ot}`}
 				value={pin}
 				onChange={setPIN}
 				onSubmit={handleSubmitPinAuth}
