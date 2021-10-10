@@ -1,9 +1,9 @@
 import React from "react";
 import { Text, Box } from "ink";
 import stc from "string-to-color";
-import { Tweet } from "../types/twitter";
-import { getDisplayTimeAgo } from "../lib";
-import figures from "../lib/sindresorhus/figures";
+import { Tweet } from "../../types/twitter";
+import { getDisplayTimeAgo } from "../../lib";
+import figures from "../../lib/sindresorhus/figures";
 
 const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
 	if (!tweet) return null;
