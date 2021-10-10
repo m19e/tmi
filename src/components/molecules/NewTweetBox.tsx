@@ -37,25 +37,25 @@ const NewTweetBox: VFC<Props> = ({
 	const Header: VFC = () => {
 		if (type === "new") {
 			return (
-				<>
+				<Text>
 					Tweet <Loader loading={loading} color="#00acee" />{" "}
-				</>
+				</Text>
 			);
 		}
 		if (type === "reply") {
 			return (
-				<>
+				<Text>
 					Replying to <Text color="#00acee">@{tweet.user.screen_name} </Text>
 					<Loader loading={loading} color="#00acee" />{" "}
-				</>
+				</Text>
 			);
 		}
 		if (type === "quote") {
 			return (
-				<>
+				<Text>
 					Quote <Text color="#00acee">@{tweet.user.screen_name}</Text>'s tweet{" "}
 					<Loader loading={loading} color="green" />{" "}
-				</>
+				</Text>
 			);
 		}
 	};
