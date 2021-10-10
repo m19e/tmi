@@ -6,13 +6,12 @@ import { fallbackSymbols } from "../../lib/sindresorhus/figures";
 type Props = {
 	invalid: boolean;
 	length: number;
-	limit?: number;
 };
 
-const Counter: FC<Props> = ({ invalid, length, limit = 280 }) => (
+const Counter: FC<Props> = ({ invalid, length }) => (
 	<Text color={invalid ? "redBright" : "gray"}>
 		{invalid && <>[{fallbackSymbols.warning}] </>}
-		{length}/{limit}
+		{length}/280
 	</Text>
 );
 
