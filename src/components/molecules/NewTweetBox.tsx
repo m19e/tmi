@@ -7,7 +7,7 @@ import { Tweet } from "../../types/twitter";
 import figures from "../../lib/sindresorhus/figures";
 import Quoted from "../molecules/Quoted";
 import Loader from "../molecules/Loader";
-import Counter from "../TweetCharCounter";
+import Counter from "../atoms/CharCounter";
 
 interface Props {
 	type: "new" | "reply" | "quote";
