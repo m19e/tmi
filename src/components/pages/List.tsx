@@ -26,22 +26,22 @@ const List: VFC<{
 	filePath: string;
 	config: AppConfig;
 }> = ({ filePath, config }) => {
-	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
-	const [lists, setLists] = useState<TrimmedList[]>([]);
-	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
+	const { exit } = useApp();
+	const [, rows] = useDimensions();
+
+	const api = useApi();
+	const [, setError] = useError();
+	const [, setRequestResult] = useRequestResult();
+	const [, setHintKey] = useHint();
 	const [timeline, setTimeline] = useTimeline();
 	const { position, total } = getFocusedPosition();
 	const [cursor, setCursor] = useCursorIndex();
 	const [, setFocus] = useFocusIndex();
 	const [count] = useDisplayTweetsCount();
 
-	const [, setError] = useError();
-	const [, setRequestResult] = useRequestResult();
-	const [, setHintKey] = useHint();
-
-	const api = useApi();
-	const [, rows] = useDimensions();
-	const { exit } = useApp();
+	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
+	const [lists, setLists] = useState<TrimmedList[]>([]);
+	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
 
 	useEffect(() => {
 		getUserLists();
