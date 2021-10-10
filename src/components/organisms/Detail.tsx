@@ -4,8 +4,8 @@ import { Box, useInput } from "ink";
 import type { ItemProps } from "ink-select-input";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
-import { TimelineProcess } from "../../types";
-import { Tweet } from "../../types/twitter";
+import type { TimelineProcess } from "../../types";
+import type { Tweet } from "../../types/twitter";
 import {
 	useUserId,
 	useApi,
