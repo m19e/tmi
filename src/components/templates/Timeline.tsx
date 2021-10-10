@@ -17,8 +17,8 @@ import {
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../../hooks";
-import TweetItem from "../molecules/TweetItem";
 import Detail from "../organisms/Detail";
+import TweetItem from "../molecules/TweetItem";
 import NewTweetBox from "../molecules/NewTweetBox";
 
 type Props = {

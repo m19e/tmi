@@ -14,8 +14,8 @@ import {
 	useHint,
 } from "../../hooks";
 import TweetItem from "../molecules/TweetItem";
-import NewTweetBox from "../molecules/NewTweetBox";
 import SelectInput from "../molecules/SelectInput";
+import NewTweetBox from "../molecules/NewTweetBox";
 
 type TweetMenuActionTarget = "user" | "retweets" | "quotes" | "client";
 
