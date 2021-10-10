@@ -19,7 +19,7 @@ import {
 } from "../../hooks";
 import TweetItem from "../molecules/TweetItem";
 import Detail from "../organisms/Detail";
-import NewTweetBox from "../NewTweetBox";
+import NewTweetBox from "../molecules/NewTweetBox";
 
 type Props = {
 	onToggleList: () => void;
