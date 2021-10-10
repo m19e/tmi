@@ -4,8 +4,8 @@ import { writeJson } from "fs-extra";
 import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 
-import type { Tweet, TrimmedList } from "../../types/twitter";
 import type { AppConfig, GetListTweetsParams } from "../../types";
+import type { Tweet, TrimmedList } from "../../types/twitter";
 import { convertTweetToDisplayable } from "../../lib";
 import {
 	useApi,
@@ -19,7 +19,7 @@ import {
 	useDisplayTweetsCount,
 } from "../../hooks";
 import SelectList from "../../components/molecules/SelectList";
-import Timeline from "../../components/Timeline";
+import Timeline from "../../components/templates/Timeline";
 import Footer from "../../components/organisms/Footer";
 
 const List: VFC<{
