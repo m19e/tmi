@@ -7037,6 +7037,11 @@ twemoji-parser@^11.0.2:
   resolved "https://registry.yarnpkg.com/twemoji-parser/-/twemoji-parser-11.0.2.tgz#24e87c2008abe8544c962f193b88b331de32b446"
   integrity sha512-5kO2XCcpAql6zjdLwRwJjYvAZyDy3+Uj7v1ipBzLthQmDL7Ce19bEqHr3ImSNeoSW2OA8u02XmARbXHaNO8GhA==
 
+twitter-api-v2@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/twitter-api-v2/-/twitter-api-v2-1.6.0.tgz#429a19aed338d2ccf17a0cd890e590b20bb6e768"
+  integrity sha512-MLpHYyw06Ch0FLYZ8JvX4HZethpXRRtUetYe4HtPhcQvJgukvS8xKc1CG1nSuNDVZyZ1KN9ps6W3nHRZVxm+qg==
+
 twitter-lite@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/twitter-lite/-/twitter-lite-1.1.0.tgz#77f250cc73f14ecc5a493ddb81ff0a3e9ae72680"
