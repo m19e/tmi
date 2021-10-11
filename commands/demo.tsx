@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 import { Box, Text, useInput } from "ink";
 import got from "got";
 import TwitterApi from "twitter-api-v2";
-import type { TwitterApiTokens, ListTimelineV1Paginator } from "twitter-api-v2";
+import type {
+	TwitterApiv1,
+	TwitterApiTokens,
+	ListTimelineV1Paginator,
+} from "twitter-api-v2";
 import { config } from "dotenv";
 import { terminalImageFromBuffer } from "../src/lib/sindresorhus/terminal-image";
 import type { Tweet } from "../src/types/twitter";
@@ -145,6 +149,7 @@ const defaultTokens: TwitterApiTokens = {
 };
 
 const Auth = () => {
+	const [client, setClient] = useState<TwitterApiv1 | undefined>(undefined);
 	const [authLink, setAuthLink] = useState({
 		oauth_token: "",
 		oauth_token_secret: "",
@@ -178,6 +183,7 @@ const Auth = () => {
 			list_id: firstList.id_str,
 		});
 		setListTimeline(tl);
+		setClient(loggedClient.v1);
 	};
 	if (listTimeline) {
 		return (
