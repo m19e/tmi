@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Box, Text, useInput } from "ink";
 import got from "got";
+import TwitterApi from "twitter-api-v2";
+import type { TwitterApiTokens, ListTimelineV1Paginator } from "twitter-api-v2";
+import { config } from "dotenv";
 import { terminalImageFromBuffer } from "../src/lib/sindresorhus/terminal-image";
+import type { Tweet } from "../src/types/twitter";
+import PinAuthInput from "../src/components/molecules/PinAuthInput";
+import TweetItem from "../src/components/molecules/TweetItem";
 
 const reg = new RegExp(
 	"[" +
@@ -131,4 +137,76 @@ const Image = () => {
 	);
 };
 
-export default Image;
+config();
+
+const defaultTokens: TwitterApiTokens = {
+	appKey: process.env.TWITTER_CONSUMER_KEY,
+	appSecret: process.env.TWITTER_CONSUMER_SECRET,
+};
+
+const Auth = () => {
+	const [authLink, setAuthLink] = useState({
+		oauth_token: "",
+		oauth_token_secret: "",
+		oauth_callback_confirmed: "true",
+		url: "",
+	});
+	const [pin, setPIN] = useState("");
+	const [listTimeline, setListTimeline] = useState<
+		ListTimelineV1Paginator | undefined
+	>(undefined);
+
+	useEffect(() => {
+		const f = async () => {
+			const initClient = new TwitterApi(defaultTokens);
+			const link = await initClient.generateAuthLink("oob");
+			setAuthLink(link);
+		};
+		f();
+	}, []);
+
+	const handleSubmit = async (p: string) => {
+		const oauthClient = new TwitterApi({
+			...defaultTokens,
+			accessToken: authLink.oauth_token,
+			accessSecret: authLink.oauth_token_secret,
+		});
+		const { client: loggedClient } = await oauthClient.login(p);
+
+		const firstList = (await loggedClient.v1.lists())[0];
+		const tl = await loggedClient.v1.listStatuses({
+			list_id: firstList.id_str,
+		});
+		setListTimeline(tl);
+	};
+	if (listTimeline) {
+		return (
+			<Box flexDirection="column">
+				{listTimeline.tweets.map((tweet, i) => (
+					<TweetItem
+						key={i}
+						tweet={tweet as unknown as Tweet}
+						isFocused={false}
+						inFav={false}
+						inRT={false}
+					/>
+				))}
+			</Box>
+		);
+	}
+
+	if (authLink.url) {
+		return (
+			<PinAuthInput
+				url={authLink.url}
+				value={pin}
+				onChange={setPIN}
+				onSubmit={handleSubmit}
+			/>
+		);
+	} else {
+		return <Text>Loading...</Text>;
+	}
+};
+
+export default Auth;
