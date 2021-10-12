@@ -40,6 +40,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 	useEffect(() => {
 		const init = async () => {
 			const [fp, conf, err] = getConfig();
+			setFilePath(fp);
 			if (err !== null || !conf.access_token_key || !conf.access_token_secret) {
 				if (err !== null) {
 					console.error("cannot get configuration: ", err);
@@ -51,12 +52,10 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 					oauth_token: string;
 				};
 				setClient(app);
-				setFilePath(fp);
 				setOT(oauth_token);
 				setStatus("pin");
 			} else {
 				setClient(new Twitter(conf));
-				setFilePath(fp);
 				setAppConfig(conf);
 				setUserId(conf.user_id);
 				setStatus("page");
