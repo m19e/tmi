@@ -1,8 +1,10 @@
 import { useAtom, SetStateAction } from "jotai";
 import type Twitter from "twitter-lite";
+import type { TwitterApi } from "twitter-api-v2";
 import {
 	userIdAtom,
 	clientAtom,
+	twitterClientAtom,
 	timelineAtom,
 	displayTimelineAtom,
 	focusedTweetAtom,
@@ -93,6 +95,11 @@ export const useApi = (): ClientApi => {
 		unretweet,
 	};
 };
+
+export const useTwitterClient = (): [
+	TwitterApi | null,
+	(update?: SetStateAction<TwitterApi | null>) => void
+] => useAtom(twitterClientAtom);
 
 export const useTimeline = () => useAtom(timelineAtom);
 
