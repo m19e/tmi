@@ -101,6 +101,10 @@ export const useTwitterClient = (): [
 	(update?: SetStateAction<TwitterApi | null>) => void
 ] => useAtom(twitterClientAtom);
 
+export const useTwitterApi = () => {
+	const [{ v1: api }] = useAtom(twitterClientAtom);
+};
+
 export const useTimeline = () => useAtom(timelineAtom);
 
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
