@@ -1,4 +1,5 @@
 import type { TwitterOptions } from "twitter-lite";
+import type { TwitterApiTokens } from "twitter-api-v2";
 import type { TrimmedList } from "./twitter";
 
 interface DefaultTwitterRequestParams {
@@ -16,6 +17,11 @@ export interface GetListTweetsParams extends DefaultTwitterRequestParams {
 export interface AppConfig extends TwitterOptions {
 	user_id: string;
 	lists: TrimmedList[];
+}
+
+export interface AppConfigV2 extends TwitterApiTokens {
+	userId: string;
+	lists: Array<TrimmedList>;
 }
 
 export type TimelineProcess =
