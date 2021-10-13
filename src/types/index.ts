@@ -2,6 +2,11 @@ import type { TwitterOptions } from "twitter-lite";
 import type { TwitterApiTokens } from "twitter-api-v2";
 import type { TrimmedList } from "./twitter";
 
+export interface HandledResponseError {
+	rateLimit: boolean;
+	message: string;
+}
+
 interface DefaultTwitterRequestParams {
 	tweet_mode: "extended";
 	include_entities: true;
