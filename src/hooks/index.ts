@@ -1,10 +1,8 @@
 import { useAtom, SetStateAction } from "jotai";
 import type Twitter from "twitter-lite";
-import type { TwitterApi } from "twitter-api-v2";
 import {
 	userIdAtom,
 	clientAtom,
-	twitterClientAtom,
 	timelineAtom,
 	displayTimelineAtom,
 	focusedTweetAtom,
