@@ -98,7 +98,7 @@ export const useApi = (): ClientApi => {
 
 export const useTwitterClient = (): [
 	TwitterApi | null,
-	(update?: SetStateAction<TwitterApi | null>) => void
+	(update?: SetStateAction<TwitterApi>) => void
 ] => useAtom(twitterClientAtom);
 
 export const useTwitterApi = () => {
