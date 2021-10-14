@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { AuthContainer } from "../src/components/AuthContainer";
-import ListPage from "../src/components/pages/List";
+import {
+	AuthContainer,
+	AuthContainerV2,
+} from "../src/components/AuthContainer";
+import ListPage, { ListV2 as ListPageV2 } from "../src/components/pages/List";
 
 /// Hello world command
 const Tink = () => {
-	return <AuthContainer page={ListPage} />;
+	// return <AuthContainer page={ListPage} />;
+	return <AuthContainerV2 page={ListPageV2} />;
 };
 
 Tink.propTypes = {
