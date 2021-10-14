@@ -1,5 +1,10 @@
 import { useAtom, SetStateAction } from "jotai";
-import type { TwitterApi, ListV1 } from "twitter-api-v2";
+import type {
+	TwitterApi,
+	ListV1,
+	ListStatusesV1Params,
+	ListTimelineV1Paginator,
+} from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import { twitterClientAtom } from "../store";
 import { handleResponseError } from "../lib/helpers";
@@ -8,6 +13,9 @@ type PromiseWithError<T> = Promise<T | HandledResponseError>;
 
 interface ClientApi {
 	getLists: () => PromiseWithError<ListV1[]>;
+	getListTimeline: (
+		params: ListStatusesV1Params
+	) => PromiseWithError<ListTimelineV1Paginator>;
 }
 
 export const useTwitterClient = (): [
@@ -24,8 +32,16 @@ export const useTwitterApi = (): ClientApi => {
 			return handleResponseError(error, "GET", "lists/list");
 		}
 	};
+	const getListTimeline = async (params: ListStatusesV1Params) => {
+		try {
+			return await api.listStatuses(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "lists/statuses");
+		}
+	};
 
 	return {
 		getLists,
+		getListTimeline,
 	};
 };
