@@ -1,7 +1,7 @@
 import { ApiResponseError } from "twitter-api-v2";
 import { HandledResponseError } from "../../types";
 
-type Endpoint = "lists/list";
+type Endpoint = "lists/list" | "lists/statuses";
 
 export const handleResponseError = (
 	error: any,
