@@ -3,7 +3,7 @@ import type {
 	TwitterApi,
 	ListV1,
 	ListStatusesV1Params,
-	ListTimelineV1Paginator,
+	TweetV1,
 } from "twitter-api-v2";
 import type { AppConfigV2, HandledResponseError } from "../types";
 import { twitterClientAtom, userConfigAtom } from "../store";
@@ -25,7 +25,7 @@ interface ClientApi {
 	getLists: () => PromiseWithError<ListV1[]>;
 	getListTimeline: (
 		params: ListStatusesV1Params
-	) => PromiseWithError<ListTimelineV1Paginator>;
+	) => PromiseWithError<TweetV1[]>;
 }
 
 export const useTwitterApi = (): ClientApi => {
@@ -39,7 +39,7 @@ export const useTwitterApi = (): ClientApi => {
 	};
 	const getListTimeline = async (params: ListStatusesV1Params) => {
 		try {
-			return await api.listStatuses(params);
+			return (await api.listStatuses(params)).tweets;
 		} catch (error) {
 			return handleResponseError(error, "GET", "lists/statuses");
 		}
