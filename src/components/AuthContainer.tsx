@@ -15,7 +15,6 @@ import TwitterApi from "twitter-api-v2";
 import type { TwitterApiTokens } from "twitter-api-v2";
 
 import type { AppConfig, AppConfigV2 } from "../types";
-import { TrimmedList } from "../types/twitter";
 import { useClient, useUserId } from "../hooks";
 import { useTwitterClient } from "../hooks/v2";
 import PinAuthInput from "./molecules/PinAuthInput";
