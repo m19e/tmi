@@ -275,12 +275,10 @@ export const ListV2: VFC<{
 			...options,
 		});
 		const res = await api.getListTimeline(params);
-		const hasTweets = "tweets" in res;
-		if (!hasTweets || res.tweets.length === 0) {
+		if (!Array.isArray(res) || res.length === 0) {
 			return [];
 		}
-
-		return res.tweets.map(convertTweetToDisplayable);
+		return res.map(convertTweetToDisplayable);
 	};
 
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
