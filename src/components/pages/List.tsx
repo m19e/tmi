@@ -211,8 +211,6 @@ export const ListV2: VFC<{
 
 	const getUserLists = async () => {
 		const res = await api.getLists();
-		console.log(res);
-
 		// onError
 		if (!Array.isArray(res)) {
 			setError(res.message);
