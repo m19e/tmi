@@ -9,6 +9,11 @@ import type { AppConfigV2, HandledResponseError } from "../types";
 import { twitterClientAtom, userConfigAtom } from "../store";
 import { handleResponseError } from "../lib/helpers";
 
+export const useUserConfig = (): [
+	AppConfigV2 | null,
+	(update?: SetStateAction<AppConfigV2>) => void
+] => useAtom(userConfigAtom);
+
 type PromiseWithError<T> = Promise<T | HandledResponseError>;
 
 interface ClientApi {
@@ -45,8 +50,3 @@ export const useTwitterApi = (): ClientApi => {
 		getListTimeline,
 	};
 };
-
-export const useUserConfig = (): [
-	AppConfigV2 | null,
-	(update?: SetStateAction<AppConfigV2>) => void
-] => useAtom(userConfigAtom);
