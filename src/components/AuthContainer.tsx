@@ -16,7 +16,7 @@ import type { TwitterApiTokens } from "twitter-api-v2";
 
 import type { AppConfig, AppConfigV2 } from "../types";
 import { useClient, useUserId } from "../hooks";
-import { useTwitterClient } from "../hooks/v2";
+import { useTwitterClient, useUserConfig } from "../hooks/v2";
 import PinAuthInput from "./molecules/PinAuthInput";
 
 config();
@@ -175,7 +175,6 @@ const defaultTokens: TwitterApiTokens = {
 };
 
 interface PagePropsV2 {
-	config: AppConfigV2;
 	onSaveConfig: (c: AppConfigV2) => Promise<void>;
 }
 
@@ -185,18 +184,13 @@ interface PropsV2 {
 
 export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 	const { exit } = useApp();
-	const [, setUserId] = useUserId();
 
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
 	const [status, setStatus] = useState<"load" | "pin" | "page">("load");
 
 	const [, setTwitterClient] = useTwitterClient();
-	const [twitterConfig, setTwitterConfig] = useState<AppConfigV2>({
-		...defaultTokens,
-		userId: "",
-		lists: [],
-	});
+	const [, setUserConfig] = useUserConfig();
 	const [authLink, setAuthLink] = useState<{
 		oauth_token: string;
 		oauth_token_secret: string;
@@ -219,8 +213,9 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 				setStatus("pin");
 			} else {
 				setTwitterClient(new TwitterApi(conf));
-				setTwitterConfig(conf);
-				setUserId(conf.userId);
+				// setTwitterConfig(conf);
+				// setUserId(conf.userId);
+				setUserConfig(conf);
 				setStatus("page");
 			}
 		};
@@ -300,14 +295,21 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 			userId,
 		} = await oauthClient.login(p);
 		setTwitterClient(loggedClient);
-		setTwitterConfig({
+		// setTwitterConfig({
+		// 	...defaultTokens,
+		// 	accessToken,
+		// 	accessSecret,
+		// 	userId,
+		// 	lists: [],
+		// });
+		// setUserId(userId);
+		setUserConfig({
 			...defaultTokens,
 			accessToken,
 			accessSecret,
 			userId,
 			lists: [],
 		});
-		setUserId(userId);
 		setStatus("page");
 	};
 
@@ -328,6 +330,6 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 		);
 	}
 	if (status === "page") {
-		return <Page config={twitterConfig} onSaveConfig={handleSaveConfig} />;
+		return <Page onSaveConfig={handleSaveConfig} />;
 	}
 };
