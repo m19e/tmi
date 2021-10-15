@@ -16,17 +16,17 @@ export const useUserConfig = (): [
 
 type PromiseWithError<T> = Promise<T | HandledResponseError>;
 
+export const useTwitterClient = (): [
+	TwitterApi | null,
+	(update?: SetStateAction<TwitterApi>) => void
+] => useAtom(twitterClientAtom);
+
 interface ClientApi {
 	getLists: () => PromiseWithError<ListV1[]>;
 	getListTimeline: (
 		params: ListStatusesV1Params
 	) => PromiseWithError<ListTimelineV1Paginator>;
 }
-
-export const useTwitterClient = (): [
-	TwitterApi | null,
-	(update?: SetStateAction<TwitterApi>) => void
-] => useAtom(twitterClientAtom);
 
 export const useTwitterApi = (): ClientApi => {
 	const [{ v1: api }] = useAtom(twitterClientAtom);
