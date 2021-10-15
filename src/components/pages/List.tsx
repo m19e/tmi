@@ -274,7 +274,7 @@ export const ListV2: VFC<{
 			count: 200,
 			...options,
 		});
-		const res = await api.getListTimeline(params);
+		const res = await api.getListTweets(params);
 		if (!Array.isArray(res) || res.length === 0) {
 			if (!Array.isArray(res)) setError(res.message);
 			return [];
