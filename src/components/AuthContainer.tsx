@@ -14,7 +14,7 @@ import { config } from "dotenv";
 import TwitterApi from "twitter-api-v2";
 import type { TwitterApiTokens } from "twitter-api-v2";
 
-import type { AppConfig, AppConfigV2 } from "../types";
+import type { AppConfig, UserConfig } from "../types";
 import { useClient, useUserId } from "../hooks";
 import { useTwitterClient, useUserConfig } from "../hooks/v2";
 import PinAuthInput from "./molecules/PinAuthInput";
@@ -175,7 +175,7 @@ const defaultTokens: TwitterApiTokens = {
 };
 
 interface PagePropsV2 {
-	onSaveConfig: (c: AppConfigV2) => Promise<void>;
+	onSaveConfig: (c: UserConfig) => Promise<void>;
 }
 
 interface PropsV2 {
@@ -221,7 +221,7 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 
 	const getConfigV2 = (
 		profile: string = ""
-	): [string, AppConfigV2 | null, any] => {
+	): [string, UserConfig | null, any] => {
 		let dir = process.env.HOME ?? "";
 		if (dir === "" && process.platform === "win32") {
 			dir = process.env.APPDATA ?? "";
@@ -265,7 +265,7 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 			file = path.join(dir, "settings-" + profile + ".json");
 		}
 
-		let conf: AppConfigV2;
+		let conf: UserConfig;
 		const json = readJsonSync(file, { throws: false });
 		if (json === null) {
 			if (existsSync(file)) {
@@ -302,7 +302,7 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 		setStatus("page");
 	};
 
-	const handleSaveConfig = async (conf: AppConfigV2) =>
+	const handleSaveConfig = async (conf: UserConfig) =>
 		await writeJson(filePath, conf);
 
 	if (status === "load") {

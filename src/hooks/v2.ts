@@ -5,13 +5,13 @@ import type {
 	ListStatusesV1Params,
 	TweetV1,
 } from "twitter-api-v2";
-import type { AppConfigV2, HandledResponseError } from "../types";
+import type { UserConfig, HandledResponseError } from "../types";
 import { twitterClientAtom, userConfigAtom } from "../store/v2";
 import { handleResponseError } from "../lib/helpers";
 
 export const useUserConfig = (): [
-	AppConfigV2 | null,
-	(update?: SetStateAction<AppConfigV2>) => void
+	UserConfig | null,
+	(update?: SetStateAction<UserConfig>) => void
 ] => useAtom(userConfigAtom);
 
 type PromiseWithError<T> = Promise<T | HandledResponseError>;

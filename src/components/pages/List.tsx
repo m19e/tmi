@@ -4,7 +4,7 @@ import { writeJson } from "fs-extra";
 import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 
-import type { AppConfig, AppConfigV2, GetListTweetsParams } from "../../types";
+import type { AppConfig, UserConfig, GetListTweetsParams } from "../../types";
 import type { Tweet, TrimmedList } from "../../types/twitter";
 import { convertTweetToDisplayable } from "../../lib";
 import {
@@ -182,7 +182,7 @@ const List: VFC<{
 };
 
 export const ListV2: VFC<{
-	onSaveConfig: (c: AppConfigV2) => Promise<void>;
+	onSaveConfig: (c: UserConfig) => Promise<void>;
 }> = ({ onSaveConfig }) => {
 	const { exit } = useApp();
 	const [, rows] = useDimensions();
