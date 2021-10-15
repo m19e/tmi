@@ -213,8 +213,6 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 				setStatus("pin");
 			} else {
 				setTwitterClient(new TwitterApi(conf));
-				// setTwitterConfig(conf);
-				// setUserId(conf.userId);
 				setUserConfig(conf);
 				setStatus("page");
 			}
@@ -295,14 +293,6 @@ export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 			userId,
 		} = await oauthClient.login(p);
 		setTwitterClient(loggedClient);
-		// setTwitterConfig({
-		// 	...defaultTokens,
-		// 	accessToken,
-		// 	accessSecret,
-		// 	userId,
-		// 	lists: [],
-		// });
-		// setUserId(userId);
 		setUserConfig({
 			...defaultTokens,
 			accessToken,
