@@ -5,8 +5,8 @@ import type {
 	ListStatusesV1Params,
 	ListTimelineV1Paginator,
 } from "twitter-api-v2";
-import type { HandledResponseError } from "../types";
-import { twitterClientAtom } from "../store";
+import type { AppConfigV2, HandledResponseError } from "../types";
+import { twitterClientAtom, userConfigAtom } from "../store";
 import { handleResponseError } from "../lib/helpers";
 
 type PromiseWithError<T> = Promise<T | HandledResponseError>;
@@ -45,3 +45,8 @@ export const useTwitterApi = (): ClientApi => {
 		getListTimeline,
 	};
 };
+
+export const useUserConfig = (): [
+	AppConfigV2 | null,
+	(update?: SetStateAction<AppConfigV2>) => void
+] => useAtom(userConfigAtom);
