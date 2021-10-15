@@ -276,6 +276,7 @@ export const ListV2: VFC<{
 		});
 		const res = await api.getListTimeline(params);
 		if (!Array.isArray(res) || res.length === 0) {
+			if (!Array.isArray(res)) setError(res.message);
 			return [];
 		}
 		return res.map(convertTweetToDisplayable);
