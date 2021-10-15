@@ -13,6 +13,7 @@ import {
 	useRequestResult,
 	useHint,
 } from "../../hooks";
+import { useUserConfig } from "../../hooks/v2";
 import TweetItem from "../molecules/TweetItem";
 import SelectInput from "../molecules/SelectInput";
 import NewTweetBox from "../molecules/NewTweetBox";
@@ -50,7 +51,8 @@ const Detail: VFC<Props> = ({
 	setInProcess,
 }) => {
 	const api = useApi();
-	const [userId] = useUserId();
+	// const [userId] = useUserId();
+	const [{ userId }] = useUserConfig();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
