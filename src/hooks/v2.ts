@@ -23,9 +23,7 @@ export const useTwitterClient = (): [
 
 interface ClientApi {
 	getLists: () => PromiseWithError<ListV1[]>;
-	getListTimeline: (
-		params: ListStatusesV1Params
-	) => PromiseWithError<TweetV1[]>;
+	getListTweets: (params: ListStatusesV1Params) => PromiseWithError<TweetV1[]>;
 }
 
 export const useTwitterApi = (): ClientApi => {
@@ -37,7 +35,7 @@ export const useTwitterApi = (): ClientApi => {
 			return handleResponseError(error, "GET", "lists/list");
 		}
 	};
-	const getListTimeline = async (params: ListStatusesV1Params) => {
+	const getListTweets = async (params: ListStatusesV1Params) => {
 		try {
 			return (await api.listStatuses(params)).tweets;
 		} catch (error) {
@@ -47,6 +45,6 @@ export const useTwitterApi = (): ClientApi => {
 
 	return {
 		getLists,
-		getListTimeline,
+		getListTweets,
 	};
 };
