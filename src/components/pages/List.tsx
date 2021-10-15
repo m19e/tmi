@@ -18,7 +18,7 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks";
-import { useTwitterApi } from "../../hooks/v2";
+import { useTwitterApi, useUserConfig } from "../../hooks/v2";
 import Timeline from "../../components/templates/Timeline";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
@@ -182,9 +182,8 @@ const List: VFC<{
 };
 
 export const ListV2: VFC<{
-	config: AppConfigV2;
 	onSaveConfig: (c: AppConfigV2) => Promise<void>;
-}> = ({ config, onSaveConfig }) => {
+}> = ({ onSaveConfig }) => {
 	const { exit } = useApp();
 	const [, rows] = useDimensions();
 
@@ -204,6 +203,7 @@ export const ListV2: VFC<{
 	);
 
 	const api = useTwitterApi();
+	const [config] = useUserConfig();
 
 	useEffect(() => {
 		getUserLists();
