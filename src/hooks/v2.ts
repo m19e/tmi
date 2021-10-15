@@ -6,7 +6,7 @@ import type {
 	TweetV1,
 } from "twitter-api-v2";
 import type { AppConfigV2, HandledResponseError } from "../types";
-import { twitterClientAtom, userConfigAtom } from "../store";
+import { twitterClientAtom, userConfigAtom } from "../store/v2";
 import { handleResponseError } from "../lib/helpers";
 
 export const useUserConfig = (): [
