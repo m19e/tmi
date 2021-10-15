@@ -24,7 +24,7 @@ export interface AppConfig extends TwitterOptions {
 	lists: TrimmedList[];
 }
 
-export interface AppConfigV2 extends TwitterApiTokens {
+export interface UserConfig extends TwitterApiTokens {
 	userId: string;
 	lists: Array<TrimmedList>;
 }
