@@ -184,13 +184,12 @@ interface PropsV2 {
 
 export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
 	const { exit } = useApp();
+	const [, setTwitterClient] = useTwitterClient();
+	const [, setUserConfig] = useUserConfig();
 
 	const [pin, setPIN] = useState("");
 	const [filePath, setFilePath] = useState("");
 	const [status, setStatus] = useState<"load" | "pin" | "page">("load");
-
-	const [, setTwitterClient] = useTwitterClient();
-	const [, setUserConfig] = useUserConfig();
 	const [authLink, setAuthLink] = useState<{
 		oauth_token: string;
 		oauth_token_secret: string;
