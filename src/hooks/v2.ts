@@ -85,3 +85,62 @@ export const useCursorIndex = () => useAtom(cursorIndexAtom);
 export const useFocusIndex = () => useAtom(focusIndexAtom);
 
 export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
+
+interface ListPaginator {
+	tweets: Array<TweetV1>;
+	fetchNewer: () => PromiseWithError<null>;
+	fetchOlder: () => PromiseWithError<null>;
+}
+
+export const useListPaginator = (): ListPaginator => {
+	const [{ v1: api }] = useAtom(twitterClientAtom);
+	const [tweets, setTimeline]: [
+		Array<TweetV1>,
+		(update?: SetStateAction<Array<TweetV1>>) => void | Promise<void>
+	] = useAtom(listTimelineAtom);
+	const [{ id_str: list_id }] = useAtom(currentListAtom);
+	const [{ since_id, max_id }] = useAtom(listTimelineCursorsAtom);
+	const [, setCursor] = useAtom(cursorIndexAtom);
+	const defaultParams: ListStatusesV1Params = {
+		count: 200,
+		tweet_mode: "extended",
+		include_entities: true,
+	};
+
+	const fetchNewer = async () => {
+		try {
+			const res = await api.listStatuses({
+				...defaultParams,
+				list_id,
+				since_id,
+			});
+			const { tweets } = res;
+			const { length } = tweets;
+			setCursor((c) => c + length);
+			setTimeline((tl) => tweets.concat(tl));
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "GET", "lists/statuses");
+		}
+	};
+	const fetchOlder = async () => {
+		try {
+			const res = await api.listStatuses({
+				...defaultParams,
+				list_id,
+				max_id,
+			});
+			const { tweets } = res;
+			setTimeline((tl) => tl.concat(tweets));
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "GET", "lists/statuses");
+		}
+	};
+
+	return {
+		tweets,
+		fetchNewer,
+		fetchOlder,
+	};
+};
