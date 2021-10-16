@@ -235,7 +235,7 @@ export const ListV2: VFC<{
 			mode: l.mode,
 		}));
 		await onSaveConfig({ ...config, lists: trim });
-		setLists(trim);
+		setLists(res);
 		setStatus("select");
 	};
 
