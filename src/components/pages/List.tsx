@@ -277,7 +277,7 @@ export const ListV2: VFC<{
 			if (!Array.isArray(res)) setError(res.message);
 			return [];
 		}
-		return res.map(convertTweetToDisplayable);
+		return res;
 	};
 
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
