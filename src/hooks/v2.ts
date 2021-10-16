@@ -94,7 +94,7 @@ interface ListPaginator {
 
 export const useListPaginator = (): ListPaginator => {
 	const [{ v1: api }] = useAtom(twitterClientAtom);
-	const [tweets, setTimeline]: [
+	const [timeline, setTimeline]: [
 		Array<TweetV1>,
 		(update?: SetStateAction<Array<TweetV1>>) => void | Promise<void>
 	] = useAtom(listTimelineAtom);
@@ -139,7 +139,7 @@ export const useListPaginator = (): ListPaginator => {
 	};
 
 	return {
-		tweets,
+		tweets: timeline,
 		fetchNewer,
 		fetchOlder,
 	};
