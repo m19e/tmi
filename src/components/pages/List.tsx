@@ -18,7 +18,7 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks";
-import { useTwitterApi, useUserConfig } from "../../hooks/v2";
+import { useTwitterApi, useUserConfig, useCurrentList } from "../../hooks/v2";
 import Timeline from "../../components/templates/Timeline";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
@@ -198,12 +198,10 @@ export const ListV2: VFC<{
 
 	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
 	const [lists, setLists] = useState<TrimmedList[]>([]);
-	const [currentList, setCurrentList] = useState<TrimmedList | undefined>(
-		undefined
-	);
 
 	const api = useTwitterApi();
 	const [config] = useUserConfig();
+	const [currentList, setCurrentList] = useCurrentList();
 
 	useEffect(() => {
 		getUserLists();
