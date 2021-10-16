@@ -6,6 +6,7 @@ import type {
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { UserConfig, HandledResponseError } from "../types";
+import { TrimmedList } from "../types/twitter";
 import {
 	twitterClientAtom,
 	userConfigAtom,
@@ -85,6 +86,11 @@ export const useCursorIndex = () => useAtom(cursorIndexAtom);
 export const useFocusIndex = () => useAtom(focusIndexAtom);
 
 export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
+
+export const useCurrentList = (): [
+	TrimmedList,
+	(update?: SetStateAction<TrimmedList>) => void
+] => useAtom(currentListAtom);
 
 interface ListPaginator {
 	tweets: Array<TweetV1>;
