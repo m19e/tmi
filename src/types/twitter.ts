@@ -24,6 +24,8 @@ export interface TrimmedList {
 	mode: "public" | "private";
 }
 
+export interface Tweet extends TweetV1 {}
+
 // export interface Tweet {
 // 	contributors?: null;
 // 	coordinates?: Coordinates | null;
@@ -62,8 +64,6 @@ export interface TrimmedList {
 // 	withheld_in_countries?: string[] | null;
 // 	withheld_scope?: string | null;
 // }
-
-export interface Tweet extends TweetV1 {}
 
 export interface User {
 	created_at: string;
