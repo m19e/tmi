@@ -1,10 +1,12 @@
 import { atom } from "jotai";
-import type { TwitterApi, TweetV1 } from "twitter-api-v2";
+import type { TwitterApi, ListV1, TweetV1 } from "twitter-api-v2";
 import { UserConfig } from "../types";
 
 export const userConfigAtom = atom<UserConfig | null>(null);
 
 export const twitterClientAtom = atom<TwitterApi | null>(null);
+
+export const currentListAtom = atom<ListV1 | null>(null);
 
 export const listTimelineAtom = atom<TweetV1[]>([]);
 
