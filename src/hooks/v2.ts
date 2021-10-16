@@ -19,6 +19,7 @@ import {
 	focusIndexAtom,
 	displayTweetsCountAtom,
 } from "../store/v2";
+import { convertTweetToDisplayable } from "../lib";
 import { handleResponseError } from "../lib/helpers";
 
 export const useUserConfig = (): [
@@ -49,7 +50,9 @@ export const useTwitterApi = (): ClientApi => {
 	};
 	const getListTweets = async (params: ListStatusesV1Params) => {
 		try {
-			return (await api.listStatuses(params)).tweets;
+			return (await api.listStatuses(params)).tweets.map(
+				convertTweetToDisplayable
+			);
 		} catch (error) {
 			return handleResponseError(error, "GET", "lists/statuses");
 		}
@@ -121,8 +124,9 @@ export const useListPaginator = (): ListPaginator => {
 				since_id,
 			});
 			if (tweets.length) {
+				const converted = tweets.map(convertTweetToDisplayable);
 				setCursor((prev) => prev + tweets.length);
-				setTimeline((prev) => [...tweets, ...prev]);
+				setTimeline((prev) => [...converted, ...prev]);
 			}
 			return null;
 		} catch (error) {
@@ -137,7 +141,8 @@ export const useListPaginator = (): ListPaginator => {
 				max_id,
 			});
 			if (tweets.length) {
-				setTimeline((prev) => [...prev, ...tweets]);
+				const converted = tweets.map(convertTweetToDisplayable);
+				setTimeline((prev) => [...prev, ...converted]);
 			}
 			return null;
 		} catch (error) {
