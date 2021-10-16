@@ -109,15 +109,15 @@ export const useListPaginator = (): ListPaginator => {
 
 	const fetchNewer = async () => {
 		try {
-			const res = await api.listStatuses({
+			const { tweets } = await api.listStatuses({
 				...defaultParams,
 				list_id,
 				since_id,
 			});
-			const { tweets } = res;
-			const { length } = tweets;
-			setCursor((c) => c + length);
-			setTimeline((tl) => tweets.concat(tl));
+			if (tweets.length) {
+				setCursor((prev) => prev + tweets.length);
+				setTimeline((prev) => [...tweets, ...prev]);
+			}
 			return null;
 		} catch (error) {
 			return handleResponseError(error, "GET", "lists/statuses");
@@ -125,13 +125,14 @@ export const useListPaginator = (): ListPaginator => {
 	};
 	const fetchOlder = async () => {
 		try {
-			const res = await api.listStatuses({
+			const { tweets } = await api.listStatuses({
 				...defaultParams,
 				list_id,
 				max_id,
 			});
-			const { tweets } = res;
-			setTimeline((tl) => tl.concat(tweets));
+			if (tweets.length) {
+				setTimeline((prev) => [...prev, ...tweets]);
+			}
 			return null;
 		} catch (error) {
 			return handleResponseError(error, "GET", "lists/statuses");
