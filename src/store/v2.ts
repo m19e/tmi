@@ -10,6 +10,22 @@ export const currentListAtom = atom<ListV1 | null>(null);
 
 export const listTimelineAtom = atom<TweetV1[]>([]);
 
+export const cursorIndexAtom = atom(0);
+
+export const focusIndexAtom = atom(0);
+
+export const displayTweetsCountAtom = atom(5);
+
+export const displayTimelineAtom = atom<TweetV1[]>((get) => {
+	const cursor = get(cursorIndexAtom);
+	const count = get(displayTweetsCountAtom);
+	return get(listTimelineAtom).slice(cursor, cursor + count);
+});
+
+export const focusedTweetAtom = atom<TweetV1>(
+	(get) => get(displayTimelineAtom)[get(focusIndexAtom)]
+);
+
 export const listTimelineCursorsAtom = atom<{
 	since_id: string;
 	max_id: string;
