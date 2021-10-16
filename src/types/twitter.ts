@@ -1,20 +1,22 @@
-import type { TweetV1 } from "twitter-api-v2";
+import type { TweetV1, ListV1 } from "twitter-api-v2";
 
-export interface List {
-	id: number;
-	id_str: string;
-	name: string;
-	uri: string;
-	subscriber_count: number;
-	member_count: number;
-	mode: "public" | "private";
-	description: string;
-	slug: string;
-	full_name: string;
-	created_at: string;
-	following: boolean;
-	user: User;
-}
+export interface List extends ListV1 {}
+
+// export interface List {
+// 	id: number;
+// 	id_str: string;
+// 	name: string;
+// 	uri: string;
+// 	subscriber_count: number;
+// 	member_count: number;
+// 	mode: "public" | "private";
+// 	description: string;
+// 	slug: string;
+// 	full_name: string;
+// 	created_at: string;
+// 	following: boolean;
+// 	user: User;
+// }
 
 export interface TrimmedList {
 	id_str: string;
