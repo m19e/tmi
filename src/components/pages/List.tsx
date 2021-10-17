@@ -24,7 +24,8 @@ import {
 	useCurrentList,
 	setListTimeline,
 } from "../../hooks/v2";
-import Timeline, { TimelineV2 } from "../../components/templates/Timeline";
+import Timeline from "../../components/templates/Timeline";
+import { Timeline as TimelineV2 } from "../../components/templates/TimelineV2";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
 
