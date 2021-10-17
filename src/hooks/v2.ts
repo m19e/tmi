@@ -43,6 +43,11 @@ interface ClientApi {
 		status: string,
 		in_reply_to_status_id: string
 	) => PromiseWithError<null>;
+	deleteTweet: (id: string) => PromiseWithError<null>;
+	favorite: (id: string) => PromiseWithError<TweetV1>;
+	unfavorite: (id: string) => PromiseWithError<TweetV1>;
+	retweet: (id: string) => PromiseWithError<TweetV1>;
+	unretweet: (id: string) => PromiseWithError<TweetV1>;
 }
 
 export const useTwitterApi = (): ClientApi => {
@@ -88,6 +93,47 @@ export const useTwitterApi = (): ClientApi => {
 			return handleResponseError(error, "POST", "statuses/update");
 		}
 	};
+	const deleteTweet = async (id: string) => {
+		try {
+			await api.deleteTweet(id);
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "POST", "statuses/destroy");
+		}
+	};
+
+	const favorite = async (id: string) => {
+		try {
+			await api.post("favorites/create.json", { id });
+			return await getTweet(id);
+		} catch (error) {
+			return handleResponseError(error, "POST", "favorites/create");
+		}
+	};
+	const unfavorite = async (id: string) => {
+		try {
+			await api.post("favorites/destroy.json", { id });
+			return await getTweet(id);
+		} catch (error) {
+			return handleResponseError(error, "POST", "favorites/destroy");
+		}
+	};
+	const retweet = async (id: string) => {
+		try {
+			await api.post(`statuses/retweet/${id}.json`);
+			return await getTweet(id);
+		} catch (error) {
+			return handleResponseError(error, "POST", "statuses/retweet");
+		}
+	};
+	const unretweet = async (id: string) => {
+		try {
+			await api.post(`statuses/destroy/${id}.json`);
+			return await getTweet(id);
+		} catch (error) {
+			return handleResponseError(error, "POST", "statuses/unretweet");
+		}
+	};
 
 	return {
 		getLists,
@@ -95,6 +141,11 @@ export const useTwitterApi = (): ClientApi => {
 		getTweet,
 		tweet,
 		reply,
+		deleteTweet,
+		favorite,
+		unfavorite,
+		retweet,
+		unretweet,
 	};
 };
 
