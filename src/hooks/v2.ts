@@ -39,6 +39,10 @@ interface ClientApi {
 	getListTweets: (params: ListStatusesV1Params) => PromiseWithError<TweetV1[]>;
 	getTweet: (id: string) => PromiseWithError<TweetV1>;
 	tweet: (status: string) => PromiseWithError<null>;
+	reply: (
+		status: string,
+		in_reply_to_status_id: string
+	) => PromiseWithError<null>;
 }
 
 export const useTwitterApi = (): ClientApi => {
@@ -76,12 +80,21 @@ export const useTwitterApi = (): ClientApi => {
 			return handleResponseError(error, "POST", "statuses/update");
 		}
 	};
+	const reply = async (status: string, in_reply_to_status_id: string) => {
+		try {
+			await api.reply(status, in_reply_to_status_id);
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "POST", "statuses/update");
+		}
+	};
 
 	return {
 		getLists,
 		getListTweets,
 		getTweet,
 		tweet,
+		reply,
 	};
 };
 
