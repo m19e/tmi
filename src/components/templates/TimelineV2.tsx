@@ -55,56 +55,35 @@ export const Timeline = ({ onToggleList }: Props) => {
 		id_str,
 		retweeted,
 	}: Tweet): Promise<Tweet | string> => {
-		let err: null | string;
-		if (retweeted) {
-			err = await api.unretweet({ id: id_str });
-		} else {
-			err = await api.retweet({ id: id_str });
+		const res = retweeted
+			? await api.unretweet(id_str)
+			: await api.retweet(id_str);
+		if ("rateLimit" in res && "message" in res) {
+			return res.message;
 		}
-		if (err !== null) return err;
-
-		const res = await api.getTweet({ id: id_str });
-		if (typeof res === "string") return res;
-		const converted = convertTweetToDisplayable(res);
-		setTimeline((prev) =>
-			prev.map((t) => (t.id_str === id_str ? converted : t))
-		);
-		return converted;
+		return res;
 	};
 
 	const requestFavorite = async ({
 		id_str,
 		favorited,
 	}: Tweet): Promise<Tweet | string> => {
-		let err: null | string;
-		if (favorited) {
-			err = await api.unfavorite({ id: id_str });
-		} else {
-			err = await api.favorite({ id: id_str });
+		const res = favorited
+			? await api.unfavorite(id_str)
+			: await api.favorite(id_str);
+		if ("rateLimit" in res && "message" in res) {
+			return res.message;
 		}
-		if (err !== null) return err;
-
-		const res = await api.getTweet({ id: id_str });
-		if (typeof res === "string") return res;
-		const converted = convertTweetToDisplayable(res);
-		setTimeline((prev) =>
-			prev.map((t) => (t.id_str === id_str ? converted : t))
-		);
-		return converted;
+		return res;
 	};
 
 	const update = async (backward: boolean) => {
 		setInProcess("update");
-		if (backward) {
-			const err = await paginator.fetchOlder();
-			if (err !== null) {
-				setError(err.message);
-			}
-		} else {
-			const err = await paginator.fetchNewer();
-			if (err !== null) {
-				setError(err.message);
-			}
+		const err = backward
+			? await paginator.fetchOlder()
+			: await paginator.fetchNewer();
+		if (err !== null) {
+			setError(err.message);
 		}
 		setInProcess("none");
 	};
@@ -112,9 +91,9 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const newTweet = async () => {
 		if (!valid) return;
 		setInProcess("tweet");
-		const err = await api.tweet({ status: tweetText });
+		const err = await api.tweet(tweetText);
 		if (err !== null) {
-			setError(err);
+			setError(err.message);
 		} else {
 			setIsNewTweetOpen(false);
 			setRequestResult(`Successfully tweeted: "${tweetText}"`);
@@ -131,6 +110,9 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (typeof res === "string") {
 			setError(res);
 		} else {
+			setTimeline((prev) =>
+				prev.map((t) => (t.id_str === res.id_str ? res : t))
+			);
 			setRequestResult(
 				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
 					res.user.screen_name
@@ -146,6 +128,9 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (typeof res === "string") {
 			setError(res);
 		} else {
+			setTimeline((prev) =>
+				prev.map((t) => (t.id_str === res.id_str ? res : t))
+			);
 			setRequestResult(
 				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
 					res.user.screen_name
