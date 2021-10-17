@@ -73,7 +73,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.tweet(status);
 			return null;
 		} catch (error) {
-			return handleResponseError(error, "GET", "statuses/show");
+			return handleResponseError(error, "GET", "statuses/update");
 		}
 	};
 
