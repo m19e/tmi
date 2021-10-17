@@ -4,17 +4,16 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 import type { TweetV1 } from "twitter-api-v2";
 
 import type { TimelineProcess } from "../../types";
+import { useError, useRequestResult, useHint, useTimeline } from "../../hooks";
 import {
-	useError,
-	useRequestResult,
-	useHint,
-	useTimeline,
+	useTwitterApi,
+	useListPaginator,
 	useMover,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-} from "../../hooks";
-import { useTwitterApi, useListPaginator } from "../../hooks/v2";
+	setListTimeline,
+} from "../../hooks/v2";
 import Detail from "../organisms/Detail";
 import TweetItem from "../molecules/TweetItem";
 import NewTweetBox from "../molecules/NewTweetBox";
@@ -30,7 +29,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
-	const [, setTimeline] = useTimeline();
+	const setTimeline = setListTimeline();
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
