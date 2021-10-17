@@ -286,7 +286,7 @@ export const ListV2: VFC<{
 				if (status === "timeline") {
 					return (
 						<>
-							<Box
+							{/* <Box
 								justifyContent="center"
 								borderStyle="double"
 								borderColor="gray"
@@ -295,7 +295,7 @@ export const ListV2: VFC<{
 									[LIST]<Text color="green">{currentList.name}</Text>(
 									{cursor + 1}-{cursor + count}/{total})
 								</Text>
-							</Box>
+							</Box> */}
 							<TimelineV2 onToggleList={handleToggleList} />
 							<Footer />
 						</>
