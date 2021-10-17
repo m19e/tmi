@@ -17,6 +17,7 @@ import {
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../../hooks";
+import { useTwitterApi, useListPaginator } from "../../hooks/v2";
 import Detail from "../organisms/Detail";
 import TweetItem from "../molecules/TweetItem";
 import NewTweetBox from "../molecules/NewTweetBox";
@@ -26,7 +27,8 @@ type Props = {
 };
 
 export const Timeline = ({ onToggleList }: Props) => {
-	const api = useApi();
+	const api = useTwitterApi();
+	const paginator = useListPaginator();
 	const mover = useMover();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
@@ -93,12 +95,16 @@ export const Timeline = ({ onToggleList }: Props) => {
 
 	const update = async (backward: boolean) => {
 		setInProcess("update");
-		const res = await onUpdate(backward);
-		if (res.length) {
-			if (!backward) setCursor((prev) => prev + res.length);
-			setTimeline((prev) =>
-				backward ? prev.slice(0, -1).concat(res) : res.concat(prev)
-			);
+		if (backward) {
+			const err = await paginator.fetchOlder();
+			if (err !== null) {
+				setError(err.message);
+			}
+		} else {
+			const err = await paginator.fetchNewer();
+			if (err !== null) {
+				setError(err.message);
+			}
 		}
 		setInProcess("none");
 	};
