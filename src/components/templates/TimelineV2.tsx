@@ -12,7 +12,6 @@ import {
 	useHint,
 	useTimeline,
 	useMover,
-	useCursorIndex,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
@@ -34,7 +33,6 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 	const [, setTimeline] = useTimeline();
-	const [, setCursor] = useCursorIndex();
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
