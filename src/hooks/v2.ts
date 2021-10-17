@@ -37,6 +37,7 @@ export const useTwitterClient = (): [
 interface ClientApi {
 	getLists: () => PromiseWithError<ListV1[]>;
 	getListTweets: (params: ListStatusesV1Params) => PromiseWithError<TweetV1[]>;
+	getTweet: (id: string) => PromiseWithError<TweetV1>;
 }
 
 export const useTwitterApi = (): ClientApi => {
@@ -57,10 +58,18 @@ export const useTwitterApi = (): ClientApi => {
 			return handleResponseError(error, "GET", "lists/statuses");
 		}
 	};
+	const getTweet = async (id: string) => {
+		try {
+			return convertTweetToDisplayable(await api.singleTweet(id));
+		} catch (error) {
+			return handleResponseError(error, "GET", "statuses/show");
+		}
+	};
 
 	return {
 		getLists,
 		getListTweets,
+		getTweet,
 	};
 };
 
