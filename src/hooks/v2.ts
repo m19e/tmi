@@ -38,10 +38,12 @@ interface ClientApi {
 	getLists: () => PromiseWithError<ListV1[]>;
 	getListTweets: (params: ListStatusesV1Params) => PromiseWithError<TweetV1[]>;
 	getTweet: (id: string) => PromiseWithError<TweetV1>;
+	tweet: (status: string) => PromiseWithError<null>;
 }
 
 export const useTwitterApi = (): ClientApi => {
 	const [{ v1: api }] = useAtom(twitterClientAtom);
+
 	const getLists = async () => {
 		try {
 			return await api.lists();
@@ -66,10 +68,20 @@ export const useTwitterApi = (): ClientApi => {
 		}
 	};
 
+	const tweet = async (status: string) => {
+		try {
+			await api.tweet(status);
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "GET", "statuses/show");
+		}
+	};
+
 	return {
 		getLists,
 		getListTweets,
 		getTweet,
+		tweet,
 	};
 };
 
