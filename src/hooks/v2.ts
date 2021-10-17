@@ -105,7 +105,7 @@ export const useListPaginator = (): ListPaginator => {
 	const [{ v1: api }] = useAtom(twitterClientAtom);
 	const [timeline, setTimeline]: [
 		Array<TweetV1>,
-		(update?: SetStateAction<Array<TweetV1>>) => void | Promise<void>
+		(update?: SetStateAction<Array<TweetV1>>) => void
 	] = useAtom(listTimelineAtom);
 	const [{ id_str: list_id }] = useAtom(currentListAtom);
 	const [{ since_id, max_id }] = useAtom(listTimelineCursorsAtom);
