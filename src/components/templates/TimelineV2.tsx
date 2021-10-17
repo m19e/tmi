@@ -4,7 +4,7 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 import type { TweetV1 } from "twitter-api-v2";
 
 import type { TimelineProcess } from "../../types";
-import { useError, useRequestResult, useHint, useTimeline } from "../../hooks";
+import { useError, useRequestResult, useHint } from "../../hooks";
 import {
 	useTwitterApi,
 	useListPaginator,
