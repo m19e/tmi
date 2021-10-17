@@ -5,7 +5,12 @@ type Endpoint =
 	| "lists/list"
 	| "lists/statuses"
 	| "statuses/show"
-	| "statuses/update";
+	| "statuses/update"
+	| "statuses/destroy"
+	| "favorites/create"
+	| "favorites/destroy"
+	| "statuses/retweet"
+	| "statuses/unretweet";
 
 export const handleResponseError = (
 	error: any,
