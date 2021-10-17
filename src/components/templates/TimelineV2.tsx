@@ -4,7 +4,6 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import type { TimelineProcess } from "../../types";
 import type { Tweet } from "../../types/twitter";
-import { convertTweetToDisplayable } from "../../lib";
 import {
 	useApi,
 	useError,
