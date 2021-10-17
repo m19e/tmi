@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
+import type { TweetV1 } from "twitter-api-v2";
 
 import type { TimelineProcess } from "../../types";
 import type { Tweet } from "../../types/twitter";
@@ -50,7 +51,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const requestRetweet = async ({
 		id_str,
 		retweeted,
-	}: Tweet): Promise<Tweet | string> => {
+	}: TweetV1): Promise<TweetV1 | string> => {
 		const res = retweeted
 			? await api.unretweet(id_str)
 			: await api.retweet(id_str);
@@ -63,7 +64,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const requestFavorite = async ({
 		id_str,
 		favorited,
-	}: Tweet): Promise<Tweet | string> => {
+	}: TweetV1): Promise<TweetV1 | string> => {
 		const res = favorited
 			? await api.unfavorite(id_str)
 			: await api.favorite(id_str);
