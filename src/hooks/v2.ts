@@ -95,6 +95,11 @@ export const useCurrentList = (): [
 	(update?: SetStateAction<TrimmedList>) => void
 ] => useAtom(currentListAtom);
 
+export const useListTimeline = (): [
+	Array<TweetV1>,
+	(update?: SetStateAction<Array<TweetV1>>) => void
+] => useAtom(listTimelineAtom);
+
 interface ListPaginator {
 	tweets: Array<TweetV1>;
 	fetchNewer: () => PromiseWithError<null>;
