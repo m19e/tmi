@@ -22,7 +22,7 @@ import {
 	useTwitterApi,
 	useUserConfig,
 	useCurrentList,
-	useListTimeline,
+	setListTimeline,
 } from "../../hooks/v2";
 import Timeline, { TimelineV2 } from "../../components/templates/Timeline";
 import Footer from "../../components/organisms/Footer";
@@ -206,7 +206,7 @@ export const ListV2: VFC<{
 	const api = useTwitterApi();
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
-	const [, setListTimeline] = useListTimeline();
+	const setTimeline = setListTimeline();
 
 	useEffect(() => {
 		getUserLists();
@@ -254,7 +254,7 @@ export const ListV2: VFC<{
 			if (!Array.isArray(res)) setError(res.message);
 			return;
 		}
-		setListTimeline(res);
+		setTimeline(res);
 	};
 
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
