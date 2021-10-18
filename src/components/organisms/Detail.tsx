@@ -195,11 +195,6 @@ const Detail: VFC<Props> = ({
 		setParsedTweet(parseTweet(value));
 	};
 
-	const handleQuoteChange = (value: string) => {
-		setTweetText(value);
-		setParsedTweet(parseTweet(`${value} ${quoteUrl}`));
-	};
-
 	const handleSelectMenu = ({ value }: SelectItemProps) => {
 		if (value === "mention") {
 			onMention();
@@ -251,7 +246,7 @@ const Detail: VFC<Props> = ({
 								placeholder="Add a comment"
 								focus={!waitReturn}
 								value={tweetText}
-								onChange={handleQuoteChange}
+								onChange={handleTweetChange}
 								onSubmit={handleWaitReturn}
 							/>
 						);
