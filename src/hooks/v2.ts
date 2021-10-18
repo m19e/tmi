@@ -131,7 +131,7 @@ export const useTwitterApi = (): ClientApi => {
 	};
 	const unretweet = async (id: string) => {
 		try {
-			await api.post(`statuses/destroy/${id}.json`);
+			await api.post(`statuses/unretweet/${id}.json`);
 			return await getTweet(id);
 		} catch (error) {
 			return handleResponseError(error, "POST", "statuses/unretweet").message;
