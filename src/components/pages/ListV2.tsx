@@ -142,5 +142,3 @@ export const ListV2: VFC<{
 		</Box>
 	);
 };
-
-export default List;
