@@ -47,32 +47,6 @@ export const Timeline = ({ onToggleList }: Props) => {
 
 	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
 
-	const requestRetweet = async ({
-		id_str,
-		retweeted,
-	}: TweetV1): Promise<TweetV1 | string> => {
-		const res = retweeted
-			? await api.unretweet(id_str)
-			: await api.retweet(id_str);
-		if (typeof res === "string") {
-			return res;
-		}
-		return res;
-	};
-
-	const requestFavorite = async ({
-		id_str,
-		favorited,
-	}: TweetV1): Promise<TweetV1 | string> => {
-		const res = favorited
-			? await api.unfavorite(id_str)
-			: await api.favorite(id_str);
-		if (typeof res === "string") {
-			return res;
-		}
-		return res;
-	};
-
 	const update = async (backward: boolean) => {
 		setInProcess("update");
 		const err = backward
