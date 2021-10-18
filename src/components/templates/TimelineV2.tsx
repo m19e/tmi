@@ -23,12 +23,13 @@ type Props = {
 };
 
 export const Timeline = ({ onToggleList }: Props) => {
-	const api = useTwitterApi();
-	const paginator = useListPaginator();
-	const mover = useMover();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
+
+	const api = useTwitterApi();
+	const paginator = useListPaginator();
+	const mover = useMover();
 	const [, setTimeline] = useListTimeline();
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
