@@ -33,7 +33,6 @@ export const ListV2: VFC<{
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
-	const { position, total } = getFocusedPosition();
 
 	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
 	const [lists, setLists] = useState<TrimmedList[]>([]);
@@ -41,7 +40,7 @@ export const ListV2: VFC<{
 	const api = useTwitterApi();
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
-	const [, setTimeline] = useListTimeline();
+	const [{ length: total }, setTimeline] = useListTimeline();
 	const [cursor, setCursor] = useCursorIndex();
 	const [, setFocus] = useFocusIndex();
 	const [count] = useDisplayTweetsCount();
