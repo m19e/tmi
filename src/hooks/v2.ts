@@ -37,18 +37,20 @@ export const useTwitterClient = (): [
 
 interface ClientApi {
 	getLists: () => PromiseWithError<ListV1[]>;
-	getListTweets: (params: ListStatusesV1Params) => PromiseWithError<TweetV1[]>;
-	getTweet: (id: string) => PromiseWithError<TweetV1>;
-	tweet: (status: string) => PromiseWithError<null>;
+	getListTweets: (
+		params: ListStatusesV1Params
+	) => PromiseWithErrorMessage<TweetV1[]>;
+	getTweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
+	tweet: (status: string) => PromiseWithErrorMessage<null>;
 	reply: (
 		status: string,
 		in_reply_to_status_id: string
-	) => PromiseWithError<null>;
-	deleteTweet: (id: string) => PromiseWithError<null>;
-	favorite: (id: string) => PromiseWithError<TweetV1>;
-	unfavorite: (id: string) => PromiseWithError<TweetV1>;
-	retweet: (id: string) => PromiseWithError<TweetV1>;
-	unretweet: (id: string) => PromiseWithError<TweetV1>;
+	) => PromiseWithErrorMessage<null>;
+	deleteTweet: (id: string) => PromiseWithErrorMessage<null>;
+	favorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
+	unfavorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
+	retweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
+	unretweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 }
 
 export const useTwitterApi = (): ClientApi => {
@@ -67,14 +69,14 @@ export const useTwitterApi = (): ClientApi => {
 				convertTweetToDisplayable
 			);
 		} catch (error) {
-			return handleResponseError(error, "GET", "lists/statuses");
+			return handleResponseError(error, "GET", "lists/statuses").message;
 		}
 	};
 	const getTweet = async (id: string) => {
 		try {
 			return convertTweetToDisplayable(await api.singleTweet(id));
 		} catch (error) {
-			return handleResponseError(error, "GET", "statuses/show");
+			return handleResponseError(error, "GET", "statuses/show").message;
 		}
 	};
 
@@ -83,7 +85,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.tweet(status);
 			return null;
 		} catch (error) {
-			return handleResponseError(error, "POST", "statuses/update");
+			return handleResponseError(error, "POST", "statuses/update").message;
 		}
 	};
 	const reply = async (status: string, in_reply_to_status_id: string) => {
@@ -91,7 +93,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.reply(status, in_reply_to_status_id);
 			return null;
 		} catch (error) {
-			return handleResponseError(error, "POST", "statuses/update");
+			return handleResponseError(error, "POST", "statuses/update").message;
 		}
 	};
 	const deleteTweet = async (id: string) => {
@@ -99,7 +101,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.deleteTweet(id);
 			return null;
 		} catch (error) {
-			return handleResponseError(error, "POST", "statuses/destroy");
+			return handleResponseError(error, "POST", "statuses/destroy").message;
 		}
 	};
 
@@ -108,7 +110,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.post("favorites/create.json", { id });
 			return await getTweet(id);
 		} catch (error) {
-			return handleResponseError(error, "POST", "favorites/create");
+			return handleResponseError(error, "POST", "favorites/create").message;
 		}
 	};
 	const unfavorite = async (id: string) => {
@@ -116,7 +118,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.post("favorites/destroy.json", { id });
 			return await getTweet(id);
 		} catch (error) {
-			return handleResponseError(error, "POST", "favorites/destroy");
+			return handleResponseError(error, "POST", "favorites/destroy").message;
 		}
 	};
 	const retweet = async (id: string) => {
@@ -124,7 +126,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.post(`statuses/retweet/${id}.json`);
 			return await getTweet(id);
 		} catch (error) {
-			return handleResponseError(error, "POST", "statuses/retweet");
+			return handleResponseError(error, "POST", "statuses/retweet").message;
 		}
 	};
 	const unretweet = async (id: string) => {
@@ -132,7 +134,7 @@ export const useTwitterApi = (): ClientApi => {
 			await api.post(`statuses/destroy/${id}.json`);
 			return await getTweet(id);
 		} catch (error) {
-			return handleResponseError(error, "POST", "statuses/unretweet");
+			return handleResponseError(error, "POST", "statuses/unretweet").message;
 		}
 	};
 
@@ -188,8 +190,8 @@ export const useListTimeline = (): [
 
 interface ListPaginator {
 	tweets: Array<TweetV1>;
-	fetchNewer: () => PromiseWithError<null>;
-	fetchOlder: () => PromiseWithError<null>;
+	fetchNewer: () => PromiseWithErrorMessage<null>;
+	fetchOlder: () => PromiseWithErrorMessage<null>;
 }
 
 export const useListPaginator = (): ListPaginator => {
@@ -221,7 +223,7 @@ export const useListPaginator = (): ListPaginator => {
 			}
 			return null;
 		} catch (error) {
-			return handleResponseError(error, "GET", "lists/statuses");
+			return handleResponseError(error, "GET", "lists/statuses").message;
 		}
 	};
 	const fetchOlder = async () => {
@@ -237,7 +239,7 @@ export const useListPaginator = (): ListPaginator => {
 			}
 			return null;
 		} catch (error) {
-			return handleResponseError(error, "GET", "lists/statuses");
+			return handleResponseError(error, "GET", "lists/statuses").message;
 		}
 	};
 
