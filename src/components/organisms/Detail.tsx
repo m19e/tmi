@@ -125,7 +125,7 @@ const Detail: VFC<Props> = ({
 
 	const quote = async () => {
 		setInProcess("quote");
-		const error = await api.tweet(`${tweetText} ${quoteUrl}`);
+		const error = await api.quote(tweetText, quoteUrl);
 		setInProcess("none");
 		if (typeof error === "string") {
 			setError(error);
