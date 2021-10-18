@@ -10,15 +10,15 @@ import {
 	useRequestResult,
 	useHint,
 	getFocusedPosition,
-	useCursorIndex,
-	useFocusIndex,
-	useDisplayTweetsCount,
 } from "../../hooks";
 import {
 	useTwitterApi,
 	useUserConfig,
 	useCurrentList,
 	useListTimeline,
+	useCursorIndex,
+	useFocusIndex,
+	useDisplayTweetsCount,
 } from "../../hooks/v2";
 import { Timeline as TimelineV2 } from "../../components/templates/TimelineV2";
 import Footer from "../../components/organisms/Footer";
@@ -34,9 +34,6 @@ export const ListV2: VFC<{
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 	const { position, total } = getFocusedPosition();
-	const [cursor, setCursor] = useCursorIndex();
-	const [, setFocus] = useFocusIndex();
-	const [count] = useDisplayTweetsCount();
 
 	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
 	const [lists, setLists] = useState<TrimmedList[]>([]);
@@ -45,6 +42,9 @@ export const ListV2: VFC<{
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
 	const [, setTimeline] = useListTimeline();
+	const [cursor, setCursor] = useCursorIndex();
+	const [, setFocus] = useFocusIndex();
+	const [count] = useDisplayTweetsCount();
 
 	useEffect(() => {
 		getUserLists();
