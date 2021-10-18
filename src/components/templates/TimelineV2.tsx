@@ -8,11 +8,11 @@ import { useError, useRequestResult, useHint } from "../../hooks";
 import {
 	useTwitterApi,
 	useListPaginator,
+	useListTimeline,
 	useMover,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-	setListTimeline,
 } from "../../hooks/v2";
 import Detail from "../organisms/Detail";
 import TweetItem from "../molecules/TweetItem";
@@ -29,7 +29,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
-	const setTimeline = setListTimeline();
+	const [, setTimeline] = useListTimeline();
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
