@@ -4,7 +4,8 @@ import {
 	AuthContainer,
 	AuthContainerV2,
 } from "../src/components/AuthContainer";
-import ListPage, { ListV2 as ListPageV2 } from "../src/components/pages/List";
+import ListPage from "../src/components/pages/List";
+import { ListV2 as ListPageV2 } from "../src/components/pages/ListV2";
 
 /// Hello world command
 const Tink = () => {
