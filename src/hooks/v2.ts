@@ -46,6 +46,10 @@ interface ClientApi {
 		status: string,
 		in_reply_to_status_id: string
 	) => PromiseWithErrorMessage<null>;
+	quote: (
+		status: string,
+		attachment_url: string
+	) => PromiseWithErrorMessage<null>;
 	deleteTweet: (id: string) => PromiseWithErrorMessage<null>;
 	favorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	unfavorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
@@ -91,6 +95,14 @@ export const useTwitterApi = (): ClientApi => {
 	const reply = async (status: string, in_reply_to_status_id: string) => {
 		try {
 			await api.reply(status, in_reply_to_status_id);
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "POST", "statuses/update").message;
+		}
+	};
+	const quote = async (status: string, attachment_url: string) => {
+		try {
+			await api.tweet(status, { attachment_url });
 			return null;
 		} catch (error) {
 			return handleResponseError(error, "POST", "statuses/update").message;
@@ -144,6 +156,7 @@ export const useTwitterApi = (): ClientApi => {
 		getTweet,
 		tweet,
 		reply,
+		quote,
 		deleteTweet,
 		favorite,
 		unfavorite,
