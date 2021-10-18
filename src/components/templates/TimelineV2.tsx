@@ -54,8 +54,8 @@ export const Timeline = ({ onToggleList }: Props) => {
 		const res = retweeted
 			? await api.unretweet(id_str)
 			: await api.retweet(id_str);
-		if ("rateLimit" in res && "message" in res) {
-			return res.message;
+		if (typeof res === "string") {
+			return res;
 		}
 		return res;
 	};
@@ -67,8 +67,8 @@ export const Timeline = ({ onToggleList }: Props) => {
 		const res = favorited
 			? await api.unfavorite(id_str)
 			: await api.favorite(id_str);
-		if ("rateLimit" in res && "message" in res) {
-			return res.message;
+		if (typeof res === "string") {
+			return res;
 		}
 		return res;
 	};
@@ -78,8 +78,8 @@ export const Timeline = ({ onToggleList }: Props) => {
 		const err = backward
 			? await paginator.fetchOlder()
 			: await paginator.fetchNewer();
-		if (err !== null) {
-			setError(err.message);
+		if (typeof err === "string") {
+			setError(err);
 		}
 		setInProcess("none");
 	};
@@ -88,8 +88,8 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (!valid) return;
 		setInProcess("tweet");
 		const err = await api.tweet(tweetText);
-		if (err !== null) {
-			setError(err.message);
+		if (typeof err === "string") {
+			setError(err);
 		} else {
 			setIsNewTweetOpen(false);
 			setRequestResult(`Successfully tweeted: "${tweetText}"`);
@@ -102,7 +102,12 @@ export const Timeline = ({ onToggleList }: Props) => {
 
 	const fav = async () => {
 		setInProcess("fav");
-		const res = await requestFavorite(focusedTweet);
+
+		const { favorited, id_str } = focusedTweet;
+		const res = favorited
+			? await api.unfavorite(id_str)
+			: await api.favorite(id_str);
+
 		if (typeof res === "string") {
 			setError(res);
 		} else {
@@ -120,7 +125,12 @@ export const Timeline = ({ onToggleList }: Props) => {
 
 	const rt = async () => {
 		setInProcess("rt");
-		const res = await requestRetweet(focusedTweet);
+
+		const { retweeted, id_str } = focusedTweet;
+		const res = retweeted
+			? await api.unretweet(id_str)
+			: await api.retweet(id_str);
+
 		if (typeof res === "string") {
 			setError(res);
 		} else {
