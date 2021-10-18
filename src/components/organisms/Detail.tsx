@@ -6,8 +6,8 @@ import type { TweetV1 } from "twitter-api-v2";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import type { TimelineProcess } from "../../types";
-import { useApi, useError, useRequestResult, useHint } from "../../hooks";
-import { useUserConfig } from "../../hooks/v2";
+import { useError, useRequestResult, useHint } from "../../hooks";
+import { useTwitterApi, useUserConfig } from "../../hooks/v2";
 import TweetItem from "../molecules/TweetItem";
 import SelectInput from "../molecules/SelectInput";
 import NewTweetBox from "../molecules/NewTweetBox";
@@ -44,7 +44,7 @@ const Detail: VFC<Props> = ({
 	inProcess,
 	setInProcess,
 }) => {
-	const api = useApi();
+	const api = useTwitterApi();
 	const [{ userId }] = useUserConfig();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
@@ -110,12 +110,9 @@ const Detail: VFC<Props> = ({
 
 	const reply = async () => {
 		setInProcess("reply");
-		const error = await api.reply({
-			status: tweetText,
-			in_reply_to_status_id: t.id_str,
-		});
+		const error = await api.reply(tweetText, t.id_str);
 		setInProcess("none");
-		if (error !== null) {
+		if (typeof error === "string") {
 			setError(error);
 			return;
 		}
@@ -128,11 +125,9 @@ const Detail: VFC<Props> = ({
 
 	const quote = async () => {
 		setInProcess("quote");
-		const error = await api.tweet({
-			status: `${tweetText} ${quoteUrl}`,
-		});
+		const error = await api.tweet(`${tweetText} ${quoteUrl}`);
 		setInProcess("none");
-		if (error !== null) {
+		if (typeof error === "string") {
 			setError(error);
 			return;
 		}
@@ -149,9 +144,9 @@ const Detail: VFC<Props> = ({
 		} = { redraft: false }
 	) => {
 		setInProcess("delete");
-		const error = await api.deleteTweet({ id: t.id_str });
+		const error = await api.deleteTweet(t.id_str);
 		setInProcess("none");
-		if (error !== null) {
+		if (typeof error === "string") {
 			setError(error);
 			return;
 		}
