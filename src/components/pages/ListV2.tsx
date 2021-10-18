@@ -1,39 +1,38 @@
 import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
-import { writeJson } from "fs-extra";
 import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 
-import type { AppConfig, GetListTweetsParams } from "../../types";
-import type { Tweet, TrimmedList } from "../../types/twitter";
-import { convertTweetToDisplayable } from "../../lib";
+import type { UserConfig, GetListTweetsParams } from "../../types";
+import type { TrimmedList } from "../../types/twitter";
 import {
-	useApi,
 	useError,
 	useRequestResult,
 	useHint,
-	useTimeline,
 	getFocusedPosition,
 	useCursorIndex,
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks";
-import Timeline from "../../components/templates/Timeline";
+import {
+	useTwitterApi,
+	useUserConfig,
+	useCurrentList,
+	useListTimeline,
+} from "../../hooks/v2";
+import { Timeline as TimelineV2 } from "../../components/templates/TimelineV2";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
 
-const List: VFC<{
-	filePath: string;
-	config: AppConfig;
-}> = ({ filePath, config }) => {
+export const ListV2: VFC<{
+	onSaveConfig: (c: UserConfig) => Promise<void>;
+}> = ({ onSaveConfig }) => {
 	const { exit } = useApp();
 	const [, rows] = useDimensions();
 
-	const api = useApi();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
-	const [timeline, setTimeline] = useTimeline();
 	const { position, total } = getFocusedPosition();
 	const [cursor, setCursor] = useCursorIndex();
 	const [, setFocus] = useFocusIndex();
@@ -41,18 +40,22 @@ const List: VFC<{
 
 	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
 	const [lists, setLists] = useState<TrimmedList[]>([]);
-	const [currentList, setCurrentList] = useState<TrimmedList | null>(null);
+
+	const api = useTwitterApi();
+	const [config] = useUserConfig();
+	const [currentList, setCurrentList] = useCurrentList();
+	const [, setTimeline] = useListTimeline();
 
 	useEffect(() => {
 		getUserLists();
 	}, []);
 
 	const getUserLists = async () => {
-		const res = await api.getUserLists();
+		const res = await api.getLists();
 		// onError
 		if (!Array.isArray(res)) {
 			setError(res.message);
-			if (res.rate_limit && config.lists.length) {
+			if (res.rateLimit && config.lists.length) {
 				setLists(config.lists);
 				setStatus("select");
 			} else {
@@ -72,60 +75,31 @@ const List: VFC<{
 			name: l.name,
 			mode: l.mode,
 		}));
-		await writeJson(filePath, { ...config, lists: trim });
+		await onSaveConfig({ ...config, lists: trim });
 		setLists(trim);
 		setStatus("select");
 	};
 
-	const createGetListTimelineParams = ({
-		list_id,
-		count,
-		backward,
-		select,
-	}: {
-		list_id: string;
-		count: number;
-		backward: boolean;
-		select: boolean;
-	}): GetListTweetsParams => {
+	const getNewListTimeline = async (list_id: string) => {
 		const params: GetListTweetsParams = {
 			list_id,
-			count,
+			count: 200,
 			tweet_mode: "extended",
 			include_entities: true,
 		};
-		if (select) return params;
-		if (backward) {
-			const oldest = timeline.slice(-1)[0];
-			return { ...params, max_id: oldest.id_str };
+		const res = await api.getListTweets(params);
+		if (!Array.isArray(res) || res.length === 0) {
+			if (!Array.isArray(res)) setError(res.message);
+			return;
 		}
-		const newest = timeline[0];
-		return { ...params, since_id: newest.id_str };
-	};
-
-	const getListTimeline = async (
-		list_id: string,
-		options: { backward: boolean; select: boolean }
-	): Promise<Tweet[]> => {
-		const params = createGetListTimelineParams({
-			list_id,
-			count: 200,
-			...options,
-		});
-
-		const res = await api.getListTimeline(params);
-		if (!Array.isArray(res) || res.length === 0) return [];
-
-		return res.map(convertTweetToDisplayable);
+		setTimeline(res);
 	};
 
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
-		if (currentList === null || currentList.id_str !== value.id_str) {
-			const res = await getListTimeline(value.id_str, {
-				backward: false,
-				select: true,
-			});
-			setTimeline(res);
+		if (!currentList || currentList.id_str !== value.id_str) {
+			setCursor(0);
+			setFocus(0);
+			await getNewListTimeline(value.id_str);
 			setCurrentList(value);
 		}
 		setStatus("timeline");
@@ -135,15 +109,7 @@ const List: VFC<{
 	const handleToggleList = () => {
 		setStatus("select");
 		setRequestResult(undefined);
-		setCursor(0);
-		setFocus(0);
 	};
-
-	const handleUpdate = async (backward: boolean): Promise<Tweet[]> =>
-		await getListTimeline(currentList.id_str, {
-			backward,
-			select: false,
-		});
 
 	if (status === "load") {
 		return <Text>Loading...</Text>;
@@ -157,7 +123,7 @@ const List: VFC<{
 				if (status === "timeline") {
 					return (
 						<>
-							{/* <Box
+							<Box
 								justifyContent="center"
 								borderStyle="double"
 								borderColor="gray"
@@ -166,11 +132,8 @@ const List: VFC<{
 									[LIST]<Text color="green">{currentList.name}</Text>(
 									{cursor + 1}-{cursor + count}/{total})
 								</Text>
-							</Box> */}
-							<Timeline
-								onToggleList={handleToggleList}
-								onUpdate={handleUpdate}
-							/>
+							</Box>
+							<TimelineV2 onToggleList={handleToggleList} />
 							<Footer />
 						</>
 					);
