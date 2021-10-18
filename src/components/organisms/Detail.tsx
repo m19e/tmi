@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { VFC } from "react";
 import { Box, useInput } from "ink";
 import type { ItemProps } from "ink-select-input";
+import type { TweetV1 } from "twitter-api-v2";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import type { TimelineProcess } from "../../types";
@@ -26,7 +27,7 @@ interface SelectItemProps extends ItemProps {
 }
 
 interface Props {
-	tweet: Tweet;
+	tweet: TweetV1;
 	onMention: () => void;
 	onRemove: (options?: { redraft: boolean }) => void;
 	isTweetOpen: boolean;
