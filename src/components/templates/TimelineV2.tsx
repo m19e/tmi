@@ -45,12 +45,21 @@ export const Timeline = ({ onToggleList }: Props) => {
 	);
 
 	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
+	const [loadingTimeline, setLoadingTimeline] = useState<
+		typeof displayTimeline
+	>([]);
 
-	const update = async (backward: boolean) => {
+	const update = async ({ future }: { future: boolean }) => {
 		setInProcess("update");
-		const err = backward
-			? await paginator.fetchOlder()
-			: await paginator.fetchNewer();
+		if (future) {
+			setLoadingTimeline(displayTimeline);
+		}
+		const err = future
+			? await paginator.fetchNewer()
+			: await paginator.fetchOlder();
+		if (future) {
+			setLoadingTimeline([]);
+		}
 		if (typeof err === "string") {
 			setError(err);
 		}
@@ -124,13 +133,13 @@ export const Timeline = ({ onToggleList }: Props) => {
 			if (inProcess !== "none") return;
 
 			if (key.upArrow || (key.shift && key.tab)) {
-				mover.prev(() => update(false));
+				mover.prev(() => update({ future: true }));
 			} else if (key.downArrow || key.tab) {
-				mover.next(() => update(true));
+				mover.next(() => update({ future: false }));
 			} else if (key.pageUp) {
-				mover.pageUp(() => update(false));
+				mover.pageUp(() => update({ future: true }));
 			} else if (key.pageDown) {
-				mover.pageDown(() => update(true));
+				mover.pageDown(() => update({ future: false }));
 			} else if (input === "0") {
 				mover.top();
 			} else if (input === "9") {
@@ -255,15 +264,46 @@ export const Timeline = ({ onToggleList }: Props) => {
 	return (
 		<>
 			<Box flexGrow={1} flexDirection="column">
-				{displayTimeline.map((t, i) => (
-					<TweetItem
-						key={i}
-						tweet={t}
-						isFocused={t.id_str === focusedTweet.id_str}
-						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-					/>
-				))}
+				<>
+					{(() => {
+						if (loadingTimeline.length) {
+							return (
+								<>
+									{loadingTimeline.map((t, i) => (
+										<TweetItem
+											key={i}
+											tweet={t}
+											isFocused={t.id_str === focusedTweet.id_str}
+											inFav={
+												t.id_str === focusedTweet.id_str && inProcess === "fav"
+											}
+											inRT={
+												t.id_str === focusedTweet.id_str && inProcess === "rt"
+											}
+										/>
+									))}
+								</>
+							);
+						}
+						return (
+							<>
+								{displayTimeline.map((t, i) => (
+									<TweetItem
+										key={i}
+										tweet={t}
+										isFocused={t.id_str === focusedTweet.id_str}
+										inFav={
+											t.id_str === focusedTweet.id_str && inProcess === "fav"
+										}
+										inRT={
+											t.id_str === focusedTweet.id_str && inProcess === "rt"
+										}
+									/>
+								))}
+							</>
+						);
+					})()}
+				</>
 			</Box>
 			{isNewTweetOpen && (
 				<NewTweetBox
