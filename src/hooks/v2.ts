@@ -28,6 +28,7 @@ export const useUserConfig = (): [
 ] => useAtom(userConfigAtom);
 
 type PromiseWithError<T> = Promise<T | HandledResponseError>;
+type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
 export const useTwitterClient = (): [
 	TwitterApi | null,
