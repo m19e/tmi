@@ -5,12 +5,7 @@ import useDimensions from "ink-use-stdout-dimensions";
 
 import type { UserConfig, GetListTweetsParams } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
-import {
-	useError,
-	useRequestResult,
-	useHint,
-	getFocusedPosition,
-} from "../../hooks";
+import { useError, useRequestResult, useHint } from "../../hooks";
 import {
 	useTwitterApi,
 	useUserConfig,
