@@ -82,11 +82,13 @@ export const ListV2: VFC<{
 			include_entities: true,
 		};
 		const res = await api.getListTweets(params);
-		if (!Array.isArray(res) || res.length === 0) {
-			if (!Array.isArray(res)) setError(res.message);
+		if (typeof res === "string") {
+			setError(res);
 			return;
 		}
-		setTimeline(res);
+		if (res.length) {
+			setTimeline(res);
+		}
 	};
 
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
