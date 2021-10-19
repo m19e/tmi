@@ -1,4 +1,4 @@
-import { TimelineHintKey } from "../types";
+import type { TimelineHintKey } from "../types";
 
 type HintPair = [key: TimelineHintKey, value: string | undefined];
 
