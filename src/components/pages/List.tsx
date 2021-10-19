@@ -19,9 +19,11 @@ import { Timeline as TimelineV2 } from "../../components/templates/TimelineV2";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
 
-export const List: VFC<{
+interface Props {
 	onSaveConfig: (c: UserConfig) => Promise<void>;
-}> = ({ onSaveConfig }) => {
+}
+
+export const List: VFC<Props> = ({ onSaveConfig }) => {
 	const { exit } = useApp();
 	const [, rows] = useDimensions();
 
