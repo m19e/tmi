@@ -1,11 +1,16 @@
 import React from "react";
+import type { FC } from "react";
 import { Text, Box } from "ink";
 import stc from "string-to-color";
 import type { TweetV1 } from "twitter-api-v2";
 import { getDisplayTimeAgo } from "../../lib";
 import figures from "../../lib/sindresorhus/figures";
 
-const Quoted = ({ tweet }: { tweet: TweetV1 | null }) => {
+interface Props {
+	tweet: TweetV1;
+}
+
+const Quoted: FC<Props> = ({ tweet }) => {
 	if (!tweet) return null;
 	const ago = getDisplayTimeAgo(tweet.created_at);
 	const generatedColor = stc(tweet.user.screen_name);
