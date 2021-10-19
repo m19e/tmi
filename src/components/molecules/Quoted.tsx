@@ -1,7 +1,6 @@
 import React from "react";
 import { Text, Box } from "ink";
 import stc from "string-to-color";
-import type { Tweet } from "../../types/twitter";
 import type { TweetV1 } from "twitter-api-v2";
 import { getDisplayTimeAgo } from "../../lib";
 import figures from "../../lib/sindresorhus/figures";
