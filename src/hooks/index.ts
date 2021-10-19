@@ -1,7 +1,6 @@
 import { useAtom, SetStateAction } from "jotai";
 import { requestResultAtom, errorAtom, hintAtom } from "../store";
-import { GetListTweetsParams, TimelineHintKey } from "../types";
-import type { List, Tweet } from "../types/twitter";
+import { TimelineHintKey } from "../types";
 import { hintMap } from "../consts";
 
 export const useRequestResult = (): [
