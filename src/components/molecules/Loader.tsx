@@ -1,6 +1,7 @@
 import React from "react";
 import type { FC } from "react";
-import { Text, TextProps } from "ink";
+import { Text } from "ink";
+import type { TextProps } from "ink";
 import Spinner from "./Spinner";
 
 type Props = {
