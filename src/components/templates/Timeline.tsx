@@ -3,37 +3,33 @@ import { Box, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import type { TimelineProcess } from "../../types";
-import type { Tweet } from "../../types/twitter";
-import { convertTweetToDisplayable } from "../../lib";
+import { useError, useRequestResult, useHint } from "../../hooks";
 import {
-	useApi,
-	useError,
-	useRequestResult,
-	useHint,
-	useTimeline,
+	useTwitterApi,
+	useListPaginator,
+	useListTimeline,
 	useMover,
-	useCursorIndex,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-} from "../../hooks";
+} from "../../hooks/v2";
 import Detail from "../organisms/Detail";
 import TweetItem from "../molecules/TweetItem";
 import NewTweetBox from "../molecules/NewTweetBox";
 
 type Props = {
 	onToggleList: () => void;
-	onUpdate: (backward: boolean) => Promise<Tweet[]>;
 };
 
-const Timeline = ({ onToggleList, onUpdate }: Props) => {
-	const api = useApi();
-	const mover = useMover();
+export const Timeline = ({ onToggleList }: Props) => {
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
-	const [, setTimeline] = useTimeline();
-	const [, setCursor] = useCursorIndex();
+
+	const api = useTwitterApi();
+	const paginator = useListPaginator();
+	const mover = useMover();
+	const [, setTimeline] = useListTimeline();
 	const [, countSetter] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
@@ -49,57 +45,23 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	);
 
 	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
+	const [loadingTimeline, setLoadingTimeline] = useState<
+		typeof displayTimeline
+	>([]);
 
-	const requestRetweet = async ({
-		id_str,
-		retweeted,
-	}: Tweet): Promise<Tweet | string> => {
-		let err: null | string;
-		if (retweeted) {
-			err = await api.unretweet({ id: id_str });
-		} else {
-			err = await api.retweet({ id: id_str });
-		}
-		if (err !== null) return err;
-
-		const res = await api.getTweet({ id: id_str });
-		if (typeof res === "string") return res;
-		const converted = convertTweetToDisplayable(res);
-		setTimeline((prev) =>
-			prev.map((t) => (t.id_str === id_str ? converted : t))
-		);
-		return converted;
-	};
-
-	const requestFavorite = async ({
-		id_str,
-		favorited,
-	}: Tweet): Promise<Tweet | string> => {
-		let err: null | string;
-		if (favorited) {
-			err = await api.unfavorite({ id: id_str });
-		} else {
-			err = await api.favorite({ id: id_str });
-		}
-		if (err !== null) return err;
-
-		const res = await api.getTweet({ id: id_str });
-		if (typeof res === "string") return res;
-		const converted = convertTweetToDisplayable(res);
-		setTimeline((prev) =>
-			prev.map((t) => (t.id_str === id_str ? converted : t))
-		);
-		return converted;
-	};
-
-	const update = async (backward: boolean) => {
+	const update = async ({ future }: { future: boolean }) => {
 		setInProcess("update");
-		const res = await onUpdate(backward);
-		if (res.length) {
-			if (!backward) setCursor((prev) => prev + res.length);
-			setTimeline((prev) =>
-				backward ? prev.slice(0, -1).concat(res) : res.concat(prev)
-			);
+		if (future) {
+			setLoadingTimeline(displayTimeline);
+		}
+		const err = future
+			? await paginator.fetchNewer()
+			: await paginator.fetchOlder();
+		if (future) {
+			setLoadingTimeline([]);
+		}
+		if (typeof err === "string") {
+			setError(err);
 		}
 		setInProcess("none");
 	};
@@ -107,8 +69,8 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	const newTweet = async () => {
 		if (!valid) return;
 		setInProcess("tweet");
-		const err = await api.tweet({ status: tweetText });
-		if (err !== null) {
+		const err = await api.tweet(tweetText);
+		if (typeof err === "string") {
 			setError(err);
 		} else {
 			setIsNewTweetOpen(false);
@@ -122,10 +84,18 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const fav = async () => {
 		setInProcess("fav");
-		const res = await requestFavorite(focusedTweet);
+
+		const { favorited, id_str } = focusedTweet;
+		const res = favorited
+			? await api.unfavorite(id_str)
+			: await api.favorite(id_str);
+
 		if (typeof res === "string") {
 			setError(res);
 		} else {
+			setTimeline((prev) =>
+				prev.map((t) => (t.id_str === res.id_str ? res : t))
+			);
 			setRequestResult(
 				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
 					res.user.screen_name
@@ -137,10 +107,18 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 
 	const rt = async () => {
 		setInProcess("rt");
-		const res = await requestRetweet(focusedTweet);
+
+		const { retweeted, id_str } = focusedTweet;
+		const res = retweeted
+			? await api.unretweet(id_str)
+			: await api.retweet(id_str);
+
 		if (typeof res === "string") {
 			setError(res);
 		} else {
+			setTimeline((prev) =>
+				prev.map((t) => (t.id_str === res.id_str ? res : t))
+			);
 			setRequestResult(
 				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
 					res.user.screen_name
@@ -155,13 +133,13 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 			if (inProcess !== "none") return;
 
 			if (key.upArrow || (key.shift && key.tab)) {
-				mover.prev(() => update(false));
+				mover.prev(() => update({ future: true }));
 			} else if (key.downArrow || key.tab) {
-				mover.next(() => update(true));
+				mover.next(() => update({ future: false }));
 			} else if (key.pageUp) {
-				mover.pageUp(() => update(false));
+				mover.pageUp(() => update({ future: true }));
 			} else if (key.pageDown) {
-				mover.pageDown(() => update(true));
+				mover.pageDown(() => update({ future: false }));
 			} else if (input === "0") {
 				mover.top();
 			} else if (input === "9") {
@@ -286,15 +264,46 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 	return (
 		<>
 			<Box flexGrow={1} flexDirection="column">
-				{displayTimeline.map((t, i) => (
-					<TweetItem
-						key={i}
-						tweet={t}
-						isFocused={t.id_str === focusedTweet.id_str}
-						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-					/>
-				))}
+				<>
+					{(() => {
+						if (loadingTimeline.length) {
+							return (
+								<>
+									{loadingTimeline.map((t, i) => (
+										<TweetItem
+											key={i}
+											tweet={t}
+											isFocused={t.id_str === focusedTweet.id_str}
+											inFav={
+												t.id_str === focusedTweet.id_str && inProcess === "fav"
+											}
+											inRT={
+												t.id_str === focusedTweet.id_str && inProcess === "rt"
+											}
+										/>
+									))}
+								</>
+							);
+						}
+						return (
+							<>
+								{displayTimeline.map((t, i) => (
+									<TweetItem
+										key={i}
+										tweet={t}
+										isFocused={t.id_str === focusedTweet.id_str}
+										inFav={
+											t.id_str === focusedTweet.id_str && inProcess === "fav"
+										}
+										inRT={
+											t.id_str === focusedTweet.id_str && inProcess === "rt"
+										}
+									/>
+								))}
+							</>
+						);
+					})()}
+				</>
 			</Box>
 			{isNewTweetOpen && (
 				<NewTweetBox
@@ -313,5 +322,3 @@ const Timeline = ({ onToggleList, onUpdate }: Props) => {
 		</>
 	);
 };
-
-export default Timeline;

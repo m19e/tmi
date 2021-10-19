@@ -1,32 +1,16 @@
 import React from "react";
+import type { FC } from "react";
 import { Text, Box } from "ink";
 import stc from "string-to-color";
-import { Tweet } from "../types/twitter";
-import { getDisplayTimeAgo } from "../lib";
-import figures from "../lib/sindresorhus/figures";
+import type { TweetV1 } from "twitter-api-v2";
+import { getDisplayTimeAgo } from "../../lib";
+import figures from "../../lib/sindresorhus/figures";
 
-const Quoted = ({ tweet }: { tweet: Tweet | null }) => {
-	if (!tweet) return null;
-	const ago = getDisplayTimeAgo(tweet.created_at);
+interface Props {
+	tweet: TweetV1;
+}
 
-	return (
-		<Box flexDirection="column" borderStyle="round" borderColor="gray">
-			<Text>
-				<Text color="greenBright">
-					{`${tweet.user.name} @${tweet.user.screen_name} `}
-					{tweet.user.protected && "🔒 "}
-				</Text>
-				<Text dimColor>{ago}</Text>
-			</Text>
-			<Text>
-				{tweet.full_text}
-				{tweet.entities.media && <Text dimColor> (with Media)</Text>}
-			</Text>
-		</Box>
-	);
-};
-
-const Borderless = ({ tweet }: { tweet: Tweet | null }) => {
+const Quoted: FC<Props> = ({ tweet }) => {
 	if (!tweet) return null;
 	const ago = getDisplayTimeAgo(tweet.created_at);
 	const generatedColor = stc(tweet.user.screen_name);
@@ -40,12 +24,12 @@ const Borderless = ({ tweet }: { tweet: Tweet | null }) => {
 			<Box flexGrow={1} flexDirection="column">
 				<Text>
 					<Text bold color={generatedColor}>
-						{tweet.user.name}{" "}
+						<>{tweet.user.name} </>
 					</Text>
-					<Text>
+					<>
 						(@{tweet.user.screen_name}) {tweet.user.protected && "🔒 "}
-					</Text>
-					<Text>[{ago}] </Text>
+					</>
+					<>[{ago}] </>
 				</Text>
 				<Text>
 					{tweet.full_text}
@@ -56,4 +40,4 @@ const Borderless = ({ tweet }: { tweet: Tweet | null }) => {
 	);
 };
 
-export default Borderless;
+export default Quoted;

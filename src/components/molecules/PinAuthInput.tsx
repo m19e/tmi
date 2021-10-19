@@ -4,22 +4,17 @@ import { Box, Text } from "ink";
 import TextInput from "ink-text-input";
 
 interface Props {
-	oauthToken: string;
+	url: string;
 	value: string;
 	onChange: (value: string) => void;
 	onSubmit: (value: string) => void;
 }
 
-const PinAuthInput: VFC<Props> = ({
-	oauthToken,
-	value,
-	onChange,
-	onSubmit,
-}) => {
+const PinAuthInput: VFC<Props> = ({ url, value, onChange, onSubmit }) => {
 	return (
 		<Box flexDirection="column">
 			<Text color="redBright">Open URL and enter PIN.</Text>
-			<Text>{`https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken}`}</Text>
+			<Text>{url}</Text>
 			<Text>
 				<Text>PIN: </Text>
 				<TextInput value={value} onChange={onChange} onSubmit={onSubmit} />

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthContainer } from "../src/components/AuthContainer";
-import ListPage from "../src/components/pages/List";
+import { List as ListPage } from "../src/components/pages/List";
 
 /// Hello world command
 const Tink = () => {

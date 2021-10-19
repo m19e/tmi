@@ -35,7 +35,7 @@
 		"render-gif": "^2.0.4",
 		"split-graphemes": "^0.5.0",
 		"string-to-color": "^2.2.2",
-		"twitter-lite": "^1.1.0",
+		"twitter-api-v2": "^1.6.0",
 		"twitter-text": "^3.1.0"
 	},
 	"devDependencies": {
