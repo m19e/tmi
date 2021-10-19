@@ -9,13 +9,11 @@ import {
 	writeJson,
 } from "fs-extra";
 import { Text, useApp } from "ink";
-import Twitter from "twitter-lite";
 import { config } from "dotenv";
 import TwitterApi from "twitter-api-v2";
 import type { TwitterApiTokens } from "twitter-api-v2";
 
-import type { AppConfig, UserConfig } from "../types";
-import { useClient, useUserId } from "../hooks";
+import type { UserConfig } from "../types";
 import { useTwitterClient, useUserConfig } from "../hooks/v2";
 import PinAuthInput from "./molecules/PinAuthInput";
 
