@@ -19,7 +19,7 @@ import { Timeline as TimelineV2 } from "../../components/templates/TimelineV2";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
 
-export const ListV2: VFC<{
+export const List: VFC<{
 	onSaveConfig: (c: UserConfig) => Promise<void>;
 }> = ({ onSaveConfig }) => {
 	const { exit } = useApp();
