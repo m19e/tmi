@@ -49,7 +49,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 
 	useEffect(() => {
 		const initV2 = async () => {
-			const [fp, conf, err] = getConfigV2();
+			const [fp, conf, err] = getConfig();
 			setFilePath(fp);
 			if (err !== null || !conf.accessToken || !conf.accessSecret) {
 				if (err !== null) {
@@ -69,7 +69,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 		initV2();
 	}, []);
 
-	const getConfigV2 = (
+	const getConfig = (
 		profile: string = ""
 	): [string, UserConfig | null, any] => {
 		let dir = process.env.HOME ?? "";
@@ -129,7 +129,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 		return [file, conf, null];
 	};
 
-	const handleSubmitV2 = async (p: string) => {
+	const handleSubmit = async (p: string) => {
 		const oauthClient = new TwitterApi({
 			...defaultTokens,
 			accessToken: authLink.oauth_token,
@@ -164,7 +164,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 				url={authLink.url}
 				value={pin}
 				onChange={setPIN}
-				onSubmit={handleSubmitV2}
+				onSubmit={handleSubmit}
 			/>
 		);
 	}
