@@ -24,15 +24,15 @@ const defaultTokens: TwitterApiTokens = {
 	appSecret: process.env.TWITTER_CONSUMER_SECRET,
 };
 
-interface PagePropsV2 {
+interface PageProps {
 	onSaveConfig: (c: UserConfig) => Promise<void>;
 }
 
-interface PropsV2 {
-	page: VFC<PagePropsV2>;
+interface Props {
+	page: VFC<PageProps>;
 }
 
-export const AuthContainerV2: VFC<PropsV2> = ({ page: Page }) => {
+export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 	const { exit } = useApp();
 	const [, setTwitterClient] = useTwitterClient();
 	const [, setUserConfig] = useUserConfig();
