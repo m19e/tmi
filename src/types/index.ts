@@ -1,4 +1,3 @@
-import type { TwitterOptions } from "twitter-lite";
 import type { TwitterApiTokens } from "twitter-api-v2";
 import type { TrimmedList } from "./twitter";
 
@@ -17,11 +16,6 @@ export interface GetListTweetsParams extends DefaultTwitterRequestParams {
 	count: number;
 	since_id?: string;
 	max_id?: string;
-}
-
-export interface AppConfig extends TwitterOptions {
-	user_id: string;
-	lists: TrimmedList[];
 }
 
 export interface UserConfig extends TwitterApiTokens {
