@@ -72,7 +72,6 @@ const Detail: VFC<Props> = ({
 
 	const t = tweet.retweeted_status ?? tweet;
 	const quoteUrl = `https://twitter.com/${t.user.screen_name}/status/${t.id_str}`;
-
 	const myTweet = t.user.id_str === userId;
 	const selectItems: Array<SelectItemProps> = [].concat(
 		[
