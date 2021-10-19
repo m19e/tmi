@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { AuthContainerV2 as AuthContainer } from "../src/components/AuthContainer";
+import { AuthContainer } from "../src/components/AuthContainer";
 import { ListV2 as ListPage } from "../src/components/pages/ListV2";
 
 /// Hello world command
