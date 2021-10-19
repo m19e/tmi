@@ -10,7 +10,6 @@ import type {
 } from "twitter-api-v2";
 import { config } from "dotenv";
 import { terminalImageFromBuffer } from "../src/lib/sindresorhus/terminal-image";
-import type { Tweet } from "../src/types/twitter";
 import PinAuthInput from "../src/components/molecules/PinAuthInput";
 import TweetItem from "../src/components/molecules/TweetItem";
 
@@ -191,7 +190,7 @@ const Auth = () => {
 				{listTimeline.tweets.map((tweet, i) => (
 					<TweetItem
 						key={i}
-						tweet={tweet as unknown as Tweet}
+						tweet={tweet}
 						isFocused={false}
 						inFav={false}
 						inRT={false}
