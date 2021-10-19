@@ -30,10 +30,6 @@ export const List: VFC<Props> = ({ onSaveConfig }) => {
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
-
-	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
-	const [lists, setLists] = useState<TrimmedList[]>([]);
-
 	const api = useTwitterApi();
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
@@ -41,6 +37,9 @@ export const List: VFC<Props> = ({ onSaveConfig }) => {
 	const [cursor, setCursor] = useCursorIndex();
 	const [, setFocus] = useFocusIndex();
 	const [count] = useDisplayTweetsCount();
+
+	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
+	const [lists, setLists] = useState<TrimmedList[]>([]);
 
 	useEffect(() => {
 		getUserLists();
