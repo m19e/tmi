@@ -1,5 +1,5 @@
 import { splitGraphemes } from "split-graphemes";
-import { Tweet } from "../types/twitter";
+import type { TweetV1 } from "twitter-api-v2";
 
 export const getDisplayTimeAgo = (created_at: string): string => {
 	const dt = new Date(created_at);
@@ -121,10 +121,10 @@ const convertToCorrectWidthText = (text: string): string => {
 		.join("\n");
 };
 
-export const convertTweetToDisplayable = (t: Tweet): Tweet => {
+export const convertTweetToDisplayable = (t: TweetV1): TweetV1 => {
 	const full_text = convertToCorrectWidthText(t.full_text);
 	const name = convertToCorrectWidthText(t.user.name);
-	let tweet: Tweet = {
+	let tweet: TweetV1 = {
 		...t,
 		full_text,
 		user: { ...t.user, name },
