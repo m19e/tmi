@@ -3,12 +3,13 @@ import { Text, Box } from "ink";
 import stc from "string-to-color";
 import figures from "../../lib/sindresorhus/figures";
 import type { Tweet } from "../../types/twitter";
+import type { TweetV1 } from "twitter-api-v2";
 import { getDisplayTimeAgo } from "../../lib";
 import Loader from "../molecules/Loader";
 import Quoted from "../molecules/Quoted";
 
 type Props = {
-	tweet: Tweet;
+	tweet: TweetV1;
 	inFav: boolean;
 	inRT: boolean;
 	isFocused?: boolean;
