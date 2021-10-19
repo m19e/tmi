@@ -15,7 +15,7 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks/v2";
-import { Timeline as TimelineV2 } from "../../components/templates/TimelineV2";
+import { Timeline } from "../../components/templates/Timeline";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
 
@@ -130,7 +130,7 @@ export const List: VFC<Props> = ({ onSaveConfig }) => {
 									{cursor + 1}-{cursor + count}/{total})
 								</Text>
 							</Box>
-							<TimelineV2 onToggleList={handleToggleList} />
+							<Timeline onToggleList={handleToggleList} />
 							<Footer />
 						</>
 					);
