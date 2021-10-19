@@ -1,6 +1,10 @@
 import type Twitter from "twitter-lite";
+import type { TweetV1, ListV1 } from "twitter-api-v2";
 import type { GetListTweetsParams } from "../types";
-import type { Tweet, List } from "../types/twitter";
+
+export interface Tweet extends TweetV1 {}
+
+export interface List extends ListV1 {}
 
 interface TwitterErrorResponse {
 	_headers: any;
