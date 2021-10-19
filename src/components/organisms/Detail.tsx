@@ -74,31 +74,31 @@ const Detail: VFC<Props> = ({
 	const quoteUrl = `https://twitter.com/${t.user.screen_name}/status/${t.id_str}`;
 
 	const myTweet = t.user.id_str === userId;
-	let selectItems: SelectItemProps[] = [
-		{
-			label: `Tweet to @${t.user.screen_name}`,
-			value: "mention",
-		},
-	];
-	if (myTweet) {
-		selectItems = selectItems.concat([
-			{ label: "Delete", value: "delete" },
-			{ label: "Re-draft", value: "re-draft" },
-		]);
-	} else {
-		selectItems = selectItems.concat([
-			{ label: `Mute @${t.user.screen_name}`, value: "mute-user" },
-			{ label: "Mute Retweets from User", value: "mute-retweets" },
-			{ label: "Mute Quotes from User", value: "mute-quotes" },
-			{ label: `Block @${t.user.screen_name}`, value: "block" },
-		]);
-	}
-	selectItems = selectItems.concat([
-		{
-			label: `Mute "${t.source.replace(/(<([^>]+)>)/gi, "")}"`,
-			value: "mute-client",
-		},
-	]);
+	const selectItems: Array<SelectItemProps> = [].concat(
+		[
+			{
+				label: `Tweet to @${t.user.screen_name}`,
+				value: "mention",
+			},
+		],
+		myTweet
+			? [
+					{ label: "Delete", value: "delete" },
+					{ label: "Re-draft", value: "re-draft" },
+			  ]
+			: [
+					{ label: `Mute @${t.user.screen_name}`, value: "mute-user" },
+					{ label: "Mute Retweets from User", value: "mute-retweets" },
+					{ label: "Mute Quotes from User", value: "mute-quotes" },
+					{ label: `Block @${t.user.screen_name}`, value: "block" },
+			  ],
+		[
+			{
+				label: `Mute "${t.source.replace(/(<([^>]+)>)/gi, "")}"`,
+				value: "mute-client",
+			},
+		]
+	);
 
 	const resetTweetState = () => {
 		setIsTweetOpen(false);
