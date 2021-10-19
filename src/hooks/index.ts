@@ -1,6 +1,7 @@
-import { useAtom, SetStateAction } from "jotai";
+import { useAtom } from "jotai";
+import type { SetStateAction } from "jotai";
+import type { TimelineHintKey } from "../types";
 import { requestResultAtom, errorAtom, hintAtom } from "../store";
-import { TimelineHintKey } from "../types";
 import { hintMap } from "../consts";
 
 export const useRequestResult = (): [
