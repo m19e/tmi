@@ -2,9 +2,9 @@ import React from "react";
 import type { VFC } from "react";
 import { Text, Box } from "ink";
 import TextInput from "ink-text-input";
-
-import type { Tweet } from "../../types/twitter";
+import type { TweetV1 } from "twitter-api-v2";
 import figures from "../../lib/sindresorhus/figures";
+
 import Quoted from "./Quoted";
 import Loader from "./Loader";
 import Counter from "../atoms/CharCounter";
@@ -12,7 +12,7 @@ import Counter from "../atoms/CharCounter";
 interface Props {
 	type: "new" | "reply" | "quote";
 	loading: boolean;
-	tweet: Tweet;
+	tweet: TweetV1;
 	invalid: boolean;
 	length: number;
 	placeholder?: string;
