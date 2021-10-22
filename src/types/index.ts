@@ -1,5 +1,10 @@
-import type { TwitterApiTokens } from "twitter-api-v2";
+import type { TwitterApiTokens, TweetV1 } from "twitter-api-v2";
 import type { TrimmedList } from "./twitter";
+
+export type Column =
+	| { type: "home"; name: string; timeline: Array<TweetV1> }
+	| { type: "mentions"; name: string; timeline: Array<TweetV1> }
+	| { type: "list"; name: string; timeline: Array<TweetV1> };
 
 export interface HandledResponseError {
 	rateLimit: boolean;
