@@ -3,10 +3,18 @@ import { Column } from "../types";
 
 export const columnMapAtom = atom(
 	new Map<string, Column>([
-		["home", { type: "home", name: "home", timeline: [] }],
-		["mentions", { type: "mentions", name: "mentions", timeline: [] }],
+		["Home", { type: "home", name: "Home", timeline: [] }],
+		["Mentions", { type: "mentions", name: "Mentions", timeline: [] }],
 	])
 );
+
+export const currentColumnKeyAtom = atom<string>("Home");
+
+export const currentColumnValueAtom = atom<Column>((get) => {
+	const map = get(columnMapAtom);
+	const key = get(currentColumnKeyAtom);
+	return map.get(key);
+});
 
 export const requestResultAtom = atom<string | undefined>(undefined);
 

@@ -4,13 +4,13 @@ import { Tabs, Tab } from "ink-tab";
 import { useColumnMap } from "../hooks";
 
 export const Columns: VFC = () => {
-	const [columns, actions] = useColumnMap();
+	const [columns] = useColumnMap();
 	const handleTabsChange = (key: string) => {};
 
 	return (
 		<Tabs onChange={handleTabsChange}>
-			{[...columns.values()].map((column) => (
-				<Tab key={column.name} name={column.name}>
+			{[...columns.entries()].map(([key, column]) => (
+				<Tab key={key} name={key}>
 					{column.name}
 				</Tab>
 			))}
