@@ -38,7 +38,7 @@ export const AuthContainer: VFC<Props> = ({ children }) => {
 	}>();
 
 	useEffect(() => {
-		const initV2 = async () => {
+		const init = async () => {
 			const [fp, conf, err] = getConfig();
 			if (err !== null || !conf.accessToken || !conf.accessSecret) {
 				if (err !== null) {
@@ -56,7 +56,7 @@ export const AuthContainer: VFC<Props> = ({ children }) => {
 				setStatus("page");
 			}
 		};
-		initV2();
+		init();
 	}, []);
 
 	const getConfig = (
