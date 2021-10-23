@@ -65,10 +65,10 @@ export const List: VFC<Props> = ({ onSaveConfig }) => {
 			return;
 		}
 		// Valid response
-		const trim: TrimmedList[] = res.map((l) => ({
-			id_str: l.id_str,
-			name: l.name,
-			mode: l.mode,
+		const trim: TrimmedList[] = res.map(({ id_str, name, mode }) => ({
+			id_str,
+			name,
+			mode,
 		}));
 		await onSaveConfig({ ...config, lists: trim });
 		setLists(trim);
