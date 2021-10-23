@@ -1,10 +1,17 @@
 import type { TwitterApiTokens, TweetV1 } from "twitter-api-v2";
 import type { TrimmedList } from "./twitter";
 
+interface DefaultTimeline {
+	name: string;
+	timeline: Array<TweetV1>;
+}
+
 export type Column =
-	| { type: "home"; name: string; timeline: Array<TweetV1> }
-	| { type: "mentions"; name: string; timeline: Array<TweetV1> }
-	| { type: "list"; name: string; timeline: Array<TweetV1> };
+	| ({ type: "home" } & DefaultTimeline)
+	| ({
+			type: "mentions";
+	  } & DefaultTimeline)
+	| ({ type: "list"; list_id: string } & DefaultTimeline);
 
 export interface HandledResponseError {
 	rateLimit: boolean;
