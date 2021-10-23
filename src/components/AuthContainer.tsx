@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import type { VFC } from "react";
+import type { VFC, ReactNode } from "react";
 import path from "path";
 import { mkdirsSync, readdirSync, existsSync, readJsonSync } from "fs-extra";
 import { Text, useApp } from "ink";
@@ -19,10 +19,10 @@ const defaultTokens: TwitterApiTokens = {
 };
 
 interface Props {
-	page: VFC;
+	children: ReactNode;
 }
 
-export const AuthContainer: VFC<Props> = ({ page: Page }) => {
+export const AuthContainer: VFC<Props> = ({ children }) => {
 	const { exit } = useApp();
 	const [, setTwitterClient] = useTwitterClient();
 	const [, setUserConfig] = useUserConfig();
@@ -157,6 +157,6 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 		);
 	}
 	if (status === "page") {
-		return <Page />;
+		return <>{children}</>;
 	}
 };
