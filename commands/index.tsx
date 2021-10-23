@@ -5,7 +5,11 @@ import { List as ListPage } from "../src/components/pages/List";
 
 /// Hello world command
 const Tink = () => {
-	return <AuthContainer page={ListPage} />;
+	return (
+		<AuthContainer>
+			<ListPage />
+		</AuthContainer>
+	);
 };
 
 Tink.propTypes = {
