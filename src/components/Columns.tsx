@@ -1,19 +1,24 @@
 import React from "react";
 import type { VFC } from "react";
+import { Box, Text } from "ink";
 import { Tabs, Tab } from "ink-tab";
-import { useColumnMap } from "../hooks";
+import { useColumnMap, useCurrentColumn } from "../hooks";
 
 export const Columns: VFC = () => {
 	const [columns] = useColumnMap();
-	const handleTabsChange = (key: string) => {};
+	const [currentColumn, setColumnKey] = useCurrentColumn();
+	const handleTabsChange = (key: string) => setColumnKey(key);
 
 	return (
-		<Tabs onChange={handleTabsChange}>
-			{[...columns.entries()].map(([key, column]) => (
-				<Tab key={key} name={key}>
-					{column.name}
-				</Tab>
-			))}
-		</Tabs>
+		<Box flexDirection="column">
+			<Text>Current column: {currentColumn.name}</Text>
+			<Tabs onChange={handleTabsChange}>
+				{[...columns.entries()].map(([key, column]) => (
+					<Tab key={key} name={key}>
+						{column.name}
+					</Tab>
+				))}
+			</Tabs>
+		</Box>
 	);
 };
