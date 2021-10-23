@@ -111,7 +111,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 			if (existsSync(file)) {
 				return ["", null, "CANNOT READ JSON"];
 			}
-			conf = { ...defaultTokens, userId: "", lists: [] };
+			conf = { ...defaultTokens, userId: "", lists: [], filePath: file };
 		} else {
 			conf = json;
 		}
