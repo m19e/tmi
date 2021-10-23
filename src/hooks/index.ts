@@ -1,8 +1,32 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
-import type { TimelineHintKey } from "../types";
-import { requestResultAtom, errorAtom, hintAtom } from "../store";
+import type { Column, TimelineHintKey } from "../types";
+import { columnsAtom, requestResultAtom, errorAtom, hintAtom } from "../store";
 import { hintMap } from "../consts";
+
+export const useColumnMap = () => {
+	const [columns, setCs] = useAtom(columnsAtom);
+	const actions = {
+		set: (key: string, value: Column) => {
+			setCs((prev) => {
+				const copy = new Map(prev);
+				copy.set(key, value);
+				return copy;
+			});
+		},
+		setAll: (iterable: Iterable<readonly [string, Column]>) => {
+			setCs(new Map(iterable));
+		},
+		delete: (key: string) => {
+			setCs((prev) => {
+				const copy = new Map(prev);
+				copy.delete(key);
+				return copy;
+			});
+		},
+	};
+	return [columns, actions];
+};
 
 export const useRequestResult = (): [
 	string | undefined,
