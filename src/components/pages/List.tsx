@@ -4,7 +4,7 @@ import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import { writeJSON } from "fs-extra";
 
-import type { UserConfig, GetListTweetsParams } from "../../types";
+import type { GetListTweetsParams } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
 import { useError, useRequestResult, useHint } from "../../hooks";
 import {
