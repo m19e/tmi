@@ -24,10 +24,6 @@ const defaultTokens: TwitterApiTokens = {
 	appSecret: process.env.TWITTER_CONSUMER_SECRET,
 };
 
-interface PageProps {
-	onSaveConfig: (c: UserConfig) => Promise<void>;
-}
-
 interface Props {
 	page: VFC;
 }

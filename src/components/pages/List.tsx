@@ -20,10 +20,6 @@ import { Timeline } from "../../components/templates/Timeline";
 import Footer from "../../components/organisms/Footer";
 import SelectList from "../../components/molecules/SelectList";
 
-interface Props {
-	onSaveConfig: (c: UserConfig) => Promise<void>;
-}
-
 export const List: VFC = () => {
 	const { exit } = useApp();
 	const [, rows] = useDimensions();
