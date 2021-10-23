@@ -147,6 +147,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 			accessToken,
 			accessSecret,
 			userId,
+			filePath,
 			lists: [],
 		});
 		setStatus("page");

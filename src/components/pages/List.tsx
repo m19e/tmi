@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
 import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
+import { writeJSON } from "fs-extra";
 
 import type { UserConfig, GetListTweetsParams } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
@@ -70,7 +71,7 @@ export const List: VFC<Props> = ({ onSaveConfig }) => {
 			name,
 			mode,
 		}));
-		await onSaveConfig({ ...config, lists: trim });
+		await writeJSON(config.filePath, { ...config, lists: trim });
 		setLists(trim);
 		setStatus("select");
 	};
