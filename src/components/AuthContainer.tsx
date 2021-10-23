@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
 import path from "path";
-import {
-	mkdirsSync,
-	readdirSync,
-	existsSync,
-	readJsonSync,
-	writeJson,
-} from "fs-extra";
+import { mkdirsSync, readdirSync, existsSync, readJsonSync } from "fs-extra";
 import { Text, useApp } from "ink";
 import { config } from "dotenv";
 import TwitterApi from "twitter-api-v2";
