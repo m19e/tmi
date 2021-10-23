@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { AuthContainer } from "../src/components/AuthContainer";
 import { List as ListPage } from "../src/components/pages/List";
 
-/// Hello world command
-const Tink = () => {
+/// Index command
+const IndexCommand = () => {
 	return (
 		<AuthContainer>
 			<ListPage />
@@ -12,9 +12,9 @@ const Tink = () => {
 	);
 };
 
-Tink.propTypes = {
-	/// Name of the person to greet
+IndexCommand.propTypes = {
+	/// Command args description example
 	name: PropTypes.string,
 };
 
-export default Tink;
+export default IndexCommand;
