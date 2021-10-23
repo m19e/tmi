@@ -6,7 +6,7 @@ import type {
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { UserConfig, HandledResponseError } from "../types";
-import { TrimmedList } from "../types/twitter";
+import type { TrimmedList } from "../types/twitter";
 import {
 	twitterClientAtom,
 	userConfigAtom,
