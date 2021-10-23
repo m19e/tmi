@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { AuthContainer } from "../src/components/AuthContainer";
 import { Columns } from "../src/components/Columns";
-import { List as ListPage } from "../src/components/pages/List";
 
 /// Index command
 const IndexCommand = () => {
