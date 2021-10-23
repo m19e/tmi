@@ -9,7 +9,14 @@ import {
 } from "../store";
 import { hintMap } from "../consts";
 
-export const useColumnMap = () => {
+export const useColumnMap = (): [
+	Map<string, Column>,
+	{
+		set: (key: string, value: Column) => void;
+		setAll: (iterable: Iterable<readonly [string, Column]>) => void;
+		delete: (key: string) => void;
+	}
+] => {
 	const [columns, setCs] = useAtom(columnMapAtom);
 	const actions = {
 		set: (key: string, value: Column) => {
