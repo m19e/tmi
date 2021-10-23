@@ -3,6 +3,8 @@ import type { SetStateAction } from "jotai";
 import type { Column, TimelineHintKey } from "../types";
 import {
 	columnMapAtom,
+	currentColumnKeyAtom,
+	currentColumnValueAtom,
 	requestResultAtom,
 	errorAtom,
 	hintAtom,
@@ -37,6 +39,18 @@ export const useColumnMap = (): [Map<string, Column>, ColumnMapActions] => {
 		},
 	};
 	return [columns, actions];
+};
+
+export const useCurrentColumn = (): [Column, (key: string) => void] => {
+	const [columns] = useAtom(columnMapAtom);
+	const [, setKey] = useAtom(currentColumnKeyAtom);
+	const [currentColumn] = useAtom(currentColumnValueAtom);
+	const setColumnKey = (key: string) => {
+		if (columns.has(key)) {
+			setKey(key);
+		}
+	};
+	return [currentColumn, setColumnKey];
 };
 
 export const useRequestResult = (): [
