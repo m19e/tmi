@@ -149,9 +149,6 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 		setStatus("page");
 	};
 
-	const handleSaveConfig = async (conf: UserConfig) =>
-		await writeJson(filePath, conf);
-
 	if (status === "load") {
 		return <Text>Loading...</Text>;
 	}
