@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { Column } from "../types";
 
-export const columnsAtom = atom(
+export const columnMapAtom = atom(
 	new Map<string, Column>([
 		["home", { type: "home", name: "home", timeline: [] }],
 	])

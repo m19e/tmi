@@ -1,11 +1,16 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { Column, TimelineHintKey } from "../types";
-import { columnsAtom, requestResultAtom, errorAtom, hintAtom } from "../store";
+import {
+	columnMapAtom,
+	requestResultAtom,
+	errorAtom,
+	hintAtom,
+} from "../store";
 import { hintMap } from "../consts";
 
 export const useColumnMap = () => {
-	const [columns, setCs] = useAtom(columnsAtom);
+	const [columns, setCs] = useAtom(columnMapAtom);
 	const actions = {
 		set: (key: string, value: Column) => {
 			setCs((prev) => {
