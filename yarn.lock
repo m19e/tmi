@@ -4019,6 +4019,13 @@ ink-select-input@^4.2.0:
     figures "^3.2.0"
     lodash.isequal "^4.5.0"
 
+ink-tab@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/ink-tab/-/ink-tab-4.1.0.tgz#ac1671728ba00412d042a9d2c2563bd5397e1426"
+  integrity sha512-o1Ox4QoYJaT9Z0FMCqkZCJ2zUyIcymnrSMPDXJn2DgzskaPJwyo0ah5+zDxX8iRMZEe2+E6WMwdMbKBRvM+zjQ==
+  dependencies:
+    prop-types "^15.7.2"
+
 ink-text-input@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/ink-text-input/-/ink-text-input-4.0.1.tgz#e3de3f7e7f4247d64018838c57bbbc6120901368"
