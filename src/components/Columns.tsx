@@ -8,11 +8,12 @@ export const Columns: VFC = () => {
 	const [columns] = useColumnMap();
 	const [currentColumn, setColumnKey] = useCurrentColumn();
 	const handleTabsChange = (key: string) => setColumnKey(key);
+	const canToggleColumn = true;
 
 	return (
 		<Box flexDirection="column">
 			<Text>Current column: {currentColumn.name}</Text>
-			<Tabs onChange={handleTabsChange}>
+			<Tabs onChange={handleTabsChange} isFocused={canToggleColumn}>
 				{[...columns.entries()].map(([key, column]) => (
 					<Tab key={key} name={key}>
 						{column.name}
