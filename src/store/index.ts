@@ -4,6 +4,7 @@ import { Column } from "../types";
 export const columnMapAtom = atom(
 	new Map<string, Column>([
 		["home", { type: "home", name: "home", timeline: [] }],
+		["mentions", { type: "mentions", name: "mentions", timeline: [] }],
 	])
 );
 
