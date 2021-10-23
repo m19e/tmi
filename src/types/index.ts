@@ -33,6 +33,7 @@ export interface GetListTweetsParams extends DefaultTwitterRequestParams {
 export interface UserConfig extends TwitterApiTokens {
 	userId: string;
 	lists: Array<TrimmedList>;
+	filePath: string;
 }
 
 export type TimelineProcess =
