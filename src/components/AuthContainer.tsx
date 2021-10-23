@@ -29,7 +29,7 @@ interface PageProps {
 }
 
 interface Props {
-	page: VFC<PageProps>;
+	page: VFC;
 }
 
 export const AuthContainer: VFC<Props> = ({ page: Page }) => {
@@ -170,6 +170,6 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 		);
 	}
 	if (status === "page") {
-		return <Page onSaveConfig={handleSaveConfig} />;
+		return <Page />;
 	}
 };

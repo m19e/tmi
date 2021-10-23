@@ -24,7 +24,7 @@ interface Props {
 	onSaveConfig: (c: UserConfig) => Promise<void>;
 }
 
-export const List: VFC<Props> = ({ onSaveConfig }) => {
+export const List: VFC = () => {
 	const { exit } = useApp();
 	const [, rows] = useDimensions();
 
