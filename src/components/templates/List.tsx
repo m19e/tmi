@@ -16,9 +16,9 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks/v2";
-import { Timeline } from "../../components/templates/Timeline";
-import Footer from "../../components/organisms/Footer";
-import SelectList from "../../components/molecules/SelectList";
+import { Timeline } from "./Timeline";
+import Footer from "../organisms/Footer";
+import SelectList from "../molecules/SelectList";
 
 export const List: VFC = () => {
 	const { exit } = useApp();
