@@ -7,7 +7,8 @@ import {
 	currentColumnValueAtom,
 	requestResultAtom,
 	errorAtom,
-	hintAtom,
+	hintKeyAtom,
+	hintValueAtom,
 } from "../store";
 import { hintMap } from "../consts";
 
@@ -93,15 +94,16 @@ export const useError = (): [string | undefined, (update: string) => void] => {
 };
 
 export const useHint = (): [
-	string | undefined,
+	{ key: TimelineHintKey; value: string | undefined },
 	(key: TimelineHintKey) => void
 ] => {
-	const [hint, setHint]: [
-		string | undefined,
-		(update?: SetStateAction<string | undefined>) => void | Promise<void>
-	] = useAtom(hintAtom);
+	const [hintKey, setHintKey]: [
+		TimelineHintKey,
+		(
+			update?: SetStateAction<TimelineHintKey | undefined>
+		) => void | Promise<void>
+	] = useAtom(hintKeyAtom);
+	const [hintValue] = useAtom(hintValueAtom);
 
-	const setHintKey = (key: TimelineHintKey) => setHint(hintMap.get(key));
-
-	return [hint, setHintKey];
+	return [{ key: hintKey, value: hintValue }, setHintKey];
 };
