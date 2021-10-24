@@ -1,5 +1,6 @@
 import { atom } from "jotai";
-import { Column } from "../types";
+import { Column, TimelineHintKey } from "../types";
+import { hintMap } from "../consts";
 
 export const columnMapAtom = atom(
 	new Map<string, Column>([
@@ -20,4 +21,8 @@ export const requestResultAtom = atom<string | undefined>(undefined);
 
 export const errorAtom = atom<string | undefined>(undefined);
 
-export const hintAtom = atom<string | undefined>(undefined);
+export const hintKeyAtom = atom<TimelineHintKey>("none");
+
+export const hintValueAtom = atom<string | undefined>((get) =>
+	hintMap.get(get(hintKeyAtom))
+);
