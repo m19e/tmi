@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import type { FC, ReactElement, ReactNode } from "react";
 import readline from "readline";
-import { Box, Text, useStdin } from "ink";
+import { Box, Text, useStdin, useInput } from "ink";
 import type { StdinProps, BoxProps, TextProps } from "ink";
 
 /**
@@ -285,6 +285,182 @@ class TabsWithStdin extends Component<TabsWithStdinProps, TabsWithStdinState> {
 	}
 }
 
+export interface TabsWithInputProps {
+	/**
+	 * A function called whenever a tab is changing.
+	 * @param {string} name the name of the tab passed in the `name` prop
+	 * @param {FC<TabProps>} activeTab the current active tab component
+	 */
+	onChange(name: string): void;
+	children: ReactElement<typeof Tab>[];
+	flexDirection?: BoxProps["flexDirection"];
+	width?: BoxProps["width"];
+	keyMap?: KeyMapProps;
+	isFocused?: boolean;
+	defaultValue?: string;
+}
+
+const isCol = (flexDirection: TextProps["color"]): boolean =>
+	flexDirection === "column" || flexDirection === "column-reverse";
+
+const TabsWithInput: FC<TabsWithInputProps> = ({
+	onChange,
+	children,
+	flexDirection = "row",
+	width,
+	keyMap = null,
+	isFocused = null, // isFocused is null mean that the focus not handle by ink
+	defaultValue = null,
+}) => {
+	const [activeTab, setActiveTab] = useState(0);
+
+	const defaultKeyMap = {
+		useNumbers: true,
+		useTab: true,
+		previous: [isCol(flexDirection) ? "up" : "left"],
+		next: [isCol(flexDirection) ? "down" : "right"],
+	};
+	const separatorWidth = width || 6;
+	const separator = isCol(flexDirection)
+		? new Array(separatorWidth).fill("─").join("")
+		: " | ";
+
+	useEffect(() => {
+		let initialTabIndex = 0;
+
+		if (defaultValue) {
+			const foundIndex = children.findIndex(
+				(child) => child.props.name === defaultValue
+			);
+
+			if (foundIndex > 0) {
+				initialTabIndex = foundIndex;
+			}
+		}
+		return () => {};
+	}, []);
+
+	const handleTabChange = (tabId: number) => {
+		const tab = children[tabId];
+		if (!tab) {
+			return;
+		}
+		setActiveTab(tabId);
+
+		onChange(tab.props.name);
+	};
+
+	const moveToNextTab = () => {
+		let nextTabId = activeTab + 1;
+		if (nextTabId >= children.length) {
+			nextTabId = 0;
+		}
+
+		handleTabChange(nextTabId);
+	};
+
+	const moveToPreviousTab = () => {
+		let nextTabId = activeTab - 1;
+		if (nextTabId < 0) {
+			nextTabId = children.length - 1;
+		}
+
+		handleTabChange(nextTabId);
+	};
+
+	useInput(
+		(input, key) => {
+			if (!isFocused) {
+				return;
+			}
+
+			const currentKeyMap = { ...defaultKeyMap, ...keyMap };
+			const { useNumbers, useTab, previous, next } = currentKeyMap;
+			const isRow = !isCol(flexDirection);
+
+			if (
+				(isRow && key.leftArrow) ||
+				(!isRow && key.upArrow) ||
+				previous.some((keyName) => keyName === input)
+			) {
+				moveToPreviousTab();
+			}
+
+			if (
+				(isRow && key.rightArrow) ||
+				(!isRow && key.downArrow) ||
+				next.some((keyName) => keyName === input)
+			) {
+				moveToNextTab();
+			}
+
+			if (key.tab && useTab) {
+				if (key.shift) {
+					moveToPreviousTab();
+				} else {
+					moveToNextTab();
+				}
+			}
+
+			switch (input) {
+				case "0":
+				case "1":
+				case "2":
+				case "3":
+				case "4":
+				case "5":
+				case "6":
+				case "7":
+				case "8":
+				case "9": {
+					if (!useNumbers) {
+						return;
+					}
+					if (key.meta) {
+						const tabId = input === "0" ? 9 : parseInt(input, 10) - 1;
+						handleTabChange(tabId);
+					}
+
+					break;
+				}
+				default:
+					break;
+			}
+		},
+		{ isActive: isFocused }
+	);
+
+	return (
+		<Box flexDirection={flexDirection} width={width}>
+			{children.map((child, key) => {
+				const { name } = child.props;
+				let colors: Partial<{
+					color: TextProps["color"];
+					backgroundColor: TextProps["backgroundColor"];
+				}>;
+				if (isFocused !== false) {
+					colors = {
+						backgroundColor: activeTab === key ? "#00acee" : undefined,
+						color: activeTab === key ? "black" : undefined,
+					};
+				} else {
+					colors = {
+						backgroundColor: activeTab === key ? "gray" : undefined,
+						color: activeTab === key ? "black" : undefined,
+					};
+				}
+
+				return (
+					<Box key={name} flexDirection={flexDirection}>
+						{key !== 0 && <Text color="dim">{separator}</Text>}
+						<Text {...colors}>{child}</Text>
+					</Box>
+				);
+			})}
+		</Box>
+	);
+};
+
 /**
  * The <Tabs> component
  */
@@ -301,4 +477,4 @@ const Tabs: FC<TabsProps> = (props) => {
 	);
 };
 
-export { Tab, Tabs };
+export { Tab, Tabs, TabsWithInput };
