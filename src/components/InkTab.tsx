@@ -274,7 +274,7 @@ class TabsWithStdin extends Component<TabsWithStdinProps, TabsWithStdinState> {
 						<Box key={name} flexDirection={flexDirection}>
 							{key !== 0 && <Text color="dim">{separator}</Text>}
 							<Box>
-								{/* <Text color="grey">{key + 1}. </Text> */}
+								<Text color="grey">{key + 1}. </Text>
 								<Text {...colors}>{child}</Text>
 							</Box>
 						</Box>
