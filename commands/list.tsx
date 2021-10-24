@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthContainer } from "../src/components/AuthContainer";
+import { AuthContainer } from "../src/components/pages/AuthContainer";
 import { List as ListPage } from "../src/components/organisms/List";
 
 /// List Command

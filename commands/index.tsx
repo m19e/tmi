@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { AuthContainer } from "../src/components/AuthContainer";
+import { AuthContainer } from "../src/components/pages/AuthContainer";
 import { Columns } from "../src/components/organisms/Columns";
 
 /// Index command
