@@ -13,7 +13,11 @@ export const Columns: VFC = () => {
 	return (
 		<Box flexDirection="column">
 			<Text>Current column: {currentColumn.name}</Text>
-			<Tabs onChange={handleTabsChange} isFocused={canToggleColumn}>
+			<Tabs
+				onChange={handleTabsChange}
+				isFocused={canToggleColumn}
+				keyMap={{ useTab: false, useNumbers: true }}
+			>
 				{[...columns.entries()].map(([key, column]) => (
 					<Tab key={key} name={key}>
 						{column.name}
