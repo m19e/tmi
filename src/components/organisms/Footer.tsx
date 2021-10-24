@@ -32,7 +32,7 @@ const RequestResult: VFC = () => {
 };
 
 const Hint: VFC = () => {
-	const [hint] = useHint();
+	const [{ value: hint }] = useHint();
 	if (hint) {
 		return <Text>{hint}</Text>;
 	}
