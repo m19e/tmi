@@ -1,7 +1,7 @@
 import React from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
-import { Tabs, TabsWithInput, Tab } from "../components/InkTab";
+import { TabsWithInput, Tab } from "../components/InkTab";
 import { useColumnMap, useCurrentColumn } from "../hooks";
 
 export const Columns: VFC = () => {
