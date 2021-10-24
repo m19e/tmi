@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthContainer } from "../src/components/AuthContainer";
-import { Columns } from "../src/components/Columns";
+import { Columns } from "../src/components/organisms/Columns";
 
 /// Index command
 const IndexCommand = () => {
