@@ -1,11 +1,12 @@
 import React from "react";
 import type { VFC } from "react";
 import { TabsWithInput, Tab } from "../components/InkTab";
-import { useColumnMap, useCurrentColumn } from "../hooks";
+import { useColumnMap, useCurrentColumn, useHint } from "../hooks";
 
 export const Columns: VFC = () => {
 	const [columns] = useColumnMap();
 	const [, setColumnKey] = useCurrentColumn();
+	const [{ key: hintKey }] = useHint();
 	const handleTabsChange = (key: string) => setColumnKey(key);
 	const canToggleColumn = true;
 
