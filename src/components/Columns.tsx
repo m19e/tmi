@@ -1,7 +1,7 @@
 import React from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
-import { Tabs, Tab } from "../components/InkTab";
+import { Tabs, TabsWithInput, Tab } from "../components/InkTab";
 import { useColumnMap, useCurrentColumn } from "../hooks";
 
 export const Columns: VFC = () => {
@@ -13,7 +13,7 @@ export const Columns: VFC = () => {
 	return (
 		<Box flexDirection="column">
 			<Text>Current column: {currentColumn.name}</Text>
-			<Tabs
+			<TabsWithInput
 				onChange={handleTabsChange}
 				isFocused={canToggleColumn}
 				keyMap={{ useTab: false, useNumbers: true }}
@@ -23,7 +23,7 @@ export const Columns: VFC = () => {
 						{column.name}
 					</Tab>
 				))}
-			</Tabs>
+			</TabsWithInput>
 		</Box>
 	);
 };
