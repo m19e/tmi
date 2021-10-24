@@ -259,19 +259,11 @@ class TabsWithStdin extends Component<TabsWithStdinProps, TabsWithStdinState> {
 						backgroundColor: TextProps["backgroundColor"];
 					}>;
 					if (isFocused !== false) {
-						// colors = {
-						// 	backgroundColor: activeTab === key ? "green" : undefined,
-						// 	color: activeTab === key ? "black" : undefined,
-						// };
 						colors = {
-							backgroundColor: activeTab === key ? "#00acee" : undefined,
+							backgroundColor: activeTab === key ? "green" : undefined,
 							color: activeTab === key ? "black" : undefined,
 						};
 					} else {
-						// colors = {
-						// 	backgroundColor: activeTab === key ? "gray" : undefined,
-						// 	color: activeTab === key ? "black" : undefined,
-						// };
 						colors = {
 							backgroundColor: activeTab === key ? "gray" : undefined,
 							color: activeTab === key ? "black" : undefined,
