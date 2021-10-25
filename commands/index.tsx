@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
-import { Columns } from "../src/components/organisms/Columns";
-import { ColumnSwitcher } from "../src/components/organisms/ColumnSwitcher";
 import { ColumnsTemplate } from "../src/components/templates/Columns";
 
 /// Index command
