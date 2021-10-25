@@ -1,5 +1,4 @@
 import { useAtom, SetStateAction } from "jotai";
-import { columnMapAtom, currentColumnKeyAtom } from "../store";
 import {
 	homeTimelineAtom,
 	displayHomeTimelineAtom,
