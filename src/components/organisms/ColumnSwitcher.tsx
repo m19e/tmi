@@ -2,13 +2,14 @@ import React from "react";
 import { Text } from "ink";
 import { useCurrentColumn } from "../../hooks";
 import { List } from "./List";
+import { HomeTimeline as Home } from "./Timeline/Home";
 
 export const ColumnSwitcher = () => {
 	const [{ type }] = useCurrentColumn();
 
 	switch (type) {
 		case "home":
-			return <Text>column: Home</Text>;
+			return <Home />;
 		case "mentions":
 			return <Text>column: Mentions</Text>;
 		case "list":
