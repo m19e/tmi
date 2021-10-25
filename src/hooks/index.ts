@@ -10,7 +10,6 @@ import {
 	hintKeyAtom,
 	hintValueAtom,
 } from "../store";
-import { hintMap } from "../consts";
 
 interface ColumnMapActions {
 	set: (key: string, value: Column) => void;
