@@ -64,7 +64,7 @@ export const useTwitterApi = (): ClientApi => {
 
 	const getHomeTweets = async () => {
 		try {
-			return (await api.homeTimeline()).tweets;
+			return (await api.homeTimeline()).tweets.map(convertTweetToDisplayable);
 		} catch (error) {
 			return handleResponseError(error, "GET", "statuses/home_timeline")
 				.message;
@@ -72,7 +72,9 @@ export const useTwitterApi = (): ClientApi => {
 	};
 	const getMentionTweets = async () => {
 		try {
-			return (await api.mentionTimeline()).tweets;
+			return (await api.mentionTimeline()).tweets.map(
+				convertTweetToDisplayable
+			);
 		} catch (error) {
 			return handleResponseError(error, "GET", "statuses/mentions_timeline")
 				.message;
