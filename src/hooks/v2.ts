@@ -36,6 +36,8 @@ export const useTwitterClient = (): [
 ] => useAtom(twitterClientAtom);
 
 interface ClientApi {
+	getHomeTweets: () => PromiseWithErrorMessage<TweetV1[]>;
+	getMentionTweets: () => PromiseWithErrorMessage<TweetV1[]>;
 	getLists: () => PromiseWithError<ListV1[]>;
 	getListTweets: (
 		params: ListStatusesV1Params
@@ -60,6 +62,22 @@ interface ClientApi {
 export const useTwitterApi = (): ClientApi => {
 	const [{ v1: api }] = useAtom(twitterClientAtom);
 
+	const getHomeTweets = async () => {
+		try {
+			return (await api.homeTimeline()).tweets;
+		} catch (error) {
+			return handleResponseError(error, "GET", "statuses/home_timeline")
+				.message;
+		}
+	};
+	const getMentionTweets = async () => {
+		try {
+			return (await api.mentionTimeline()).tweets;
+		} catch (error) {
+			return handleResponseError(error, "GET", "statuses/mentions_timeline")
+				.message;
+		}
+	};
 	const getLists = async () => {
 		try {
 			return await api.lists();
@@ -151,6 +169,8 @@ export const useTwitterApi = (): ClientApi => {
 	};
 
 	return {
+		getHomeTweets,
+		getMentionTweets,
 		getLists,
 		getListTweets,
 		getTweet,
