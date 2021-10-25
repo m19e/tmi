@@ -16,7 +16,7 @@ import {
 	useFocusIndex,
 	useDisplayTweetsCount,
 } from "../../hooks/v2";
-import { Timeline } from "./Timeline";
+import { Timeline } from "./Timeline/List";
 import Footer from "./Footer";
 import SelectList from "../molecules/SelectList";
 
