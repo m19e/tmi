@@ -10,7 +10,10 @@ export const HomeTimeline = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const res = await api.getHomeTweets();
+			const res = await api.getHomeTweets({
+				count: 200,
+				include_entities: true,
+			});
 			if (typeof res === "string") {
 				// setError(res)
 			} else {
