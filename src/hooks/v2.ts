@@ -3,6 +3,7 @@ import type {
 	TwitterApi,
 	ListV1,
 	TweetV1,
+	TweetV1TimelineParams,
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { UserConfig, HandledResponseError } from "../types";
@@ -36,8 +37,12 @@ export const useTwitterClient = (): [
 ] => useAtom(twitterClientAtom);
 
 interface ClientApi {
-	getHomeTweets: () => PromiseWithErrorMessage<TweetV1[]>;
-	getMentionTweets: () => PromiseWithErrorMessage<TweetV1[]>;
+	getHomeTweets: (
+		params: TweetV1TimelineParams
+	) => PromiseWithErrorMessage<TweetV1[]>;
+	getMentionTweets: (
+		params: TweetV1TimelineParams
+	) => PromiseWithErrorMessage<TweetV1[]>;
 	getLists: () => PromiseWithError<ListV1[]>;
 	getListTweets: (
 		params: ListStatusesV1Params
@@ -62,17 +67,19 @@ interface ClientApi {
 export const useTwitterApi = (): ClientApi => {
 	const [{ v1: api }] = useAtom(twitterClientAtom);
 
-	const getHomeTweets = async () => {
+	const getHomeTweets = async (params: TweetV1TimelineParams) => {
 		try {
-			return (await api.homeTimeline()).tweets.map(convertTweetToDisplayable);
+			return (await api.homeTimeline(params)).tweets.map(
+				convertTweetToDisplayable
+			);
 		} catch (error) {
 			return handleResponseError(error, "GET", "statuses/home_timeline")
 				.message;
 		}
 	};
-	const getMentionTweets = async () => {
+	const getMentionTweets = async (params: TweetV1TimelineParams) => {
 		try {
-			return (await api.mentionTimeline()).tweets.map(
+			return (await api.mentionTimeline(params)).tweets.map(
 				convertTweetToDisplayable
 			);
 		} catch (error) {
