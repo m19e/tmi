@@ -1,4 +1,4 @@
-import type { TwitterApiTokens, TweetV1 } from "twitter-api-v2";
+import type { TwitterApiTokens, TweetV1, UserV1 } from "twitter-api-v2";
 import type { TrimmedList } from "./twitter";
 
 interface CachedTimeline {
@@ -7,13 +7,20 @@ interface CachedTimeline {
 	focus: number;
 }
 
+interface DefaultTimeline extends Omit<CachedTimeline, "timeline"> {}
+
 export type Column =
-	| { type: "home"; name: string }
-	| {
+	| ({ type: "home"; name: string } & DefaultTimeline)
+	| ({
 			type: "mentions";
 			name: string;
-	  }
-	| ({ type: "list"; list_id: string; name: string } & CachedTimeline);
+	  } & DefaultTimeline)
+	| ({
+			type: "list";
+			name: string;
+			list_id: string;
+			user?: UserV1;
+	  } & CachedTimeline);
 
 export interface HandledResponseError {
 	rateLimit: boolean;
