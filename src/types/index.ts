@@ -3,6 +3,8 @@ import type { TrimmedList } from "./twitter";
 
 interface CachedTimeline {
 	timeline: Array<TweetV1>;
+	cursor: number;
+	focus: number;
 }
 
 export type Column =
