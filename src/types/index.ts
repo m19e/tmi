@@ -7,10 +7,11 @@ interface DefaultTimeline {
 }
 
 export type Column =
-	| ({ type: "home" } & DefaultTimeline)
-	| ({
+	| { type: "home"; name: string }
+	| {
 			type: "mentions";
-	  } & DefaultTimeline)
+			name: string;
+	  }
 	| ({ type: "list"; list_id: string } & DefaultTimeline);
 
 export interface HandledResponseError {
