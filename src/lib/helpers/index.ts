@@ -2,6 +2,7 @@ import { ApiResponseError } from "twitter-api-v2";
 import { HandledResponseError } from "../../types";
 
 type Endpoint =
+	| "statuses/home_timeline"
 	| "lists/list"
 	| "lists/statuses"
 	| "statuses/show"
