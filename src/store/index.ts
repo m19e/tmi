@@ -4,8 +4,8 @@ import { hintMap } from "../consts";
 
 export const columnMapAtom = atom(
 	new Map<string, Column>([
-		["Home", { type: "home", name: "Home", timeline: [] }],
-		["Mentions", { type: "mentions", name: "Mentions", timeline: [] }],
+		["Home", { type: "home", name: "Home" }],
+		["Mentions", { type: "mentions", name: "Mentions" }],
 	])
 );
 
