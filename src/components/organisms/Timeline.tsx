@@ -94,9 +94,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (typeof res === "string") {
 			setError(res);
 		} else {
-			setTimeline((prev) =>
-				prev.map((t) => (t.id_str === res.id_str ? res : t))
-			);
+			updateTweetInTimeline(res);
 			setRequestResult(
 				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
 					res.user.screen_name
@@ -117,9 +115,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (typeof res === "string") {
 			setError(res);
 		} else {
-			setTimeline((prev) =>
-				prev.map((t) => (t.id_str === res.id_str ? res : t))
-			);
+			updateTweetInTimeline(res);
 			setRequestResult(
 				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
 					res.user.screen_name
