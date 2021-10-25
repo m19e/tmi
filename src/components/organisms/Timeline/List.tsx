@@ -3,8 +3,8 @@ import { Box, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
 import type { TweetV1 } from "twitter-api-v2";
 
-import type { TimelineProcess } from "../../types";
-import { useError, useRequestResult, useHint } from "../../hooks";
+import type { TimelineProcess } from "../../../types";
+import { useError, useRequestResult, useHint } from "../../../hooks";
 import {
 	useTwitterApi,
 	useListPaginator,
@@ -13,10 +13,10 @@ import {
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-} from "../../hooks/v2";
-import Detail from "../organisms/Detail";
-import TweetItem from "../molecules/TweetItem";
-import NewTweetBox from "../molecules/NewTweetBox";
+} from "../../../hooks/v2";
+import Detail from "../../organisms/Detail";
+import TweetItem from "../../molecules/TweetItem";
+import NewTweetBox from "../../molecules/NewTweetBox";
 
 type Props = {
 	onToggleList: () => void;
