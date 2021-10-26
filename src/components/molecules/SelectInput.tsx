@@ -8,7 +8,7 @@ interface ItemProps {
 	label: string;
 }
 
-interface Item<V> {
+export interface Item<V> {
 	key?: string;
 	label: string;
 	value: V;
