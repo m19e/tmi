@@ -1,17 +1,21 @@
 import { atom } from "jotai";
 import type { TwitterApi, TweetV1 } from "twitter-api-v2";
-import { cursorIndexAtom, focusIndexAtom, displayTweetsCountAtom } from "./v2";
+import { displayTweetsCountAtom } from "./v2";
 
-export const homeTimelineAtom = atom<Array<TweetV1>>([]);
+export const homeTimelineAtom = atom<TweetV1[]>([]);
+
+export const homeCursorIndexAtom = atom(0);
+
+export const homeFocusIndexAtom = atom(0);
 
 export const displayHomeTimelineAtom = atom<TweetV1[]>((get) => {
-	const cursor = get(cursorIndexAtom);
+	const cursor = get(homeCursorIndexAtom);
 	const count = get(displayTweetsCountAtom);
 	return get(homeTimelineAtom).slice(cursor, cursor + count);
 });
 
 export const homeFocusedTweetAtom = atom<TweetV1>(
-	(get) => get(displayHomeTimelineAtom)[get(focusIndexAtom)]
+	(get) => get(displayHomeTimelineAtom)[get(homeFocusIndexAtom)]
 );
 
 export const homeTimelineCursorsAtom = atom<{
