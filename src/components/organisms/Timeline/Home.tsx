@@ -39,7 +39,7 @@ const usePosition = (): [
 		}
 	};
 
-	const setCursor = (update?: SetStateAction<number>) => {
+	const setCursor = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newC = update(cursor);
 			cachePosition((prev) => ({ ...prev, cursor: newC }));
@@ -49,7 +49,7 @@ const usePosition = (): [
 			setC(update);
 		}
 	};
-	const setFocus = (update?: SetStateAction<number>) => {
+	const setFocus = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newF = update(focus);
 			cachePosition((prev) => ({ ...prev, focus: newF }));
@@ -102,7 +102,6 @@ export const HomeTimeline = () => {
 				loadPosition();
 			}
 		}
-		
 	}, [column.type]);
 
 	useInput((input, key) => {
