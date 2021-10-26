@@ -292,8 +292,6 @@ export const useListPaginator = (): ListPaginator => {
 	};
 };
 
-export const useHomePaginator = () => {};
-
 export const useMover = (): {
 	prev: (update: () => void) => void;
 	next: (update: () => void) => void;
