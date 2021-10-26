@@ -13,18 +13,18 @@ export const HomeTimeline = () => {
 
 	useEffect(() => {
 		if (column.type === "home") {
-			const init = async () => {
-				const res = await api.getHomeTweets({
-					count: 200,
-					include_entities: true,
-				});
-				if (typeof res === "string") {
-					// setError(res)
-				} else {
-					setTimeline(res);
-				}
-			};
 			if (!timeline.length) {
+				const init = async () => {
+					const res = await api.getHomeTweets({
+						count: 200,
+						include_entities: true,
+					});
+					if (typeof res === "string") {
+						// setError(res)
+					} else {
+						setTimeline(res);
+					}
+				};
 				init();
 			} else {
 				loadPosition();
