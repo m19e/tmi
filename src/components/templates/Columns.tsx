@@ -1,6 +1,7 @@
-import React from "react";
-import { Box } from "ink";
+import React, { useState } from "react";
+import { Box, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
+import { ColumnController } from "../organisms/ColumnController";
 import { Columns } from "../organisms/Columns";
 import { ColumnSwitcher } from "../organisms/ColumnSwitcher";
 
@@ -9,8 +10,30 @@ export const ColumnsTemplate = () => {
 
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			<Columns />
-			<ColumnSwitcher />
+			<ColumnContainer />
 		</Box>
 	);
+};
+
+const ColumnContainer = () => {
+	const [status, setStatus] = useState<"page" | "controll">("page");
+	useInput((input, key) => {
+		if (input === "c") {
+			setStatus("controll");
+		} else if (key.escape) {
+			setStatus("page");
+		}
+	}, {});
+
+	if (status === "page") {
+		return (
+			<>
+				<Columns />
+				<ColumnSwitcher />
+			</>
+		);
+	}
+	if (status === "controll") {
+		return <ColumnController />;
+	}
 };
