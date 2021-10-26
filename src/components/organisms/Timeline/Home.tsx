@@ -102,7 +102,8 @@ export const HomeTimeline = () => {
 				loadPosition();
 			}
 		}
-	}, [column.name]);
+		
+	}, [column.type]);
 
 	useInput((input, key) => {
 		if (key.upArrow) {
