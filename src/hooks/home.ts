@@ -10,7 +10,7 @@ import {
 } from "../store/home";
 import { useCurrentColumn } from "../hooks";
 
-export const useTimeline = () => useAtom(homeTimelineAtom);
+export const useHomeTimeline = () => useAtom(homeTimelineAtom);
 
 export const getDisplayTimeline = () => useAtom(displayHomeTimelineAtom)[0];
 
