@@ -7,74 +7,7 @@ import type { Column } from "../../../types";
 import { displayTweetsCountAtom } from "../../../store/v2";
 import { useCurrentColumn, useError } from "../../../hooks";
 import { useTwitterApi } from "../../../hooks/v2";
-
-const homeTimelineAtom = atom<Array<TweetV1>>([]);
-const cursorIndexAtom = atom(0);
-const focusIndexAtom = atom(0);
-const displayTimelineAtom = atom<TweetV1[]>((get) => {
-	const cursor = get(cursorIndexAtom);
-	const count = get(displayTweetsCountAtom);
-	return get(homeTimelineAtom).slice(cursor, cursor + count);
-});
-
-const useHomeTimeline = () => useAtom(homeTimelineAtom);
-const usePosition = (): [
-	{ cursor: number; focus: number },
-	{
-		setCursor: (update: SetStateAction<number>) => void | Promise<void>;
-		setFocus: (update: SetStateAction<number>) => void | Promise<void>;
-		loadPosition: () => void;
-	}
-] => {
-	const [column, { updateColumn }] = useCurrentColumn();
-	const [cursor, setC] = useAtom(cursorIndexAtom);
-	const [focus, setF] = useAtom(focusIndexAtom);
-
-	const cachePosition = (update?: SetStateAction<Column>) => {
-		if (typeof update === "function") {
-			const newColumn = update(column);
-			updateColumn(newColumn);
-		} else {
-			updateColumn(update);
-		}
-	};
-
-	const setCursor = (update: SetStateAction<number>) => {
-		if (typeof update === "function") {
-			const newC = update(cursor);
-			cachePosition((prev) => ({ ...prev, cursor: newC }));
-			setC(newC);
-		} else {
-			cachePosition((prev) => ({ ...prev, cursor: update }));
-			setC(update);
-		}
-	};
-	const setFocus = (update: SetStateAction<number>) => {
-		if (typeof update === "function") {
-			const newF = update(focus);
-			cachePosition((prev) => ({ ...prev, focus: newF }));
-			setF(newF);
-		} else {
-			cachePosition((prev) => ({ ...prev, focus: update }));
-			setF(update);
-		}
-	};
-	const loadPosition = () => {
-		setC(column.cursor);
-		setF(column.focus);
-	};
-
-	const states = {
-		cursor,
-		focus,
-	};
-	const actions = {
-		setCursor,
-		setFocus,
-		loadPosition,
-	};
-	return [states, actions];
-};
+import { useHomeTimeline, usePosition } from "../../../hooks/home";
 
 export const HomeTimeline = () => {
 	const api = useTwitterApi();
