@@ -42,9 +42,8 @@ export const HomeTimeline = () => {
 	}, {});
 
 	if (!timeline.length) {
-		return <Text>Home Timeline is Empty.</Text>;
+		return <Text>Loading...</Text>;
 	}
-
 	return (
 		<Box flexDirection="column">
 			<Text>
