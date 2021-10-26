@@ -5,7 +5,7 @@ import { useColumnMap, useCurrentColumn, useHint } from "../../hooks";
 
 export const Columns: VFC = () => {
 	const [columns] = useColumnMap();
-	const [, setColumnKey] = useCurrentColumn();
+	const [, { setColumnKey }] = useCurrentColumn();
 	const [{ key: hintKey }] = useHint();
 	const handleTabsChange = (key: string) => setColumnKey(key);
 	const canToggleColumn = true;
