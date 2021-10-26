@@ -42,7 +42,13 @@ export const useColumnMap = (): [Map<string, Column>, ColumnMapActions] => {
 	return [columns, actions];
 };
 
-export const useCurrentColumn = (): [Column, (key: string) => void] => {
+export const useCurrentColumn = (): [
+	Column,
+	{
+		setColumnKey: (key: string) => void;
+		updateColumn: (newColumn: Column) => void;
+	}
+] => {
 	const [currentKey, setKey] = useAtom(currentColumnKeyAtom);
 	const [currentColumn] = useAtom(currentColumnValueAtom);
 	const [columns, actions] = useColumnMap();
@@ -52,21 +58,14 @@ export const useCurrentColumn = (): [Column, (key: string) => void] => {
 
 	const setColumnKey = (key: string) => {
 		if (columns.has(key)) {
-			let updateColumn: Column = {
-				...currentColumn,
-				cursor,
-				focus,
-			};
-			if (updateColumn.type === "list") {
-				updateColumn = { ...updateColumn, timeline: listTL };
-			}
-
-			actions.set(currentKey, updateColumn);
 			setKey(key);
 		}
 	};
+	const updateColumn = (newColumn: Column) => {
+		actions.set(currentKey, newColumn);
+	};
 
-	return [currentColumn, setColumnKey];
+	return [currentColumn, { setColumnKey, updateColumn }];
 };
 
 export const useRequestResult = (): [
