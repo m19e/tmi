@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { atom, useAtom } from "jotai";
-import type { SetStateAction } from "jotai";
+import React, { useEffect } from "react";
 import { Box, Text, useInput } from "ink";
-import type { TweetV1 } from "twitter-api-v2";
-import type { Column } from "../../../types";
-import { displayTweetsCountAtom } from "../../../store/v2";
 import { useCurrentColumn, useError } from "../../../hooks";
 import { useTwitterApi } from "../../../hooks/v2";
 import { useHomeTimeline, usePosition } from "../../../hooks/home";
