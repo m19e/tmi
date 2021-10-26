@@ -8,8 +8,7 @@ export const HomeTimeline = () => {
 	const api = useTwitterApi();
 	const [column] = useCurrentColumn();
 	const [timeline, setTimeline] = useHomeTimeline();
-	const [{ cursor, focus }, { setCursor, setFocus, loadPosition }] =
-		usePosition();
+	const [{ cursor, focus }, { setCursor, setFocus }] = usePosition();
 
 	useEffect(() => {
 		if (column.type === "home") {
@@ -26,8 +25,6 @@ export const HomeTimeline = () => {
 					}
 				};
 				init();
-			} else {
-				loadPosition();
 			}
 		}
 	}, [column.type]);
@@ -45,7 +42,7 @@ export const HomeTimeline = () => {
 		return <Text>Loading...</Text>;
 	}
 	return (
-		<Box flexDirection="column">
+		<Box flexDirection="column" flexGrow={1}>
 			<Text>
 				current cursor:{cursor} focus:{focus}
 			</Text>
