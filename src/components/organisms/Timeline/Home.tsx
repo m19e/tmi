@@ -21,8 +21,8 @@ const useHomeTimeline = () => useAtom(homeTimelineAtom);
 const usePosition = (): [
 	{ cursor: number; focus: number },
 	{
-		setCursor: (update?: SetStateAction<number>) => void | Promise<void>;
-		setFocus: (update?: SetStateAction<number>) => void | Promise<void>;
+		setCursor: (update: SetStateAction<number>) => void | Promise<void>;
+		setFocus: (update: SetStateAction<number>) => void | Promise<void>;
 		loadPosition: () => void;
 	}
 ] => {
