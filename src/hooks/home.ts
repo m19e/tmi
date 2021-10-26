@@ -1,6 +1,8 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { Column } from "../types";
+import { useCurrentColumn } from "../hooks";
+import { useDisplayTweetsCount } from "./v2";
 import {
 	homeTimelineAtom,
 	displayHomeTimelineAtom,
@@ -8,7 +10,6 @@ import {
 	homeFocusIndexAtom,
 	homeFocusedTweetAtom,
 } from "../store/home";
-import { useCurrentColumn } from "../hooks";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
 
@@ -72,4 +73,63 @@ export const usePosition = (): [
 		loadPosition,
 	};
 	return [states, actions];
+};
+
+export const useMover = () => {
+	const [count] = useDisplayTweetsCount();
+	const [{ length }] = useHomeTimeline();
+	const [{ cursor, focus }, { setCursor, setFocus }] = usePosition();
+
+	const mover = {
+		prev: (update: () => void) => {
+			if (focus === 0) {
+				if (cursor === 0) {
+					update();
+				} else {
+					setCursor((c) => c - 1);
+				}
+			} else {
+				setFocus((f) => f - 1);
+			}
+		},
+		next: (update: () => void) => {
+			if (focus + 1 === count) {
+				if (cursor + count + 1 > length) {
+					update();
+				} else {
+					setCursor((c) => c + 1);
+				}
+			} else {
+				setFocus((f) => f + 1);
+			}
+		},
+		pageUp: (update: () => void) => {
+			if (cursor + focus <= count) {
+				setCursor(0);
+				update();
+			} else {
+				setCursor(Math.max(cursor - count, 0));
+			}
+		},
+		pageDown: (update: () => void) => {
+			if (cursor + count * 2 > length) {
+				setCursor(length - count);
+				update();
+			} else {
+				setCursor(Math.min(cursor + count, length - count - 1));
+			}
+		},
+		top: () => {
+			if (cursor !== 0) {
+				setCursor(0);
+			}
+		},
+		bottom: () => {
+			if (cursor < length - count) {
+				setCursor(length - count);
+			}
+		},
+	};
+
+	return mover;
 };
