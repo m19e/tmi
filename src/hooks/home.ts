@@ -28,7 +28,7 @@ export const usePosition = (): [
 	const [cursor, setC] = useAtom(homeCursorIndexAtom);
 	const [focus, setF] = useAtom(homeFocusIndexAtom);
 
-	const cachePosition = (update: SetStateAction<Column>) => {
+	const _cachePosition = (update: SetStateAction<Column>) => {
 		if (typeof update === "function") {
 			const newColumn = update(column);
 			updateColumn(newColumn);
@@ -40,20 +40,20 @@ export const usePosition = (): [
 	const setCursor = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newC = update(cursor);
-			cachePosition((prev) => ({ ...prev, cursor: newC }));
+			_cachePosition((prev) => ({ ...prev, cursor: newC }));
 			setC(newC);
 		} else {
-			cachePosition((prev) => ({ ...prev, cursor: update }));
+			_cachePosition((prev) => ({ ...prev, cursor: update }));
 			setC(update);
 		}
 	};
 	const setFocus = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newF = update(focus);
-			cachePosition((prev) => ({ ...prev, focus: newF }));
+			_cachePosition((prev) => ({ ...prev, focus: newF }));
 			setF(newF);
 		} else {
-			cachePosition((prev) => ({ ...prev, focus: update }));
+			_cachePosition((prev) => ({ ...prev, focus: update }));
 			setF(update);
 		}
 	};
