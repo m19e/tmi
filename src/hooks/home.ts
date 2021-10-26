@@ -1,6 +1,4 @@
 import { useAtom } from "jotai";
-import type { SetStateAction } from "jotai";
-import type { TweetV1 } from "twitter-api-v2";
 import {
 	homeTimelineAtom,
 	displayHomeTimelineAtom,
