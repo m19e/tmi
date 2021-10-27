@@ -1,6 +1,8 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
+import type { TweetV1TimelineParams } from "twitter-api-v2";
 import type { Column } from "../types";
+import { convertTweetToDisplayable } from "../lib";
 import { displayTweetsCountAtom } from "../store/v2";
 import {
 	homeTimelineAtom,
@@ -8,28 +10,12 @@ import {
 	homeCursorIndexAtom,
 	homeFocusIndexAtom,
 	homeFocusedTweetAtom,
+	homeTimelineCursorsAtom,
 } from "../store/home";
 import { useCurrentColumn } from "../hooks";
+import { useTwitterApi } from "../hooks/v2";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
-
-export const useDisplayTweetsCount = (): [
-	number,
-	{ inc: () => void; dec: () => void }
-] => {
-	const [count, setCount] = useAtom(displayTweetsCountAtom);
-	const [{ focus }, { setFocus }] = usePosition();
-	const inc = () => {
-		if (count < 20) setCount((c) => c + 1);
-	};
-	const dec = () => {
-		if (count > 1) {
-			if (count - 1 === focus) setFocus((f) => f - 1);
-			setCount((c) => c - 1);
-		}
-	};
-	return [count, { inc, dec }];
-};
 
 export const usePosition = (): [
 	{ cursor: number; focus: number },
@@ -87,6 +73,68 @@ export const usePosition = (): [
 		loadPosition,
 	};
 	return [states, actions];
+};
+
+export const useHomePaginator = () => {
+	const api = useTwitterApi();
+	const [, setTimeline] = useHomeTimeline();
+	const [, { setCursor }] = usePosition();
+	const [{ since_id, max_id }] = useAtom(homeTimelineCursorsAtom);
+
+	const defaultParams: TweetV1TimelineParams = {
+		count: 200,
+		tweet_mode: "extended",
+		include_entities: true,
+	};
+
+	const fetchFuture = async () => {
+		const res = await api.getHomeTweets({
+			...defaultParams,
+			since_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			const converted = res.map(convertTweetToDisplayable);
+			setCursor((prev) => prev + converted.length);
+			setTimeline((prev) => [...converted, ...prev]);
+		}
+		return null;
+	};
+	const fetchPast = async () => {
+		const res = await api.getHomeTweets({
+			...defaultParams,
+			max_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			const converted = res.map(convertTweetToDisplayable);
+			setTimeline((prev) => [...prev, ...converted]);
+		}
+	};
+
+	return { fetchFuture, fetchPast };
+};
+
+export const useDisplayTweetsCount = (): [
+	number,
+	{ inc: () => void; dec: () => void }
+] => {
+	const [count, setCount] = useAtom(displayTweetsCountAtom);
+	const [{ focus }, { setFocus }] = usePosition();
+	const inc = () => {
+		if (count < 20) setCount((c) => c + 1);
+	};
+	const dec = () => {
+		if (count > 1) {
+			if (count - 1 === focus) setFocus((f) => f - 1);
+			setCount((c) => c - 1);
+		}
+	};
+	return [count, { inc, dec }];
 };
 
 export const useMover = () => {
