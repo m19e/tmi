@@ -13,8 +13,6 @@ import { useCurrentColumn } from "../hooks";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
 
-export const getDisplayTimeline = () => useAtom(displayHomeTimelineAtom)[0];
-
 export const useDisplayTweetsCount = (): [
 	number,
 	{ inc: () => void; dec: () => void }
@@ -32,8 +30,6 @@ export const useDisplayTweetsCount = (): [
 	};
 	return [count, { inc, dec }];
 };
-
-export const getFocusedTweet = () => useAtom(homeFocusedTweetAtom)[0];
 
 export const usePosition = (): [
 	{ cursor: number; focus: number },
@@ -151,3 +147,6 @@ export const useMover = () => {
 
 	return mover;
 };
+
+export const getDisplayTimeline = () => useAtom(displayHomeTimelineAtom)[0];
+export const getFocusedTweet = () => useAtom(homeFocusedTweetAtom)[0];
