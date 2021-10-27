@@ -96,6 +96,20 @@ export const useHomePaginator = () => {
 		include_entities: true,
 	};
 
+	const fetch = async () => {
+		if (!canFetch) {
+			return "API limit";
+		}
+		const res = await api.getHomeTweets(defaultParams);
+		setCanFetch(false);
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setTimeline(res);
+		}
+		return null;
+	};
 	const fetchFuture = async () => {
 		if (!canFetch) {
 			return "API limit";
@@ -133,7 +147,7 @@ export const useHomePaginator = () => {
 		}
 	};
 
-	return { fetchFuture, fetchPast };
+	return { fetch, fetchFuture, fetchPast };
 };
 
 export const useDisplayTweetsCount = (): [
