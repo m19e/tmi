@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1TimelineParams } from "twitter-api-v2";
@@ -81,6 +82,14 @@ export const useHomePaginator = () => {
 	const [, { setCursor }] = usePosition();
 	const [{ since_id, max_id }] = useAtom(homeTimelineCursorsAtom);
 
+	const [canFetch, setCanFetch] = useState(true);
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			if (!canFetch) setCanFetch(true);
+		}, 60 * 1000);
+		return () => clearTimeout(timer);
+	}, [canFetch]);
+
 	const defaultParams: TweetV1TimelineParams = {
 		count: 200,
 		tweet_mode: "extended",
@@ -88,10 +97,14 @@ export const useHomePaginator = () => {
 	};
 
 	const fetchFuture = async () => {
+		if (!canFetch) {
+			return "API limit";
+		}
 		const res = await api.getHomeTweets({
 			...defaultParams,
 			since_id,
 		});
+		setCanFetch(false);
 		if (typeof res === "string") {
 			return res;
 		}
@@ -103,10 +116,14 @@ export const useHomePaginator = () => {
 		return null;
 	};
 	const fetchPast = async () => {
+		if (!canFetch) {
+			return "API limit";
+		}
 		const res = await api.getHomeTweets({
 			...defaultParams,
 			max_id,
 		});
+		setCanFetch(false);
 		if (typeof res === "string") {
 			return res;
 		}
