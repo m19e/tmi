@@ -1,8 +1,7 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { Column } from "../types";
-import { useCurrentColumn } from "../hooks";
-import { useDisplayTweetsCount } from "./v2";
+import { displayTweetsCountAtom } from "../store/v2";
 import {
 	homeTimelineAtom,
 	displayHomeTimelineAtom,
@@ -10,6 +9,7 @@ import {
 	homeFocusIndexAtom,
 	homeFocusedTweetAtom,
 } from "../store/home";
+import { useCurrentColumn } from "../hooks";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
 
