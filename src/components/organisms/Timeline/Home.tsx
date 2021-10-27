@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text, useInput } from "ink";
+import { parseTweet, ParsedTweet } from "twitter-text";
+import type { TimelineProcess } from "../../../types";
 import {
 	useCurrentColumn,
 	useError,
@@ -31,7 +33,20 @@ export const HomeTimeline = () => {
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
 
-	const [status, setStatus] = useState<"init" | "timeline">("init");
+	const [status, setStatus] = useState<"init" | "timeline" | "detail">(
+		"timeline"
+	);
+	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
+	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
+	const [waitReturn, setWaitReturn] = useState(false);
+	const [tweetText, setTweetText] = useState("");
+	const [{ weightedLength, valid }, setParsedTweet] = useState<ParsedTweet>(
+		parseTweet("")
+	);
+	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
+	const [loadingTimeline, setLoadingTimeline] = useState<
+		typeof displayTimeline
+	>([]);
 
 	useEffect(() => {
 		if (column.type === "home") {
