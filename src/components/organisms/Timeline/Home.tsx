@@ -13,10 +13,12 @@ import {
 	useHomeTimeline,
 	usePosition,
 	useMover,
+	useHomePaginator,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../../../hooks/home";
+import Footer from "../Footer";
 import TweetItem from "../../molecules/TweetItem";
 
 export const HomeTimeline = () => {
@@ -26,6 +28,7 @@ export const HomeTimeline = () => {
 
 	const api = useTwitterApi();
 	const mover = useMover();
+	const paginator = useHomePaginator();
 	const [column] = useCurrentColumn();
 	const [timeline, setTimeline] = useHomeTimeline();
 	const [{ cursor, focus }] = usePosition();
@@ -52,14 +55,9 @@ export const HomeTimeline = () => {
 		if (column.type === "home") {
 			if (!timeline.length) {
 				const init = async () => {
-					const res = await api.getHomeTweets({
-						count: 200,
-						include_entities: true,
-					});
+					const res = await paginator.fetch();
 					if (typeof res === "string") {
 						// setError(res)
-					} else {
-						setTimeline(res);
 					}
 					setStatus("timeline");
 				};
@@ -70,11 +68,32 @@ export const HomeTimeline = () => {
 		}
 	}, [column.type]);
 
+	const update = async ({ future }: { future: boolean }) => {
+		setInProcess("update");
+		if (future) {
+			setLoadingTimeline(displayTimeline);
+		}
+		const err = future
+			? await paginator.fetchFuture()
+			: await paginator.fetchPast();
+		if (future) {
+			setLoadingTimeline([]);
+		}
+		if (typeof err === "string") {
+			setError(err);
+		} else {
+			setError(undefined);
+		}
+		setInProcess("none");
+	};
+
 	useInput((input, key) => {
+		if (inProcess !== "none") return;
+
 		if (key.upArrow || (key.shift && key.tab)) {
-			mover.prev(() => {});
+			mover.prev(() => update({ future: true }));
 		} else if (key.downArrow || key.tab) {
-			mover.next(() => {});
+			mover.next(() => update({ future: false }));
 		} else if (key.pageUp) {
 			mover.pageUp(() => {});
 		} else if (key.pageDown) {
@@ -101,23 +120,31 @@ export const HomeTimeline = () => {
 		}
 	}, {});
 
-	if (status === "init") {
+	const handleTweetText = (text: string) => {
+		setTweetText(text);
+		setParsedTweet(parseTweet(text));
+	};
+
+	if (status === "init" || !focusedTweet) {
 		return <Text>Loading...</Text>;
 	}
 	return (
-		<Box flexDirection="column" flexGrow={1}>
-			<Text>
-				current cursor:{cursor} focus:{focus}
-			</Text>
-			{displayTimeline.map((t) => (
-				<TweetItem
-					key={t.id_str}
-					tweet={t}
-					isFocused={focusedTweet.id_str === t.id_str}
-					inFav={false}
-					inRT={false}
-				/>
-			))}
-		</Box>
+		<>
+			<Box flexDirection="column" flexGrow={1}>
+				<Text>
+					cursor:{cursor} focus:{focus} total:{timeline.length}
+				</Text>
+				{displayTimeline.map((t) => (
+					<TweetItem
+						key={t.id_str}
+						tweet={t}
+						isFocused={t.id_str === focusedTweet.id_str}
+						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+					/>
+				))}
+			</Box>
+			<Footer />
+		</>
 	);
 };
