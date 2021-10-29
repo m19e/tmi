@@ -113,7 +113,7 @@ export const useHomePaginator = () => {
 		const now = Date.now();
 		if (now < fetchableTime) {
 			const reset = Math.floor((fetchableTime - now) / 1000);
-			return `Fetch limit will reset after ${reset} seconds`;
+			return `Home Timeline: Fetch limit will reset after ${reset} seconds`;
 		}
 		updateFetchableTime(now);
 
@@ -135,7 +135,7 @@ export const useHomePaginator = () => {
 		const now = Date.now();
 		if (now < fetchableTime) {
 			const reset = Math.floor((fetchableTime - now) / 1000);
-			return `Fetch limit will reset after ${reset} seconds`;
+			return `Home Timeline: Fetch limit will reset after ${reset} seconds`;
 		}
 		updateFetchableTime(now);
 
