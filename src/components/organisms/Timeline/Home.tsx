@@ -70,6 +70,7 @@ export const HomeTimeline = () => {
 
 	const update = async ({ future }: { future: boolean }) => {
 		setInProcess("update");
+
 		if (future) {
 			setLoadingTimeline(displayTimeline);
 		}
@@ -84,6 +85,7 @@ export const HomeTimeline = () => {
 		} else {
 			setError(undefined);
 		}
+
 		setInProcess("none");
 	};
 

@@ -82,13 +82,9 @@ export const useHomePaginator = () => {
 	const [, { setCursor }] = usePosition();
 	const [{ since_id, max_id }] = useAtom(homeTimelineCursorsAtom);
 
-	const [canFetch, setCanFetch] = useState(true);
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			if (!canFetch) setCanFetch(true);
-		}, 60 * 1000);
-		return () => clearTimeout(timer);
-	}, [canFetch]);
+	const [fetchableTime, setFetchableTime] = useState(0);
+	const updateFetchableTime = (now: number) =>
+		setFetchableTime(now + 60 * 1000);
 
 	const defaultParams: TweetV1TimelineParams = {
 		count: 200,
@@ -97,11 +93,14 @@ export const useHomePaginator = () => {
 	};
 
 	const fetch = async () => {
-		if (!canFetch) {
-			return "API limit";
+		const now = Date.now();
+		if (now < fetchableTime) {
+			const reset = Math.floor((fetchableTime - now) / 1000);
+			return `Fetch limit will reset after ${reset} seconds`;
 		}
+		updateFetchableTime(now);
+
 		const res = await api.getHomeTweets(defaultParams);
-		setCanFetch(false);
 		if (typeof res === "string") {
 			return res;
 		}
@@ -111,14 +110,17 @@ export const useHomePaginator = () => {
 		return null;
 	};
 	const fetchFuture = async () => {
-		if (!canFetch) {
-			return "API limit";
+		const now = Date.now();
+		if (now < fetchableTime) {
+			const reset = Math.floor((fetchableTime - now) / 1000);
+			return `Fetch limit will reset after ${reset} seconds`;
 		}
+		updateFetchableTime(now);
+
 		const res = await api.getHomeTweets({
 			...defaultParams,
 			since_id,
 		});
-		setCanFetch(false);
 		if (typeof res === "string") {
 			return res;
 		}
@@ -130,14 +132,17 @@ export const useHomePaginator = () => {
 		return null;
 	};
 	const fetchPast = async () => {
-		if (!canFetch) {
-			return "API limit";
+		const now = Date.now();
+		if (now < fetchableTime) {
+			const reset = Math.floor((fetchableTime - now) / 1000);
+			return `Fetch limit will reset after ${reset} seconds`;
 		}
+		updateFetchableTime(now);
+
 		const res = await api.getHomeTweets({
 			...defaultParams,
 			max_id,
 		});
-		setCanFetch(false);
 		if (typeof res === "string") {
 			return res;
 		}
