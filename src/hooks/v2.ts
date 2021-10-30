@@ -14,6 +14,7 @@ import {
 	focusIndexAtom,
 	displayTweetsCountAtom,
 } from "../store/v2";
+import { useApi } from "./api";
 import { convertTweetToDisplayable } from "../lib";
 import { handleResponseError } from "../lib/helpers";
 
@@ -72,7 +73,7 @@ interface ListPaginator {
 }
 
 export const useListPaginator = (): ListPaginator => {
-	const [{ v1: api }] = useTwitterClient();
+	const api = useApi();
 	const [timeline, setTimeline] = useListTimeline();
 	const [{ id_str: list_id }] = useCurrentList();
 	const [, setCursor] = useCursorIndex();
@@ -83,6 +84,42 @@ export const useListPaginator = (): ListPaginator => {
 		include_entities: true,
 	};
 
+	const fetch = async () => {
+		const res = await api.getListTweets(defaultParams);
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setTimeline(res);
+		}
+		return null;
+	};
+	const fetchFuture = async () => {
+		const res = await api.getListTweets({
+			...defaultParams,
+			since_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setCursor((prev) => prev + res.length);
+			setTimeline((prev) => [...res, ...prev]);
+		}
+		return null;
+	};
+	const fetchPast = async () => {
+		const res = await api.getListTweets({
+			...defaultParams,
+			max_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setTimeline((prev) => [...prev, ...res]);
+		}
+	};
 	const fetchNewer = async () => {
 		try {
 			const { tweets } = await api.listStatuses({
