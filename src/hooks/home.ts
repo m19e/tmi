@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1TimelineParams } from "twitter-api-v2";
