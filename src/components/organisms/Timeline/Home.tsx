@@ -8,7 +8,7 @@ import {
 	useRequestResult,
 	useHint,
 } from "../../../hooks";
-import { useTwitterApi } from "../../../hooks/v2";
+import { useApi } from "../../../hooks/api";
 import {
 	useHomeTimeline,
 	usePosition,
@@ -26,7 +26,7 @@ export const HomeTimeline = () => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 
-	const api = useTwitterApi();
+	const api = useApi();
 	const mover = useMover();
 	const paginator = useHomePaginator();
 	const [column] = useCurrentColumn();
