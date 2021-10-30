@@ -14,7 +14,7 @@ import {
 	homeTimelineCursorsAtom,
 } from "../store/home";
 import { useCurrentColumn } from "../hooks";
-import { useApi } from "../hooks/api";
+import { useApi } from "./api";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
 
