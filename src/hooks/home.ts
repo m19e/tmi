@@ -14,7 +14,7 @@ import {
 	homeTimelineCursorsAtom,
 } from "../store/home";
 import { useCurrentColumn } from "../hooks";
-import { useTwitterApi } from "../hooks/v2";
+import { useApi } from "../hooks/api";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
 
@@ -77,7 +77,7 @@ export const usePosition = (): [
 };
 
 export const useHomePaginator = () => {
-	const api = useTwitterApi();
+	const api = useApi();
 	const [, setTimeline] = useHomeTimeline();
 	const [, { setCursor }] = usePosition();
 	const [{ since_id, max_id }] = useAtom(homeTimelineCursorsAtom);
