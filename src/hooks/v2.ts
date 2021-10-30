@@ -22,8 +22,6 @@ export const useUserConfig = (): [
 	(update?: SetStateAction<UserConfig>) => void
 ] => useAtom(userConfigAtom);
 
-type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
-
 export const useTwitterClient = (): [
 	TwitterApi | null,
 	(update?: SetStateAction<TwitterApi>) => void
@@ -64,6 +62,8 @@ export const useListTimeline = (): [
 	Array<TweetV1>,
 	(update?: SetStateAction<Array<TweetV1>>) => void
 ] => useAtom(listTimelineAtom);
+
+type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
 interface ListPaginator {
 	tweets: Array<TweetV1>;
