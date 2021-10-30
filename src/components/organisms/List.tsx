@@ -12,6 +12,7 @@ import {
 	useUserConfig,
 	useCurrentList,
 	useListTimeline,
+	useListPaginator,
 	useCursorIndex,
 	useFocusIndex,
 	useDisplayTweetsCount,
@@ -28,6 +29,7 @@ export const List: VFC = () => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 	const api = useApi();
+	const paginator = useListPaginator();
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
 	const [{ length: total }, setTimeline] = useListTimeline();
@@ -73,19 +75,9 @@ export const List: VFC = () => {
 	};
 
 	const getNewListTimeline = async (list_id: string) => {
-		const params: GetListTweetsParams = {
-			list_id,
-			count: 200,
-			tweet_mode: "extended",
-			include_entities: true,
-		};
-		const res = await api.getListTweets(params);
+		const res = await paginator.fetch({ list_id });
 		if (typeof res === "string") {
 			setError(res);
-			return;
-		}
-		if (res.length) {
-			setTimeline(res);
 		}
 	};
 

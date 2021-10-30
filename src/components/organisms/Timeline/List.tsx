@@ -56,8 +56,8 @@ export const Timeline = ({ onToggleList }: Props) => {
 			setLoadingTimeline(displayTimeline);
 		}
 		const err = future
-			? await paginator.fetchNewer()
-			: await paginator.fetchOlder();
+			? await paginator.fetchFuture()
+			: await paginator.fetchPast();
 		if (future) {
 			setLoadingTimeline([]);
 		}
