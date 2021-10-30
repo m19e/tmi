@@ -1,4 +1,3 @@
-import { useAtom } from "jotai";
 import type {
 	TweetV1,
 	ListV1,
