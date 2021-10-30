@@ -92,7 +92,7 @@ export const useHomePaginator = () => {
 		include_entities: true,
 	};
 
-	const fetch = async () => {
+	const _fetchWithLimit = async (fetcher: () => Promise<string | null>) => {
 		const now = Date.now();
 		if (now < fetchableTime) {
 			return `Fetch limit will reset after ${Math.floor(
@@ -101,58 +101,52 @@ export const useHomePaginator = () => {
 		}
 		updateFetchableTime(now);
 
-		const res = await api.getHomeTweets(defaultParams);
-		if (typeof res === "string") {
-			return res;
-		}
-		if (res.length) {
-			setTimeline(res);
-		}
-		return null;
+		return await fetcher();
+	};
+
+	const fetch = async () => {
+		return await _fetchWithLimit(async () => {
+			const res = await api.getHomeTweets(defaultParams);
+			if (typeof res === "string") {
+				return res;
+			}
+			if (res.length) {
+				setTimeline(res);
+			}
+			return null;
+		});
 	};
 	const fetchFuture = async () => {
-		const now = Date.now();
-		if (now < fetchableTime) {
-			return `Fetch limit will reset after ${Math.floor(
-				(fetchableTime - now) / 1000
-			)} seconds`;
-		}
-		updateFetchableTime(now);
-
-		const res = await api.getHomeTweets({
-			...defaultParams,
-			since_id,
+		return await _fetchWithLimit(async () => {
+			const res = await api.getHomeTweets({
+				...defaultParams,
+				since_id,
+			});
+			if (typeof res === "string") {
+				return res;
+			}
+			if (res.length) {
+				const converted = res.map(convertTweetToDisplayable);
+				setCursor((prev) => prev + converted.length);
+				setTimeline((prev) => [...converted, ...prev]);
+			}
+			return null;
 		});
-		if (typeof res === "string") {
-			return res;
-		}
-		if (res.length) {
-			const converted = res.map(convertTweetToDisplayable);
-			setCursor((prev) => prev + converted.length);
-			setTimeline((prev) => [...converted, ...prev]);
-		}
-		return null;
 	};
 	const fetchPast = async () => {
-		const now = Date.now();
-		if (now < fetchableTime) {
-			return `Fetch limit will reset after ${Math.floor(
-				(fetchableTime - now) / 1000
-			)} seconds`;
-		}
-		updateFetchableTime(now);
-
-		const res = await api.getHomeTweets({
-			...defaultParams,
-			max_id,
+		return await _fetchWithLimit(async () => {
+			const res = await api.getHomeTweets({
+				...defaultParams,
+				max_id,
+			});
+			if (typeof res === "string") {
+				return res;
+			}
+			if (res.length) {
+				const converted = res.map(convertTweetToDisplayable);
+				setTimeline((prev) => [...prev, ...converted]);
+			}
 		});
-		if (typeof res === "string") {
-			return res;
-		}
-		if (res.length) {
-			const converted = res.map(convertTweetToDisplayable);
-			setTimeline((prev) => [...prev, ...converted]);
-		}
 	};
 
 	return { fetch, fetchFuture, fetchPast };
