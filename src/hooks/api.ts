@@ -41,7 +41,7 @@ interface Api {
 	unretweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 }
 
-export const useTwitterApi = (): Api => {
+export const useApi = (): Api => {
 	const [{ v1: api }] = useAtom(twitterClientAtom);
 
 	const getHomeTweets = async (params: TweetV1TimelineParams) => {
