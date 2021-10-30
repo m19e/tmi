@@ -104,8 +104,8 @@ export const useHomePaginator = () => {
 		return await fetcher();
 	};
 
-	const fetch = async () => {
-		return await _fetchWithLimit(async () => {
+	const fetch = async () =>
+		await _fetchWithLimit(async () => {
 			const res = await api.getHomeTweets(defaultParams);
 			if (typeof res === "string") {
 				return res;
@@ -115,9 +115,8 @@ export const useHomePaginator = () => {
 			}
 			return null;
 		});
-	};
-	const fetchFuture = async () => {
-		return await _fetchWithLimit(async () => {
+	const fetchFuture = async () =>
+		await _fetchWithLimit(async () => {
 			const res = await api.getHomeTweets({
 				...defaultParams,
 				since_id,
@@ -132,9 +131,8 @@ export const useHomePaginator = () => {
 			}
 			return null;
 		});
-	};
-	const fetchPast = async () => {
-		return await _fetchWithLimit(async () => {
+	const fetchPast = async () =>
+		await _fetchWithLimit(async () => {
 			const res = await api.getHomeTweets({
 				...defaultParams,
 				max_id,
@@ -147,7 +145,6 @@ export const useHomePaginator = () => {
 				setTimeline((prev) => [...prev, ...converted]);
 			}
 		});
-	};
 
 	return { fetch, fetchFuture, fetchPast };
 };
