@@ -7,7 +7,8 @@ import { parseTweet, ParsedTweet } from "twitter-text";
 
 import type { TimelineProcess } from "../../types";
 import { useError, useRequestResult, useHint } from "../../hooks";
-import { useTwitterApi, useUserConfig } from "../../hooks/v2";
+import { useUserConfig } from "../../hooks/v2";
+import { useApi } from "../../hooks/api";
 import TweetItem from "../molecules/TweetItem";
 import SelectInput from "../molecules/SelectInput";
 import NewTweetBox from "../molecules/NewTweetBox";
@@ -44,7 +45,7 @@ const Detail: VFC<Props> = ({
 	inProcess,
 	setInProcess,
 }) => {
-	const api = useTwitterApi();
+	const api = useApi();
 	const [{ userId }] = useUserConfig();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
