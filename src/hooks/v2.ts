@@ -72,14 +72,11 @@ interface ListPaginator {
 }
 
 export const useListPaginator = (): ListPaginator => {
-	const [{ v1: api }] = useAtom(twitterClientAtom);
-	const [timeline, setTimeline]: [
-		Array<TweetV1>,
-		(update?: SetStateAction<Array<TweetV1>>) => void
-	] = useAtom(listTimelineAtom);
-	const [{ id_str: list_id }] = useAtom(currentListAtom);
+	const [{ v1: api }] = useTwitterClient();
+	const [timeline, setTimeline] = useListTimeline();
+	const [{ id_str: list_id }] = useCurrentList();
+	const [, setCursor] = useCursorIndex();
 	const [{ since_id, max_id }] = useAtom(listTimelineCursorsAtom);
-	const [, setCursor] = useAtom(cursorIndexAtom);
 	const defaultParams: ListStatusesV1Params = {
 		count: 200,
 		tweet_mode: "extended",
