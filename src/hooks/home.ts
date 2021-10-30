@@ -125,9 +125,8 @@ export const useHomePaginator = () => {
 				return res;
 			}
 			if (res.length) {
-				const converted = res.map(convertTweetToDisplayable);
-				setCursor((prev) => prev + converted.length);
-				setTimeline((prev) => [...converted, ...prev]);
+				setCursor((prev) => prev + res.length);
+				setTimeline((prev) => [...res, ...prev]);
 			}
 			return null;
 		});
@@ -141,8 +140,7 @@ export const useHomePaginator = () => {
 				return res;
 			}
 			if (res.length) {
-				const converted = res.map(convertTweetToDisplayable);
-				setTimeline((prev) => [...prev, ...converted]);
+				setTimeline((prev) => [...prev, ...res]);
 			}
 		});
 
