@@ -6,7 +6,7 @@ import type {
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
-import { twitterClientAtom } from "../store/v2";
+import { useTwitterClient } from "../hooks/v2";
 import { convertTweetToDisplayable } from "../lib";
 import { handleResponseError } from "../lib/helpers";
 
@@ -42,7 +42,7 @@ interface Api {
 }
 
 export const useApi = (): Api => {
-	const [{ v1: api }] = useAtom(twitterClientAtom);
+	const [{ v1: api }] = useTwitterClient();
 
 	const getHomeTweets = async (params: TweetV1TimelineParams) => {
 		try {
