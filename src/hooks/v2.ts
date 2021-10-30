@@ -67,14 +67,14 @@ export const useListTimeline = (): [
 type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
 interface ListPaginator {
-	tweets: Array<TweetV1>;
-	fetchNewer: () => PromiseWithErrorMessage<null>;
-	fetchOlder: () => PromiseWithErrorMessage<null>;
+	fetch: (params: { list_id: string }) => PromiseWithErrorMessage<null>;
+	fetchFuture: () => PromiseWithErrorMessage<null>;
+	fetchPast: () => PromiseWithErrorMessage<null>;
 }
 
 export const useListPaginator = (): ListPaginator => {
 	const api = useApi();
-	const [timeline, setTimeline] = useListTimeline();
+	const [, setTimeline] = useListTimeline();
 	const [{ id_str: list_id }] = useCurrentList();
 	const [, setCursor] = useCursorIndex();
 	const [{ since_id, max_id }] = useAtom(listTimelineCursorsAtom);
@@ -84,8 +84,8 @@ export const useListPaginator = (): ListPaginator => {
 		include_entities: true,
 	};
 
-	const fetch = async () => {
-		const res = await api.getListTweets(defaultParams);
+	const fetch = async (params: { list_id: string }) => {
+		const res = await api.getListTweets({ ...defaultParams, ...params });
 		if (typeof res === "string") {
 			return res;
 		}
@@ -97,6 +97,7 @@ export const useListPaginator = (): ListPaginator => {
 	const fetchFuture = async () => {
 		const res = await api.getListTweets({
 			...defaultParams,
+			list_id,
 			since_id,
 		});
 		if (typeof res === "string") {
@@ -111,6 +112,7 @@ export const useListPaginator = (): ListPaginator => {
 	const fetchPast = async () => {
 		const res = await api.getListTweets({
 			...defaultParams,
+			list_id,
 			max_id,
 		});
 		if (typeof res === "string") {
@@ -120,44 +122,11 @@ export const useListPaginator = (): ListPaginator => {
 			setTimeline((prev) => [...prev, ...res]);
 		}
 	};
-	const fetchNewer = async () => {
-		try {
-			const { tweets } = await api.listStatuses({
-				...defaultParams,
-				list_id,
-				since_id,
-			});
-			if (tweets.length) {
-				const converted = tweets.map(convertTweetToDisplayable);
-				setCursor((prev) => prev + tweets.length);
-				setTimeline((prev) => [...converted, ...prev]);
-			}
-			return null;
-		} catch (error) {
-			return handleResponseError(error, "GET", "lists/statuses").message;
-		}
-	};
-	const fetchOlder = async () => {
-		try {
-			const { tweets } = await api.listStatuses({
-				...defaultParams,
-				list_id,
-				max_id,
-			});
-			if (tweets.length) {
-				const converted = tweets.map(convertTweetToDisplayable);
-				setTimeline((prev) => [...prev, ...converted]);
-			}
-			return null;
-		} catch (error) {
-			return handleResponseError(error, "GET", "lists/statuses").message;
-		}
-	};
 
 	return {
-		tweets: timeline,
-		fetchNewer,
-		fetchOlder,
+		fetch,
+		fetchFuture,
+		fetchPast,
 	};
 };
 
