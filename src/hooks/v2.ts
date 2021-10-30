@@ -1,11 +1,5 @@
 import { useAtom, SetStateAction } from "jotai";
-import type {
-	TwitterApi,
-	TweetV1,
-	ListV1,
-	TweetV1TimelineParams,
-	ListStatusesV1Params,
-} from "twitter-api-v2";
+import type { TwitterApi, TweetV1, ListStatusesV1Params } from "twitter-api-v2";
 import type { UserConfig, HandledResponseError } from "../types";
 import type { TrimmedList } from "../types/twitter";
 import {
@@ -28,7 +22,6 @@ export const useUserConfig = (): [
 	(update?: SetStateAction<UserConfig>) => void
 ] => useAtom(userConfigAtom);
 
-type PromiseWithError<T> = Promise<T | HandledResponseError>;
 type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
 export const useTwitterClient = (): [
