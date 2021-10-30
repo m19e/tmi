@@ -5,8 +5,8 @@ import type { TweetV1 } from "twitter-api-v2";
 
 import type { TimelineProcess } from "../../../types";
 import { useError, useRequestResult, useHint } from "../../../hooks";
+import { useApi } from "../../../hooks/api";
 import {
-	useTwitterApi,
 	useListPaginator,
 	useListTimeline,
 	useMover,
@@ -27,7 +27,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
 
-	const api = useTwitterApi();
+	const api = useApi();
 	const paginator = useListPaginator();
 	const mover = useMover();
 	const [, setTimeline] = useListTimeline();

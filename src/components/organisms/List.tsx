@@ -7,8 +7,8 @@ import { writeJSON } from "fs-extra";
 import type { GetListTweetsParams } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
 import { useError, useRequestResult, useHint } from "../../hooks";
+import { useApi } from "../../hooks/api";
 import {
-	useTwitterApi,
 	useUserConfig,
 	useCurrentList,
 	useListTimeline,
@@ -27,7 +27,7 @@ export const List: VFC = () => {
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
-	const api = useTwitterApi();
+	const api = useApi();
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
 	const [{ length: total }, setTimeline] = useListTimeline();
