@@ -15,8 +15,6 @@ import {
 	displayTweetsCountAtom,
 } from "../store/v2";
 import { useApi } from "./api";
-import { convertTweetToDisplayable } from "../lib";
-import { handleResponseError } from "../lib/helpers";
 
 export const useUserConfig = (): [
 	UserConfig | null,
