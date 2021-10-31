@@ -21,13 +21,15 @@ export const getDisplayTimeline = () => useAtom(displayHomeTimelineAtom)[0];
 
 export const getFocusedTweet = () => useAtom(homeFocusedTweetAtom)[0];
 
+interface PositionActions {
+	setCursor: (update: SetStateAction<number>) => void | Promise<void>;
+	setFocus: (update: SetStateAction<number>) => void | Promise<void>;
+	loadPosition: () => void;
+}
+
 export const usePosition = (): [
 	{ cursor: number; focus: number },
-	{
-		setCursor: (update: SetStateAction<number>) => void | Promise<void>;
-		setFocus: (update: SetStateAction<number>) => void | Promise<void>;
-		loadPosition: () => void;
-	}
+	PositionActions
 ] => {
 	const [column, { updateColumn }] = useCurrentColumn();
 	const [cursor, setC] = useAtom(homeCursorIndexAtom);
