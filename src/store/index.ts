@@ -1,6 +1,11 @@
 import { atom } from "jotai";
-import { Column, TimelineHintKey } from "../types";
+import type { TwitterApi } from "twitter-api-v2";
+import type { UserConfig, Column, TimelineHintKey } from "../types";
 import { hintMap } from "../consts";
+
+export const userConfigAtom = atom<UserConfig | null>(null);
+
+export const twitterClientAtom = atom<TwitterApi | null>(null);
 
 export const columnMapAtom = atom(
 	new Map<string, Column>([

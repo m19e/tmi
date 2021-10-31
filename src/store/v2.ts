@@ -1,11 +1,6 @@
 import { atom } from "jotai";
-import type { TwitterApi, TweetV1 } from "twitter-api-v2";
-import type { UserConfig } from "../types";
+import type { TweetV1 } from "twitter-api-v2";
 import type { TrimmedList } from "../types/twitter";
-
-export const userConfigAtom = atom<UserConfig | null>(null);
-
-export const twitterClientAtom = atom<TwitterApi | null>(null);
 
 export const currentListAtom = atom<TrimmedList>({
 	id_str: "",
