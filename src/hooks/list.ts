@@ -85,8 +85,9 @@ export const useDisplayTweetsCount = (): [
 	number,
 	{ inc: () => void; dec: () => void }
 ] => {
+	const [{ focus }, { setFocus }] = usePosition();
 	const [count, setCount] = useAtom(displayTweetsCountAtom);
-	const [focus, setFocus] = useAtom(focusIndexAtom);
+
 	const inc = () => {
 		if (count < 20) setCount((c) => c + 1);
 	};
@@ -176,10 +177,9 @@ export const useMover = (): {
 	top: () => void;
 	bottom: () => void;
 } => {
-	const [count] = useAtom(displayTweetsCountAtom);
-	const [{ length }] = useAtom(listTimelineAtom);
-	const [cursor, setCursor] = useAtom(cursorIndexAtom);
-	const [focus, setFocus] = useAtom(focusIndexAtom);
+	const [{ cursor, focus }, { setCursor, setFocus }] = usePosition();
+	const { length } = useListTimeline()[0];
+	const count = useAtom(displayTweetsCountAtom)[0];
 
 	const prev = (update: () => void) => {
 		if (focus === 0) {
