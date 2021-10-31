@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TwitterApi } from "twitter-api-v2";
-import type { UserConfig, Column, TimelineHintKey } from "../types";
+import type { Column, TimelineHintKey } from "../types";
 import {
 	userConfigAtom,
 	twitterClientAtom,
@@ -14,10 +14,7 @@ import {
 	hintValueAtom,
 } from "../store";
 
-export const useUserConfig = (): [
-	UserConfig | null,
-	(update?: SetStateAction<UserConfig>) => void
-] => useAtom(userConfigAtom);
+export const useUserConfig = () => useAtom(userConfigAtom);
 
 export const useTwitterClient = (): [
 	TwitterApi | null,
