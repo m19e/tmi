@@ -14,11 +14,10 @@ import {
 import { useApi } from "../../hooks/api";
 import {
 	useCurrentList,
+	usePosition,
+	useDisplayTweetsCount,
 	useListTimeline,
 	useListPaginator,
-	useCursorIndex,
-	useFocusIndex,
-	useDisplayTweetsCount,
 } from "../../hooks/list";
 import { Timeline } from "./Timeline/List";
 import Footer from "./Footer";
@@ -36,8 +35,7 @@ export const List: VFC = () => {
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
 	const [{ length: total }, setTimeline] = useListTimeline();
-	const [cursor, setCursor] = useCursorIndex();
-	const [, setFocus] = useFocusIndex();
+	const [{ cursor }, { setCursor, setFocus }] = usePosition();
 	const [count] = useDisplayTweetsCount();
 
 	const [status, setStatus] = useState<"load" | "select" | "timeline">("load");
