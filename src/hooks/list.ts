@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1, ListStatusesV1Params } from "twitter-api-v2";
-import type { HandledResponseError } from "../types";
+import type { Column, HandledResponseError } from "../types";
 import { displayTweetsCountAtom } from "../store";
 import {
 	currentListAtom,
@@ -12,17 +12,72 @@ import {
 	cursorIndexAtom,
 	focusIndexAtom,
 } from "../store/list";
+import { useCurrentColumn } from ".";
 import { useApi } from "./api";
 
 export const useCurrentList = () => useAtom(currentListAtom);
 
-export const useCursorIndex = () => useAtom(cursorIndexAtom);
-
-export const useFocusIndex = () => useAtom(focusIndexAtom);
-
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
 
 export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
+
+interface PositionActions {
+	setCursor: (update: SetStateAction<number>) => void | Promise<void>;
+	setFocus: (update: SetStateAction<number>) => void | Promise<void>;
+	loadPosition: () => void;
+}
+
+export const usePosition = (): [
+	{ cursor: number; focus: number },
+	PositionActions
+] => {
+	const [currentColumn, { updateColumn }] = useCurrentColumn();
+	const [cursor, setC] = useAtom(cursorIndexAtom);
+	const [focus, setF] = useAtom(focusIndexAtom);
+
+	const _cachePosition = (update: SetStateAction<Column>) => {
+		if (typeof update === "function") {
+			const newColumn = update(currentColumn);
+			updateColumn(newColumn);
+		} else {
+			updateColumn(update);
+		}
+	};
+
+	const setCursor = (update: SetStateAction<number>) => {
+		if (typeof update === "function") {
+			const newC = update(cursor);
+			_cachePosition((prev) => ({ ...prev, cursor: newC }));
+			setC(newC);
+		} else {
+			_cachePosition((prev) => ({ ...prev, cursor: update }));
+			setC(update);
+		}
+	};
+	const setFocus = (update: SetStateAction<number>) => {
+		if (typeof update === "function") {
+			const newF = update(focus);
+			_cachePosition((prev) => ({ ...prev, focus: newF }));
+			setF(newF);
+		} else {
+			_cachePosition((prev) => ({ ...prev, focus: update }));
+			setF(update);
+		}
+	};
+	const loadPosition = () => {
+		setC(currentColumn.cursor);
+		setF(currentColumn.focus);
+	};
+
+	const states = { cursor, focus };
+	const actions = {
+		setCursor,
+		setFocus,
+		loadPosition,
+	};
+
+	return [states, actions];
+};
 
 export const useDisplayTweetsCount = (): [
 	number,
@@ -59,7 +114,7 @@ export const useListPaginator = (): ListPaginator => {
 	const api = useApi();
 	const [, setTimeline] = useListTimeline();
 	const [{ id_str: list_id }] = useCurrentList();
-	const [, setCursor] = useCursorIndex();
+	const [, { setCursor }] = usePosition();
 	const [{ since_id, max_id }] = useAtom(listTimelineCursorsAtom);
 	const defaultParams: ListStatusesV1Params = {
 		count: 200,
