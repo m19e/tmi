@@ -24,7 +24,7 @@ export const getFocusedTweet = () => useAtom(homeFocusedTweetAtom)[0];
 interface PositionActions {
 	setCursor: (update: SetStateAction<number>) => void | Promise<void>;
 	setFocus: (update: SetStateAction<number>) => void | Promise<void>;
-	loadPosition: () => void;
+	// loadPosition: () => void;
 }
 
 export const usePosition = (): [
@@ -47,20 +47,20 @@ export const usePosition = (): [
 	const setCursor = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newC = update(cursor);
-			_cachePosition((prev) => ({ ...prev, cursor: newC }));
+			// _cachePosition((prev) => ({ ...prev, cursor: newC }));
 			setC(newC);
 		} else {
-			_cachePosition((prev) => ({ ...prev, cursor: update }));
+			// _cachePosition((prev) => ({ ...prev, cursor: update }));
 			setC(update);
 		}
 	};
 	const setFocus = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newF = update(focus);
-			_cachePosition((prev) => ({ ...prev, focus: newF }));
+			// _cachePosition((prev) => ({ ...prev, focus: newF }));
 			setF(newF);
 		} else {
-			_cachePosition((prev) => ({ ...prev, focus: update }));
+			// _cachePosition((prev) => ({ ...prev, focus: update }));
 			setF(update);
 		}
 	};
@@ -76,7 +76,7 @@ export const usePosition = (): [
 	const actions = {
 		setCursor,
 		setFocus,
-		loadPosition,
+		// loadPosition,
 	};
 
 	return [states, actions];
