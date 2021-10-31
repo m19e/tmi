@@ -3,6 +3,8 @@ import type { TwitterApi } from "twitter-api-v2";
 import type { UserConfig, Column, TimelineHintKey } from "../types";
 import { hintMap } from "../consts";
 
+export const twitterClientAtom = atom<TwitterApi | null>(null);
+
 export const userConfigAtom = atom<UserConfig>({
 	appKey: "",
 	appSecret: "",
@@ -10,8 +12,6 @@ export const userConfigAtom = atom<UserConfig>({
 	lists: [],
 	filePath: "",
 });
-
-export const twitterClientAtom = atom<TwitterApi | null>(null);
 
 export const columnMapAtom = atom(
 	new Map<string, Column>([
