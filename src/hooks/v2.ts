@@ -74,7 +74,7 @@ interface ListPaginator {
 export const useListPaginator = (): ListPaginator => {
 	const api = useApi();
 	const [, setTimeline] = useListTimeline();
-	const [currentList] = useCurrentList();
+	const [{ id_str: list_id }] = useCurrentList();
 	const [, setCursor] = useCursorIndex();
 	const [{ since_id, max_id }] = useAtom(listTimelineCursorsAtom);
 	const defaultParams: ListStatusesV1Params = {
@@ -94,7 +94,6 @@ export const useListPaginator = (): ListPaginator => {
 		return null;
 	};
 	const fetchFuture = async () => {
-		const { id_str: list_id } = currentList;
 		const res = await api.getListTweets({
 			...defaultParams,
 			list_id,
@@ -110,7 +109,6 @@ export const useListPaginator = (): ListPaginator => {
 		return null;
 	};
 	const fetchPast = async () => {
-		const { id_str: list_id } = currentList;
 		const res = await api.getListTweets({
 			...defaultParams,
 			list_id,
