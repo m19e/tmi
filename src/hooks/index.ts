@@ -10,7 +10,6 @@ import {
 	hintKeyAtom,
 	hintValueAtom,
 } from "../store";
-import { useListTimeline, useCursorIndex, useFocusIndex } from "./v2";
 
 interface ColumnMapActions {
 	set: (key: string, value: Column) => void;
@@ -52,9 +51,6 @@ export const useCurrentColumn = (): [
 	const [currentKey, setKey] = useAtom(currentColumnKeyAtom);
 	const [currentColumn] = useAtom(currentColumnValueAtom);
 	const [columns, actions] = useColumnMap();
-	const [listTL] = useListTimeline();
-	const [cursor] = useCursorIndex();
-	const [focus] = useFocusIndex();
 
 	const setColumnKey = (key: string) => {
 		if (columns.has(key)) {
