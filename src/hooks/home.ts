@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1TimelineParams } from "twitter-api-v2";
-import type { Column } from "../types";
 import { displayTweetsCountAtom } from "../store";
 import {
 	homeTimelineAtom,
@@ -12,7 +11,6 @@ import {
 	homeFocusedTweetAtom,
 	homeTimelineCursorsAtom,
 } from "../store/home";
-import { useCurrentColumn } from ".";
 import { useApi } from "./api";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
@@ -24,49 +22,30 @@ export const getFocusedTweet = () => useAtom(homeFocusedTweetAtom)[0];
 interface PositionActions {
 	setCursor: (update: SetStateAction<number>) => void | Promise<void>;
 	setFocus: (update: SetStateAction<number>) => void | Promise<void>;
-	// loadPosition: () => void;
 }
 
 export const usePosition = (): [
 	{ cursor: number; focus: number },
 	PositionActions
 ] => {
-	const [column, { updateColumn }] = useCurrentColumn();
 	const [cursor, setC] = useAtom(homeCursorIndexAtom);
 	const [focus, setF] = useAtom(homeFocusIndexAtom);
-
-	const _cachePosition = (update: SetStateAction<Column>) => {
-		if (typeof update === "function") {
-			const newColumn = update(column);
-			updateColumn(newColumn);
-		} else {
-			updateColumn(update);
-		}
-	};
 
 	const setCursor = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newC = update(cursor);
-			// _cachePosition((prev) => ({ ...prev, cursor: newC }));
 			setC(newC);
 		} else {
-			// _cachePosition((prev) => ({ ...prev, cursor: update }));
 			setC(update);
 		}
 	};
 	const setFocus = (update: SetStateAction<number>) => {
 		if (typeof update === "function") {
 			const newF = update(focus);
-			// _cachePosition((prev) => ({ ...prev, focus: newF }));
 			setF(newF);
 		} else {
-			// _cachePosition((prev) => ({ ...prev, focus: update }));
 			setF(update);
 		}
-	};
-	const loadPosition = () => {
-		setC(column.cursor);
-		setF(column.focus);
 	};
 
 	const states = {
@@ -76,7 +55,6 @@ export const usePosition = (): [
 	const actions = {
 		setCursor,
 		setFocus,
-		// loadPosition,
 	};
 
 	return [states, actions];
