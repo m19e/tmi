@@ -7,7 +7,11 @@ export const userConfigAtom = atom<UserConfig | null>(null);
 
 export const twitterClientAtom = atom<TwitterApi | null>(null);
 
-export const currentListAtom = atom<TrimmedList | null>(null);
+export const currentListAtom = atom<TrimmedList>({
+	id_str: "",
+	name: "",
+	mode: "public",
+});
 
 export const listTimelineAtom = atom<TweetV1[]>([]);
 
