@@ -97,10 +97,7 @@ export const useDisplayTweetsCount = (): [
 	return [count, { inc, dec }];
 };
 
-export const useListTimeline = (): [
-	Array<TweetV1>,
-	(update?: SetStateAction<Array<TweetV1>>) => void
-] => useAtom(listTimelineAtom);
+export const useListTimeline = () => useAtom(listTimelineAtom);
 
 type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
