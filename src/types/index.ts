@@ -7,14 +7,12 @@ interface CachedTimeline {
 	focus: number;
 }
 
-interface DefaultTimeline extends Omit<CachedTimeline, "timeline"> {}
-
 export type Column =
-	| ({ type: "home"; name: string } & DefaultTimeline)
-	| ({
+	| { type: "home"; name: string }
+	| {
 			type: "mentions";
 			name: string;
-	  } & DefaultTimeline)
+	  }
 	| ({
 			type: "list";
 			name: string;
