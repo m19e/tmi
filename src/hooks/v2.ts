@@ -1,9 +1,8 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
-import type { TwitterApi, TweetV1, ListStatusesV1Params } from "twitter-api-v2";
-import type { UserConfig, HandledResponseError } from "../types";
+import type { TweetV1, ListStatusesV1Params } from "twitter-api-v2";
+import type { HandledResponseError } from "../types";
 import type { TrimmedList } from "../types/twitter";
-import { twitterClientAtom, userConfigAtom } from "../store";
 import {
 	currentListAtom,
 	listTimelineAtom,
