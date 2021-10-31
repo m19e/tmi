@@ -41,10 +41,7 @@ export const useFocusIndex = () => useAtom(focusIndexAtom);
 
 export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
 
-export const useCurrentList = (): [
-	TrimmedList,
-	(update?: SetStateAction<TrimmedList>) => void
-] => useAtom(currentListAtom);
+export const useCurrentList = () => useAtom(currentListAtom);
 
 export const useListTimeline = (): [
 	Array<TweetV1>,
