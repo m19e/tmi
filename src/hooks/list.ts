@@ -17,6 +17,8 @@ import { useApi } from "./api";
 
 export const useCurrentList = () => useAtom(currentListAtom);
 
+export const useListTimeline = () => useAtom(listTimelineAtom);
+
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
 
 export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
@@ -94,10 +96,9 @@ export const useDisplayTweetsCount = (): [
 			setCount((c) => c - 1);
 		}
 	};
+
 	return [count, { inc, dec }];
 };
-
-export const useListTimeline = () => useAtom(listTimelineAtom);
 
 type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
