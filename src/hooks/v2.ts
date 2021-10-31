@@ -3,6 +3,7 @@ import type { SetStateAction } from "jotai";
 import type { TweetV1, ListStatusesV1Params } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import type { TrimmedList } from "../types/twitter";
+import { displayTweetsCountAtom } from "../store";
 import {
 	currentListAtom,
 	listTimelineAtom,
@@ -11,7 +12,6 @@ import {
 	focusedTweetAtom,
 	cursorIndexAtom,
 	focusIndexAtom,
-	displayTweetsCountAtom,
 } from "../store/v2";
 import { useApi } from "./api";
 

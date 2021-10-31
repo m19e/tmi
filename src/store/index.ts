@@ -22,6 +22,8 @@ export const currentColumnValueAtom = atom<Column>((get) => {
 	return map.get(key);
 });
 
+export const displayTweetsCountAtom = atom(5);
+
 export const requestResultAtom = atom<string | undefined>(undefined);
 
 export const errorAtom = atom<string | undefined>(undefined);

@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import type { TweetV1 } from "twitter-api-v2";
-import { displayTweetsCountAtom } from "./v2";
+import { displayTweetsCountAtom } from ".";
 
 export const homeTimelineAtom = atom<TweetV1[]>([]);
 
