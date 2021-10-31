@@ -2,7 +2,6 @@ import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1, ListStatusesV1Params } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
-import type { TrimmedList } from "../types/twitter";
 import { displayTweetsCountAtom } from "../store";
 import {
 	currentListAtom,
@@ -15,7 +14,15 @@ import {
 } from "../store/list";
 import { useApi } from "./api";
 
+export const useCurrentList = () => useAtom(currentListAtom);
+
+export const useCursorIndex = () => useAtom(cursorIndexAtom);
+
+export const useFocusIndex = () => useAtom(focusIndexAtom);
+
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
+
+export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
 
 export const useDisplayTweetsCount = (): [
 	number,
@@ -34,14 +41,6 @@ export const useDisplayTweetsCount = (): [
 	};
 	return [count, { inc, dec }];
 };
-
-export const useCursorIndex = () => useAtom(cursorIndexAtom);
-
-export const useFocusIndex = () => useAtom(focusIndexAtom);
-
-export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
-
-export const useCurrentList = () => useAtom(currentListAtom);
 
 export const useListTimeline = (): [
 	Array<TweetV1>,
