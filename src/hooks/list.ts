@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
-import type { TweetV1, ListStatusesV1Params } from "twitter-api-v2";
+import type { ListStatusesV1Params } from "twitter-api-v2";
 import type { Column, HandledResponseError } from "../types";
 import { displayTweetsCountAtom } from "../store";
 import {
