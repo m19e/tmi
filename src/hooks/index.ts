@@ -1,7 +1,10 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
-import type { Column, TimelineHintKey } from "../types";
+import type { TwitterApi } from "twitter-api-v2";
+import type { UserConfig, Column, TimelineHintKey } from "../types";
 import {
+	userConfigAtom,
+	twitterClientAtom,
 	columnMapAtom,
 	currentColumnKeyAtom,
 	currentColumnValueAtom,
@@ -10,6 +13,16 @@ import {
 	hintKeyAtom,
 	hintValueAtom,
 } from "../store";
+
+export const useUserConfig = (): [
+	UserConfig | null,
+	(update?: SetStateAction<UserConfig>) => void
+] => useAtom(userConfigAtom);
+
+export const useTwitterClient = (): [
+	TwitterApi | null,
+	(update?: SetStateAction<TwitterApi>) => void
+] => useAtom(twitterClientAtom);
 
 interface ColumnMapActions {
 	set: (key: string, value: Column) => void;

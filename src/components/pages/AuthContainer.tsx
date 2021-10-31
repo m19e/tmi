@@ -8,7 +8,7 @@ import TwitterApi from "twitter-api-v2";
 import type { TwitterApiTokens } from "twitter-api-v2";
 
 import type { UserConfig } from "../../types";
-import { useTwitterClient, useUserConfig } from "../../hooks/v2";
+import { useTwitterClient, useUserConfig } from "../../hooks";
 import PinAuthInput from "../molecules/PinAuthInput";
 
 config();

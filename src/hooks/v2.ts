@@ -16,16 +16,6 @@ import {
 } from "../store/v2";
 import { useApi } from "./api";
 
-export const useUserConfig = (): [
-	UserConfig | null,
-	(update?: SetStateAction<UserConfig>) => void
-] => useAtom(userConfigAtom);
-
-export const useTwitterClient = (): [
-	TwitterApi | null,
-	(update?: SetStateAction<TwitterApi>) => void
-] => useAtom(twitterClientAtom);
-
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
 
 export const useDisplayTweetsCount = (): [

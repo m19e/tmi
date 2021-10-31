@@ -4,12 +4,15 @@ import { Text, Box, useApp } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import { writeJSON } from "fs-extra";
 
-import type { GetListTweetsParams } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
-import { useError, useRequestResult, useHint } from "../../hooks";
-import { useApi } from "../../hooks/api";
 import {
 	useUserConfig,
+	useError,
+	useRequestResult,
+	useHint,
+} from "../../hooks";
+import { useApi } from "../../hooks/api";
+import {
 	useCurrentList,
 	useListTimeline,
 	useListPaginator,

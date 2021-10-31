@@ -6,8 +6,12 @@ import type { TweetV1 } from "twitter-api-v2";
 import { parseTweet, ParsedTweet } from "twitter-text";
 
 import type { TimelineProcess } from "../../types";
-import { useError, useRequestResult, useHint } from "../../hooks";
-import { useUserConfig } from "../../hooks/v2";
+import {
+	useUserConfig,
+	useError,
+	useRequestResult,
+	useHint,
+} from "../../hooks";
 import { useApi } from "../../hooks/api";
 import TweetItem from "../molecules/TweetItem";
 import SelectInput from "../molecules/SelectInput";
