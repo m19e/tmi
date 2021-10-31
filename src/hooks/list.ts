@@ -12,7 +12,7 @@ import {
 	focusedTweetAtom,
 	cursorIndexAtom,
 	focusIndexAtom,
-} from "../store/v2";
+} from "../store/list";
 import { useApi } from "./api";
 
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];

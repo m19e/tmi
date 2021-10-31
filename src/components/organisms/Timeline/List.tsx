@@ -13,7 +13,7 @@ import {
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
-} from "../../../hooks/v2";
+} from "../../../hooks/list";
 import Detail from "../../organisms/Detail";
 import TweetItem from "../../molecules/TweetItem";
 import NewTweetBox from "../../molecules/NewTweetBox";

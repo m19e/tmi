@@ -19,7 +19,7 @@ import {
 	useCursorIndex,
 	useFocusIndex,
 	useDisplayTweetsCount,
-} from "../../hooks/v2";
+} from "../../hooks/list";
 import { Timeline } from "./Timeline/List";
 import Footer from "./Footer";
 import SelectList from "../molecules/SelectList";
