@@ -3,7 +3,6 @@ import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1TimelineParams } from "twitter-api-v2";
 import type { Column } from "../types";
-import { convertTweetToDisplayable } from "../lib";
 import { displayTweetsCountAtom } from "../store/v2";
 import {
 	homeTimelineAtom,
