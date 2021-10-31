@@ -76,14 +76,15 @@ export const usePosition = (): [
 		setFocus,
 		loadPosition,
 	};
+
 	return [states, actions];
 };
 
 export const useHomePaginator = () => {
 	const api = useApi();
-	const [, setTimeline] = useHomeTimeline();
-	const [, { setCursor }] = usePosition();
-	const [{ since_id, max_id }] = useAtom(homeTimelineCursorsAtom);
+	const { since_id, max_id } = useAtom(homeTimelineCursorsAtom)[0];
+	const setTimeline = useHomeTimeline()[1];
+	const { setCursor } = usePosition()[1];
 
 	const [fetchableTime, setFetchableTime] = useState(0);
 	const updateFetchableTime = (now: number) =>
@@ -154,8 +155,9 @@ export const useDisplayTweetsCount = (): [
 	number,
 	{ inc: () => void; dec: () => void }
 ] => {
-	const [count, setCount] = useAtom(displayTweetsCountAtom);
 	const [{ focus }, { setFocus }] = usePosition();
+	const [count, setCount] = useAtom(displayTweetsCountAtom);
+
 	const inc = () => {
 		if (count < 20) setCount((c) => c + 1);
 	};
@@ -165,13 +167,14 @@ export const useDisplayTweetsCount = (): [
 			setCount((c) => c - 1);
 		}
 	};
+
 	return [count, { inc, dec }];
 };
 
 export const useMover = () => {
-	const [count] = useDisplayTweetsCount();
-	const [{ length }] = useHomeTimeline();
 	const [{ cursor, focus }, { setCursor, setFocus }] = usePosition();
+	const count = useDisplayTweetsCount()[0];
+	const { length } = useHomeTimeline()[0];
 
 	const mover = {
 		prev: (update: () => void) => {
