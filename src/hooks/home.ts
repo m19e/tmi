@@ -12,7 +12,7 @@ import {
 	homeFocusedTweetAtom,
 	homeTimelineCursorsAtom,
 } from "../store/home";
-import { useCurrentColumn } from "../hooks";
+import { useCurrentColumn } from ".";
 import { useApi } from "./api";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
