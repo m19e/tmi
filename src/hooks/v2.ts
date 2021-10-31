@@ -122,6 +122,7 @@ export const useListPaginator = (): ListPaginator => {
 		if (res.length) {
 			setTimeline((prev) => [...prev, ...res]);
 		}
+		return null;
 	};
 
 	return {
