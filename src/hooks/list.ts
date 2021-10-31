@@ -112,10 +112,11 @@ interface ListPaginator {
 
 export const useListPaginator = (): ListPaginator => {
 	const api = useApi();
-	const [, setTimeline] = useListTimeline();
-	const [{ id_str: list_id }] = useCurrentList();
-	const [, { setCursor }] = usePosition();
-	const [{ since_id, max_id }] = useAtom(listTimelineCursorsAtom);
+	const { id_str: list_id } = useCurrentList()[0];
+	const { since_id, max_id } = useAtom(listTimelineCursorsAtom)[0];
+	const { setCursor } = usePosition()[1];
+	const setTimeline = useListTimeline()[1];
+
 	const defaultParams: ListStatusesV1Params = {
 		count: 200,
 		tweet_mode: "extended",
