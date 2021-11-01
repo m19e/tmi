@@ -19,7 +19,6 @@ import {
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../../../hooks/home";
-import Footer from "../Footer";
 import TweetItem from "../../molecules/TweetItem";
 
 export const HomeTimeline = () => {
@@ -175,22 +174,19 @@ export const HomeTimeline = () => {
 		return <Text>Loading...</Text>;
 	}
 	return (
-		<>
-			<Box flexDirection="column" flexGrow={1}>
-				<Text>
-					cursor:{cursor} focus:{focus} total:{timeline.length}
-				</Text>
-				{displayTimeline.map((t) => (
-					<TweetItem
-						key={t.id_str}
-						tweet={t}
-						isFocused={t.id_str === focusedTweet.id_str}
-						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-					/>
-				))}
-			</Box>
-			<Footer />
-		</>
+		<Box flexDirection="column" flexGrow={1}>
+			<Text>
+				cursor:{cursor} focus:{focus} total:{timeline.length}
+			</Text>
+			{displayTimeline.map((t) => (
+				<TweetItem
+					key={t.id_str}
+					tweet={t}
+					isFocused={t.id_str === focusedTweet.id_str}
+					inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+					inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+				/>
+			))}
+		</Box>
 	);
 };
