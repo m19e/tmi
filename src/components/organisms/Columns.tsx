@@ -18,7 +18,7 @@ export const Columns: VFC = () => {
 		>
 			{[...columns.entries()].map(([key, column]) => (
 				<Tab key={key} name={key}>
-					{column.name} {column.cursor}:{column.focus}
+					{column.name}
 				</Tab>
 			))}
 		</TabsWithInput>
