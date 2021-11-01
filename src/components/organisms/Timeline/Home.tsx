@@ -98,9 +98,9 @@ export const HomeTimeline = () => {
 			mover.pageUp(() => update({ future: true }));
 		} else if (key.pageDown) {
 			mover.pageDown(() => update({ future: false }));
-		} else if (input === "0") {
+		} else if (input === "0" && !key.meta) {
 			mover.top();
-		} else if (input === "9") {
+		} else if (input === "9" && !key.meta) {
 			mover.bottom();
 		} else if (input === "+" || input === "=") {
 			countActions.inc();
