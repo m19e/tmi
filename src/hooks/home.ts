@@ -126,6 +126,7 @@ export const useHomePaginator = () => {
 			if (res.length) {
 				setTimeline((prev) => [...prev, ...res]);
 			}
+			return null;
 		});
 
 	return { fetch, fetchFuture, fetchPast };
