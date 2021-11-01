@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
+import type { TweetV1 } from "twitter-api-v2";
 import type { TimelineProcess } from "../../../types";
 import {
 	useCurrentColumn,
@@ -87,6 +88,51 @@ export const HomeTimeline = () => {
 		setInProcess("none");
 	};
 
+	const fav = async () => {
+		setInProcess("fav");
+		const { favorited, id_str } = focusedTweet;
+		const res = favorited
+			? await api.unfavorite(id_str)
+			: await api.favorite(id_str);
+
+		if (typeof res === "string") {
+			setError(res);
+		} else {
+			updateTweetInTimeline(res);
+			setRequestResult(
+				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
+		}
+		setInProcess("none");
+	};
+
+	const rt = async () => {
+		setInProcess("rt");
+		const { retweeted, id_str } = focusedTweet;
+		const res = retweeted
+			? await api.unretweet(id_str)
+			: await api.retweet(id_str);
+
+		if (typeof res === "string") {
+			setError(res);
+		} else {
+			updateTweetInTimeline(res);
+			setRequestResult(
+				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
+		}
+		setInProcess("none");
+	};
+
+	const updateTweetInTimeline = (newTweet: TweetV1) =>
+		setTimeline((prev) =>
+			prev.map((t) => (t.id_str === newTweet.id_str ? newTweet : t))
+		);
+
 	useInput((input, key) => {
 		if (inProcess !== "none") return;
 
@@ -107,9 +153,9 @@ export const HomeTimeline = () => {
 		} else if (input === "-" || input === "_") {
 			countActions.dec();
 		} else if (input === "t") {
-			// rt();
+			rt();
 		} else if (input === "f") {
-			// fav();
+			fav();
 		} else if (input === "n") {
 			// setRequestResult(undefined);
 			// setIsNewTweetOpen(true);
