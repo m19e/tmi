@@ -8,14 +8,14 @@ export const cursorIndexAtom = atom(0);
 
 export const focusIndexAtom = atom(0);
 
-export const displayMentionsAtom = atom<TweetV1[]>((get) => {
+export const displayTimelineAtom = atom<TweetV1[]>((get) => {
 	const cursor = get(cursorIndexAtom);
 	const count = get(displayTweetsCountAtom);
 	return get(timelineAtom).slice(cursor, cursor + count);
 });
 
 export const focusedTweetAtom = atom<TweetV1>(
-	(get) => get(displayMentionsAtom)[get(focusIndexAtom)]
+	(get) => get(displayTimelineAtom)[get(focusIndexAtom)]
 );
 
 export const pagingCursorsAtom = atom<{ since_id: string; max_id: string }>(
