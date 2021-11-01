@@ -75,7 +75,7 @@ export const useCurrentColumn = (): [
 	return [currentColumn, { setColumnKey, updateColumn }];
 };
 
-export const useDisplayTweetCount = () => useAtom(displayTweetsCountAtom);
+export const useDisplayTweetsCount = () => useAtom(displayTweetsCountAtom);
 
 export const useRequestResult = (): [
 	string | undefined,
