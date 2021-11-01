@@ -95,9 +95,9 @@ export const HomeTimeline = () => {
 		} else if (key.downArrow || key.tab) {
 			mover.next(() => update({ future: false }));
 		} else if (key.pageUp) {
-			mover.pageUp(() => {});
+			mover.pageUp(() => update({ future: true }));
 		} else if (key.pageDown) {
-			mover.pageDown(() => {});
+			mover.pageDown(() => update({ future: false }));
 		} else if (input === "0") {
 			mover.top();
 		} else if (input === "9") {
