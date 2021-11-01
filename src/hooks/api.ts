@@ -5,9 +5,9 @@ import type {
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
-import { useTwitterClient } from "../hooks";
 import { convertTweetToDisplayable } from "../lib";
 import { handleResponseError } from "../lib/helpers";
+import { useTwitterClient } from "../hooks";
 
 type PromiseWithError<T> = Promise<T | HandledResponseError>;
 type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
