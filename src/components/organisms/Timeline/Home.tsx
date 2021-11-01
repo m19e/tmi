@@ -278,9 +278,6 @@ export const HomeTimeline = () => {
 		return (
 			<>
 				<Box flexDirection="column" flexGrow={1}>
-					<Text>
-						cursor:{cursor} focus:{focus} total:{timeline.length}
-					</Text>
 					{displayTimeline.map((t) => (
 						<TweetItem
 							key={t.id_str}
