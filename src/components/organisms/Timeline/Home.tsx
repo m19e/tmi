@@ -36,9 +36,7 @@ export const HomeTimeline = () => {
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
 
-	const [status, setStatus] = useState<"init" | "timeline" | "detail">(
-		"timeline"
-	);
+	const [status, setStatus] = useState<"init" | "timeline" | "detail">("init");
 	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [waitReturn, setWaitReturn] = useState(false);
@@ -127,7 +125,7 @@ export const HomeTimeline = () => {
 		setParsedTweet(parseTweet(text));
 	};
 
-	if (status === "init" || !focusedTweet) {
+	if (status === "init") {
 		return <Text>Loading...</Text>;
 	}
 	return (
