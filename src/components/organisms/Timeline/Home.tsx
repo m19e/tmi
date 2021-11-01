@@ -165,7 +165,7 @@ export const HomeTimeline = () => {
 		}
 	}, {});
 
-	const handleTweetText = (text: string) => {
+	const handleNewTweetChange = (text: string) => {
 		setTweetText(text);
 		setParsedTweet(parseTweet(text));
 	};
