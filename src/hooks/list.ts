@@ -2,7 +2,6 @@ import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { ListStatusesV1Params } from "twitter-api-v2";
 import type { Column, HandledResponseError } from "../types";
-import { displayTweetsCountAtom } from "../store";
 import {
 	currentListAtom,
 	listTimelineAtom,
@@ -12,7 +11,7 @@ import {
 	cursorIndexAtom,
 	focusIndexAtom,
 } from "../store/list";
-import { useCurrentColumn } from ".";
+import { useCurrentColumn, useDisplayTweetsCount as useCountRoot } from ".";
 import { useApi } from "./api";
 
 export const useCurrentList = () => useAtom(currentListAtom);
@@ -88,7 +87,7 @@ export const useDisplayTweetsCount = (): [
 	{ inc: () => void; dec: () => void }
 ] => {
 	const [{ focus }, { setFocus }] = usePosition();
-	const [count, setCount] = useAtom(displayTweetsCountAtom);
+	const [count, setCount] = useCountRoot();
 
 	const inc = () => {
 		if (count < 20) setCount((c) => c + 1);
@@ -181,7 +180,7 @@ export const useMover = (): {
 } => {
 	const [{ cursor, focus }, { setCursor, setFocus }] = usePosition();
 	const { length } = useListTimeline()[0];
-	const count = useAtom(displayTweetsCountAtom)[0];
+	const count = useCountRoot()[0];
 
 	const prev = (update: () => void) => {
 		if (focus === 0) {

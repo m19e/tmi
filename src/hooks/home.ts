@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1TimelineParams } from "twitter-api-v2";
-import { displayTweetsCountAtom } from "../store";
 import {
 	homeTimelineAtom,
 	displayHomeTimelineAtom,
@@ -11,6 +10,7 @@ import {
 	homeFocusedTweetAtom,
 	homeTimelineCursorsAtom,
 } from "../store/home";
+import { useDisplayTweetsCount as useCountRoot } from ".";
 import { useApi } from "./api";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
@@ -136,7 +136,7 @@ export const useDisplayTweetsCount = (): [
 	{ inc: () => void; dec: () => void }
 ] => {
 	const [{ focus }, { setFocus }] = usePosition();
-	const [count, setCount] = useAtom(displayTweetsCountAtom);
+	const [count, setCount] = useCountRoot();
 
 	const inc = () => {
 		if (count < 20) setCount((c) => c + 1);
