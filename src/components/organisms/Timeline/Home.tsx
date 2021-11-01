@@ -20,6 +20,7 @@ import {
 	getFocusedTweet,
 } from "../../../hooks/home";
 import TweetItem from "../../molecules/TweetItem";
+import NewTweetBox from "../../molecules/NewTweetBox";
 
 export const HomeTimeline = () => {
 	const [, setError] = useError();
@@ -57,10 +58,12 @@ export const HomeTimeline = () => {
 					if (typeof res === "string") {
 						// setError(res)
 					}
+					setHintKey("timeline");
 					setStatus("timeline");
 				};
 				init();
 			} else {
+				setHintKey("timeline");
 				setStatus("timeline");
 			}
 		}
@@ -127,66 +130,128 @@ export const HomeTimeline = () => {
 		setInProcess("none");
 	};
 
+	const newTweet = async () => {
+		if (!valid) return;
+		setInProcess("tweet");
+		const err = await api.tweet(tweetText);
+		if (typeof err === "string") {
+			setError(err);
+		} else {
+			setIsNewTweetOpen(false);
+			setRequestResult(`Successfully tweeted: "${tweetText}"`);
+			handleNewTweetChange("");
+			setHintKey("timeline");
+		}
+		setWaitReturn(false);
+		setInProcess("none");
+	};
+
 	const updateTweetInTimeline = (newTweet: TweetV1) =>
 		setTimeline((prev) =>
 			prev.map((t) => (t.id_str === newTweet.id_str ? newTweet : t))
 		);
 
-	useInput((input, key) => {
-		if (inProcess !== "none") return;
+	useInput(
+		(input, key) => {
+			if (inProcess !== "none") return;
 
-		if (key.upArrow || (key.shift && key.tab)) {
-			mover.prev(() => update({ future: true }));
-		} else if (key.downArrow || key.tab) {
-			mover.next(() => update({ future: false }));
-		} else if (key.pageUp) {
-			mover.pageUp(() => update({ future: true }));
-		} else if (key.pageDown) {
-			mover.pageDown(() => update({ future: false }));
-		} else if (input === "0" && !key.meta) {
-			mover.top();
-		} else if (input === "9" && !key.meta) {
-			mover.bottom();
-		} else if (input === "+" || input === "=") {
-			countActions.inc();
-		} else if (input === "-" || input === "_") {
-			countActions.dec();
-		} else if (input === "t") {
-			rt();
-		} else if (input === "f") {
-			fav();
-		} else if (input === "n") {
-			// setRequestResult(undefined);
-			// setIsNewTweetOpen(true);
-			// setHintKey("timeline/new/input");
-		} else if (key.return) {
-			// setStatus("detail");
-			// setHintKey("timeline/detail");
-		}
-	}, {});
+			if (key.upArrow || (key.shift && key.tab)) {
+				mover.prev(() => update({ future: true }));
+			} else if (key.downArrow || key.tab) {
+				mover.next(() => update({ future: false }));
+			} else if (key.pageUp) {
+				mover.pageUp(() => update({ future: true }));
+			} else if (key.pageDown) {
+				mover.pageDown(() => update({ future: false }));
+			} else if (input === "0" && !key.meta) {
+				mover.top();
+			} else if (input === "9" && !key.meta) {
+				mover.bottom();
+			} else if (input === "+" || input === "=") {
+				countActions.inc();
+			} else if (input === "-" || input === "_") {
+				countActions.dec();
+			} else if (input === "t") {
+				rt();
+			} else if (input === "f") {
+				fav();
+			} else if (input === "n") {
+				setRequestResult(undefined);
+				setIsNewTweetOpen(true);
+				setHintKey("timeline/new/input");
+			} else if (key.return) {
+				// setStatus("detail");
+				// setHintKey("timeline/detail");
+			}
+		},
+		{ isActive: status === "timeline" && !isNewTweetOpen }
+	);
+
+	useInput(
+		(_, key) => {
+			if (inProcess !== "none") return;
+
+			if (key.escape && waitReturn) {
+				setWaitReturn(false);
+				setHintKey("timeline/new/input");
+			} else if (key.escape) {
+				// Avoid warning: state update on an unmounted TextInput
+				// Maybe caused by Node.js (single-threaded)?
+				// setTimeout(() => {
+				handleNewTweetChange("");
+				setIsNewTweetOpen(false);
+				setHintKey("timeline");
+				// });
+			} else if (key.return && waitReturn) {
+				newTweet();
+			}
+		},
+		{ isActive: status === "timeline" && isNewTweetOpen }
+	);
 
 	const handleNewTweetChange = (text: string) => {
 		setTweetText(text);
 		setParsedTweet(parseTweet(text));
 	};
 
+	const handleWaitReturn = () => {
+		setWaitReturn(valid);
+		if (valid) setHintKey("timeline/new/wait-return");
+	};
+
 	if (status === "init") {
 		return <Text>Loading...</Text>;
 	}
 	return (
-		<Box flexDirection="column" flexGrow={1}>
-			<Text>
-				cursor:{cursor} focus:{focus} total:{timeline.length}
-			</Text>
-			{displayTimeline.map((t) => (
-				<TweetItem
-					key={t.id_str}
-					tweet={t}
-					isFocused={t.id_str === focusedTweet.id_str}
-					inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-					inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+		<>
+			<Box flexDirection="column" flexGrow={1}>
+				<Text>
+					cursor:{cursor} focus:{focus} total:{timeline.length}
+				</Text>
+				{displayTimeline.map((t) => (
+					<TweetItem
+						key={t.id_str}
+						tweet={t}
+						isFocused={t.id_str === focusedTweet.id_str}
+						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+					/>
+				))}
+			</Box>
+			{isNewTweetOpen && (
+				<NewTweetBox
+					type="new"
+					loading={inProcess === "tweet"}
+					tweet={focusedTweet}
+					invalid={!valid && weightedLength !== 0}
+					length={weightedLength}
+					placeholder="What's happening?"
+					focus={!waitReturn}
+					value={tweetText}
+					onChange={handleNewTweetChange}
+					onSubmit={handleWaitReturn}
 				/>
-			))}
-		</Box>
+			)}
+		</>
 	);
 };
