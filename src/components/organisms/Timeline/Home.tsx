@@ -207,6 +207,20 @@ export const HomeTimeline = () => {
 		{ isActive: status === "timeline" && isNewTweetOpen }
 	);
 
+	useInput(
+		(input, key) => {
+			if (key.escape) {
+				setStatus("timeline");
+				setHintKey("timeline");
+			} else if (input === "t") {
+				rt();
+			} else if (input === "f") {
+				fav();
+			}
+		},
+		{ isActive: status === "detail" && !isTweetInDetailOpen }
+	);
+
 	const handleMention = () => {
 		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
 		setRequestResult(undefined);
@@ -250,49 +264,57 @@ export const HomeTimeline = () => {
 	if (status === "init") {
 		return <Text>Loading...</Text>;
 	}
-	if (status === "detail") {
-		return (
-			<Detail
-				tweet={focusedTweet}
-				onMention={handleMention}
-				onRemove={handleRemoveFocusedTweet}
-				isTweetOpen={isTweetInDetailOpen}
-				setIsTweetOpen={setIsTweetInDetailOpen}
-				inProcess={inProcess}
-				setInProcess={setInProcess}
-			/>
-		);
-	}
 	return (
 		<>
-			<Box flexDirection="column" flexGrow={1}>
-				<Text>
-					cursor:{cursor} focus:{focus} total:{timeline.length}
-				</Text>
-				{displayTimeline.map((t) => (
-					<TweetItem
-						key={t.id_str}
-						tweet={t}
-						isFocused={t.id_str === focusedTweet.id_str}
-						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-					/>
-				))}
-			</Box>
-			{isNewTweetOpen && (
-				<NewTweetBox
-					type="new"
-					loading={inProcess === "tweet"}
-					tweet={focusedTweet}
-					invalid={!valid && weightedLength !== 0}
-					length={weightedLength}
-					placeholder="What's happening?"
-					focus={!waitReturn}
-					value={tweetText}
-					onChange={handleNewTweetChange}
-					onSubmit={handleWaitReturn}
-				/>
-			)}
+			{(() => {
+				if (status === "detail") {
+					return (
+						<Detail
+							tweet={focusedTweet}
+							onMention={handleMention}
+							onRemove={handleRemoveFocusedTweet}
+							isTweetOpen={isTweetInDetailOpen}
+							setIsTweetOpen={setIsTweetInDetailOpen}
+							inProcess={inProcess}
+							setInProcess={setInProcess}
+						/>
+					);
+				}
+				return (
+					<>
+						<Box flexDirection="column" flexGrow={1}>
+							<Text>
+								cursor:{cursor} focus:{focus} total:{timeline.length}
+							</Text>
+							{displayTimeline.map((t) => (
+								<TweetItem
+									key={t.id_str}
+									tweet={t}
+									isFocused={t.id_str === focusedTweet.id_str}
+									inFav={
+										t.id_str === focusedTweet.id_str && inProcess === "fav"
+									}
+									inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+								/>
+							))}
+						</Box>
+						{isNewTweetOpen && (
+							<NewTweetBox
+								type="new"
+								loading={inProcess === "tweet"}
+								tweet={focusedTweet}
+								invalid={!valid && weightedLength !== 0}
+								length={weightedLength}
+								placeholder="What's happening?"
+								focus={!waitReturn}
+								value={tweetText}
+								onChange={handleNewTweetChange}
+								onSubmit={handleWaitReturn}
+							/>
+						)}
+					</>
+				);
+			})()}
 			<Footer />
 		</>
 	);
