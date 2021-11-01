@@ -3,6 +3,7 @@ import type { SetStateAction } from "jotai";
 import type { TweetV1TimelineParams } from "twitter-api-v2";
 import {
 	displayTimelineAtom,
+	focusedTweetAtom,
 	pagingCursorsAtom,
 	timelineAtom,
 	cursorIndexAtom,
@@ -12,6 +13,8 @@ import { useDisplayTweetsCount as useRootCount } from ".";
 import { useApi } from "./api";
 
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
+
+export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
 
 export const getPagingCursors = () => useAtom(pagingCursorsAtom)[0];
 
