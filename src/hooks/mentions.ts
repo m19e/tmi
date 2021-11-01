@@ -16,8 +16,6 @@ export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
 
 export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
 
-export const getPagingCursors = () => useAtom(pagingCursorsAtom)[0];
-
 export const useTimeline = () => useAtom(timelineAtom);
 
 export const usePosition = (): [
@@ -139,7 +137,7 @@ export const useMover = () => {
 
 export const useMentionsPaginator = () => {
 	const api = useApi();
-	const { since_id, max_id } = getPagingCursors();
+	const { since_id, max_id } = useAtom(pagingCursorsAtom)[0];
 	const setTimeline = useTimeline()[1];
 	const { setCursor } = usePosition()[1];
 
