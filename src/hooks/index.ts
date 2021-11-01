@@ -8,6 +8,7 @@ import {
 	columnMapAtom,
 	currentColumnKeyAtom,
 	currentColumnValueAtom,
+	displayTweetsCountAtom,
 	requestResultAtom,
 	errorAtom,
 	hintKeyAtom,
@@ -73,6 +74,8 @@ export const useCurrentColumn = (): [
 
 	return [currentColumn, { setColumnKey, updateColumn }];
 };
+
+export const useDisplayTweetCount = () => useAtom(displayTweetsCountAtom);
 
 export const useRequestResult = (): [
 	string | undefined,
