@@ -195,13 +195,9 @@ export const HomeTimeline = () => {
 				setWaitReturn(false);
 				setHintKey("timeline/new/input");
 			} else if (key.escape) {
-				// Avoid warning: state update on an unmounted TextInput
-				// Maybe caused by Node.js (single-threaded)?
-				// setTimeout(() => {
 				handleNewTweetChange("");
 				setIsNewTweetOpen(false);
 				setHintKey("timeline");
-				// });
 			} else if (key.return && waitReturn) {
 				newTweet();
 			}
