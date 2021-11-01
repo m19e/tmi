@@ -25,25 +25,8 @@ export const usePosition = (): [
 		setFocus: (update?: SetStateAction<number>) => void | Promise<void>;
 	}
 ] => {
-	const [cursor, setC] = useAtom(cursorIndexAtom);
-	const [focus, setF] = useAtom(focusIndexAtom);
-
-	const setCursor = (update?: SetStateAction<number>) => {
-		if (typeof update === "function") {
-			const newC = update(cursor);
-			setC(newC);
-		} else {
-			setC(update);
-		}
-	};
-	const setFocus = (update?: SetStateAction<number>) => {
-		if (typeof update === "function") {
-			const newF = update(focus);
-			setF(newF);
-		} else {
-			setF(update);
-		}
-	};
+	const [cursor, setCursor] = useAtom(cursorIndexAtom);
+	const [focus, setFocus] = useAtom(focusIndexAtom);
 
 	const states = {
 		cursor,
