@@ -67,8 +67,10 @@ export const usePosition = (): [
 		}
 	};
 	const loadPosition = () => {
-		setC(currentColumn.cursor);
-		setF(currentColumn.focus);
+		if (currentColumn.type === "list") {
+			setC(currentColumn.cursor);
+			setF(currentColumn.focus);
+		}
 	};
 
 	const states = { cursor, focus };
