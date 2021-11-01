@@ -5,7 +5,6 @@ import { useHint } from "../../hooks";
 import { ColumnController } from "../organisms/ColumnController";
 import { Columns } from "../organisms/Columns";
 import { ColumnSwitcher } from "../organisms/ColumnSwitcher";
-import Footer from "../organisms/Footer";
 
 export const ColumnsTemplate = () => {
 	const [, rows] = useDimensions();
@@ -37,7 +36,6 @@ const ColumnContainer = () => {
 			<>
 				<Columns />
 				<ColumnSwitcher />
-				<Footer />
 			</>
 		);
 	}

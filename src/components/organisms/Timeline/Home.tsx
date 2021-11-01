@@ -19,6 +19,8 @@ import {
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../../../hooks/home";
+import Detail from "../Detail";
+import Footer from "../Footer";
 import TweetItem from "../../molecules/TweetItem";
 import NewTweetBox from "../../molecules/NewTweetBox";
 
@@ -180,8 +182,8 @@ export const HomeTimeline = () => {
 				setIsNewTweetOpen(true);
 				setHintKey("timeline/new/input");
 			} else if (key.return) {
-				// setStatus("detail");
-				// setHintKey("timeline/detail");
+				setStatus("detail");
+				setHintKey("timeline/detail");
 			}
 		},
 		{ isActive: status === "timeline" && !isNewTweetOpen }
@@ -205,6 +207,36 @@ export const HomeTimeline = () => {
 		{ isActive: status === "timeline" && isNewTweetOpen }
 	);
 
+	const handleMention = () => {
+		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
+		setRequestResult(undefined);
+		setIsNewTweetOpen(true);
+		setStatus("timeline");
+		setHintKey("timeline");
+	};
+
+	const handleRemoveFocusedTweet = (
+		{
+			redraft,
+		}: {
+			redraft: boolean;
+		} = { redraft: false }
+	) => {
+		if (redraft) {
+			handleNewTweetChange(focusedTweet.full_text);
+			setIsNewTweetOpen(true);
+		}
+		setTimeline((prev) =>
+			prev.filter((tw) => tw.id_str !== focusedTweet.id_str)
+		);
+		setStatus("timeline");
+		if (redraft) {
+			setHintKey("timeline/new/input");
+		} else {
+			setHintKey("timeline");
+		}
+	};
+
 	const handleNewTweetChange = (text: string) => {
 		setTweetText(text);
 		setParsedTweet(parseTweet(text));
@@ -217,6 +249,19 @@ export const HomeTimeline = () => {
 
 	if (status === "init") {
 		return <Text>Loading...</Text>;
+	}
+	if (status === "detail") {
+		return (
+			<Detail
+				tweet={focusedTweet}
+				onMention={handleMention}
+				onRemove={handleRemoveFocusedTweet}
+				isTweetOpen={isTweetInDetailOpen}
+				setIsTweetOpen={setIsTweetInDetailOpen}
+				inProcess={inProcess}
+				setInProcess={setInProcess}
+			/>
+		);
 	}
 	return (
 		<>
@@ -248,6 +293,7 @@ export const HomeTimeline = () => {
 					onSubmit={handleWaitReturn}
 				/>
 			)}
+			<Footer />
 		</>
 	);
 };
