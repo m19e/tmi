@@ -275,6 +275,21 @@ export const HomeTimeline = () => {
 				/>
 			);
 		}
+		if (loadingTimeline.length) {
+			return (
+				<Box flexDirection="column" flexGrow={1}>
+					{loadingTimeline.map((t) => (
+						<TweetItem
+							key={t.id_str}
+							tweet={t}
+							isFocused={t.id_str === focusedTweet.id_str}
+							inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+							inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+						/>
+					))}
+				</Box>
+			);
+		}
 		return (
 			<>
 				<Box flexDirection="column" flexGrow={1}>
