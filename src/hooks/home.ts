@@ -10,7 +10,7 @@ import {
 	homeFocusedTweetAtom,
 	homeTimelineCursorsAtom,
 } from "../store/home";
-import { useDisplayTweetsCount as useCountRoot } from ".";
+import { useDisplayTweetsCount as useRootCount } from ".";
 import { useApi } from "./api";
 
 export const useHomeTimeline = () => useAtom(homeTimelineAtom);
@@ -137,7 +137,7 @@ export const useDisplayTweetsCount = (): [
 	{ inc: () => void; dec: () => void }
 ] => {
 	const [{ focus }, { setFocus }] = usePosition();
-	const [count, setCount] = useCountRoot();
+	const [count, setCount] = useRootCount();
 
 	const inc = () => {
 		if (count < 20) setCount((c) => c + 1);
