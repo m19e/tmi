@@ -52,7 +52,10 @@ export const HomeTimeline = () => {
 
 	useEffect(() => {
 		if (column.type === "home") {
-			if (!timeline.length) {
+			if (timeline.length) {
+				setHintKey("timeline");
+				setStatus("timeline");
+			} else {
 				const init = async () => {
 					const res = await paginator.fetch();
 					if (typeof res === "string") {
@@ -62,9 +65,6 @@ export const HomeTimeline = () => {
 					setStatus("timeline");
 				};
 				init();
-			} else {
-				setHintKey("timeline");
-				setStatus("timeline");
 			}
 		}
 	}, [column.type]);
