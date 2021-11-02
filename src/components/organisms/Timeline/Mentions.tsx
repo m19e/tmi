@@ -12,7 +12,6 @@ import {
 import { useApi } from "../../../hooks/api";
 import {
 	useTimeline,
-	usePosition,
 	useDisplayTweetsCount,
 	useMover,
 	useMentionsPaginator,
