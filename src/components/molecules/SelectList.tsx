@@ -24,7 +24,7 @@ const SelectList: VFC<Props> = ({ lists, onSelect }) => {
 
 	return (
 		<Box flexDirection="column">
-			<Text>Select list to display.</Text>
+			{/* <Text>Select list to display.</Text> */}
 			<SelectInput items={items} onSelect={onSelect} />
 		</Box>
 	);
