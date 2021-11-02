@@ -12,7 +12,6 @@ import {
 import { useApi } from "../../../hooks/api";
 import {
 	useHomeTimeline,
-	usePosition,
 	useMover,
 	useHomePaginator,
 	useDisplayTweetsCount,
@@ -34,7 +33,6 @@ export const HomeTimeline = () => {
 	const paginator = useHomePaginator();
 	const [column] = useCurrentColumn();
 	const [timeline, setTimeline] = useHomeTimeline();
-	const [{ cursor, focus }] = usePosition();
 	const [, countActions] = useDisplayTweetsCount();
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
