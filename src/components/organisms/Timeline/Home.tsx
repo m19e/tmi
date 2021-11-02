@@ -53,16 +53,16 @@ export const HomeTimeline = () => {
 	useEffect(() => {
 		if (column.type === "home") {
 			if (timeline.length) {
-				setHintKey("timeline");
 				setStatus("timeline");
+				setHintKey("timeline");
 			} else {
 				const init = async () => {
 					const res = await paginator.fetch();
 					if (typeof res === "string") {
 						setError(res);
 					}
-					setHintKey("timeline");
 					setStatus("timeline");
+					setHintKey("timeline");
 				};
 				init();
 			}
@@ -94,7 +94,6 @@ export const HomeTimeline = () => {
 		const res = favorited
 			? await api.unfavorite(id_str)
 			: await api.favorite(id_str);
-
 		if (typeof res === "string") {
 			setError(res);
 		} else {
@@ -114,7 +113,6 @@ export const HomeTimeline = () => {
 		const res = retweeted
 			? await api.unretweet(id_str)
 			: await api.retweet(id_str);
-
 		if (typeof res === "string") {
 			setError(res);
 		} else {
