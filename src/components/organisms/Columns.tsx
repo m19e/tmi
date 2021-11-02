@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import type { VFC } from "react";
 import { Box } from "ink";
 import { TabsWithInput, Tab } from "../InkTab";
@@ -8,8 +8,9 @@ export const Columns: VFC = () => {
 	const [columns] = useColumnMap();
 	const [, { setColumnKey }] = useCurrentColumn();
 	const [{ key: hintKey }] = useHint();
+	const canToggleColumn = useMemo(() => hintKey === "timeline", [hintKey]);
+
 	const handleTabsChange = (key: string) => setColumnKey(key);
-	const canToggleColumn = true;
 
 	return (
 		<Box paddingBottom={1}>
