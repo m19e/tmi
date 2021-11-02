@@ -56,7 +56,7 @@ export const HomeTimeline = () => {
 				const init = async () => {
 					const res = await paginator.fetch();
 					if (typeof res === "string") {
-						// setError(res)
+						setError(res);
 					}
 					setHintKey("timeline");
 					setStatus("timeline");
