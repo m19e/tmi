@@ -104,7 +104,7 @@ export const useDisplayTweetsCount = (): [
 
 type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
-interface ListPaginator {
+export interface ListPaginator {
 	fetch: (params: { list_id: string }) => PromiseWithErrorMessage<null>;
 	fetchFuture: () => PromiseWithErrorMessage<null>;
 	fetchPast: () => PromiseWithErrorMessage<null>;
