@@ -52,7 +52,7 @@ export const HomeTimeline = () => {
 
 	useEffect(() => {
 		if (column.type === "home") {
-			if (timeline.length) {
+			if (focusedTweet) {
 				setStatus("timeline");
 				setHintKey("timeline");
 			} else {

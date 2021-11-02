@@ -52,7 +52,7 @@ export const MentionsTimeline = () => {
 
 	useEffect(() => {
 		if (column.type === "mentions") {
-			if (timeline.length) {
+			if (focusedTweet) {
 				setStatus("timeline");
 				setHintKey("timeline");
 			} else {
