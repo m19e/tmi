@@ -1,17 +1,17 @@
 import React from "react";
 import { useCurrentColumn } from "../../hooks";
 import { List } from "./List";
-import { HomeTimeline as Home } from "./Timeline/Home";
-import { MentionsTimeline as Mentions } from "./Timeline/Mentions";
+import { HomeProvider } from "./Provider/Home";
+import { MentionsProvider } from "./Provider/Mentions";
 
 export const ColumnSwitcher = () => {
 	const [{ type }] = useCurrentColumn();
 
 	switch (type) {
 		case "home":
-			return <Home />;
+			return <HomeProvider />;
 		case "mentions":
-			return <Mentions />;
+			return <MentionsProvider />;
 		case "list":
 			return <List />;
 		default:
