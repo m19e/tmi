@@ -1,8 +1,8 @@
 import React from "react";
 import { useCurrentColumn } from "../../hooks";
-import { List } from "./List";
 import { HomeProvider } from "./Provider/Home";
 import { MentionsProvider } from "./Provider/Mentions";
+import { ListProvider } from "./Provider/List";
 
 export const ColumnSwitcher = () => {
 	const [{ type }] = useCurrentColumn();
@@ -13,7 +13,7 @@ export const ColumnSwitcher = () => {
 		case "mentions":
 			return <MentionsProvider />;
 		case "list":
-			return <List />;
+			return <ListProvider />;
 		default:
 			return null;
 	}
