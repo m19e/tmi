@@ -52,3 +52,18 @@ export type TimelineHintKey =
 	| "timeline"
 	| `timeline/${TimelineStatus}`
 	| `timeline/${DetailStatus}`;
+
+export interface Paginator {
+	fetch: () => Promise<string>;
+	fetchFuture: () => Promise<string>;
+	fetchPast: () => Promise<string>;
+}
+
+export interface Mover {
+	prev: (update: () => void) => void;
+	next: (update: () => void) => void;
+	pageUp: (update: () => void) => void;
+	pageDown: (update: () => void) => void;
+	top: () => void;
+	bottom: () => void;
+}
