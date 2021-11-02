@@ -43,78 +43,6 @@ export const usePosition = (): [
 	return [states, actions];
 };
 
-export const useHomePaginator = () => {
-	const api = useApi();
-	const { since_id, max_id } = useAtom(homeTimelineCursorsAtom)[0];
-	const setTimeline = useHomeTimeline()[1];
-	const { setCursor } = usePosition()[1];
-
-	const [fetchableTime, setFetchableTime] = useState(0);
-	const updateFetchableTime = (now: number) =>
-		setFetchableTime(now + 60 * 1000);
-
-	const defaultParams: TweetV1TimelineParams = {
-		count: 200,
-		tweet_mode: "extended",
-		include_entities: true,
-	};
-
-	const _fetchWithLimit = async (fetcher: () => Promise<string | null>) => {
-		const now = Date.now();
-		if (now < fetchableTime) {
-			return `Fetch limit will reset after ${Math.floor(
-				(fetchableTime - now) / 1000
-			)} seconds`;
-		}
-		updateFetchableTime(now);
-
-		return await fetcher();
-	};
-
-	const fetch = async () =>
-		await _fetchWithLimit(async () => {
-			const res = await api.getHomeTweets(defaultParams);
-			if (typeof res === "string") {
-				return res;
-			}
-			if (res.length) {
-				setTimeline(res);
-			}
-			return null;
-		});
-	const fetchFuture = async () =>
-		await _fetchWithLimit(async () => {
-			const res = await api.getHomeTweets({
-				...defaultParams,
-				since_id,
-			});
-			if (typeof res === "string") {
-				return res;
-			}
-			if (res.length) {
-				setCursor((prev) => prev + res.length);
-				setTimeline((prev) => [...res, ...prev]);
-			}
-			return null;
-		});
-	const fetchPast = async () =>
-		await _fetchWithLimit(async () => {
-			const res = await api.getHomeTweets({
-				...defaultParams,
-				max_id,
-			});
-			if (typeof res === "string") {
-				return res;
-			}
-			if (res.length) {
-				setTimeline((prev) => [...prev, ...res]);
-			}
-			return null;
-		});
-
-	return { fetch, fetchFuture, fetchPast };
-};
-
 export const useDisplayTweetsCount = (): [
 	number,
 	{ inc: () => void; dec: () => void }
@@ -192,4 +120,76 @@ export const useMover = () => {
 	};
 
 	return mover;
+};
+
+export const useHomePaginator = () => {
+	const api = useApi();
+	const { since_id, max_id } = useAtom(homeTimelineCursorsAtom)[0];
+	const setTimeline = useHomeTimeline()[1];
+	const { setCursor } = usePosition()[1];
+
+	const [fetchableTime, setFetchableTime] = useState(0);
+	const updateFetchableTime = (now: number) =>
+		setFetchableTime(now + 60 * 1000);
+
+	const defaultParams: TweetV1TimelineParams = {
+		count: 200,
+		tweet_mode: "extended",
+		include_entities: true,
+	};
+
+	const _fetchWithLimit = async (fetcher: () => Promise<string | null>) => {
+		const now = Date.now();
+		if (now < fetchableTime) {
+			return `Fetch limit will reset after ${Math.floor(
+				(fetchableTime - now) / 1000
+			)} seconds`;
+		}
+		updateFetchableTime(now);
+
+		return await fetcher();
+	};
+
+	const fetch = async () =>
+		await _fetchWithLimit(async () => {
+			const res = await api.getHomeTweets(defaultParams);
+			if (typeof res === "string") {
+				return res;
+			}
+			if (res.length) {
+				setTimeline(res);
+			}
+			return null;
+		});
+	const fetchFuture = async () =>
+		await _fetchWithLimit(async () => {
+			const res = await api.getHomeTweets({
+				...defaultParams,
+				since_id,
+			});
+			if (typeof res === "string") {
+				return res;
+			}
+			if (res.length) {
+				setCursor((prev) => prev + res.length);
+				setTimeline((prev) => [...res, ...prev]);
+			}
+			return null;
+		});
+	const fetchPast = async () =>
+		await _fetchWithLimit(async () => {
+			const res = await api.getHomeTweets({
+				...defaultParams,
+				max_id,
+			});
+			if (typeof res === "string") {
+				return res;
+			}
+			if (res.length) {
+				setTimeline((prev) => [...prev, ...res]);
+			}
+			return null;
+		});
+
+	return { fetch, fetchFuture, fetchPast };
 };
