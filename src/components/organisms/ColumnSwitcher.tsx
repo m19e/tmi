@@ -1,5 +1,4 @@
 import React from "react";
-import { Text } from "ink";
 import { useCurrentColumn } from "../../hooks";
 import { List } from "./List";
 import { HomeTimeline as Home } from "./Timeline/Home";
