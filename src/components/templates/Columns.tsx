@@ -31,6 +31,8 @@ const ColumnContainer = () => {
 		{ isActive: hintKey === "timeline" }
 	);
 
+	const handleBack = () => setStatus("page");
+
 	if (status === "page") {
 		return (
 			<>
