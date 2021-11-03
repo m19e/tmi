@@ -14,6 +14,7 @@ import {
 	hintKeyAtom,
 	hintValueAtom,
 } from "../store";
+import { cursorIndexAtom, focusIndexAtom } from "../store/list";
 
 export const useUserConfig = () => useAtom(userConfigAtom);
 
@@ -62,9 +63,15 @@ export const useCurrentColumn = (): [
 	const [currentKey, setKey] = useAtom(currentColumnKeyAtom);
 	const [currentColumn] = useAtom(currentColumnValueAtom);
 	const [columns, actions] = useColumnMap();
+	const setCursor = useAtom(cursorIndexAtom)[1];
+	const setFocus = useAtom(focusIndexAtom)[1];
 
 	const setColumnKey = (key: string) => {
 		if (columns.has(key)) {
+			if (columns.get(key).type === "list") {
+				setCursor(0);
+				setFocus(0);
+			}
 			setKey(key);
 		}
 	};
