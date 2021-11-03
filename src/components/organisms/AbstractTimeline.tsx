@@ -68,7 +68,7 @@ export const AbstractTimeline = (props: Props) => {
 			setStatus("timeline");
 			setHintKey("timeline");
 		} else {
-			const f = async () => {
+			const fetcher = async () => {
 				if (props.type === "list") {
 					if (column.type === "list") {
 						return await props.paginator.fetch({ list_id: column.list_id });
@@ -78,7 +78,7 @@ export const AbstractTimeline = (props: Props) => {
 				}
 			};
 			const init = async () => {
-				const res = await f();
+				const res = await fetcher();
 				if (typeof res === "string") {
 					setError(res);
 				}
