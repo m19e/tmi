@@ -3,14 +3,21 @@ import type { VFC } from "react";
 import { Box } from "ink";
 import { TabsWithInput, Tab } from "../InkTab";
 import { useColumnMap, useCurrentColumn, useHint } from "../../hooks";
+import { usePosition } from "../../hooks/list";
 
 export const Columns: VFC = () => {
 	const [columns] = useColumnMap();
-	const [, { setColumnKey }] = useCurrentColumn();
+	const [currentColumn, { setColumnKey }] = useCurrentColumn();
 	const [{ key: hintKey }] = useHint();
+	const [, { cachePosition }] = usePosition();
 	const canToggleColumn = useMemo(() => hintKey === "timeline", [hintKey]);
 
-	const handleTabsChange = (key: string) => setColumnKey(key);
+	const handleTabsChange = (key: string) => {
+		if (currentColumn.type === "list") {
+			cachePosition();
+		}
+		setColumnKey(key);
+	};
 
 	return (
 		<Box paddingBottom={1}>
