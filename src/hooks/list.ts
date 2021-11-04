@@ -44,6 +44,7 @@ interface PositionActions {
 	setCursor: (update: SetStateAction<number>) => void | Promise<void>;
 	setFocus: (update: SetStateAction<number>) => void | Promise<void>;
 	loadPosition: () => void;
+	cachePosition: () => void;
 }
 
 export const usePosition = (): [
@@ -51,42 +52,18 @@ export const usePosition = (): [
 	PositionActions
 ] => {
 	const [currentColumn, { updateColumn }] = useCurrentColumn();
-	const [cursor, setC] = useAtom(cursorIndexAtom);
-	const [focus, setF] = useAtom(focusIndexAtom);
+	const [cursor, setCursor] = useAtom(cursorIndexAtom);
+	const [focus, setFocus] = useAtom(focusIndexAtom);
 
-	const _cachePosition = (update: SetStateAction<Column>) => {
-		if (typeof update === "function") {
-			const newColumn = update(currentColumn);
-			updateColumn(newColumn);
-		} else {
-			updateColumn(update);
-		}
-	};
-
-	const setCursor = (update: SetStateAction<number>) => {
-		if (typeof update === "function") {
-			const newC = update(cursor);
-			_cachePosition((prev) => ({ ...prev, cursor: newC }));
-			setC(newC);
-		} else {
-			_cachePosition((prev) => ({ ...prev, cursor: update }));
-			setC(update);
-		}
-	};
-	const setFocus = (update: SetStateAction<number>) => {
-		if (typeof update === "function") {
-			const newF = update(focus);
-			_cachePosition((prev) => ({ ...prev, focus: newF }));
-			setF(newF);
-		} else {
-			_cachePosition((prev) => ({ ...prev, focus: update }));
-			setF(update);
-		}
-	};
 	const loadPosition = () => {
 		if (currentColumn.type === "list") {
-			setC(currentColumn.cursor);
-			setF(currentColumn.focus);
+			setCursor(currentColumn.cursor);
+			setFocus(currentColumn.focus);
+		}
+	};
+	const cachePosition = () => {
+		if (currentColumn.type == "list") {
+			updateColumn({ ...currentColumn, cursor, focus });
 		}
 	};
 
@@ -95,6 +72,7 @@ export const usePosition = (): [
 		setCursor,
 		setFocus,
 		loadPosition,
+		cachePosition,
 	};
 
 	return [states, actions];
