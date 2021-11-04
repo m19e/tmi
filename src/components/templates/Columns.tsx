@@ -42,6 +42,6 @@ const ColumnContainer = () => {
 		);
 	}
 	if (status === "controll") {
-		return <ColumnController />;
+		return <ColumnController onBack={handleBack} />;
 	}
 };
