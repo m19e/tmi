@@ -1,6 +1,6 @@
 import React from "react";
 import {
-	useListTimeline,
+	useTimelineWithCache,
 	useMover,
 	useListPaginator,
 	useDisplayTweetsCount,
@@ -11,7 +11,7 @@ import { AbstractTimeline } from "../AbstractTimeline";
 
 export const ListProvider = () => {
 	const displayTimeline = getDisplayTimeline();
-	const [, setTimeline] = useListTimeline();
+	const [, setTimeline] = useTimelineWithCache();
 	const paginator = useListPaginator();
 	const mover = useMover();
 	const [, countActions] = useDisplayTweetsCount();
