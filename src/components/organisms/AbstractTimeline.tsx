@@ -5,7 +5,6 @@ import type { SetStateAction } from "jotai";
 import type { TweetV1 } from "twitter-api-v2";
 import type { ParsedTweet } from "twitter-text";
 import type { TimelineProcess, Paginator, Mover } from "../../types";
-import type { ListPaginator } from "../../hooks/list";
 import {
 	useCurrentColumn,
 	useError,
@@ -22,6 +21,7 @@ interface BaseTimelineProps {
 	timeline: TweetV1[];
 	setTimeline: (update?: SetStateAction<TweetV1[]>) => void | Promise<void>;
 	mover: Mover;
+	paginator: Paginator;
 	countActions: {
 		inc: () => void;
 		dec: () => void;
@@ -31,12 +31,11 @@ interface BaseTimelineProps {
 
 interface UniqueTimelineProps extends BaseTimelineProps {
 	type: "home" | "mentions";
-	paginator: Paginator;
 }
 
 interface ListTimelineProps extends BaseTimelineProps {
 	type: "list";
-	paginator: ListPaginator;
+	onLoadList: (tl: TweetV1[]) => void;
 }
 
 type DuplicatableTimelineProps = ListTimelineProps;
@@ -49,7 +48,7 @@ export const AbstractTimeline = (props: Props) => {
 	const column = useCurrentColumn()[0];
 	const setError = useError()[1];
 	const setRequestResult = useRequestResult()[1];
-	const setHintKey = useHint()[1];
+	const [{ key: hintKey }, setHintKey] = useHint();
 	const api = useApi();
 
 	const [status, setStatus] = useState<"init" | "timeline" | "detail">("init");
@@ -64,30 +63,33 @@ export const AbstractTimeline = (props: Props) => {
 	const [loadingTimeline, setLoadingTimeline] = useState<TweetV1[]>([]);
 
 	useEffect(() => {
-		if (focusedTweet) {
+		const init = async () => {
+			if (status !== "init") setStatus("init");
+			const res = await props.paginator.fetch();
+			if (typeof res === "string") {
+				setError(res);
+			}
 			setStatus("timeline");
 			setHintKey("timeline");
-		} else {
-			const fetcher = async () => {
-				if (props.type === "list") {
-					if (column.type === "list") {
-						return await props.paginator.fetch({ list_id: column.list_id });
-					}
+		};
+		if (focusedTweet) {
+			if (props.type === "list" && column.type === "list") {
+				if (column.timeline.length) {
+					const { onLoadList } = props;
+					onLoadList(column.timeline);
+					setStatus("timeline");
+					setHintKey("timeline");
 				} else {
-					return await props.paginator.fetch();
+					init();
 				}
-			};
-			const init = async () => {
-				const res = await fetcher();
-				if (typeof res === "string") {
-					setError(res);
-				}
+			} else {
 				setStatus("timeline");
 				setHintKey("timeline");
-			};
+			}
+		} else {
 			init();
 		}
-	}, []);
+	}, [column.name]);
 
 	const update = async ({ future }: { future: boolean }) => {
 		const { paginator } = props;
@@ -336,7 +338,7 @@ export const AbstractTimeline = (props: Props) => {
 		);
 	};
 
-	if (status === "init") {
+	if (status === "init" || hintKey === "none") {
 		return <Text>Loading...</Text>;
 	}
 	return (
