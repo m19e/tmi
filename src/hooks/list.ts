@@ -100,18 +100,18 @@ export const useDisplayTweetsCount = (): [
 
 type PromiseWithErrorMessage<T> = Promise<T | HandledResponseError["message"]>;
 
-export interface ListPaginator {
-	fetch: (params: { list_id: string }) => PromiseWithErrorMessage<null>;
+interface ListPaginator {
+	fetch: () => PromiseWithErrorMessage<null>;
 	fetchFuture: () => PromiseWithErrorMessage<null>;
 	fetchPast: () => PromiseWithErrorMessage<null>;
 }
 
 export const useListPaginator = (): ListPaginator => {
 	const api = useApi();
-	const { id_str: list_id } = useCurrentList()[0];
+	const column = useCurrentColumn()[0];
 	const { since_id, max_id } = useAtom(listTimelineCursorsAtom)[0];
 	const { setCursor } = usePosition()[1];
-	const setTimeline = useListTimeline()[1];
+	const setTimeline = useTimelineWithCache()[1];
 
 	const defaultParams: ListStatusesV1Params = {
 		count: 200,
@@ -119,8 +119,16 @@ export const useListPaginator = (): ListPaginator => {
 		include_entities: true,
 	};
 
-	const fetch = async (params: { list_id: string }) => {
-		const res = await api.getListTweets({ ...defaultParams, ...params });
+	const _getListId = (): string => {
+		if (column.type === "list") {
+			return column.list_id;
+		}
+		return "";
+	};
+
+	const fetch = async () => {
+		const list_id = _getListId();
+		const res = await api.getListTweets({ ...defaultParams, list_id });
 		if (typeof res === "string") {
 			return res;
 		}
@@ -130,6 +138,7 @@ export const useListPaginator = (): ListPaginator => {
 		return null;
 	};
 	const fetchFuture = async () => {
+		const list_id = _getListId();
 		const res = await api.getListTweets({
 			...defaultParams,
 			list_id,
@@ -145,6 +154,7 @@ export const useListPaginator = (): ListPaginator => {
 		return null;
 	};
 	const fetchPast = async () => {
+		const list_id = _getListId();
 		const res = await api.getListTweets({
 			...defaultParams,
 			list_id,
