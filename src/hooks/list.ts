@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
-import type { ListStatusesV1Params } from "twitter-api-v2";
+import type { TweetV1, ListStatusesV1Params } from "twitter-api-v2";
 import type { Column, HandledResponseError } from "../types";
 import {
 	currentListAtom,
@@ -17,6 +17,24 @@ import { useApi } from "./api";
 export const useCurrentList = () => useAtom(currentListAtom);
 
 export const useListTimeline = () => useAtom(listTimelineAtom);
+
+export const useTimelineWithCache = (): [
+	TweetV1[],
+	(update: SetStateAction<TweetV1[]>) => void
+] => {
+	const [timeline, setTL] = useAtom(listTimelineAtom);
+	const [currentColumn, { updateColumn }] = useCurrentColumn();
+
+	const setTimeline = (update: SetStateAction<TweetV1[]>) => {
+		setTL(update);
+		if (currentColumn.type === "list") {
+			const newTL = typeof update === "function" ? update(timeline) : update;
+			updateColumn({ ...currentColumn, timeline: newTL });
+		}
+	};
+
+	return [timeline, setTimeline];
+};
 
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
 
