@@ -6,6 +6,7 @@ import {
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
+	usePosition,
 } from "../../../hooks/list";
 import { AbstractTimeline } from "../AbstractTimeline";
 
@@ -17,6 +18,13 @@ export const ListProvider = () => {
 	const [, countActions] = useDisplayTweetsCount();
 	const focusedTweet = getFocusedTweet();
 
+	const [, { loadPosition }] = usePosition();
+
+	const handleLoadList = (tl: typeof displayTimeline) => {
+		setTimeline(tl);
+		loadPosition();
+	};
+
 	return (
 		<AbstractTimeline
 			type="list"
@@ -26,6 +34,7 @@ export const ListProvider = () => {
 			mover={mover}
 			countActions={countActions}
 			focusedTweet={focusedTweet}
+			onLoadList={handleLoadList}
 		/>
 	);
 };
