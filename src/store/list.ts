@@ -6,6 +6,11 @@ import { displayTweetsCountAtom } from ".";
 export const currentListAtom = atom<TrimmedList>({
 	id_str: "",
 	name: "",
+	owner: {
+		id_str: "",
+		screen_name: "",
+		name: "",
+	},
 	mode: "public",
 });
 
