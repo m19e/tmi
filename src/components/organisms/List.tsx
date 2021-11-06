@@ -93,7 +93,6 @@ export const List: VFC = () => {
 			setCursor(0);
 			setFocus(0);
 			await getNewListTimeline(value);
-			setCurrentList(value);
 		}
 		setStatus("timeline");
 		setHintKey("timeline");
