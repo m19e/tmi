@@ -238,20 +238,6 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (valid) setHintKey("timeline/new/wait-return");
 	};
 
-	if (status === "detail") {
-		return (
-			<Detail
-				tweet={focusedTweet}
-				onMention={handleMention}
-				onRemove={handleRemoveFocusedTweet}
-				isTweetOpen={isTweetInDetailOpen}
-				setIsTweetOpen={setIsTweetInDetailOpen}
-				inProcess={inProcess}
-				setInProcess={setInProcess}
-			/>
-		);
-	}
-
 	const TweetList = () => {
 		if (loadingTimeline.length) {
 			return (
@@ -283,6 +269,19 @@ export const Timeline = ({ onToggleList }: Props) => {
 		);
 	};
 
+	if (status === "detail") {
+		return (
+			<Detail
+				tweet={focusedTweet}
+				onMention={handleMention}
+				onRemove={handleRemoveFocusedTweet}
+				isTweetOpen={isTweetInDetailOpen}
+				setIsTweetOpen={setIsTweetInDetailOpen}
+				inProcess={inProcess}
+				setInProcess={setInProcess}
+			/>
+		);
+	}
 	return (
 		<>
 			<Box flexGrow={1} flexDirection="column">
