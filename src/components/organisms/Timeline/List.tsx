@@ -150,9 +150,6 @@ export const Timeline = ({ onToggleList }: Props) => {
 				countActions.dec();
 			} else if (input === "l") {
 				onToggleList();
-			} else if (input === "r") {
-				// setIsTweetInDetailOpen(true);
-				// setStatus("detail");
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
