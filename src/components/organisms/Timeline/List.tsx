@@ -7,7 +7,7 @@ import type { TimelineProcess } from "../../../types";
 import { useError, useRequestResult, useHint } from "../../../hooks";
 import { useApi } from "../../../hooks/api";
 import {
-	useListPaginator,
+	useSingleListPaginator,
 	useListTimeline,
 	useMover,
 	useDisplayTweetsCount,
@@ -28,10 +28,10 @@ export const Timeline = ({ onToggleList }: Props) => {
 	const [, setHintKey] = useHint();
 
 	const api = useApi();
-	const paginator = useListPaginator();
+	const paginator = useSingleListPaginator();
 	const mover = useMover();
-	const [, setTimeline] = useListTimeline();
-	const [, countSetter] = useDisplayTweetsCount();
+	const setTimeline = useListTimeline()[1];
+	const countActions = useDisplayTweetsCount()[1];
 	const displayTimeline = getDisplayTimeline();
 	const focusedTweet = getFocusedTweet();
 
@@ -147,9 +147,9 @@ export const Timeline = ({ onToggleList }: Props) => {
 			} else if (input === "9") {
 				mover.bottom();
 			} else if (input === "+" || input === "=") {
-				countSetter.inc();
+				countActions.inc();
 			} else if (input === "-" || input === "_") {
-				countSetter.dec();
+				countActions.dec();
 			} else if (input === "l") {
 				onToggleList();
 			} else if (input === "r") {
