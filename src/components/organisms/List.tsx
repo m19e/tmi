@@ -100,34 +100,32 @@ export const List: VFC = () => {
 		setRequestResult(undefined);
 	};
 
-	if (status === "load") {
-		return <Text>Loading...</Text>;
-	}
+	const Switcher = () => {
+		if (status === "load") {
+			return <Text>Loading...</Text>;
+		}
+		if (status === "select") {
+			return <SelectList lists={lists} onSelect={handleSelect} />;
+		}
+		if (status === "timeline") {
+			return (
+				<>
+					<Box justifyContent="center" borderStyle="double" borderColor="gray">
+						<Text>
+							[LIST]<Text color="green">{currentList.name}</Text>({cursor + 1}-
+							{cursor + count}/{total})
+						</Text>
+					</Box>
+					<Timeline onToggleList={handleToggleList} />
+					<Footer />
+				</>
+			);
+		}
+	};
+
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			{(() => {
-				if (status === "select") {
-					return <SelectList lists={lists} onSelect={handleSelect} />;
-				}
-				if (status === "timeline") {
-					return (
-						<>
-							<Box
-								justifyContent="center"
-								borderStyle="double"
-								borderColor="gray"
-							>
-								<Text>
-									[LIST]<Text color="green">{currentList.name}</Text>(
-									{cursor + 1}-{cursor + count}/{total})
-								</Text>
-							</Box>
-							<Timeline onToggleList={handleToggleList} />
-							<Footer />
-						</>
-					);
-				}
-			})()}
+			<Switcher />
 		</Box>
 	);
 };
