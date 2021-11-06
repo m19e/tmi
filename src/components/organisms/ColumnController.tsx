@@ -122,11 +122,6 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		);
 	}
 	if (status === "list") {
-		return (
-			<>
-				<Text>Select list...</Text>
-				<SelectList lists={lists} onSelect={handleSelectList} />
-			</>
-		);
+		return <SelectList lists={lists} onSelect={handleSelectList} />;
 	}
 };
