@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
 import type { TweetV1, ListStatusesV1Params } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
+import type { TrimmedList } from "../types/twitter";
 import {
 	currentListAtom,
 	listTimelineAtom,
@@ -155,6 +156,69 @@ export const useListPaginator = (): ListPaginator => {
 	};
 	const fetchPast = async () => {
 		const list_id = _getListId();
+		const res = await api.getListTweets({
+			...defaultParams,
+			list_id,
+			max_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setTimeline((prev) => [...prev, ...res]);
+		}
+		return null;
+	};
+
+	return {
+		fetch,
+		fetchFuture,
+		fetchPast,
+	};
+};
+
+export const useSingleListPaginator = () => {
+	const api = useApi();
+	const [{ id_str: list_id }, setCurrentList] = useCurrentList();
+	const { since_id, max_id } = useAtom(listTimelineCursorsAtom)[0];
+	const { setCursor } = usePosition()[1];
+	const setTimeline = useListTimeline()[1];
+	const defaultParams: ListStatusesV1Params = {
+		count: 200,
+		tweet_mode: "extended",
+		include_entities: true,
+	};
+
+	const fetch = async (list: TrimmedList) => {
+		setCurrentList(list);
+		const res = await api.getListTweets({
+			...defaultParams,
+			list_id: list.id_str,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setTimeline(res);
+		}
+		return null;
+	};
+	const fetchFuture = async () => {
+		const res = await api.getListTweets({
+			...defaultParams,
+			list_id,
+			since_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setCursor((prev) => prev + res.length);
+			setTimeline((prev) => [...res, ...prev]);
+		}
+		return null;
+	};
+	const fetchPast = async () => {
 		const res = await api.getListTweets({
 			...defaultParams,
 			list_id,
