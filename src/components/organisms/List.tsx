@@ -101,6 +101,17 @@ export const List: VFC = () => {
 		setRequestResult(undefined);
 	};
 
+	const Header = () => (
+		<Box justifyContent="space-between" marginBottom={1}>
+			<Text color="#00acee" bold>
+				@{currentList.owner.screen_name}/{currentList.name}
+			</Text>
+			<Text>
+				[{cursor + 1}-{cursor + count}/{total}]
+			</Text>
+		</Box>
+	);
+
 	const Switcher = () => {
 		if (status === "load") {
 			return <Text>Loading...</Text>;
@@ -111,12 +122,7 @@ export const List: VFC = () => {
 		if (status === "timeline") {
 			return (
 				<>
-					<Box justifyContent="center" borderStyle="double" borderColor="gray">
-						<Text>
-							[LIST]<Text color="green">{currentList.name}</Text>({cursor + 1}-
-							{cursor + count}/{total})
-						</Text>
-					</Box>
+					<Header />
 					<Timeline onToggleList={handleToggleList} />
 					<Footer />
 				</>
