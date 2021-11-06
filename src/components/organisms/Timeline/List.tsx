@@ -203,7 +203,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 		setParsedTweet(parseTweet(value));
 	};
 
-	const removeFocusedTweetFromTimeline = (
+	const handleRemoveFocusedTweet = (
 		{
 			redraft,
 		}: {
@@ -243,7 +243,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 			<Detail
 				tweet={focusedTweet}
 				onMention={handleMention}
-				onRemove={removeFocusedTweetFromTimeline}
+				onRemove={handleRemoveFocusedTweet}
 				isTweetOpen={isTweetInDetailOpen}
 				setIsTweetOpen={setIsTweetInDetailOpen}
 				inProcess={inProcess}
