@@ -81,11 +81,11 @@ export const List: VFC = () => {
 		setStatus("select");
 	};
 
-	const handleSelect = async ({ value }: { value: TrimmedList }) => {
-		if (!currentList || currentList.id_str !== value.id_str) {
+	const handleSelect = async ({ value: newList }: { value: TrimmedList }) => {
+		if (!currentList || currentList.id_str !== newList.id_str) {
 			setCursor(0);
 			setFocus(0);
-			const res = await paginator.fetch(value);
+			const res = await paginator.fetch(newList);
 			if (typeof res === "string") {
 				setError(res);
 			}
