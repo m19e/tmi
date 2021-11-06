@@ -17,7 +17,7 @@ import {
 	usePosition,
 	useDisplayTweetsCount,
 	useListTimeline,
-	useListPaginator,
+	useSingleListPaginator,
 } from "../../hooks/list";
 import { Timeline } from "./Timeline/List";
 import Footer from "./Footer";
@@ -30,11 +30,12 @@ export const List: VFC = () => {
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [, setHintKey] = useHint();
+
 	const api = useApi();
-	const paginator = useListPaginator();
+	const paginator = useSingleListPaginator();
 	const [config] = useUserConfig();
 	const [currentList, setCurrentList] = useCurrentList();
-	const [{ length: total }, setTimeline] = useListTimeline();
+	const [{ length: total }] = useListTimeline();
 	const [{ cursor }, { setCursor, setFocus }] = usePosition();
 	const [count] = useDisplayTweetsCount();
 
