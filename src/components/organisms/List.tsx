@@ -83,6 +83,7 @@ export const List: VFC = () => {
 
 	const handleSelect = async ({ value: newList }: { value: TrimmedList }) => {
 		if (!currentList.id_str || currentList.id_str !== newList.id_str) {
+			setStatus("load");
 			setCursor(0);
 			setFocus(0);
 			const res = await paginator.fetch(newList);
