@@ -34,7 +34,7 @@ export const List: VFC = () => {
 	const api = useApi();
 	const paginator = useSingleListPaginator();
 	const [config] = useUserConfig();
-	const [currentList, setCurrentList] = useCurrentList();
+	const [currentList] = useCurrentList();
 	const [{ length: total }] = useListTimeline();
 	const [{ cursor }, { setCursor, setFocus }] = usePosition();
 	const [count] = useDisplayTweetsCount();
@@ -94,7 +94,8 @@ export const List: VFC = () => {
 		setHintKey("timeline");
 	};
 
-	const handleToggleList = () => {
+	const handleToggleList = async () => {
+		await getUserLists();
 		setStatus("select");
 		setRequestResult(undefined);
 	};
