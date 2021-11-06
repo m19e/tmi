@@ -198,9 +198,12 @@ export const Timeline = ({ onToggleList }: Props) => {
 		{ isActive: status === "detail" && !isTweetInDetailOpen }
 	);
 
-	const handleNewTweetChange = (value: string) => {
-		setTweetText(value);
-		setParsedTweet(parseTweet(value));
+	const handleMention = () => {
+		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
+		setRequestResult(undefined);
+		setIsNewTweetOpen(true);
+		setStatus("timeline");
+		setHintKey("timeline");
 	};
 
 	const handleRemoveFocusedTweet = (
@@ -225,12 +228,9 @@ export const Timeline = ({ onToggleList }: Props) => {
 		}
 	};
 
-	const handleMention = () => {
-		handleNewTweetChange(`@${focusedTweet.user.screen_name} `);
-		setRequestResult(undefined);
-		setIsNewTweetOpen(true);
-		setStatus("timeline");
-		setHintKey("timeline");
+	const handleNewTweetChange = (value: string) => {
+		setTweetText(value);
+		setParsedTweet(parseTweet(value));
 	};
 
 	const handleWaitReturn = () => {
