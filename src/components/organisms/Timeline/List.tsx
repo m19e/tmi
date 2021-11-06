@@ -19,7 +19,7 @@ import TweetItem from "../../molecules/TweetItem";
 import NewTweetBox from "../../molecules/NewTweetBox";
 
 type Props = {
-	onToggleList: () => void;
+	onToggleList: () => Promise<void>;
 };
 
 export const Timeline = ({ onToggleList }: Props) => {
