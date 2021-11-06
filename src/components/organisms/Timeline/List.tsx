@@ -63,6 +63,8 @@ export const Timeline = ({ onToggleList }: Props) => {
 		}
 		if (typeof err === "string") {
 			setError(err);
+		} else {
+			setError(undefined);
 		}
 		setInProcess("none");
 	};
