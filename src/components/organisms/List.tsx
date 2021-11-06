@@ -91,7 +91,7 @@ export const List: VFC = () => {
 			}
 		}
 		setStatus("timeline");
-		setHintKey("timeline");
+		setHintKey("list/timeline");
 	};
 
 	const handleToggleList = async () => {

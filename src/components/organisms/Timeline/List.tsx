@@ -117,7 +117,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 			setIsNewTweetOpen(false);
 			setRequestResult(`Successfully tweeted: "${tweetText}"`);
 			setTweetText("");
-			setHintKey("timeline");
+			setHintKey("list/timeline");
 		}
 		setWaitReturn(false);
 		setInProcess("none");
@@ -176,7 +176,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 			} else if (key.escape) {
 				handleNewTweetChange("");
 				setIsNewTweetOpen(false);
-				setHintKey("timeline");
+				setHintKey("list/timeline");
 			} else if (key.return && waitReturn) {
 				newTweet();
 			}
@@ -188,7 +188,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 		(input, key) => {
 			if (key.escape) {
 				setStatus("timeline");
-				setHintKey("timeline");
+				setHintKey("list/timeline");
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
@@ -203,7 +203,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 		setRequestResult(undefined);
 		setIsNewTweetOpen(true);
 		setStatus("timeline");
-		setHintKey("timeline");
+		setHintKey("list/timeline");
 	};
 
 	const handleRemoveFocusedTweet = (
@@ -224,7 +224,7 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (redraft) {
 			setHintKey("timeline/new/input");
 		} else {
-			setHintKey("timeline");
+			setHintKey("list/timeline");
 		}
 	};
 
