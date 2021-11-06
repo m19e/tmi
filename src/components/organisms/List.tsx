@@ -81,18 +81,14 @@ export const List: VFC = () => {
 		setStatus("select");
 	};
 
-	const getNewListTimeline = async (newList: TrimmedList) => {
-		const res = await paginator.fetch(newList);
-		if (typeof res === "string") {
-			setError(res);
-		}
-	};
-
 	const handleSelect = async ({ value }: { value: TrimmedList }) => {
 		if (!currentList || currentList.id_str !== value.id_str) {
 			setCursor(0);
 			setFocus(0);
-			await getNewListTimeline(value);
+			const res = await paginator.fetch(value);
+			if (typeof res === "string") {
+				setError(res);
+			}
 		}
 		setStatus("timeline");
 		setHintKey("timeline");
