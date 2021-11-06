@@ -170,20 +170,14 @@ export const Timeline = ({ onToggleList }: Props) => {
 		(_, key) => {
 			if (inProcess !== "none") return;
 
-			if (key.escape) {
-				if (waitReturn) {
-					setWaitReturn(false);
-					setHintKey("timeline/new/input");
-					return;
-				}
-				// Avoid warning: state update on an unmounted TextInput
-				// Maybe caused by Node.js (single-threaded)?
-				setTimeout(() => {
-					setTweetText("");
-					setIsNewTweetOpen(false);
-					setHintKey("timeline");
-				});
-			} else if (waitReturn && key.return) {
+			if (key.escape && waitReturn) {
+				setWaitReturn(false);
+				setHintKey("timeline/new/input");
+			} else if (key.escape) {
+				handleNewTweetChange("");
+				setIsNewTweetOpen(false);
+				setHintKey("timeline");
+			} else if (key.return && waitReturn) {
 				newTweet();
 			}
 		},
