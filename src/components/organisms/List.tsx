@@ -65,10 +65,15 @@ export const List: VFC = () => {
 			return;
 		}
 		// Valid response
-		const trim: TrimmedList[] = res.map(({ id_str, name, mode }) => ({
+		const trim: TrimmedList[] = res.map(({ id_str, name, mode, user }) => ({
 			id_str,
 			name,
 			mode,
+			owner: {
+				id_str: user.id_str,
+				name: user.name,
+				screen_name: user.screen_name,
+			},
 		}));
 		await writeJSON(config.filePath, { ...config, lists: trim });
 		setLists(trim);
