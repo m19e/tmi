@@ -69,30 +69,12 @@ export const Timeline = ({ onToggleList }: Props) => {
 		setInProcess("none");
 	};
 
-	const newTweet = async () => {
-		if (!valid) return;
-		setInProcess("tweet");
-		const err = await api.tweet(tweetText);
-		if (typeof err === "string") {
-			setError(err);
-		} else {
-			setIsNewTweetOpen(false);
-			setRequestResult(`Successfully tweeted: "${tweetText}"`);
-			setTweetText("");
-			setHintKey("timeline");
-		}
-		setWaitReturn(false);
-		setInProcess("none");
-	};
-
 	const fav = async () => {
 		setInProcess("fav");
-
 		const { favorited, id_str } = focusedTweet;
 		const res = favorited
 			? await api.unfavorite(id_str)
 			: await api.favorite(id_str);
-
 		if (typeof res === "string") {
 			setError(res);
 		} else {
@@ -108,12 +90,10 @@ export const Timeline = ({ onToggleList }: Props) => {
 
 	const rt = async () => {
 		setInProcess("rt");
-
 		const { retweeted, id_str } = focusedTweet;
 		const res = retweeted
 			? await api.unretweet(id_str)
 			: await api.retweet(id_str);
-
 		if (typeof res === "string") {
 			setError(res);
 		} else {
@@ -124,6 +104,22 @@ export const Timeline = ({ onToggleList }: Props) => {
 				} "${res.full_text.split("\n").join(" ")}"`
 			);
 		}
+		setInProcess("none");
+	};
+
+	const newTweet = async () => {
+		if (!valid) return;
+		setInProcess("tweet");
+		const err = await api.tweet(tweetText);
+		if (typeof err === "string") {
+			setError(err);
+		} else {
+			setIsNewTweetOpen(false);
+			setRequestResult(`Successfully tweeted: "${tweetText}"`);
+			setTweetText("");
+			setHintKey("timeline");
+		}
+		setWaitReturn(false);
 		setInProcess("none");
 	};
 
