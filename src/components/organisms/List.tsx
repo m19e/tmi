@@ -95,8 +95,8 @@ export const List: VFC = () => {
 	};
 
 	const handleToggleList = async () => {
+		setStatus("load");
 		await getUserLists();
-		setStatus("select");
 		setRequestResult(undefined);
 	};
 
