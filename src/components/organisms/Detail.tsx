@@ -174,19 +174,13 @@ const Detail: VFC<Props> = ({
 
 	useInput(
 		(input, key) => {
-			if (key.escape) {
-				if (waitReturn) {
-					setWaitReturn(false);
-					setHintKey("timeline/detail/input");
-				} else {
-					// Avoid warning: state update on an unmounted TextInput
-					// Maybe caused by Node.js (single-threaded)?
-					setTimeout(() => {
-						resetTweetState();
-						setHintKey("timeline/detail");
-					});
-				}
-			} else if (waitReturn && key.return) {
+			if (key.escape && waitReturn) {
+				setWaitReturn(false);
+				setHintKey("timeline/detail/input");
+			} else if (key.escape) {
+				resetTweetState();
+				setHintKey("timeline/detail");
+			} else if (key.return && waitReturn) {
 				if (tweetMode === "reply") reply();
 				if (tweetMode === "quote") quote();
 			}
