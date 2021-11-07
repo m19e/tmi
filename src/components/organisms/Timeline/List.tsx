@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Box, useInput } from "ink";
 import { parseTweet, ParsedTweet } from "twitter-text";
 import type { TweetV1 } from "twitter-api-v2";
-
 import type { TimelineProcess } from "../../../types";
 import { useError, useRequestResult, useHint } from "../../../hooks";
 import { useApi } from "../../../hooks/api";
@@ -238,37 +237,6 @@ export const Timeline = ({ onToggleList }: Props) => {
 		if (valid) setHintKey("timeline/new/wait-return");
 	};
 
-	const TweetList = () => {
-		if (loadingTimeline.length) {
-			return (
-				<>
-					{loadingTimeline.map((t, i) => (
-						<TweetItem
-							key={i}
-							tweet={t}
-							isFocused={t.id_str === focusedTweet.id_str}
-							inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-							inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-						/>
-					))}
-				</>
-			);
-		}
-		return (
-			<>
-				{displayTimeline.map((t, i) => (
-					<TweetItem
-						key={i}
-						tweet={t}
-						isFocused={t.id_str === focusedTweet.id_str}
-						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
-					/>
-				))}
-			</>
-		);
-	};
-
 	if (status === "detail") {
 		return (
 			<Detail
@@ -282,10 +250,33 @@ export const Timeline = ({ onToggleList }: Props) => {
 			/>
 		);
 	}
+	if (loadingTimeline.length) {
+		return (
+			<Box flexGrow={1} flexDirection="column">
+				{loadingTimeline.map((t, i) => (
+					<TweetItem
+						key={i}
+						tweet={t}
+						isFocused={t.id_str === focusedTweet.id_str}
+						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+					/>
+				))}
+			</Box>
+		);
+	}
 	return (
 		<>
 			<Box flexGrow={1} flexDirection="column">
-				<TweetList />
+				{displayTimeline.map((t, i) => (
+					<TweetItem
+						key={i}
+						tweet={t}
+						isFocused={t.id_str === focusedTweet.id_str}
+						inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
+						inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+					/>
+				))}
 			</Box>
 			{isNewTweetOpen && (
 				<NewTweetBox
