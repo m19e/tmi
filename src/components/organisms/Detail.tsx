@@ -115,7 +115,6 @@ const Detail: VFC<Props> = ({
 	const reply = async () => {
 		setInProcess("reply");
 		const error = await api.reply(tweetText, t.id_str);
-		setInProcess("none");
 		if (typeof error === "string") {
 			setError(error);
 			return;
@@ -125,12 +124,12 @@ const Detail: VFC<Props> = ({
 		);
 		resetTweetState();
 		setHintKey("timeline/detail");
+		setInProcess("none");
 	};
 
 	const quote = async () => {
 		setInProcess("quote");
 		const error = await api.quote(tweetText, quoteUrl);
-		setInProcess("none");
 		if (typeof error === "string") {
 			setError(error);
 			return;
@@ -138,6 +137,7 @@ const Detail: VFC<Props> = ({
 		setRequestResult(`Successfully quoted: "${tweetText}"`);
 		resetTweetState();
 		setHintKey("timeline/detail");
+		setInProcess("none");
 	};
 
 	const deleteTweet = async (
@@ -149,7 +149,6 @@ const Detail: VFC<Props> = ({
 	) => {
 		setInProcess("delete");
 		const error = await api.deleteTweet(t.id_str);
-		setInProcess("none");
 		if (typeof error === "string") {
 			setError(error);
 			return;
@@ -157,6 +156,7 @@ const Detail: VFC<Props> = ({
 		setRequestResult(`Successfully deleted: "${tweet.full_text}"`);
 		onRemove({ redraft });
 		resetTweetState();
+		setInProcess("none");
 	};
 
 	useInput(
@@ -208,6 +208,42 @@ const Detail: VFC<Props> = ({
 		if (valid) setHintKey("timeline/detail/wait-return");
 	};
 
+	const Switcher = () => {
+		if (tweetMode === "reply") {
+			return (
+				<NewTweetBox
+					type="reply"
+					loading={inProcess === "reply"}
+					tweet={tweet}
+					invalid={!valid && weightedLength !== 0}
+					length={weightedLength}
+					placeholder={myTweet ? "Add another Tweet" : "Tweet your reply"}
+					focus={!waitReturn}
+					value={tweetText}
+					onChange={handleTweetChange}
+					onSubmit={handleWaitReturn}
+				/>
+			);
+		}
+		if (tweetMode === "quote") {
+			return (
+				<NewTweetBox
+					type="quote"
+					loading={inProcess === "quote"}
+					tweet={tweet}
+					invalid={!valid && weightedLength !== 0}
+					length={weightedLength}
+					placeholder="Add a comment"
+					focus={!waitReturn}
+					value={tweetText}
+					onChange={handleTweetChange}
+					onSubmit={handleWaitReturn}
+				/>
+			);
+		}
+		return <SelectInput items={selectItems} onSelect={handleSelectMenu} />;
+	};
+
 	return (
 		<Box flexGrow={1} flexDirection="column">
 			<TweetItem
@@ -216,44 +252,7 @@ const Detail: VFC<Props> = ({
 				inRT={inProcess === "rt"}
 			/>
 			<Box flexDirection="column" marginLeft={2} marginBottom={1}>
-				{(() => {
-					if (tweetMode === "reply") {
-						return (
-							<NewTweetBox
-								type="reply"
-								loading={inProcess === "reply"}
-								tweet={tweet}
-								invalid={!valid && weightedLength !== 0}
-								length={weightedLength}
-								placeholder={myTweet ? "Add another Tweet" : "Tweet your reply"}
-								focus={!waitReturn}
-								value={tweetText}
-								onChange={handleTweetChange}
-								onSubmit={handleWaitReturn}
-							/>
-						);
-					}
-					if (tweetMode === "quote") {
-						return (
-							<NewTweetBox
-								type="quote"
-								loading={inProcess === "quote"}
-								tweet={tweet}
-								invalid={!valid && weightedLength !== 0}
-								length={weightedLength}
-								placeholder="Add a comment"
-								focus={!waitReturn}
-								value={tweetText}
-								onChange={handleTweetChange}
-								onSubmit={handleWaitReturn}
-							/>
-						);
-					}
-
-					return (
-						<SelectInput items={selectItems} onSelect={handleSelectMenu} />
-					);
-				})()}
+				<Switcher />
 			</Box>
 		</Box>
 	);
