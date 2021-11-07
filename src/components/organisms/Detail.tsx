@@ -68,6 +68,7 @@ const Detail: VFC<Props> = ({
 		setRequestResult(undefined);
 		setIsTweetOpen(true);
 	};
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const [waitReturn, setWaitReturn] = useState(false);
 	const [tweetText, setTweetText] = useState("");
@@ -155,7 +156,6 @@ const Detail: VFC<Props> = ({
 		}
 		setRequestResult(`Successfully deleted: "${tweet.full_text}"`);
 		onRemove({ redraft });
-		resetTweetState();
 		setInProcess("none");
 	};
 
@@ -167,6 +167,8 @@ const Detail: VFC<Props> = ({
 			} else if (input === "q") {
 				openQuoteTweet();
 				setHintKey("timeline/detail/input");
+			} else if (input === "x") {
+				setIsMenuOpen((prev) => !prev);
 			}
 		},
 		{ isActive: !isTweetOpen && inProcess === "none" }
@@ -194,6 +196,7 @@ const Detail: VFC<Props> = ({
 	};
 
 	const handleSelectMenu = ({ value }: SelectItemProps) => {
+		setIsMenuOpen(false);
 		if (value === "mention") {
 			onMention();
 		} else if (value === "delete") {
@@ -241,7 +244,10 @@ const Detail: VFC<Props> = ({
 				/>
 			);
 		}
-		return <SelectInput items={selectItems} onSelect={handleSelectMenu} />;
+		if (isMenuOpen) {
+			return <SelectInput items={selectItems} onSelect={handleSelectMenu} />;
+		}
+		return null;
 	};
 
 	return (
