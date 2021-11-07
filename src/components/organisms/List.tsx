@@ -112,27 +112,21 @@ export const List: VFC = () => {
 		</Box>
 	);
 
-	const Switcher = () => {
-		if (status === "load") {
-			return <Text>Loading...</Text>;
-		}
-		if (status === "select") {
-			return <SelectList lists={lists} onSelect={handleSelect} />;
-		}
-		if (status === "timeline") {
-			return (
-				<>
-					<Header />
-					<Timeline onToggleList={handleToggleList} />
-					<Footer />
-				</>
-			);
-		}
-	};
-
+	if (status === "load") {
+		return <Text>Loading...</Text>;
+	}
+	if (status === "select") {
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<SelectList lists={lists} onSelect={handleSelect} />
+			</Box>
+		);
+	}
 	return (
 		<Box flexDirection="column" minHeight={rows}>
-			<Switcher />
+			<Header />
+			<Timeline onToggleList={handleToggleList} />
+			<Footer />
 		</Box>
 	);
 };
