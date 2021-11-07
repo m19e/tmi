@@ -160,7 +160,7 @@ const Detail: VFC<Props> = ({
 	};
 
 	useInput(
-		(input, key) => {
+		(input, _) => {
 			if (input === "r") {
 				openReplyTweet();
 				setHintKey("timeline/detail/input");
@@ -173,7 +173,7 @@ const Detail: VFC<Props> = ({
 	);
 
 	useInput(
-		(input, key) => {
+		(_, key) => {
 			if (key.escape && waitReturn) {
 				setWaitReturn(false);
 				setHintKey("timeline/detail/input");
