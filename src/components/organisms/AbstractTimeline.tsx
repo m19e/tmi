@@ -272,9 +272,9 @@ export const AbstractTimeline = ({
 						<TweetItem
 							key={t.id_str}
 							tweet={t}
-							isFocused={t.id_str === focusedTweet.id_str}
-							inFav={t.id_str === focusedTweet.id_str && inProcess === "fav"}
-							inRT={t.id_str === focusedTweet.id_str && inProcess === "rt"}
+							isFocused={false}	
+							inFav={false}
+							inRT={false}
 						/>
 					))}
 				</Box>
