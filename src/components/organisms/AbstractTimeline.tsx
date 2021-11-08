@@ -35,23 +35,26 @@ interface UniqueTimelineProps extends BaseTimelineProps {
 
 interface ListTimelineProps extends BaseTimelineProps {
 	type: "list";
-	onLoadList: (tl: TweetV1[]) => void;
 }
 
 type DuplicatableTimelineProps = ListTimelineProps;
 
 type Props = UniqueTimelineProps | DuplicatableTimelineProps;
 
-export const AbstractTimeline = (props: Props) => {
-	const { timeline, setTimeline, mover, countActions, focusedTweet } = props;
-
-	const column = useCurrentColumn()[0];
+export const AbstractTimeline = ({
+	timeline,
+	setTimeline,
+	mover,
+	paginator,
+	countActions,
+	focusedTweet,
+}: Props) => {
 	const setError = useError()[1];
 	const setRequestResult = useRequestResult()[1];
-	const [{ key: hintKey }, setHintKey] = useHint();
+	const setHintKey = useHint()[1];
 	const api = useApi();
 
-	const [status, setStatus] = useState<"init" | "timeline" | "detail">("init");
+	const [status, setStatus] = useState<"timeline" | "detail">("timeline");
 	const [inProcess, setInProcess] = useState<TimelineProcess>("none");
 	const [isNewTweetOpen, setIsNewTweetOpen] = useState(false);
 	const [waitReturn, setWaitReturn] = useState(false);
@@ -62,37 +65,7 @@ export const AbstractTimeline = (props: Props) => {
 	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
 	const [loadingTimeline, setLoadingTimeline] = useState<TweetV1[]>([]);
 
-	useEffect(() => {
-		const init = async () => {
-			if (status !== "init") setStatus("init");
-			const res = await props.paginator.fetch();
-			if (typeof res === "string") {
-				setError(res);
-			}
-			setStatus("timeline");
-			setHintKey("timeline");
-		};
-		if (focusedTweet) {
-			if (props.type === "list" && column.type === "list") {
-				if (column.timeline.length) {
-					const { onLoadList } = props;
-					onLoadList(column.timeline);
-					setStatus("timeline");
-					setHintKey("timeline");
-				} else {
-					init();
-				}
-			} else {
-				setStatus("timeline");
-				setHintKey("timeline");
-			}
-		} else {
-			init();
-		}
-	}, [column.name]);
-
 	const update = async ({ future }: { future: boolean }) => {
-		const { paginator } = props;
 		setInProcess("update");
 		if (future) {
 			setLoadingTimeline(timeline);
@@ -338,9 +311,6 @@ export const AbstractTimeline = (props: Props) => {
 		);
 	};
 
-	if (status === "init" || hintKey === "none") {
-		return <Text>Loading...</Text>;
-	}
 	return (
 		<>
 			<Switcher />
