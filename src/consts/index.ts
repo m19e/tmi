@@ -11,7 +11,7 @@ const hintPairArray: HintPairArray = [
 	["timeline/new/wait-return", "[Enter] tweet [ESC] cancel"],
 	[
 		"timeline/detail",
-		"[R] reply [Q] quote [T] retweet [F] favorite [ESC] back",
+		"[R] reply [Q] quote [T] retweet [F] favorite [X] menu [ESC] back",
 	],
 	["timeline/detail/input", "[Enter] done [ESC] close"],
 	["timeline/detail/wait-return", "[Enter] tweet [ESC] cancel"],
