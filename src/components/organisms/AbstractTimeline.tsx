@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Box, Text, useInput } from "ink";
+import React, { useState } from "react";
+import { Box, useInput } from "ink";
 import { parseTweet } from "twitter-text";
 import type { SetStateAction } from "jotai";
 import type { TweetV1 } from "twitter-api-v2";
 import type { ParsedTweet } from "twitter-text";
 import type { TimelineProcess, Paginator, Mover } from "../../types";
-import {
-	useCurrentColumn,
-	useError,
-	useRequestResult,
-	useHint,
-} from "../../hooks";
+import { useError, useRequestResult, useHint } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Detail from "./Detail";
 import Footer from "./Footer";
@@ -272,7 +267,7 @@ export const AbstractTimeline = ({
 						<TweetItem
 							key={t.id_str}
 							tweet={t}
-							isFocused={false}	
+							isFocused={false}
 							inFav={false}
 							inRT={false}
 						/>
