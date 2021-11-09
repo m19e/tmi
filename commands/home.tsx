@@ -1,9 +1,14 @@
 import React from "react";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
+import { HomePage } from "../src/components/organisms/Home";
 
-/// Home timeline command
+/// Home command
 const HomeCommand = () => {
-	// return <AuthContainer />;
+	return (
+		<AuthContainer>
+			<HomePage />
+		</AuthContainer>
+	);
 };
 
 export default HomeCommand;
