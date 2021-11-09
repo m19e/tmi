@@ -50,7 +50,7 @@ export const HomeProvider = () => {
 	}
 	return (
 		<AbstractTimeline
-			type="home"
+			type="column"
 			timeline={displayTimeline}
 			setTimeline={setTimeline}
 			paginator={paginator}

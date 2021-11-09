@@ -50,7 +50,7 @@ export const MentionsProvider = () => {
 	}
 	return (
 		<AbstractTimeline
-			type="mentions"
+			type="column"
 			timeline={displayTimeline}
 			setTimeline={setTimeline}
 			paginator={paginator}

@@ -55,7 +55,7 @@ export const ListProvider = () => {
 	}
 	return (
 		<AbstractTimeline
-			type="list"
+			type="column"
 			timeline={displayTimeline}
 			setTimeline={setTimeline}
 			paginator={paginator}
