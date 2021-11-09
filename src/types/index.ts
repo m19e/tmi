@@ -52,6 +52,7 @@ export type TimelineHintKey =
 	| "timeline"
 	| `timeline/${TimelineStatus}`
 	| `timeline/${DetailStatus}`
+	| "unique/timeline"
 	| "list/timeline";
 
 export interface Paginator {
