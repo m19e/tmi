@@ -35,7 +35,7 @@ export const HomePage = () => {
 				setError(error);
 			}
 			setStatus("timeline");
-			setHintKey("timeline");
+			setHintKey("unique/timeline");
 		};
 		f();
 
