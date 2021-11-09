@@ -13,6 +13,7 @@ import TweetItem from "../molecules/TweetItem";
 import NewTweetBox from "../molecules/NewTweetBox";
 
 interface BaseTimelineProps {
+	type: "column" | "home" | "mentions" | "list";
 	timeline: TweetV1[];
 	setTimeline: (update?: SetStateAction<TweetV1[]>) => void | Promise<void>;
 	mover: Mover;
@@ -34,9 +35,11 @@ interface ListTimelineProps extends BaseTimelineProps {
 
 type DuplicatableTimelineProps = ListTimelineProps;
 
-type Props = UniqueTimelineProps | DuplicatableTimelineProps;
+// type Props = UniqueTimelineProps | DuplicatableTimelineProps;
+type Props = BaseTimelineProps;
 
 export const AbstractTimeline = ({
+	type,
 	timeline,
 	setTimeline,
 	mover,
@@ -59,6 +62,18 @@ export const AbstractTimeline = ({
 	);
 	const [isTweetInDetailOpen, setIsTweetInDetailOpen] = useState(false);
 	const [loadingTimeline, setLoadingTimeline] = useState<TweetV1[]>([]);
+
+	const setTimelineHint = () => {
+		if (type === "home" || type === "mentions") {
+			setHintKey("unique/timeline");
+		}
+		if (type === "list") {
+			setHintKey("list/timeline");
+		}
+		if (type === "column") {
+			setHintKey("timeline");
+		}
+	};
 
 	const update = async ({ future }: { future: boolean }) => {
 		setInProcess("update");
@@ -127,7 +142,7 @@ export const AbstractTimeline = ({
 			setIsNewTweetOpen(false);
 			setRequestResult(`Successfully tweeted: "${tweetText}"`);
 			handleNewTweetChange("");
-			setHintKey("timeline");
+			setTimelineHint();
 		}
 		setWaitReturn(false);
 		setInProcess("none");
@@ -184,7 +199,7 @@ export const AbstractTimeline = ({
 			} else if (key.escape) {
 				handleNewTweetChange("");
 				setIsNewTweetOpen(false);
-				setHintKey("timeline");
+				setTimelineHint();
 			} else if (key.return && waitReturn) {
 				newTweet();
 			}
@@ -196,7 +211,7 @@ export const AbstractTimeline = ({
 		(input, key) => {
 			if (key.escape) {
 				setStatus("timeline");
-				setHintKey("timeline");
+				setTimelineHint();
 			} else if (input === "t") {
 				rt();
 			} else if (input === "f") {
@@ -211,7 +226,7 @@ export const AbstractTimeline = ({
 		setRequestResult(undefined);
 		setIsNewTweetOpen(true);
 		setStatus("timeline");
-		setHintKey("timeline");
+		setTimelineHint();
 	};
 
 	const handleRemoveFocusedTweet = (
@@ -232,7 +247,7 @@ export const AbstractTimeline = ({
 		if (redraft) {
 			setHintKey("timeline/new/input");
 		} else {
-			setHintKey("timeline");
+			setTimelineHint();
 		}
 	};
 
