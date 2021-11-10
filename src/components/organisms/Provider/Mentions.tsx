@@ -32,6 +32,7 @@ export const MentionsProvider = () => {
 				setHintKey("timeline");
 			} else {
 				const f = async () => {
+					setHintKey("none");
 					const error = await paginator.fetch();
 					if (typeof error === "string") {
 						setError(error);
