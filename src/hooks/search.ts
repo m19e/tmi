@@ -141,8 +141,6 @@ export const useSearchPaginator = () => {
 		const newParams = { ...cachedParams, ...params };
 		setCachedParams(newParams);
 		const res = await api.search(newParams);
-		// console.log(JSON.stringify(res, null, 1));
-
 		if (typeof res === "string") {
 			return res;
 		}
