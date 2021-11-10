@@ -15,4 +15,6 @@ export interface TweetV1SearchParams {
 	count: number;
 	since_id?: string;
 	max_id?: string;
+	tweet_mode: "extended";
+	include_entities: true;
 }
