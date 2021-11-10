@@ -8,3 +8,11 @@ export interface TrimmedList {
 	};
 	mode: "public" | "private";
 }
+
+export interface TweetV1SearchParams {
+	q: string;
+	result_type: "mixed" | "recent" | "popular";
+	count: number;
+	since_id?: string;
+	max_id?: string;
+}

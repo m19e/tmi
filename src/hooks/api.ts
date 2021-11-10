@@ -5,6 +5,7 @@ import type {
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
+import type { TweetV1SearchParams } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
 import { handleResponseError } from "../lib/helpers";
 import { useTwitterClient } from "../hooks";
@@ -34,6 +35,8 @@ interface Api {
 		attachment_url: string
 	) => PromiseWithErrorMessage<null>;
 	deleteTweet: (id: string) => PromiseWithErrorMessage<null>;
+
+	search: (params: TweetV1SearchParams) => PromiseWithErrorMessage<TweetV1[]>;
 	favorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	unfavorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	retweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
@@ -119,6 +122,15 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "POST", "statuses/destroy").message;
 		}
 	};
+
+	// Local http wrappers
+	const search = async (params: TweetV1SearchParams) => {
+		try {
+			return await api.get<TweetV1[]>("search/tweets.json", { ...params });
+		} catch (error) {
+			return handleResponseError(error, "GET", "search/tweets").message;
+		}
+	};
 	const favorite = async (id: string) => {
 		try {
 			await api.post("favorites/create.json", { id });
@@ -162,6 +174,7 @@ export const useApi = (): Api => {
 		reply,
 		quote,
 		deleteTweet,
+		search,
 		favorite,
 		unfavorite,
 		retweet,
