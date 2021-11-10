@@ -94,14 +94,16 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		const { id_str, name, owner } = value;
 		const key = `@${owner.screen_name}/${name}`;
 
-		columnMapUpdater.set(key, {
-			type: "list",
-			name: key,
-			list_id: id_str,
-			timeline: [],
-			cursor: 0,
-			focus: 0,
-		});
+		if (!columnMap.has(key)) {
+			columnMapUpdater.set(key, {
+				type: "list",
+				name: key,
+				list_id: id_str,
+				timeline: [],
+				cursor: 0,
+				focus: 0,
+			});
+		}
 		onBack();
 	};
 
