@@ -56,7 +56,6 @@ export type TimelineHintKey =
 	| "list/timeline";
 
 export interface Paginator {
-	fetch: () => Promise<string>;
 	fetchFuture: () => Promise<string>;
 	fetchPast: () => Promise<string>;
 }
