@@ -126,7 +126,11 @@ export const useApi = (): Api => {
 	// Local http wrappers
 	const search = async (params: TweetV1SearchParams) => {
 		try {
-			return await api.get<TweetV1[]>("search/tweets.json", { ...params });
+			const { statuses } = await api.get<{ statuses: TweetV1[] }>(
+				"search/tweets.json",
+				{ ...params }
+			);
+			return statuses.map(convertTweetToDisplayable);
 		} catch (error) {
 			return handleResponseError(error, "GET", "search/tweets").message;
 		}
