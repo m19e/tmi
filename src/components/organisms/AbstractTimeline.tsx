@@ -13,7 +13,7 @@ import TweetItem from "../molecules/TweetItem";
 import NewTweetBox from "../molecules/NewTweetBox";
 
 interface BaseTimelineProps {
-	type: "column" | "home" | "mentions" | "list";
+	type: "column" | "home" | "mentions" | "list" | "search";
 	timeline: TweetV1[];
 	setTimeline: (update?: SetStateAction<TweetV1[]>) => void | Promise<void>;
 	mover: Mover;
@@ -69,6 +69,9 @@ export const AbstractTimeline = ({
 		}
 		if (type === "list") {
 			setHintKey("list/timeline");
+		}
+		if (type === "search") {
+			setHintKey("search/timeline");
 		}
 		if (type === "column") {
 			setHintKey("timeline");
