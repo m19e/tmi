@@ -53,7 +53,8 @@ export type TimelineHintKey =
 	| `timeline/${TimelineStatus}`
 	| `timeline/${DetailStatus}`
 	| "unique/timeline"
-	| "list/timeline";
+	| "list/timeline"
+	| "search/timeline";
 
 export interface Paginator {
 	fetchFuture: () => Promise<string>;

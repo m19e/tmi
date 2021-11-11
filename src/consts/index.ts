@@ -15,13 +15,14 @@ const hintPairArray: HintPairArray = [
 	],
 	["timeline/detail/input", "[Enter] done [ESC] close"],
 	["timeline/detail/wait-return", "[Enter] tweet [ESC] cancel"],
-	[
-		"unique/timeline",
-		"[T] retweet [F] favorite [N] tweet [Enter] detail",
-	],
+	["unique/timeline", "[T] retweet [F] favorite [N] tweet [Enter] detail"],
 	[
 		"list/timeline",
 		"[T] retweet [F] favorite [N] tweet [Enter] detail [L] list",
+	],
+	[
+		"search/timeline",
+		"[T] retweet [F] favorite [N] tweet [Enter] detail [S] search",
 	],
 ];
 
