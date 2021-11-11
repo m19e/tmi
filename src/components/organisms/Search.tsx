@@ -108,37 +108,35 @@ export const SearchPage = ({ query }: Props) => {
 		);
 	};
 
-	const Result = () => {
-		if (!total) {
-			return (
-				<Text bold color="gray">
-					No results for {`"${searchQuery}"`}
-				</Text>
-			);
-		}
-		if (!isFormOpen) {
-			return (
-				<AbstractTimeline
-					type="search"
-					timeline={displayTimeline}
-					setTimeline={setTimeline}
-					paginator={paginator}
-					mover={mover}
-					countActions={countActions}
-					focusedTweet={focusedTweet}
-				/>
-			);
-		}
-		return null;
-	};
-
 	if (status === "init") {
 		return <Text>Loading...</Text>;
 	}
 	return (
 		<Box flexDirection="column" minHeight={rows}>
 			<Header />
-			<Result />
+			{(() => {
+				if (!total) {
+					return (
+						<Text bold color="gray">
+							No results for {`"${searchQuery}"`}
+						</Text>
+					);
+				}
+				if (!isFormOpen) {
+					return (
+						<AbstractTimeline
+							type="search"
+							timeline={displayTimeline}
+							setTimeline={setTimeline}
+							paginator={paginator}
+							mover={mover}
+							countActions={countActions}
+							focusedTweet={focusedTweet}
+						/>
+					);
+				}
+				return null;
+			})()}
 		</Box>
 	);
 };
