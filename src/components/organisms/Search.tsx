@@ -37,23 +37,23 @@ export const SearchPage = ({ query }: Props) => {
 	const [formQuery, setFormQuery] = useState(`"${query}"`);
 
 	useEffect(() => {
-		initialFetch(`"${query}"`);
+		search(`"${query}"`);
 		return () => setStatus("init");
 	}, []);
 
-	const initialFetch = async (queryText: string) => {
-		const error = await paginator.fetch({ q: `${queryText} -RT` });
-		// const error = await paginator.fetch({ q: query });
+	const search = async (queryText: string) => {
+		const q = `${queryText} -RT`;
+		const error = await paginator.fetch({ q });
 		if (typeof error === "string") {
 			setError(error);
 		}
 		setStatus("timeline");
-		setHintKey("unique/timeline");
+		setHintKey("search/timeline");
 	};
 
 	const handleFormSubmit = async (value: string) => {
 		setStatus("init");
-		await initialFetch(value);
+		await search(value);
 		setSearchQuery(value);
 		setIsFormOpen(false);
 	};
@@ -63,13 +63,18 @@ export const SearchPage = ({ query }: Props) => {
 			if (input === "s" && !isFormOpen) {
 				setFormQuery(searchQuery);
 				setIsFormOpen(true);
+				setHintKey("search/timeline/form");
 			} else if (key.escape && isFormOpen) {
 				setTimeout(() => {
 					setIsFormOpen(false);
+					setHintKey("search/timeline");
 				});
 			}
 		},
-		{ isActive: hintKey === "unique/timeline" }
+		{
+			isActive:
+				hintKey === "search/timeline" || hintKey === "search/timeline/form",
+		}
 	);
 
 	const Header = () => {
