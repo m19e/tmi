@@ -119,7 +119,7 @@ export const SearchPage = ({ query }: Props) => {
 		if (!isFormOpen) {
 			return (
 				<AbstractTimeline
-					type="home"
+					type="search"
 					timeline={displayTimeline}
 					setTimeline={setTimeline}
 					paginator={paginator}
