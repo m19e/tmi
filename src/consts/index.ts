@@ -24,6 +24,7 @@ const hintPairArray: HintPairArray = [
 		"search/timeline",
 		"[T] retweet [F] favorite [N] tweet [Enter] detail [S] search",
 	],
+	["search/timeline/form", "[Enter] search [ESC] close"],
 ];
 
 export const hintMap = new Map<TimelineHintKey, string | undefined>(

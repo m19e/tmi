@@ -47,14 +47,15 @@ type TimelineStatus = `new/${TweetStatus}`;
 
 type DetailStatus = "detail" | `detail/${TweetStatus}`;
 
+type SubCommand = "unique" | "list" | "search";
+
 export type TimelineHintKey =
 	| "none"
 	| "timeline"
 	| `timeline/${TimelineStatus}`
 	| `timeline/${DetailStatus}`
-	| "unique/timeline"
-	| "list/timeline"
-	| "search/timeline";
+	| `${SubCommand}/timeline`
+	| "search/timeline/form";
 
 export interface Paginator {
 	fetchFuture: () => Promise<string>;
