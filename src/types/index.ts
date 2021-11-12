@@ -1,5 +1,8 @@
+import type { SetStateAction } from "jotai";
 import type { TwitterApiTokens, TweetV1, UserV1 } from "twitter-api-v2";
 import type { TrimmedList } from "./twitter";
+
+export type ReturnHookTuple<T> = [T, (update: SetStateAction<T>) => void];
 
 interface CachedTimeline {
 	timeline: Array<TweetV1>;
