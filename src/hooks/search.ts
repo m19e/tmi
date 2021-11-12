@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
+import type { TweetV1 } from "twitter-api-v2";
+import type { ReturnHookTuple } from "../types";
 import type { TweetV1SearchParams } from "../types/twitter";
 import {
 	timelineAtom,
@@ -10,10 +12,25 @@ import {
 	focusedTweetAtom,
 	pagingCursorsAtom,
 } from "../store/search";
-import { useDisplayTweetsCount as useRootCount } from ".";
+import { useCurrentColumn, useDisplayTweetsCount as useRootCount } from ".";
 import { useApi } from "./api";
 
 export const useTimeline = () => useAtom(timelineAtom);
+
+export const useTimelineWithCache = (): ReturnHookTuple<TweetV1[]> => {
+	const [timeline, setTL] = useAtom(timelineAtom);
+	const [currentColumn, { updateColumn }] = useCurrentColumn();
+
+	const setTimeline = (update: SetStateAction<TweetV1[]>) => {
+		setTL(update);
+		if (currentColumn.type === "search") {
+			const newTL = typeof update === "function" ? update(timeline) : update;
+			updateColumn({ ...currentColumn, timeline: newTL });
+		}
+	};
+
+	return [timeline, setTimeline];
+};
 
 export const getDisplayTimeline = () => useAtom(displayTimelineAtom)[0];
 
