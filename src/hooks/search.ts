@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAtom } from "jotai";
 import type { SetStateAction } from "jotai";
-import type { TweetV1TimelineParams } from "twitter-api-v2";
 import type { TweetV1SearchParams } from "../types/twitter";
 import {
 	timelineAtom,
