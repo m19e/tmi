@@ -21,6 +21,11 @@ export type Column =
 			name: string;
 			list_id: string;
 			user?: UserV1;
+	  } & CachedTimeline)
+	| ({
+			type: "search";
+			name: string;
+			query: string;
 	  } & CachedTimeline);
 
 export interface HandledResponseError {
