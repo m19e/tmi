@@ -123,7 +123,7 @@ export const useMover = () => {
 	return mover;
 };
 
-export const useSearchPaginator = () => {
+export const useSingleSearchPaginator = () => {
 	const api = useApi();
 	const { since_id, max_id } = useAtom(pagingCursorsAtom)[0];
 	const setTimeline = useTimeline()[1];

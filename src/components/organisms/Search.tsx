@@ -6,7 +6,7 @@ import { useError, useHint } from "../../hooks";
 import {
 	useTimeline,
 	useMover,
-	useSearchPaginator,
+	useSingleSearchPaginator,
 	useDisplayTweetsCount,
 	getDisplayTimeline,
 	getFocusedTweet,
@@ -25,7 +25,7 @@ export const SearchPage = ({ query }: Props) => {
 
 	const displayTimeline = getDisplayTimeline();
 	const [{ length: total }, setTimeline] = useTimeline();
-	const paginator = useSearchPaginator();
+	const paginator = useSingleSearchPaginator();
 	const mover = useMover();
 	const [count, countActions] = useDisplayTweetsCount();
 	const focusedTweet = getFocusedTweet();
