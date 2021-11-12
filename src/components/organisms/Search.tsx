@@ -41,8 +41,7 @@ export const SearchPage = ({ query }: Props) => {
 		return () => setStatus("init");
 	}, []);
 
-	const search = async (queryText: string) => {
-		const q = `${queryText} -RT`;
+	const search = async (q: string) => {
 		const error = await paginator.fetch({ q });
 		if (typeof error === "string") {
 			setError(error);

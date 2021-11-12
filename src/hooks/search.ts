@@ -171,7 +171,7 @@ export const useSingleSearchPaginator = () => {
 	});
 
 	const fetch = async (params: Pick<TweetV1SearchParams, "q">) => {
-		const newParams = { ...cachedParams, ...params };
+		const newParams = { ...cachedParams, q: `${params.q} -RT` };
 		setCachedParams(newParams);
 		const res = await api.search(newParams);
 		if (typeof res === "string") {
