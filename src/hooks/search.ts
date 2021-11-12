@@ -39,14 +39,29 @@ export const getFocusedTweet = () => useAtom(focusedTweetAtom)[0];
 interface PositionActions {
 	setCursor: (update: SetStateAction<number>) => void | Promise<void>;
 	setFocus: (update: SetStateAction<number>) => void | Promise<void>;
+	loadPosition: () => void;
+	cachePosition: () => void;
 }
 
 export const usePosition = (): [
 	{ cursor: number; focus: number },
 	PositionActions
 ] => {
+	const [currentColumn, { updateColumn }] = useCurrentColumn();
 	const [cursor, setCursor] = useAtom(cursorIndexAtom);
 	const [focus, setFocus] = useAtom(focusIndexAtom);
+
+	const loadPosition = () => {
+		if (currentColumn.type === "search") {
+			setCursor(currentColumn.cursor);
+			setFocus(currentColumn.focus);
+		}
+	};
+	const cachePosition = () => {
+		if (currentColumn.type == "search") {
+			updateColumn({ ...currentColumn, cursor, focus });
+		}
+	};
 
 	const states = {
 		cursor,
@@ -55,6 +70,8 @@ export const usePosition = (): [
 	const actions = {
 		setCursor,
 		setFocus,
+		loadPosition,
+		cachePosition,
 	};
 
 	return [states, actions];
