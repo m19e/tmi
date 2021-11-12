@@ -156,6 +156,68 @@ export const useMover = () => {
 	return mover;
 };
 
+export const useSearchPaginator = () => {
+	const api = useApi();
+	const [column, { updateColumn }] = useCurrentColumn();
+	const { since_id, max_id } = useAtom(pagingCursorsAtom)[0];
+	const { setCursor } = usePosition()[1];
+	const setTimeline = useTimelineWithCache()[1];
+
+	const [cachedParams, setCachedParams] = useState<TweetV1SearchParams>({
+		q: "",
+		result_type: "recent",
+		count: 100,
+		tweet_mode: "extended",
+		include_entities: true,
+	});
+
+	const fetch = async (params: Pick<TweetV1SearchParams, "q">) => {
+		const newParams = { ...cachedParams, q: `${params.q} -RT` };
+		setCachedParams(newParams);
+		if (column.type === "search") {
+			const newColumn: typeof column = { ...column, query: params.q };
+			updateColumn(newColumn);
+		}
+		const res = await api.search(newParams);
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setTimeline(res);
+		}
+		return null;
+	};
+	const fetchFuture = async () => {
+		const res = await api.search({
+			...cachedParams,
+			since_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setCursor((prev) => prev + res.length);
+			setTimeline((prev) => [...res, ...prev]);
+		}
+		return null;
+	};
+	const fetchPast = async () => {
+		const res = await api.search({
+			...cachedParams,
+			max_id,
+		});
+		if (typeof res === "string") {
+			return res;
+		}
+		if (res.length) {
+			setTimeline((prev) => [...prev, ...res]);
+		}
+		return null;
+	};
+
+	return { fetch, fetchFuture, fetchPast };
+};
+
 export const useSingleSearchPaginator = () => {
 	const api = useApi();
 	const { since_id, max_id } = useAtom(pagingCursorsAtom)[0];
