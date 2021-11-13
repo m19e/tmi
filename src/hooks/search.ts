@@ -25,7 +25,7 @@ export const useTimelineWithCache = (): ReturnHookTuple<TweetV1[]> => {
 		setTL(update);
 		if (currentColumn.type === "search") {
 			const newTL = typeof update === "function" ? update(timeline) : update;
-			updateColumn({ ...currentColumn, timeline: newTL });
+			updateColumn((prev) => ({ ...prev, timeline: newTL }));
 		}
 	};
 
