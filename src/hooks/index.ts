@@ -57,7 +57,7 @@ export const useCurrentColumn = (): [
 	Column,
 	{
 		setColumnKey: (key: string) => void;
-		updateColumn: (newColumn: Column) => void;
+		updateColumn: (update: SetStateAction<Column>) => void;
 	}
 ] => {
 	const [currentKey, setKey] = useAtom(currentColumnKeyAtom);
@@ -75,7 +75,9 @@ export const useCurrentColumn = (): [
 			setKey(key);
 		}
 	};
-	const updateColumn = (newColumn: Column) => {
+	const updateColumn = (update: SetStateAction<Column>) => {
+		const newColumn =
+			typeof update === "function" ? update(currentColumn) : update;
 		actions.set(currentKey, newColumn);
 	};
 
