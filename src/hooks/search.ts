@@ -161,7 +161,7 @@ export const useSearchPaginator = () => {
 	const [column, { updateColumn }] = useCurrentColumn();
 	const { since_id, max_id } = useAtom(pagingCursorsAtom)[0];
 	const { setCursor } = usePosition()[1];
-	const setTimeline = useTimelineWithCache()[1];
+	const setTimeline = useTimeline()[1];
 
 	const [cachedParams, setCachedParams] = useState<TweetV1SearchParams>({
 		q: "",
@@ -172,18 +172,24 @@ export const useSearchPaginator = () => {
 	});
 
 	const fetch = async (params: Pick<TweetV1SearchParams, "q">) => {
-		const newParams = { ...cachedParams, q: `${params.q} -RT` };
+		const newParams = {
+			...cachedParams,
+			q: `${params.q} -RT`,
+		};
 		setCachedParams(newParams);
-		if (column.type === "search") {
-			const newColumn: typeof column = { ...column, query: params.q };
-			updateColumn(newColumn);
-		}
 		const res = await api.search(newParams);
 		if (typeof res === "string") {
 			return res;
 		}
 		if (res.length) {
 			setTimeline(res);
+		}
+		if (column.type === "search") {
+			updateColumn({
+				...column,
+				query: params.q,
+				timeline: res,
+			});
 		}
 		return null;
 	};
