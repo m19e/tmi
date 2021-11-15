@@ -17,7 +17,7 @@ interface Props {
 	query: string;
 }
 
-export const SearchProvider = ({ query }: Props) => {
+export const SearchProvider = () => {
 	const [column] = useCurrentColumn();
 	const [, setError] = useError();
 	const [{ key: hintKey }, setHintKey] = useHint();
@@ -31,39 +31,52 @@ export const SearchProvider = ({ query }: Props) => {
 	const [{ cursor }, { loadPosition }] = usePosition();
 
 	const [status, setStatus] = useState<"init" | "timeline">("init");
-	const [searchQuery, setSearchQuery] = useState(`"${query}"`);
+	const [searchQuery, setSearchQuery] = useState("");
 	const [isFormOpen, setIsFormOpen] = useState(false);
-	const [formQuery, setFormQuery] = useState(`"${query}"`);
+	const [formQuery, setFormQuery] = useState("");
 
 	useEffect(() => {
 		if (column.type === "search") {
 			if (column.timeline.length) {
 				setTimeline(column.timeline);
 				loadPosition();
+				initColumn(column.query);
+			} else if (column.query) {
+				const f = async () => {
+					setHintKey("none");
+					setStatus("init");
+					const error = await paginator.fetch({ q: column.query });
+					if (typeof error === "string") {
+						setError(error);
+					}
+					initColumn(column.query);
+				};
+				f();
+			} else {
+				initColumn("");
 			}
-			setSearchQuery(column.query);
-			setFormQuery(column.query);
-			setStatus("timeline");
-			setHintKey("search/timeline");
 		}
 
 		return () => setStatus("init");
 	}, [column.name]);
 
-	const search = async (q: string) => {
-		const error = await paginator.fetch({ q });
-		if (typeof error === "string") {
-			setError(error);
-		}
+	const initColumn = (q: string) => {
+		setSearchQuery(q);
+		setFormQuery(q);
 		setStatus("timeline");
 		setHintKey("search/timeline");
 	};
 
 	const handleFormSubmit = async (value: string) => {
+		const q = value.trim();
+		if (q === "") return;
 		setStatus("init");
-		await search(value);
-		setSearchQuery(value);
+		const error = await paginator.fetch({ q });
+		if (typeof error === "string") {
+			setError(error);
+		}
 		setIsFormOpen(false);
+		initColumn(q);
 	};
 
 	useInput(
