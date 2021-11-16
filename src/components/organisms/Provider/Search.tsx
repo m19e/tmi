@@ -13,10 +13,6 @@ import {
 } from "../../../hooks/search";
 import { AbstractTimeline } from "../AbstractTimeline";
 
-interface Props {
-	query: string;
-}
-
 export const SearchProvider = () => {
 	const [column] = useCurrentColumn();
 	const [, setError] = useError();
