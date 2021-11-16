@@ -82,10 +82,8 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 
 	const handleSelectAddColumn = async ({ value }: Item<ColumnType>) => {
 		if (value === "home") {
-		}
-		if (value === "mentions") {
-		}
-		if (value === "list") {
+		} else if (value === "mentions") {
+		} else if (value === "list") {
 			await getUserLists();
 		}
 	};
