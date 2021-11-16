@@ -90,10 +90,10 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 			const uniqueId =
 				new Date().getTime().toString(16) +
 				Math.floor(Math.random() * 10).toString(16);
-			const name = `Search:${uniqueId}`;
-			columnsAction.set(name, {
+			const key = `Search:${uniqueId}`;
+			columnsAction.set(key, {
 				type: "search",
-				name,
+				name: key,
 				query: "",
 				timeline: [],
 				cursor: 0,
