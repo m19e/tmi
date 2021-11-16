@@ -9,7 +9,7 @@ import { useColumnMap, useUserConfig, useCurrentColumn } from "../../hooks";
 import { useApi } from "../../hooks/api";
 
 type Action = "add" | "sort" | "delete";
-type ColumnType = "home" | "mentions" | "list";
+type ColumnType = "home" | "mentions" | "list" | "search";
 
 export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	const [columns, columnsAction] = useColumnMap();
@@ -32,6 +32,7 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 			{ key: "home", label: "Home", value: "home" },
 			{ key: "mentions", label: "Mentions", value: "mentions" },
 			{ key: "list", label: "List", value: "list" },
+			{ key: "search", label: "Search", value: "search" },
 		];
 		if (columnValues.some((c) => c.type === "home")) {
 			selectColumns = selectColumns.filter((c) => c.value !== "home");
@@ -85,6 +86,20 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		} else if (value === "mentions") {
 		} else if (value === "list") {
 			await getUserLists();
+		} else if (value === "search") {
+			const uniqueId =
+				new Date().getTime().toString(16) +
+				Math.floor(Math.random() * 10).toString(16);
+			const name = `Search:${uniqueId}`;
+			columnsAction.set(name, {
+				type: "search",
+				name,
+				query: "",
+				timeline: [],
+				cursor: 0,
+				focus: 0,
+			});
+			onBack();
 		}
 	};
 
