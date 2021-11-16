@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
 import { writeJSON } from "fs-extra";
 import { Text } from "ink";
+import TextInput from "ink-text-input";
 import type { TrimmedList } from "../../types/twitter";
 import SelectInput, { Item } from "../molecules/SelectInput";
 import SelectList from "../molecules/SelectList";
@@ -11,12 +12,29 @@ import { useApi } from "../../hooks/api";
 type Action = "add" | "sort" | "delete";
 type ColumnType = "home" | "mentions" | "list" | "search";
 
+const SearchInput = ({ onSubmit }: { onSubmit: (q: string) => void }) => {
+	const [query, setQuery] = useState("");
+	useEffect(() => {
+		return () => setQuery("");
+	}, []);
+	return (
+		<TextInput
+			value={query}
+			onChange={setQuery}
+			onSubmit={onSubmit}
+			placeholder="Search"
+		/>
+	);
+};
+
 export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	const [columns, columnsAction] = useColumnMap();
 	const [config] = useUserConfig();
 	const [, { setColumnKey }] = useCurrentColumn();
 	const api = useApi();
-	const [status, setStatus] = useState<"actions" | "add" | "list">("actions");
+	const [status, setStatus] = useState<"actions" | "add" | "list" | "search">(
+		"actions"
+	);
 	const [addItems, setAddItems] = useState<Array<Item<ColumnType>>>([]);
 	const [lists, setLists] = useState<TrimmedList[]>([]);
 
@@ -87,19 +105,7 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		} else if (value === "list") {
 			await getUserLists();
 		} else if (value === "search") {
-			const uniqueId =
-				new Date().getTime().toString(16) +
-				Math.floor(Math.random() * 10).toString(16);
-			const key = `Search:${uniqueId}`;
-			columnsAction.set(key, {
-				type: "search",
-				name: key,
-				query: "",
-				timeline: [],
-				cursor: 0,
-				focus: 0,
-			});
-			onBack();
+			setStatus("search");
 		}
 	};
 
@@ -117,6 +123,24 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 				focus: 0,
 			});
 		}
+		onBack();
+	};
+
+	const handleSearchSubmit = (q: string) => {
+		const query = q.trim();
+		if (!query) return;
+		const uniqueId =
+			new Date().getTime().toString(16) +
+			Math.floor(Math.random() * 10).toString(16);
+		const key = `Search:${uniqueId}`;
+		columnsAction.set(key, {
+			type: "search",
+			name: key,
+			query,
+			timeline: [],
+			cursor: 0,
+			focus: 0,
+		});
 		onBack();
 	};
 
@@ -138,5 +162,13 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	}
 	if (status === "list") {
 		return <SelectList lists={lists} onSelect={handleSelectList} />;
+	}
+	if (status === "search") {
+		return (
+			<>
+				<Text>Add search column...</Text>
+				<SearchInput onSubmit={handleSearchSubmit} />
+			</>
+		);
 	}
 };
