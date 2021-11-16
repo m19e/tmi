@@ -12,7 +12,7 @@ type Action = "add" | "sort" | "delete";
 type ColumnType = "home" | "mentions" | "list";
 
 export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
-	const [columnMap, columnMapUpdater] = useColumnMap();
+	const [columns, columnsAction] = useColumnMap();
 	const [config] = useUserConfig();
 	const [, { setColumnKey }] = useCurrentColumn();
 	const api = useApi();
@@ -27,7 +27,7 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	];
 
 	const filterAddColumns = () => {
-		const columnValues = [...columnMap.values()];
+		const columnValues = [...columns.values()];
 		let selectColumns: Array<Item<ColumnType>> = [
 			{ key: "home", label: "Home", value: "home" },
 			{ key: "mentions", label: "Mentions", value: "mentions" },
@@ -92,8 +92,8 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		const { id_str, name, owner } = value;
 		const key = `@${owner.screen_name}/${name}`;
 
-		if (!columnMap.has(key)) {
-			columnMapUpdater.set(key, {
+		if (!columns.has(key)) {
+			columnsAction.set(key, {
 				type: "list",
 				name: key,
 				list_id: id_str,
