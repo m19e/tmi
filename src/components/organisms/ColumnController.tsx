@@ -9,7 +9,7 @@ import SelectList from "../molecules/SelectList";
 import { useColumnMap, useUserConfig, useCurrentColumn } from "../../hooks";
 import { useApi } from "../../hooks/api";
 
-type Action = "add" | "sort" | "delete";
+type Action = "add" | "sort" | "remove";
 type ColumnType = "home" | "mentions" | "list" | "search";
 
 const Chevron = () => <Text color="gray">{" > "}</Text>;
@@ -34,16 +34,16 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	const [config] = useUserConfig();
 	const [, { setColumnKey }] = useCurrentColumn();
 	const api = useApi();
-	const [status, setStatus] = useState<"actions" | "add" | "list" | "search">(
-		"actions"
-	);
+	const [status, setStatus] = useState<
+		"actions" | "add" | "remove" | "list" | "search"
+	>("actions");
 	const [addItems, setAddItems] = useState<Array<Item<ColumnType>>>([]);
 	const [lists, setLists] = useState<TrimmedList[]>([]);
 
 	const actionItems: Array<Item<Action>> = [
 		{ key: "add", label: "Add", value: "add" },
 		{ key: "sort", label: "Sort", value: "sort" },
-		{ key: "delete", label: "Delete", value: "delete" },
+		{ key: "remove", label: "Remove", value: "remove" },
 	];
 
 	const filterAddColumns = () => {
