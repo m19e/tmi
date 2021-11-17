@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
 import { writeJSON } from "fs-extra";
-import { Text } from "ink";
+import { Box, Text } from "ink";
 import TextInput from "ink-text-input";
 import type { TrimmedList } from "../../types/twitter";
 import SelectInput, { Item } from "../molecules/SelectInput";
@@ -11,6 +11,8 @@ import { useApi } from "../../hooks/api";
 
 type Action = "add" | "sort" | "delete";
 type ColumnType = "home" | "mentions" | "list" | "search";
+
+const Chevron = () => <Text color="gray">{" > "}</Text>;
 
 const SearchInput = ({ onSubmit }: { onSubmit: (q: string) => void }) => {
 	const [query, setQuery] = useState("");
@@ -147,7 +149,9 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	if (status === "actions") {
 		return (
 			<>
-				<Text>Select column action...</Text>
+				<Box flexDirection="column" marginBottom={1}>
+					<Text color="#00acee">Column Actions</Text>
+				</Box>
 				<SelectInput items={actionItems} onSelect={handleSelectActions} />
 			</>
 		);
@@ -155,18 +159,45 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	if (status === "add") {
 		return (
 			<>
-				<Text>Select column type...</Text>
+				<Box flexDirection="column" marginBottom={1}>
+					<Text color="#00acee">
+						Column Actions
+						<Chevron />
+						Add
+					</Text>
+				</Box>
 				<SelectInput items={addItems} onSelect={handleSelectAddColumn} />
 			</>
 		);
 	}
 	if (status === "list") {
-		return <SelectList lists={lists} onSelect={handleSelectList} />;
+		return (
+			<>
+				<Box flexDirection="column" marginBottom={1}>
+					<Text color="#00acee">
+						Column Actions
+						<Chevron />
+						Add
+						<Chevron />
+						List
+					</Text>
+				</Box>
+				<SelectList lists={lists} onSelect={handleSelectList} />
+			</>
+		);
 	}
 	if (status === "search") {
 		return (
 			<>
-				<Text>Add search column...</Text>
+				<Box flexDirection="column" marginBottom={1}>
+					<Text color="#00acee">
+						Column Actions
+						<Chevron />
+						Add
+						<Chevron />
+						Search
+					</Text>
+				</Box>
 				<SearchInput onSubmit={handleSearchSubmit} />
 			</>
 		);
