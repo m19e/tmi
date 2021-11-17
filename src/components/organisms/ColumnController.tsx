@@ -22,7 +22,7 @@ const SearchInput = ({ onSubmit }: { onSubmit: (q: string) => void }) => {
 			value={query}
 			onChange={setQuery}
 			onSubmit={onSubmit}
-			placeholder="Search"
+			placeholder="Search word"
 		/>
 	);
 };
