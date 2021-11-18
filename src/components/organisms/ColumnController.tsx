@@ -100,6 +100,33 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		if (value === "add") {
 			setAddItems(() => filterAddColumns());
 			setStatus("add");
+		} else if (value === "remove") {
+			const currentCols = [...columns.entries()];
+			const items: Item<Column>[] = currentCols.map(([key, col]) => {
+				switch (col.type) {
+					case "list":
+						return {
+							key,
+							label: `List ${key}`,
+							value: col,
+						};
+					case "search":
+						return {
+							key,
+							label: `Search "${col.query}""`,
+							value: col,
+						};
+
+					default:
+						return {
+							key,
+							label: key,
+							value: col,
+						};
+				}
+			});
+			setRemoveItems(items);
+			setStatus("remove");
 		}
 	};
 
@@ -111,6 +138,20 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		} else if (value === "search") {
 			setStatus("search");
 		}
+	};
+
+	const handleRemoveColumn = async ({ key }: Item<Column>) => {
+		if (columns.has(key)) {
+			const firstKey: string = columns.keys().next().value;
+			const newMap = columns;
+			newMap.delete(key);
+			if (firstKey === key) {
+				const updateKey: string = newMap.keys().next().value;
+				setColumnKey(updateKey);
+			}
+			columnsAction.setAll(newMap);
+		}
+		onBack();
 	};
 
 	const handleSelectList = ({ value }: Item<TrimmedList>) => {
@@ -169,6 +210,20 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 					</Text>
 				</Box>
 				<SelectInput items={addItems} onSelect={handleSelectAddColumn} />
+			</>
+		);
+	}
+	if (status === "remove") {
+		return (
+			<>
+				<Box flexDirection="column" marginBottom={1}>
+					<Text color="#00acee">
+						Column Actions
+						<Chevron />
+						Remove
+					</Text>
+				</Box>
+				<SelectInput items={removeItems} onSelect={handleRemoveColumn} />
 			</>
 		);
 	}
