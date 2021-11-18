@@ -46,6 +46,7 @@ export const Columns: VFC = () => {
 				onChange={handleTabsChange}
 				isFocused={canToggleColumn}
 				keyMap={{ useTab: false, useNumbers: true }}
+				defaultValue={currentColumn.name}
 			>
 				{[...columns.entries()].map(([key, column]) => (
 					<Tab key={key} name={key}>
