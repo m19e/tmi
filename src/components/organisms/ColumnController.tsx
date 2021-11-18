@@ -3,6 +3,7 @@ import type { VFC } from "react";
 import { writeJSON } from "fs-extra";
 import { Box, Text } from "ink";
 import TextInput from "ink-text-input";
+import type { Column } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
 import SelectInput, { Item } from "../molecules/SelectInput";
 import SelectList from "../molecules/SelectList";
@@ -38,6 +39,7 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 		"actions" | "add" | "remove" | "list" | "search"
 	>("actions");
 	const [addItems, setAddItems] = useState<Array<Item<ColumnType>>>([]);
+	const [removeItems, setRemoveItems] = useState<Array<Item<Column>>>([]);
 	const [lists, setLists] = useState<TrimmedList[]>([]);
 
 	const actionItems: Array<Item<Action>> = [
