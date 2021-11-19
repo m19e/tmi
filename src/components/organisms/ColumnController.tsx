@@ -141,7 +141,7 @@ export const ColumnController: VFC<{ onBack: () => void }> = ({ onBack }) => {
 	};
 
 	const handleRemoveColumn = async ({ key }: Item<Column>) => {
-		if (columns.has(key)) {
+		if (columns.has(key) && columns.size > 1) {
 			columnsAction.delete(key);
 			// const firstKey: string = columns.keys().next().value;
 			// const newMap = columns;
