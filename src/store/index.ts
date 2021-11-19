@@ -25,7 +25,12 @@ export const currentColumnKeyAtom = atom<string>("Home");
 export const currentColumnValueAtom = atom<Column>((get) => {
 	const map = get(columnMapAtom);
 	const key = get(currentColumnKeyAtom);
-	return map.get(key);
+	if (map.has(key)) {
+		return map.get(key);
+	} else {
+		const firstKey: string = map.keys().next().value;
+		return map.get(firstKey);
+	}
 });
 
 export const displayTweetsCountAtom = atom(5);
