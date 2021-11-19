@@ -28,7 +28,7 @@ const ColumnContainer = () => {
 				setStatus("page");
 			}
 		},
-		{ isActive: hintKey === "timeline" }
+		{ isActive: hintKey === "timeline" || hintKey === "search/timeline" }
 	);
 
 	const handleBack = () => setStatus("page");
