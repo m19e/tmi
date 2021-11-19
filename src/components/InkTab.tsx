@@ -300,7 +300,7 @@ export interface TabsWithInputProps {
 	defaultValue?: string;
 }
 
-const isCol = (flexDirection: TextProps["color"]): boolean =>
+const isCol = (flexDirection: BoxProps["flexDirection"]): boolean =>
 	flexDirection === "column" || flexDirection === "column-reverse";
 
 const TabsWithInput: FC<TabsWithInputProps> = ({
