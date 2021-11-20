@@ -7,6 +7,7 @@ import type { TweetV1SearchParams } from "../types/twitter";
 import {
 	timelineAtom,
 	displayTimelineAtom,
+	validTweetsCountAtom,
 	cursorIndexAtom,
 	focusIndexAtom,
 	focusedTweetAtom,
@@ -82,15 +83,16 @@ export const useDisplayTweetsCount = (): [
 	{ inc: () => void; dec: () => void }
 ] => {
 	const [{ focus }, { setFocus }] = usePosition();
-	const [count, setCount] = useRootCount();
+	const [, setCount] = useRootCount();
+	const [count] = useAtom(validTweetsCountAtom);
 
 	const inc = () => {
-		if (count < 20) setCount((c) => c + 1);
+		if (count < 20) setCount(count + 1);
 	};
 	const dec = () => {
 		if (count > 1) {
 			if (count - 1 === focus) setFocus((f) => f - 1);
-			setCount((c) => c - 1);
+			setCount(count - 1);
 		}
 	};
 
