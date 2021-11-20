@@ -14,6 +14,13 @@ export const displayTimelineAtom = atom<TweetV1[]>((get) => {
 	return get(timelineAtom).slice(cursor, cursor + count);
 });
 
+export const validTweetsCountAtom = atom<number>((get) => {
+	const cursor = get(cursorIndexAtom);
+	const count = get(displayTweetsCountAtom);
+	const { length } = get(timelineAtom).slice(cursor, cursor + count);
+	return Math.min(count, length);
+});
+
 export const focusedTweetAtom = atom<TweetV1>(
 	(get) => get(displayTimelineAtom)[get(focusIndexAtom)]
 );
