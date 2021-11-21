@@ -1,12 +1,12 @@
 import React from "react";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
-import { List as ListPage } from "../src/components/organisms/List";
+import { ListSub } from "../src/components/organisms/Sub/List";
 
 /// List Command
 const ListCommand = () => {
 	return (
 		<AuthContainer>
-			<ListPage />
+			<ListSub />
 		</AuthContainer>
 	);
 };
