@@ -20,4 +20,8 @@ SearchCommand.propTypes = {
 	query: PropTypes.string.isRequired,
 };
 
+SearchCommand.shortFlags = {
+	query: "q",
+};
+
 export default SearchCommand;
