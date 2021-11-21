@@ -3,7 +3,6 @@ import type { VFC } from "react";
 import { useApp, useInput, Text, Box } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import { writeJSON } from "fs-extra";
-
 import type { TrimmedList } from "../../../types/twitter";
 import {
 	useUserConfig,
@@ -22,7 +21,6 @@ import {
 	getDisplayTimeline,
 	getFocusedTweet,
 } from "../../../hooks/list";
-import Footer from "../Footer";
 import SelectList from "../../molecules/SelectList";
 import { AbstractTimeline } from "../AbstractTimeline";
 
