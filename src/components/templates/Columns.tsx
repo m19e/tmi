@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
-import { useHint } from "../../hooks";
+import { useHint, useColumnMap, useCurrentColumn } from "../../hooks";
 import { ColumnController } from "../organisms/ColumnController";
 import { Columns } from "../organisms/Columns";
 import { ColumnSwitcher } from "../organisms/ColumnSwitcher";
@@ -18,6 +18,8 @@ export const ColumnsTemplate = () => {
 
 const ColumnContainer = () => {
 	const [{ key: hintKey }] = useHint();
+	const [columns] = useColumnMap();
+	const [, { setColumnKey }] = useCurrentColumn();
 	const [status, setStatus] = useState<"page" | "controll">("page");
 
 	useInput(
@@ -25,6 +27,8 @@ const ColumnContainer = () => {
 			if (input === "c" && status === "page") {
 				setStatus("controll");
 			} else if (key.escape && status === "controll") {
+				const firstKey: string = columns.keys().next().value;
+				setColumnKey(firstKey);
 				setStatus("page");
 			}
 		},
