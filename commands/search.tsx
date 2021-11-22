@@ -17,6 +17,7 @@ const SearchCommand = ({ query }: Props) => {
 };
 
 SearchCommand.propTypes = {
+	/// Search word input
 	query: PropTypes.string.isRequired,
 };
 
