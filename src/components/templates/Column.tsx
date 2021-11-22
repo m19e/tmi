@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, useInput } from "ink";
+import { Box, Text, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import { useHint, useColumnMap, useCurrentColumn } from "../../hooks";
 import { ColumnController } from "../organisms/Column/Controller";
@@ -46,6 +46,13 @@ const ColumnContainer = () => {
 		);
 	}
 	if (status === "controll") {
-		return <ColumnController onBack={handleBack} />;
+		return (
+			<>
+				<Box flexDirection="column" flexGrow={1}>
+					<ColumnController onBack={handleBack} />
+				</Box>
+				<Text>[ESC] Back to Timeline</Text>
+			</>
+		);
 	}
 };
