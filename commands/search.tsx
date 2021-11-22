@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
-import { SearchPage } from "../src/components/organisms/Search";
+import { SearchSub } from "../src/components/templates/Search";
 
 interface Props {
 	query: string;
@@ -11,7 +11,7 @@ interface Props {
 const SearchCommand = ({ query }: Props) => {
 	return (
 		<AuthContainer>
-			<SearchPage query={query} />
+			<SearchSub query={query} />
 		</AuthContainer>
 	);
 };
