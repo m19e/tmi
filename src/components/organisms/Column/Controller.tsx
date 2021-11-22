@@ -5,10 +5,10 @@ import { Box, Text } from "ink";
 import TextInput from "ink-text-input";
 import type { Column } from "../../../types";
 import type { TrimmedList } from "../../../types/twitter";
-import SelectInput, { Item } from "../../molecules/SelectInput";
-import SelectList from "../../molecules/SelectList";
 import { useColumnMap, useUserConfig, useCurrentColumn } from "../../../hooks";
 import { useApi } from "../../../hooks/api";
+import SelectInput, { Item } from "../../molecules/SelectInput";
+import SelectList from "../../molecules/SelectList";
 
 type Action = "add" | "sort" | "remove";
 type ColumnType = "home" | "mentions" | "list" | "search";
