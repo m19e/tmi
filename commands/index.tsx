@@ -12,9 +12,4 @@ const IndexCommand = () => {
 	);
 };
 
-IndexCommand.propTypes = {
-	/// Command args description example
-	name: PropTypes.string,
-};
-
 export default IndexCommand;
