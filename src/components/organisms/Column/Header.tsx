@@ -6,7 +6,7 @@ import { useColumnMap, useCurrentColumn, useHint } from "../../../hooks";
 import { usePosition as useListPosition } from "../../../hooks/list";
 import { usePosition as useSearchPosition } from "../../../hooks/search";
 
-export const Columns: VFC = () => {
+export const ColumnHeader: VFC = () => {
 	const [columns] = useColumnMap();
 	const [currentColumn, { setColumnKey }] = useCurrentColumn();
 	const [{ key: hintKey }] = useHint();

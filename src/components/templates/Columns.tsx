@@ -3,7 +3,7 @@ import { Box, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import { useHint, useColumnMap, useCurrentColumn } from "../../hooks";
 import { ColumnController } from "../organisms/Column/Controller";
-import { Columns } from "../organisms/Column/Header";
+import { ColumnHeader } from "../organisms/Column/Header";
 import { ColumnSwitcher } from "../organisms/Column/Switcher";
 
 export const ColumnsTemplate = () => {
@@ -40,7 +40,7 @@ const ColumnContainer = () => {
 	if (status === "page") {
 		return (
 			<>
-				<Columns />
+				<ColumnHeader />
 				<ColumnSwitcher />
 			</>
 		);
