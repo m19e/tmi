@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
-import { TabsWithInput, Tab } from "../InkTab";
-import { useColumnMap, useCurrentColumn, useHint } from "../../hooks";
-import { usePosition as useListPosition } from "../../hooks/list";
-import { usePosition as useSearchPosition } from "../../hooks/search";
+import { TabsWithInput, Tab } from "../../InkTab";
+import { useColumnMap, useCurrentColumn, useHint } from "../../../hooks";
+import { usePosition as useListPosition } from "../../../hooks/list";
+import { usePosition as useSearchPosition } from "../../../hooks/search";
 
 export const Columns: VFC = () => {
 	const [columns] = useColumnMap();

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Box, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import { useHint, useColumnMap, useCurrentColumn } from "../../hooks";
-import { ColumnController } from "../organisms/ColumnController";
-import { Columns } from "../organisms/Columns";
-import { ColumnSwitcher } from "../organisms/ColumnSwitcher";
+import { ColumnController } from "../organisms/Column/Controller";
+import { Columns } from "../organisms/Column/Header";
+import { ColumnSwitcher } from "../organisms/Column/Switcher";
 
 export const ColumnsTemplate = () => {
 	const [, rows] = useDimensions();
