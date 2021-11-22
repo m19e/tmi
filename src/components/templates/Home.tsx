@@ -11,9 +11,9 @@ import {
 	getFocusedTweet,
 	usePosition,
 } from "../../hooks/home";
-import { AbstractTimeline } from "./AbstractTimeline";
+import { AbstractTimeline } from "../organisms/AbstractTimeline";
 
-export const HomePage = () => {
+export const HomeSub = () => {
 	const [, rows] = useDimensions();
 	const [, setError] = useError();
 	const [, setHintKey] = useHint();

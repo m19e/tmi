@@ -1,12 +1,12 @@
 import React from "react";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
-import { HomePage } from "../src/components/organisms/Home";
+import { HomeSub } from "../src/components/templates/Home";
 
 /// Home command
 const HomeCommand = () => {
 	return (
 		<AuthContainer>
-			<HomePage />
+			<HomeSub />
 		</AuthContainer>
 	);
 };
