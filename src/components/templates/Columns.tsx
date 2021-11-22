@@ -6,7 +6,7 @@ import { ColumnController } from "../organisms/Column/Controller";
 import { ColumnHeader } from "../organisms/Column/Header";
 import { ColumnSwitcher } from "../organisms/Column/Switcher";
 
-export const ColumnsTemplate = () => {
+export const ColumnTemplate = () => {
 	const [, rows] = useDimensions();
 
 	return (
