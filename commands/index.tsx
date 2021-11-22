@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
-import { ColumnTemplate } from "../src/components/templates/Columns";
+import { ColumnTemplate } from "../src/components/templates/Column";
 
 /// Index command
 const IndexCommand = () => {
