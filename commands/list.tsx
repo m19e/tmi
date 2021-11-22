@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
-import { ListSub } from "../src/components/organisms/Sub/List";
+import { ListSub } from "../src/components/templates/List";
 
 /// List Command
 const ListCommand = () => {
