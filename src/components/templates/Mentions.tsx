@@ -11,9 +11,9 @@ import {
 	getFocusedTweet,
 	usePosition,
 } from "../../hooks/mentions";
-import { AbstractTimeline } from "./AbstractTimeline";
+import { AbstractTimeline } from "../organisms/AbstractTimeline";
 
-export const MentionsPage = () => {
+export const MentionsSub = () => {
 	const [, rows] = useDimensions();
 	const [, setError] = useError();
 	const [, setHintKey] = useHint();

@@ -1,12 +1,12 @@
 import React from "react";
 import { AuthContainer } from "../src/components/pages/AuthContainer";
-import { MentionsPage } from "../src/components/organisms/Mentions";
+import { MentionsSub } from "../src/components/templates/Mentions";
 
 /// Mentions command
 const MentionsCommand = () => {
 	return (
 		<AuthContainer>
-			<MentionsPage />
+			<MentionsSub />
 		</AuthContainer>
 	);
 };
