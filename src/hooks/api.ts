@@ -1,7 +1,9 @@
 import type {
 	TweetV1,
+	UserV1,
 	ListV1,
 	TweetV1TimelineParams,
+	UserShowV1Params,
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
@@ -25,6 +27,8 @@ interface Api {
 		params: ListStatusesV1Params
 	) => PromiseWithErrorMessage<TweetV1[]>;
 	getTweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
+	getUser: (params: UserShowV1Params) => PromiseWithErrorMessage<UserV1>;
+
 	tweet: (status: string) => PromiseWithErrorMessage<null>;
 	reply: (
 		status: string,
@@ -87,6 +91,13 @@ export const useApi = (): Api => {
 			return convertTweetToDisplayable(await api.singleTweet(id));
 		} catch (error) {
 			return handleResponseError(error, "GET", "statuses/show").message;
+		}
+	};
+	const getUser = async (params: UserShowV1Params) => {
+		try {
+			return await api.user(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "users/show").message;
 		}
 	};
 
@@ -174,6 +185,7 @@ export const useApi = (): Api => {
 		getLists,
 		getListTweets,
 		getTweet,
+		getUser,
 		tweet,
 		reply,
 		quote,
