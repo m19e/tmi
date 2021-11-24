@@ -3,7 +3,7 @@ import { Box, Text } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import type { UserV1, FriendshipRelationObjectV1 } from "twitter-api-v2";
 
-import { useError } from "../../hooks";
+import { useUserConfig, useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 
@@ -47,9 +47,12 @@ export const UserSub = ({ sname }: Props) => {
 	const [, rows] = useDimensions();
 
 	const api = useApi();
+	const [{ userId: authUserId }] = useUserConfig();
 	const [, setError] = useError();
 
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
+	const [relationship, setRelationship] =
+		useState<FriendshipRelationObjectV1>();
 	const [status, setStatus] = useState<"load" | "user">("load");
 
 	useEffect(() => {
@@ -59,6 +62,15 @@ export const UserSub = ({ sname }: Props) => {
 				setError(res);
 			} else {
 				setUser(res);
+				const rel = await api.getRelation({
+					source_id: authUserId,
+					target_id: res.id_str,
+				});
+				if (typeof rel === "string") {
+					setError(rel);
+				} else {
+					setRelationship(rel.relationship.source);
+				}
 			}
 			setStatus("user");
 		};
