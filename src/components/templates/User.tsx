@@ -86,9 +86,7 @@ export const UserSub = ({ sname }: Props) => {
 				<Box marginBottom={1}>
 					<Text>
 						{user.name} {user.protected && "🔒 "}(@{user.screen_name}){" "}
-						<Text color="green">[follows you] </Text>
-						<Text color="yellow">[following] </Text>
-						<Text color="#00acee">[follows you / following]</Text>
+						<FriendshipLabel relation={relationship} />
 					</Text>
 				</Box>
 				<Box marginBottom={1}>
