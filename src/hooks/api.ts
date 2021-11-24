@@ -1,9 +1,11 @@
 import type {
 	TweetV1,
 	UserV1,
+	FriendshipV1,
 	ListV1,
 	TweetV1TimelineParams,
 	UserShowV1Params,
+	FriendshipShowV1Params,
 	ListStatusesV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
@@ -28,6 +30,9 @@ interface Api {
 	) => PromiseWithErrorMessage<TweetV1[]>;
 	getTweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	getUser: (params: UserShowV1Params) => PromiseWithErrorMessage<UserV1>;
+	getRelation: (
+		params: FriendshipShowV1Params
+	) => PromiseWithErrorMessage<FriendshipV1>;
 
 	tweet: (status: string) => PromiseWithErrorMessage<null>;
 	reply: (
@@ -98,6 +103,13 @@ export const useApi = (): Api => {
 			return await api.user(params);
 		} catch (error) {
 			return handleResponseError(error, "GET", "users/show").message;
+		}
+	};
+	const getRelation = async (params: FriendshipShowV1Params) => {
+		try {
+			return await api.friendship(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "friendships/show").message;
 		}
 	};
 
@@ -186,6 +198,7 @@ export const useApi = (): Api => {
 		getListTweets,
 		getTweet,
 		getUser,
+		getRelation,
 		tweet,
 		reply,
 		quote,
