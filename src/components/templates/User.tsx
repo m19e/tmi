@@ -1,11 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
-import type { UserV1, FriendshipV1 } from "twitter-api-v2";
+import type { UserV1, FriendshipRelationObjectV1 } from "twitter-api-v2";
 
 import { useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
+
+interface FriendshipProps {
+	relation: FriendshipRelationObjectV1;
+}
+
+const FriendshipLabel = ({ relation }: FriendshipProps) => {
+	const { blocked_by, blocking, following_requested, followed_by, following } =
+		relation;
+
+	if (blocked_by && blocking) {
+		return <Text color="red">[blocked / blocking]</Text>;
+	}
+	if (blocked_by) {
+		return <Text color="red">[blocked]</Text>;
+	}
+	if (blocking) {
+		return <Text color="red">[blocking]</Text>;
+	}
+	if (following_requested) {
+		return <Text color="#00acee">[pending]</Text>;
+	}
+	if (followed_by && following) {
+		return <Text color="#00acee">[followed / following]</Text>;
+	}
+	if (followed_by) {
+		return <Text color="green">[followed]</Text>;
+	}
+	if (following) {
+		return <Text color="yellow">[following]</Text>;
+	}
+	return null;
+};
 
 interface Props {
 	sname: string;
