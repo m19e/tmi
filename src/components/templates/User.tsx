@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
-import type { UserV1, FriendshipRelationObjectV1 } from "twitter-api-v2";
+import type { UserV1, FriendshipV1 } from "twitter-api-v2";
 
 import { useUserConfig, useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 
 interface FriendshipProps {
-	relation: FriendshipRelationObjectV1;
+	relation: FriendshipV1["relationship"];
 }
 
 const FriendshipLabel = ({ relation }: FriendshipProps) => {
 	const { blocked_by, blocking, following_requested, followed_by, following } =
-		relation;
+		relation.source;
 
 	if (blocked_by && blocking) {
 		return <Text color="red">[blocked / blocking]</Text>;
@@ -52,7 +52,7 @@ export const UserSub = ({ sname }: Props) => {
 
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
-		useState<FriendshipRelationObjectV1>();
+		useState<FriendshipV1["relationship"]>();
 	const [status, setStatus] = useState<"load" | "user">("load");
 
 	useEffect(() => {
@@ -69,7 +69,7 @@ export const UserSub = ({ sname }: Props) => {
 				if (typeof rel === "string") {
 					setError(rel);
 				} else {
-					setRelationship(rel.relationship.source);
+					setRelationship(rel.relationship);
 				}
 			}
 			setStatus("user");
