@@ -72,13 +72,18 @@ const IndicatorC: VFC<IndicatorProps> = ({ isSelected = false }) => (
 	</Box>
 );
 
-function Select<V>({ items = [], onSelect }: Props<V>): JSX.Element {
+function Select<V>({
+	items = [],
+	onSelect,
+	itemComponent = ItemC,
+	indicatorComponent = IndicatorC,
+}: Props<V>): JSX.Element {
 	return (
 		<SelectInput
 			items={items}
 			onSelect={onSelect}
-			itemComponent={ItemC}
-			indicatorComponent={IndicatorC}
+			itemComponent={itemComponent}
+			indicatorComponent={indicatorComponent}
 		/>
 	);
 }
