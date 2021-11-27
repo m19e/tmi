@@ -39,6 +39,34 @@ const FriendshipLabel = ({ relation }: FriendshipProps) => {
 	return null;
 };
 
+const UserMenu = ({ relation }: FriendshipProps) => {
+	const myself = relation.source.id_str === relation.target.id_str;
+
+	if (myself) {
+		return (
+			<Box marginBottom={1}>
+				<Text>Add / Remove from lists</Text>
+			</Box>
+		);
+	}
+	return (
+		<>
+			<Box marginBottom={1}>
+				<Text>Add / Remove from lists</Text>
+			</Box>
+			<Box marginBottom={1}>
+				<Text>Follow / Unfollow this user</Text>
+			</Box>
+			<Box marginBottom={1}>
+				<Text>Mute this user</Text>
+			</Box>
+			<Box marginBottom={1}>
+				<Text>Block this user</Text>
+			</Box>
+		</>
+	);
+};
+
 interface Props {
 	sname: string;
 }
@@ -118,18 +146,8 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Text>{user.listed_count} listed</Text>
 					</Box>
-					<Box marginBottom={1}>
-						<Text>Add / Remove from lists</Text>
-					</Box>
-					<Box marginBottom={1}>
-						<Text>Follow / Unfollow this user</Text>
-					</Box>
-					<Box marginBottom={1}>
-						<Text>Mute this user</Text>
-					</Box>
-					<Box marginBottom={1}>
-						<Text>Block this user</Text>
-					</Box>
+					<UserMenu relation={relationship} />
+					{/* <Text>{JSON.stringify(relationship, null, 4)}</Text> */}
 				</Box>
 			</Box>
 			<Footer />
