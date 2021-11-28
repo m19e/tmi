@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { VFC, ReactNode } from "react";
 import path from "path";
+import { writeJSON } from "fs-extra";
 import { mkdirsSync, readdirSync, existsSync, readJsonSync } from "fs-extra";
 import { Text, useApp } from "ink";
 import { config } from "dotenv";
@@ -132,14 +133,16 @@ export const AuthContainer: VFC<Props> = ({ children }) => {
 			userId,
 		} = await oauthClient.login(p);
 		setTwitterClient(loggedClient);
-		setUserConfig({
+		const c = {
 			...defaultTokens,
 			accessToken,
 			accessSecret,
 			userId,
 			filePath,
 			lists: [],
-		});
+		};
+		await writeJSON(filePath, c);
+		setUserConfig(c);
 		setStatus("page");
 	};
 
