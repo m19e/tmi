@@ -1,6 +1,5 @@
 import React from "react";
 import type { VFC } from "react";
-import { Box } from "ink";
 import { TrimmedList } from "../../types/twitter";
 import SelectInput from "./SelectInput";
 
