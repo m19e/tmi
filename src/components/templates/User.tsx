@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import type { VFC } from "react";
 import { Box, Text } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import type { UserV1, FriendshipV1 } from "twitter-api-v2";
@@ -6,6 +7,7 @@ import type { UserV1, FriendshipV1 } from "twitter-api-v2";
 import { useUserConfig, useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
+import SelectInput, { Item } from "../molecules/SelectInput";
 
 interface FriendshipProps {
 	relation: FriendshipV1["relationship"];
@@ -39,32 +41,88 @@ const FriendshipLabel = ({ relation }: FriendshipProps) => {
 	return null;
 };
 
-const UserMenu = ({ relation }: FriendshipProps) => {
-	const myself = relation.source.id_str === relation.target.id_str;
+interface UserMenuProps extends FriendshipProps {
+	user: UserV1;
+}
 
-	if (myself) {
-		return (
-			<Box marginBottom={1}>
-				<Text>Add / Remove from lists</Text>
-			</Box>
-		);
-	}
-	return (
-		<>
-			<Box marginBottom={1}>
-				<Text>Add / Remove from lists</Text>
-			</Box>
-			<Box marginBottom={1}>
-				<Text>Follow / Unfollow this user</Text>
-			</Box>
-			<Box marginBottom={1}>
-				<Text>Mute this user</Text>
-			</Box>
-			<Box marginBottom={1}>
-				<Text>Block this user</Text>
-			</Box>
-		</>
-	);
+type UserMenuAction =
+	| "tweets"
+	| "follows"
+	| "followers"
+	| "favorites"
+	| "listed"
+	| "list/add-remove"
+	| "follow"
+	| "unfollow"
+	| "mute"
+	| "block";
+
+const MenuComponent: VFC<{ isSelected?: boolean; label: string }> = ({
+	isSelected = false,
+	label,
+}) => (
+	<Box marginBottom={1}>
+		<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
+	</Box>
+);
+
+const UserMenu = ({ user, relation }: UserMenuProps) => {
+	const myself = relation.source.id_str === relation.target.id_str;
+	const [menuItems, setMenuItems] = useState<Item<string>[]>([]);
+
+	useEffect(() => {
+		let actions: Item<UserMenuAction>[] = [
+			{
+				label: `${user.statuses_count} tweets`,
+				value: "tweets",
+			},
+			{
+				label: `${user.friends_count} follows`,
+				value: "follows",
+			},
+			{
+				label: `${user.followers_count} followers`,
+				value: "followers",
+			},
+			{
+				label: `${user.favourites_count} favorites`,
+				value: "favorites",
+			},
+			{
+				label: `${user.listed_count} listed`,
+				value: "listed",
+			},
+			{
+				label: "Add / Remove from lists",
+				value: "list/add-remove",
+			},
+		];
+		if (!myself) {
+			const follow: Item<UserMenuAction> = relation.source.following
+				? {
+						label: "Unfollow this user",
+						value: "unfollow",
+				  }
+				: {
+						label: "Follow this user",
+						value: "follow",
+				  };
+			actions = [
+				...actions,
+				follow,
+				{ label: "Mute this user", value: "mute" },
+				{ label: "Block this user", value: "block" },
+			];
+		}
+		const keyed = actions.map((a) => ({ ...a, key: a.value }));
+		setMenuItems(keyed);
+
+		return () => setMenuItems([]);
+	}, [user]);
+
+	const handleSelect = () => {};
+
+	return <SelectInput items={menuItems} itemComponent={MenuComponent} />;
 };
 
 interface Props {
@@ -127,28 +185,14 @@ export const UserSub = ({ sname }: Props) => {
 				)}
 				{!!user.url && (
 					<Box marginBottom={1}>
-						<Text>URL: {user.url}</Text>
+						<Text>
+							URL: {user.entities.url.urls[0].display_url} (
+							{user.entities.url.urls[0].expanded_url})
+						</Text>
 					</Box>
 				)}
-				<Box flexDirection="column" paddingLeft={2}>
-					<Box marginBottom={1}>
-						<Text>{user.statuses_count} tweets</Text>
-					</Box>
-					<Box marginBottom={1}>
-						<Text>{user.friends_count} follows</Text>
-					</Box>
-					<Box marginBottom={1}>
-						<Text>{user.followers_count} followers</Text>
-					</Box>
-					<Box marginBottom={1}>
-						<Text>{user.favourites_count} favorites</Text>
-					</Box>
-					<Box marginBottom={1}>
-						<Text>{user.listed_count} listed</Text>
-					</Box>
-					<UserMenu relation={relationship} />
-					{/* <Text>{JSON.stringify(relationship, null, 4)}</Text> */}
-				</Box>
+				<UserMenu user={user} relation={relationship} />
+				{/* <Text>{JSON.stringify(user.entities, null, 4)}</Text> */}
 			</Box>
 			<Footer />
 		</Box>
