@@ -1,13 +1,7 @@
 import React from "react";
 import type { VFC } from "react";
 import { TrimmedList } from "../../types/twitter";
-import SelectInput from "./SelectInput";
-
-interface Item<V> {
-	key: string;
-	label: string;
-	value: V;
-}
+import SelectInput, { Item } from "./SelectInput";
 
 interface Props {
 	lists: Array<TrimmedList>;
