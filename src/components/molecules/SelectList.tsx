@@ -22,11 +22,7 @@ const SelectList: VFC<Props> = ({ lists, onSelect }) => {
 		value: list,
 	}));
 
-	return (
-		<Box flexDirection="column">
-			<SelectInput items={items} onSelect={onSelect} />
-		</Box>
-	);
+	return <SelectInput items={items} onSelect={onSelect} />;
 };
 
 export default SelectList;
