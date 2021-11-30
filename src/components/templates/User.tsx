@@ -18,25 +18,53 @@ const FriendshipLabel = ({ relation }: FriendshipProps) => {
 		relation.source;
 
 	if (blocked_by && blocking) {
-		return <Text color="red">[blocked / blocking]</Text>;
+		return (
+			<Box marginBottom={1}>
+				<Text color="red">[blocked / blocking]</Text>;
+			</Box>
+		);
 	}
 	if (blocked_by) {
-		return <Text color="red">[blocked]</Text>;
+		return (
+			<Box marginBottom={1}>
+				<Text color="red">[blocked]</Text>;
+			</Box>
+		);
 	}
 	if (blocking) {
-		return <Text color="red">[blocking]</Text>;
+		return (
+			<Box marginBottom={1}>
+				<Text color="red">[blocking]</Text>;
+			</Box>
+		);
 	}
 	if (following_requested) {
-		return <Text color="#00acee">[pending]</Text>;
+		return (
+			<Box marginBottom={1}>
+				<Text color="#00acee">[pending]</Text>;
+			</Box>
+		);
 	}
 	if (followed_by && following) {
-		return <Text color="#00acee">[followed / following]</Text>;
+		return (
+			<Box marginBottom={1}>
+				<Text color="#00acee">[followed / following]</Text>;
+			</Box>
+		);
 	}
 	if (followed_by) {
-		return <Text color="green">[followed]</Text>;
+		return (
+			<Box marginBottom={1}>
+				<Text color="green">[followed]</Text>;
+			</Box>
+		);
 	}
 	if (following) {
-		return <Text color="yellow">[following]</Text>;
+		return (
+			<Box marginBottom={1}>
+				<Text color="yellow">[following]</Text>;
+			</Box>
+		);
 	}
 	return null;
 };
@@ -192,9 +220,7 @@ export const UserSub = ({ sname }: Props) => {
 						{user.name} {user.protected && "🔒 "}(@{user.screen_name}){" "}
 					</Text>
 				</Box>
-				<Box marginBottom={1}>
-					<FriendshipLabel relation={relationship} />
-				</Box>
+				<FriendshipLabel relation={relationship} />
 				<Box marginBottom={1}>
 					<Text>{user.description}</Text>
 				</Box>
