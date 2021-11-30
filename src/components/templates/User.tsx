@@ -120,9 +120,27 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 		return () => setMenuItems([]);
 	}, [user]);
 
-	const handleSelect = () => {};
+	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
+		if (action === "tweets") {
+		} else if (action === "following") {
+		} else if (action === "followed") {
+		} else if (action === "favorites") {
+		} else if (action === "listed") {
+		} else if (action === "list/add-remove") {
+		} else if (action === "follow") {
+		} else if (action === "unfollow") {
+		} else if (action === "mute") {
+		} else if (action === "block") {
+		}
+	};
 
-	return <SelectInput items={menuItems} itemComponent={MenuComponent} />;
+	return (
+		<SelectInput
+			items={menuItems}
+			itemComponent={MenuComponent}
+			onSelect={handleSelectMenu}
+		/>
+	);
 };
 
 interface Props {
