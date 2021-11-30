@@ -93,7 +93,7 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 				value: "listed",
 			},
 			{
-				label: "Add / Remove from lists",
+				label: "Add to / Remove from lists",
 				value: "list/add-remove",
 			},
 		];
