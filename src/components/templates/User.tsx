@@ -47,8 +47,8 @@ interface UserMenuProps extends FriendshipProps {
 
 type UserMenuAction =
 	| "tweets"
-	| "follows"
-	| "followers"
+	| "following"
+	| "followed"
 	| "favorites"
 	| "listed"
 	| "list/add-remove"
@@ -78,11 +78,11 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 			},
 			{
 				label: `${user.friends_count} follows`,
-				value: "follows",
+				value: "following",
 			},
 			{
 				label: `${user.followers_count} followers`,
-				value: "followers",
+				value: "followed",
 			},
 			{
 				label: `${user.favourites_count} favorites`,
