@@ -237,7 +237,7 @@ export const UserSub = ({ sname }: Props) => {
 			<Box flexDirection="column" flexGrow={1}>
 				<Box marginBottom={1}>
 					<Text>
-						{user.name} {user.protected && "🔒 "}(@{user.screen_name}){" "}
+						{user.name} {user.protected && "🔒 "}(@{user.screen_name})
 					</Text>
 				</Box>
 				<FriendshipLabel relation={relationship} />
