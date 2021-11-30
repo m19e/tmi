@@ -150,15 +150,35 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
+			// "statuses/user_timeline"
+			// implemented
+			// api.userTimeline(userId)
 		} else if (action === "following") {
+			// yet
 		} else if (action === "followed") {
+			// yet
 		} else if (action === "favorites") {
+			// yet
 		} else if (action === "listed") {
+			// "lists/memberships"
+			// implemented
+			// api.listMemberships({ user_id })
 		} else if (action === "list/add-remove") {
+			// "lists/members/create" or "lists/members/create_all"
+			// "lists/members/destroy" or "lists/members/destroy_all"
+			// implemented
+			// api.addListMembers({ list_id, user_id })
+			// api.addListMembers({ list_id, user_id[] })
+			// api.removeListMembers({ list_id, user_id })
+			// api.removeListMembers({ list_id, user_id[] })
 		} else if (action === "follow") {
+			// yet
 		} else if (action === "unfollow") {
+			// yet
 		} else if (action === "mute") {
+			// yet
 		} else if (action === "block") {
+			// yet
 		}
 	};
 
