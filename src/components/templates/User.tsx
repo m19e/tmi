@@ -241,9 +241,11 @@ export const UserSub = ({ sname }: Props) => {
 					</Text>
 				</Box>
 				<FriendshipLabel relation={relationship} />
-				<Box marginBottom={1}>
-					<Text>{user.description}</Text>
-				</Box>
+				{!!user.description && (
+					<Box marginBottom={1}>
+						<Text>{user.description}</Text>
+					</Box>
+				)}
 				{!!user.location && (
 					<Box marginBottom={1}>
 						<Text>Location: {user.location}</Text>
