@@ -190,8 +190,10 @@ export const UserSub = ({ sname }: Props) => {
 				<Box marginBottom={1}>
 					<Text>
 						{user.name} {user.protected && "🔒 "}(@{user.screen_name}){" "}
-						<FriendshipLabel relation={relationship} />
 					</Text>
+				</Box>
+				<Box marginBottom={1}>
+					<FriendshipLabel relation={relationship} />
 				</Box>
 				<Box marginBottom={1}>
 					<Text>{user.description}</Text>
