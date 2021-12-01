@@ -4,6 +4,7 @@ import { HandledResponseError } from "../../types";
 type Endpoint =
 	| "statuses/home_timeline"
 	| "statuses/mentions_timeline"
+	| "statuses/user_timeline"
 	| "users/show"
 	| "friendships/show"
 	| "lists/list"
