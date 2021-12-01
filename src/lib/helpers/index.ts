@@ -5,6 +5,7 @@ type Endpoint =
 	| "statuses/home_timeline"
 	| "statuses/mentions_timeline"
 	| "users/show"
+	| "lists/memberships"
 	| "friendships/show"
 	| "lists/list"
 	| "lists/statuses"
