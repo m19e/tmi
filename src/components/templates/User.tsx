@@ -102,10 +102,10 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 				label: `${user.favourites_count} favorites`,
 				value: "favorites",
 			},
-			{
-				label: `${user.listed_count} listed`,
-				value: "listed",
-			},
+			// {
+			// 	label: `${user.listed_count} listed`,
+			// 	value: "listed",
+			// },
 			{
 				label: "Add to / Remove from lists",
 				value: "list/add-remove",
