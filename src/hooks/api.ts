@@ -8,6 +8,8 @@ import type {
 	FriendshipShowV1Params,
 	ListStatusesV1Params,
 	ListMembershipsV1Params,
+	AddOrRemoveListMembersV1Params,
+	AccountProfileV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import type { TweetV1SearchParams } from "../types/twitter";
@@ -153,6 +155,11 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "POST", "statuses/destroy").message;
 		}
 	};
+	const addListMembers = async (params: AddOrRemoveListMembersV1Params) => {};
+	const removeListMembers = async (
+		params: AddOrRemoveListMembersV1Params
+	) => {};
+	const updateProfile = async (params: Partial<AccountProfileV1Params>) => {};
 
 	// Local http wrappers
 	const search = async (params: TweetV1SearchParams) => {
