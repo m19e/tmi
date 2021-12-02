@@ -7,6 +7,7 @@ import type {
 	UserShowV1Params,
 	FriendshipShowV1Params,
 	ListStatusesV1Params,
+	ListMembershipsV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import type { TweetV1SearchParams } from "../types/twitter";
@@ -110,6 +111,13 @@ export const useApi = (): Api => {
 			return await api.friendship(params);
 		} catch (error) {
 			return handleResponseError(error, "GET", "friendships/show").message;
+		}
+	};
+	const getUserListed = async (params: Partial<ListMembershipsV1Params>) => {
+		try {
+			return await api.listMemberships(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "lists/memberships");
 		}
 	};
 
