@@ -69,7 +69,8 @@ type UserMenuAction =
 	| "follow"
 	| "unfollow"
 	| "mute"
-	| "block";
+	| "block"
+	| "profile";
 
 const MenuComponent: VFC<{ isSelected?: boolean; label: string }> = ({
 	isSelected = false,
