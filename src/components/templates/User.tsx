@@ -112,7 +112,9 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 				value: "list/add-remove",
 			},
 		];
-		if (!myself) {
+		if (myself) {
+			actions = [...actions, { label: "Edit profile", value: "profile" }];
+		} else {
 			const follow: Item<UserMenuAction> = relation.source.following
 				? {
 						label: "Unfollow this user",
