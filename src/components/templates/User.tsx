@@ -160,6 +160,8 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 			// api.addListMembers({ list_id, user_id[] })
 			// api.removeListMembers({ list_id, user_id })
 			// api.removeListMembers({ list_id, user_id[] })
+		} else if (action === "profile") {
+			// implemented
 		} else if (action === "follow") {
 			// yet
 		} else if (action === "unfollow") {
