@@ -3,6 +3,7 @@ import type {
 	UserV1,
 	FriendshipV1,
 	ListV1,
+	ListMembershipsV1Paginator,
 	TweetV1TimelineParams,
 	UserShowV1Params,
 	FriendshipShowV1Params,
@@ -36,6 +37,9 @@ interface Api {
 	getRelation: (
 		params: FriendshipShowV1Params
 	) => PromiseWithErrorMessage<FriendshipV1>;
+	getUserListed: (
+		params: Partial<ListMembershipsV1Params>
+	) => PromiseWithErrorMessage<ListMembershipsV1Paginator>;
 
 	tweet: (status: string) => PromiseWithErrorMessage<null>;
 	reply: (
@@ -119,7 +123,7 @@ export const useApi = (): Api => {
 		try {
 			return await api.listMemberships(params);
 		} catch (error) {
-			return handleResponseError(error, "GET", "lists/memberships");
+			return handleResponseError(error, "GET", "lists/memberships").message;
 		}
 	};
 
@@ -214,6 +218,7 @@ export const useApi = (): Api => {
 		getTweet,
 		getUser,
 		getRelation,
+		getUserListed,
 		tweet,
 		reply,
 		quote,
