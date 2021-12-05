@@ -175,8 +175,6 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 		} else if (action === "favorites") {
 			// yet
 		} else if (action === "listed") {
-			// "lists/memberships"
-			// implemented
 			transitionListed();
 		} else if (action === "list/add-remove") {
 			// "lists/members/create" or "lists/members/create_all"
