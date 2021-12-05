@@ -177,7 +177,7 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 		} else if (action === "listed") {
 			// "lists/memberships"
 			// implemented
-			// api.listMemberships({ user_id })
+			transitionListed();
 		} else if (action === "list/add-remove") {
 			// "lists/members/create" or "lists/members/create_all"
 			// "lists/members/destroy" or "lists/members/destroy_all"
