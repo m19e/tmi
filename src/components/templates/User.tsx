@@ -83,7 +83,11 @@ const MenuComponent: VFC<{ isSelected?: boolean; label: string }> = ({
 
 const UserMenu = ({ user, relation }: UserMenuProps) => {
 	const myself = relation.source.id_str === relation.target.id_str;
+
+	const api = useApi();
+
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
+	const [debugConsole, setDebugConsole] = useState("empty");
 
 	useEffect(() => {
 		let actions: Item<UserMenuAction>[] = [
