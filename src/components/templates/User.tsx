@@ -141,6 +141,28 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 		return () => setMenuItems([]);
 	}, [user]);
 
+	const transitionListed = async () => {
+		const { id_str } = user;
+		const res = await api.getUserListed({
+			user_id: id_str,
+			count: 1000,
+		});
+		if (typeof res === "string") {
+			return;
+		}
+		const { lists, ...cursors } = res.data;
+		setDebugConsole(
+			JSON.stringify(
+				[
+					{ length: lists.length, ...cursors },
+					lists.map((l) => `@${l.user.screen_name}/${l.name}`),
+				],
+				null,
+				2
+			)
+		);
+	};
+
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
 			// "statuses/user_timeline"
