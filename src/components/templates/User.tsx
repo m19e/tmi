@@ -200,11 +200,14 @@ const UserMenu = ({ user, relation }: UserMenuProps) => {
 	};
 
 	return (
-		<SelectInput
-			items={menuItems}
-			itemComponent={MenuComponent}
-			onSelect={handleSelectMenu}
-		/>
+		<>
+			<SelectInput
+				items={menuItems}
+				itemComponent={MenuComponent}
+				onSelect={handleSelectMenu}
+			/>
+			<Text>{debugConsole}</Text>
+		</>
 	);
 };
 
