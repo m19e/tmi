@@ -390,7 +390,12 @@ export const UserSub = ({ sname }: Props) => {
 						</Text>
 					</Box>
 				)}
-				<UserMenu user={user} relation={relationship} />
+				<SelectInput
+					items={menuItems}
+					itemComponent={MenuComponent}
+					onSelect={handleSelectMenu}
+				/>
+				<Text>{debugConsole}</Text>
 				{/* <Text>{JSON.stringify(user.entities, null, 4)}</Text> */}
 			</Box>
 			<Footer />
