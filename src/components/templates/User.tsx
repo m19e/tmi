@@ -243,6 +243,7 @@ export const UserSub = ({ sname }: Props) => {
 					setError(rel);
 				} else {
 					setRelationship(rel.relationship);
+					setMenuItems(makeCheckedMenu(res, rel.relationship));
 				}
 			}
 			setStatus("user");
