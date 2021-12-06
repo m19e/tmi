@@ -225,6 +225,9 @@ export const UserSub = ({ sname }: Props) => {
 		useState<FriendshipV1["relationship"]>();
 	const [status, setStatus] = useState<"load" | "user">("load");
 
+	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
+	const [debugConsole, setDebugConsole] = useState("empty");
+
 	useEffect(() => {
 		const f = async () => {
 			const res = await api.getUser({ screen_name: sname });
