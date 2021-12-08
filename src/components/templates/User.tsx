@@ -3,6 +3,7 @@ import type { VFC } from "react";
 import { Box, Text } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import type { UserV1, FriendshipV1, ListV1 } from "twitter-api-v2";
+import stc from "string-to-color";
 
 import { useUserConfig, useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
