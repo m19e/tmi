@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
-import type { UserV1, FriendshipV1 } from "twitter-api-v2";
+import type { UserV1, FriendshipV1, ListV1 } from "twitter-api-v2";
 
 import { useUserConfig, useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
@@ -94,6 +94,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [status, setStatus] = useState<"load" | "user" | "listed">("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
+	const [listed, setListed] = useState<ListV1[]>([]);
 	const [debugConsole, setDebugConsole] = useState("empty");
 
 	useEffect(() => {
@@ -182,16 +183,11 @@ export const UserSub = ({ sname }: Props) => {
 			return;
 		}
 		const { lists, ...cursors } = res.data;
+		setListed(lists);
 		setDebugConsole(
-			JSON.stringify(
-				[
-					{ length: lists.length, ...cursors },
-					lists.map((l) => `@${l.user.screen_name}/${l.name}`),
-				],
-				null,
-				2
-			)
+			JSON.stringify({ length: lists.length, ...cursors }, null, 2)
 		);
+		setStatus("listed");
 	};
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
@@ -230,6 +226,26 @@ export const UserSub = ({ sname }: Props) => {
 
 	if (status === "load") {
 		return <Text>Loading...</Text>;
+	}
+	if (status === "listed") {
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<Text>{debugConsole}</Text>
+				{listed.slice(0, 5).map((list) => (
+					<Box key={list.id_str} flexDirection="column" marginBottom={1}>
+						<Text color="#00acee">{list.name}</Text>
+						<Text color="gray" wrap="truncate-end">
+							{list.description}
+						</Text>
+						<Text>
+							{list.user.name}
+							{list.user.protected && "🔒"}
+							<Text color="gray"> @{list.user.screen_name}</Text>
+						</Text>
+					</Box>
+				))}
+			</Box>
+		);
 	}
 	return (
 		<Box flexDirection="column" minHeight={rows}>
