@@ -232,19 +232,26 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Text>{debugConsole}</Text>
-				{listed.slice(0, 5).map((list) => (
-					<Box key={list.id_str} flexDirection="column" marginBottom={1}>
-						<Text color="#00acee">{list.name}</Text>
-						<Text color="gray" wrap="truncate-end">
-							{list.description}
-						</Text>
-						<Text>
-							{list.user.name}
-							{list.user.protected && "🔒"}
-							<Text color="gray"> @{list.user.screen_name}</Text>
-						</Text>
-					</Box>
-				))}
+				{listed.slice(0, 5).map((list) => {
+					const ownerColor = stc(list.user.screen_name);
+
+					return (
+						<Box key={list.id_str} flexDirection="column" marginBottom={1}>
+							<Text>
+								<Text color="#00acee">{list.name}</Text>
+								<Text color="gray"> by </Text>
+								<Text bold color={ownerColor}>
+									{list.user.name}
+								</Text>
+								{list.user.protected && "🔒"}
+								<Text color="gray">(@{list.user.screen_name})</Text>
+							</Text>
+							<Text color="gray" wrap="truncate-end">
+								{list.description}
+							</Text>
+						</Box>
+					);
+				})}
 			</Box>
 		);
 	}
