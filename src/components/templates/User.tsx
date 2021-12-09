@@ -246,9 +246,7 @@ export const UserSub = ({ sname }: Props) => {
 								{list.user.protected && "🔒"}
 								<Text color="gray">(@{list.user.screen_name})</Text>
 							</Text>
-							<Text color="gray" wrap="truncate-end">
-								{list.description}
-							</Text>
+							<Text color="gray">{list.description}</Text>
 						</Box>
 					);
 				})}
