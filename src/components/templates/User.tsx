@@ -283,8 +283,6 @@ export const UserSub = ({ sname }: Props) => {
 					itemComponent={MenuComponent}
 					onSelect={handleSelectMenu}
 				/>
-				<Text>{debugConsole}</Text>
-				{/* <Text>{JSON.stringify(user.entities, null, 4)}</Text> */}
 			</Box>
 			<Footer />
 		</Box>
