@@ -231,7 +231,12 @@ export const UserSub = ({ sname }: Props) => {
 	if (status === "listed") {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
-				<Text>{debugConsole}</Text>
+				{/* <Text>{debugConsole}</Text> */}
+				<Box marginBottom={1}>
+					<Text>
+						Lists <Text color="#00acee">@{user.screen_name}</Text>'s on
+					</Text>
+				</Box>
 				{listed.slice(0, 20).map((list) => {
 					const ownerColor = stc(list.user.screen_name);
 
