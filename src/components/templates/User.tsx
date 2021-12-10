@@ -10,6 +10,19 @@ import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput, { Item } from "../molecules/SelectInput";
 
+type UserMenuAction =
+	| "tweets"
+	| "following"
+	| "followed"
+	| "favorites"
+	| "listed"
+	| "list/add-remove"
+	| "follow"
+	| "unfollow"
+	| "mute"
+	| "block"
+	| "profile";
+
 interface FriendshipProps {
 	relation: FriendshipV1["relationship"];
 }
@@ -56,19 +69,6 @@ const FriendshipLabel = ({ relation }: FriendshipProps) => {
 	return null;
 };
 
-type UserMenuAction =
-	| "tweets"
-	| "following"
-	| "followed"
-	| "favorites"
-	| "listed"
-	| "list/add-remove"
-	| "follow"
-	| "unfollow"
-	| "mute"
-	| "block"
-	| "profile";
-
 const MenuComponent: VFC<{ isSelected?: boolean; label: string }> = ({
 	isSelected = false,
 	label,
@@ -113,7 +113,7 @@ export const UserSub = ({ sname }: Props) => {
 					setError(rel);
 				} else {
 					setRelationship(rel.relationship);
-					setMenuItems(makeCheckedMenu(res, rel.relationship));
+					initMenu(res, rel.relationship);
 				}
 			}
 			setStatus("user");
@@ -121,7 +121,7 @@ export const UserSub = ({ sname }: Props) => {
 		f();
 	}, []);
 
-	const makeCheckedMenu = (u: UserV1, rel: FriendshipV1["relationship"]) => {
+	const initMenu = (u: UserV1, rel: FriendshipV1["relationship"]) => {
 		const myself = rel.source.id_str === rel.target.id_str;
 
 		let actions: Item<UserMenuAction>[] = [
@@ -171,7 +171,7 @@ export const UserSub = ({ sname }: Props) => {
 		}
 
 		const keyed = actions.map((a) => ({ ...a, key: a.value }));
-		return keyed;
+		setMenuItems(keyed);
 	};
 
 	const transitionListed = async () => {
