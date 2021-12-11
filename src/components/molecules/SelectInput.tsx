@@ -80,6 +80,7 @@ function Select<V>({
 	onSelect,
 	itemComponent = DefaultItemComponent,
 	indicatorComponent = DefaultIndicatorComponent,
+	limit = undefined,
 }: Props<V>): JSX.Element {
 	return (
 		<SelectInput
@@ -87,6 +88,7 @@ function Select<V>({
 			onSelect={onSelect}
 			itemComponent={itemComponent}
 			indicatorComponent={indicatorComponent}
+			limit={limit}
 		/>
 	);
 }
