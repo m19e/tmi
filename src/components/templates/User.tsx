@@ -229,6 +229,44 @@ export const UserSub = ({ sname }: Props) => {
 	if (status === "load") {
 		return <Text>Loading...</Text>;
 	}
+	if (status === "user") {
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Text>
+							{user.name} {user.protected && "🔒 "}(@{user.screen_name})
+						</Text>
+					</Box>
+					<FriendshipLabel relation={relationship} />
+					{!!user.description && (
+						<Box marginBottom={1}>
+							<Text>{user.description}</Text>
+						</Box>
+					)}
+					{!!user.location && (
+						<Box marginBottom={1}>
+							<Text>Location: {user.location}</Text>
+						</Box>
+					)}
+					{!!user.url && (
+						<Box marginBottom={1}>
+							<Text>
+								URL: {user.entities.url.urls[0].display_url} (
+								{user.entities.url.urls[0].expanded_url})
+							</Text>
+						</Box>
+					)}
+					<SelectInput
+						items={menuItems}
+						itemComponent={MenuComponent}
+						onSelect={handleSelectMenu}
+					/>
+				</Box>
+				<Footer />
+			</Box>
+		);
+	}
 	if (status === "listed") {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
@@ -242,40 +280,5 @@ export const UserSub = ({ sname }: Props) => {
 			</Box>
 		);
 	}
-	return (
-		<Box flexDirection="column" minHeight={rows}>
-			<Box flexDirection="column" flexGrow={1}>
-				<Box marginBottom={1}>
-					<Text>
-						{user.name} {user.protected && "🔒 "}(@{user.screen_name})
-					</Text>
-				</Box>
-				<FriendshipLabel relation={relationship} />
-				{!!user.description && (
-					<Box marginBottom={1}>
-						<Text>{user.description}</Text>
-					</Box>
-				)}
-				{!!user.location && (
-					<Box marginBottom={1}>
-						<Text>Location: {user.location}</Text>
-					</Box>
-				)}
-				{!!user.url && (
-					<Box marginBottom={1}>
-						<Text>
-							URL: {user.entities.url.urls[0].display_url} (
-							{user.entities.url.urls[0].expanded_url})
-						</Text>
-					</Box>
-				)}
-				<SelectInput
-					items={menuItems}
-					itemComponent={MenuComponent}
-					onSelect={handleSelectMenu}
-				/>
-			</Box>
-			<Footer />
-		</Box>
-	);
+	return null;
 };
