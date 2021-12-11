@@ -9,6 +9,7 @@ import { useUserConfig, useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput, { Item } from "../molecules/SelectInput";
+import { SelectMemberedList } from "../molecules/SelectMemberedList";
 
 type UserMenuAction =
 	| "tweets"
@@ -237,22 +238,7 @@ export const UserSub = ({ sname }: Props) => {
 						Lists <Text color="#00acee">@{user.screen_name}</Text>'s on
 					</Text>
 				</Box>
-				{listed.slice(0, 20).map((list) => {
-					const ownerColor = stc(list.user.screen_name);
-
-					return (
-						<Box key={list.id_str} flexDirection="column" marginBottom={1}>
-							<Text>
-								<Text color={ownerColor}>{list.name} </Text>
-								<Text color="gray">by </Text>
-								<Text bold>{list.user.name}</Text>
-								{list.user.protected && "🔒"}
-								(@{list.user.screen_name})
-							</Text>
-							<Text color="gray">{list.description || "*No description*"}</Text>
-						</Box>
-					);
-				})}
+				<SelectMemberedList lists={listed} onSelect={() => {}} />
 			</Box>
 		);
 	}
