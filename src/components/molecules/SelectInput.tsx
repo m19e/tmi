@@ -58,11 +58,14 @@ interface Props<V> {
 	onHighlight?: (item: Item<V>) => void;
 }
 
-const ItemC: VFC<ItemProps> = ({ isSelected = false, label }) => (
-	<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
-);
+const DefaultItemComponent: VFC<ItemProps> = ({
+	isSelected = false,
+	label,
+}) => <Text color={isSelected ? "#00acee" : undefined}>{label}</Text>;
 
-const IndicatorC: VFC<IndicatorProps> = ({ isSelected = false }) => (
+const DefaultIndicatorComponent: VFC<IndicatorProps> = ({
+	isSelected = false,
+}) => (
 	<Box marginRight={1}>
 		{isSelected ? (
 			<Text color="#00acee">{figures.squareLeft}</Text>
@@ -75,8 +78,8 @@ const IndicatorC: VFC<IndicatorProps> = ({ isSelected = false }) => (
 function Select<V>({
 	items = [],
 	onSelect,
-	itemComponent = ItemC,
-	indicatorComponent = IndicatorC,
+	itemComponent = DefaultItemComponent,
+	indicatorComponent = DefaultIndicatorComponent,
 }: Props<V>): JSX.Element {
 	return (
 		<SelectInput
