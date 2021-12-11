@@ -225,6 +225,8 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	};
 
+	const handleSelectList = ({ value: list }: Item<ListV1>) => {};
+
 	if (status === "load") {
 		return <Text>Loading...</Text>;
 	}
