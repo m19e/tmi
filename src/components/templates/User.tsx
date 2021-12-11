@@ -175,9 +175,9 @@ export const UserSub = ({ sname }: Props) => {
 	};
 
 	const transitionListed = async () => {
-		const { id_str } = user;
+		const user_id = user.id_str;
 		const res = await api.getUserListed({
-			user_id: id_str,
+			user_id,
 			count: 1000,
 		});
 		if (typeof res === "string") {
