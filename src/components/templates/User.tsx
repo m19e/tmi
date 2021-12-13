@@ -231,7 +231,21 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	};
 
-	const handleSelectList = ({ value: list }: Item<ListV1>) => {};
+	const handleSelectList = async ({ value: list }: Item<ListV1>) => {
+		// const res = await api.getListTweets({
+		// 	list_id: list.id_str,
+		// 	count: 200,
+		// 	tweet_mode: "extended",
+		// 	include_entities: true,
+		// });
+		// if (typeof res === "string") {
+		// 	return;
+		// }
+		const { id_str, name, mode, user: owner } = list;
+		setCurrentList({ id_str, name, mode, owner });
+		// setListTimeline(res);
+		setStatus("list");
+	};
 
 	if (status === "load") {
 		return <Text>Loading...</Text>;
@@ -283,7 +297,7 @@ export const UserSub = ({ sname }: Props) => {
 						Lists <Text color="#00acee">@{user.screen_name}</Text>'s on
 					</Text>
 				</Box>
-				<SelectMemberedList lists={listed} onSelect={() => {}} />
+				<SelectMemberedList lists={listed} onSelect={handleSelectList} />
 			</Box>
 		);
 	}
