@@ -310,5 +310,8 @@ export const UserSub = ({ sname }: Props) => {
 			</Box>
 		);
 	}
+	if (status === "list") {
+		return <Text>{JSON.stringify(currentList, null, 4)}</Text>;
+	}
 	return null;
 };
