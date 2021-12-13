@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import type { VFC } from "react";
 import { Box, Text } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
-import type { UserV1, FriendshipV1, ListV1 } from "twitter-api-v2";
+import type { UserV1, FriendshipV1, ListV1, TweetV1 } from "twitter-api-v2";
 
+import type { TrimmedList } from "../../types/twitter";
 import { useUserConfig, useError } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
@@ -98,6 +99,9 @@ export const UserSub = ({ sname }: Props) => {
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
 	const [listed, setListed] = useState<ListV1[]>([]);
+	const [currentList, setCurrentList] = useState<TrimmedList>();
+	const [listTimeline, setListTimeline] = useState<TweetV1[]>([]);
+
 	const [debugConsole, setDebugConsole] = useState("empty");
 
 	useEffect(() => {
