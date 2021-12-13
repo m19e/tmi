@@ -241,8 +241,17 @@ export const UserSub = ({ sname }: Props) => {
 		// if (typeof res === "string") {
 		// 	return;
 		// }
-		const { id_str, name, mode, user: owner } = list;
-		setCurrentList({ id_str, name, mode, owner });
+		const { id_str, name, mode, user } = list;
+		setCurrentList({
+			id_str,
+			name,
+			mode,
+			owner: {
+				id_str: user.id_str,
+				name: user.name,
+				screen_name: user.screen_name,
+			},
+		});
 		// setListTimeline(res);
 		setStatus("list");
 	};
