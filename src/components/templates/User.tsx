@@ -232,15 +232,15 @@ export const UserSub = ({ sname }: Props) => {
 	};
 
 	const handleSelectList = async ({ value: list }: Item<ListV1>) => {
-		// const res = await api.getListTweets({
-		// 	list_id: list.id_str,
-		// 	count: 200,
-		// 	tweet_mode: "extended",
-		// 	include_entities: true,
-		// });
-		// if (typeof res === "string") {
-		// 	return;
-		// }
+		const res = await api.getListTweets({
+			list_id: list.id_str,
+			count: 200,
+			tweet_mode: "extended",
+			include_entities: true,
+		});
+		if (typeof res === "string") {
+			return;
+		}
 		const { id_str, name, mode, user } = list;
 		setCurrentList({
 			id_str,
@@ -252,7 +252,7 @@ export const UserSub = ({ sname }: Props) => {
 				screen_name: user.screen_name,
 			},
 		});
-		// setListTimeline(res);
+		setListTimeline(res);
 		setStatus("list");
 	};
 
