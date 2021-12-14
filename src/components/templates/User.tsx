@@ -311,7 +311,16 @@ export const UserSub = ({ sname }: Props) => {
 		);
 	}
 	if (status === "list") {
-		return <Text>{JSON.stringify(currentList, null, 4)}</Text>;
+		return (
+			<>
+				<Text>{JSON.stringify(currentList, null, 4)}</Text>
+				{listTimeline.slice(0, 20).map((tweet) => (
+					<Text>
+						@{tweet.user.screen_name} {tweet.full_text}
+					</Text>
+				))}
+			</>
+		);
 	}
 	return null;
 };
