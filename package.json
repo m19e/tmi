@@ -16,7 +16,6 @@
 		"build"
 	],
 	"dependencies": {
-		"arr-rotate": "^1.0.0",
 		"cli-spinners": "^2.6.0",
 		"escape-string-regexp": "^5.0.0",
 		"fs-extra": "^10.0.0",
