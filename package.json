@@ -48,6 +48,7 @@
 		"@types/ink-divider": "^2.0.2",
 		"@types/ink-select-input": "^3.0.1",
 		"@types/ink-text-input": "^2.0.2",
+		"@types/lodash.isequal": "^4.5.5",
 		"@types/node": "^16.9.4",
 		"@types/react": "^17.0.15",
 		"@types/twitter-text": "^3.1.1",
