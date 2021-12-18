@@ -1,7 +1,7 @@
 import type { VFC } from "react";
 import { Text, Box } from "ink";
-import SelectInput from "ink-select-input";
 import figures from "../../lib/sindresorhus/figures";
+import CustomSelectInput from "./CostumSelectInput";
 
 interface ItemProps {
 	isSelected?: boolean;
@@ -83,7 +83,7 @@ function Select<V>({
 	limit = undefined,
 }: Props<V>): JSX.Element {
 	return (
-		<SelectInput
+		<CustomSelectInput
 			items={items}
 			onSelect={onSelect}
 			itemComponent={itemComponent}
