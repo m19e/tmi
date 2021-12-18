@@ -11,6 +11,8 @@ import type {
 	ListMembershipsV1Params,
 	AddOrRemoveListMembersV1Params,
 	AccountProfileV1Params,
+	TweetV1UserTimelineParams,
+	UserTimelineV1Paginator,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import type { TweetV1SearchParams } from "../types/twitter";
@@ -40,6 +42,9 @@ interface Api {
 	getUserListed: (
 		params: Partial<ListMembershipsV1Params>
 	) => PromiseWithErrorMessage<ListMembershipsV1Paginator>;
+	getUserTimeline: (
+		params: Partial<TweetV1UserTimelineParams>
+	) => PromiseWithErrorMessage<UserTimelineV1Paginator>;
 
 	tweet: (status: string) => PromiseWithErrorMessage<null>;
 	reply: (
@@ -124,6 +129,15 @@ export const useApi = (): Api => {
 			return await api.listMemberships(params);
 		} catch (error) {
 			return handleResponseError(error, "GET", "lists/memberships").message;
+		}
+	};
+	const getUserTimeline = async (
+		params: Partial<TweetV1UserTimelineParams>
+	) => {
+		try {
+			return await api.userTimeline(params.user_id, params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "statuses/user_timeline");
 		}
 	};
 
@@ -219,6 +233,7 @@ export const useApi = (): Api => {
 		getUser,
 		getRelation,
 		getUserListed,
+		getUserTimeline,
 		tweet,
 		reply,
 		quote,
