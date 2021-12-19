@@ -16,6 +16,7 @@ type Endpoint =
 	| "statuses/update"
 	| "statuses/destroy"
 	| "search/tweets"
+	| "favorites/lists"
 	| "favorites/create"
 	| "favorites/destroy"
 	| "statuses/retweet"
