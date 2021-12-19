@@ -62,6 +62,10 @@ interface Api {
 	unfavorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	retweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	unretweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
+
+	userFavorites: (
+		params: Partial<TweetV1UserTimelineParams>
+	) => PromiseWithErrorMessage<object>;
 }
 
 export const useApi = (): Api => {
@@ -227,6 +231,15 @@ export const useApi = (): Api => {
 		}
 	};
 
+	// WIP
+	const userFavorites = async (params: Partial<TweetV1UserTimelineParams>) => {
+		try {
+			return await api.get("favorites/list.json", { ...params });
+		} catch (error) {
+			return handleResponseError(error, "GET", "favorites/list").message;
+		}
+	};
+
 	return {
 		getHomeTweets,
 		getMentionTweets,
@@ -246,5 +259,6 @@ export const useApi = (): Api => {
 		unfavorite,
 		retweet,
 		unretweet,
+		userFavorites,
 	};
 };
