@@ -197,6 +197,19 @@ export const UserSub = ({ sname }: Props) => {
 		setStatus("listed");
 	};
 
+	const transitionFavorites = async () => {
+		const res = await api.userFavorites({
+			user_id: user.id_str,
+			count: 200,
+			tweet_mode: "extended",
+		});
+		if (typeof res === "string") {
+			setDebugConsole(res);
+			return;
+		}
+		setDebugConsole(JSON.stringify(res, null, 2));
+	};
+
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
 			// "statuses/user_timeline"
@@ -207,7 +220,7 @@ export const UserSub = ({ sname }: Props) => {
 		} else if (action === "followed") {
 			// yet
 		} else if (action === "favorites") {
-			// yet
+			transitionFavorites();
 		} else if (action === "listed") {
 			transitionListed();
 		} else if (action === "list/add-remove") {
@@ -293,6 +306,7 @@ export const UserSub = ({ sname }: Props) => {
 						onSelect={handleSelectMenu}
 					/>
 				</Box>
+				<Text>{debugConsole}</Text>
 				<Footer />
 			</Box>
 		);
@@ -300,7 +314,6 @@ export const UserSub = ({ sname }: Props) => {
 	if (status === "listed") {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
-				{/* <Text>{debugConsole}</Text> */}
 				<Box marginBottom={1}>
 					<Text>
 						Lists <Text color="#00acee">@{user.screen_name}</Text>'s on
