@@ -124,6 +124,8 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "GET", "friendships/show").message;
 		}
 	};
+
+	// WIP
 	const getUserListed = async (params: Partial<ListMembershipsV1Params>) => {
 		try {
 			return await api.listMemberships(params);
