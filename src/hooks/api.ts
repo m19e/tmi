@@ -137,7 +137,8 @@ export const useApi = (): Api => {
 		try {
 			return await api.userTimeline(params.user_id, params);
 		} catch (error) {
-			return handleResponseError(error, "GET", "statuses/user_timeline");
+			return handleResponseError(error, "GET", "statuses/user_timeline")
+				.message;
 		}
 	};
 
