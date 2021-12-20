@@ -13,6 +13,7 @@ import type {
 	AccountProfileV1Params,
 	TweetV1UserTimelineParams,
 	UserTimelineV1Paginator,
+	UserLookupV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import type { TweetV1SearchParams } from "../types/twitter";
@@ -119,6 +120,13 @@ export const useApi = (): Api => {
 			return await api.user(params);
 		} catch (error) {
 			return handleResponseError(error, "GET", "users/show").message;
+		}
+	};
+	const getUsers = async (params: UserLookupV1Params) => {
+		try {
+			return await api.users(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "users/lookup");
 		}
 	};
 	const getRelation = async (params: FriendshipShowV1Params) => {
