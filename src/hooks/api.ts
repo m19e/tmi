@@ -16,7 +16,10 @@ import type {
 	UserLookupV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
-import type { TweetV1SearchParams } from "../types/twitter";
+import type {
+	TweetV1SearchParams,
+	FriendOrFollowerIdsV1Params,
+} from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
 import { handleResponseError } from "../lib/helpers";
 import { useTwitterClient } from "../hooks";
@@ -248,8 +251,8 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "GET", "favorites/list").message;
 		}
 	};
-	const userFollowing = async () => {};
-	const userFollowed = async () => {};
+	const userFollowing = async (params: FriendOrFollowerIdsV1Params) => {};
+	const userFollowed = async (params: FriendOrFollowerIdsV1Params) => {};
 
 	return {
 		getHomeTweets,
