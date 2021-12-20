@@ -70,7 +70,7 @@ interface Api {
 
 	userFavorites: (
 		params: Partial<TweetV1UserTimelineParams>
-	) => PromiseWithErrorMessage<object>;
+	) => PromiseWithErrorMessage<TweetV1[]>;
 }
 
 export const useApi = (): Api => {
