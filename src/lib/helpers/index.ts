@@ -7,6 +7,8 @@ type Endpoint =
 	| "statuses/user_timeline"
 	| "users/show"
 	| "users/lookup"
+	| "friends/ids"
+	| "followers/ids"
 	| "friendships/show"
 	| "lists/list"
 	| "lists/statuses"
