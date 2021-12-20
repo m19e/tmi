@@ -239,6 +239,8 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "GET", "favorites/list").message;
 		}
 	};
+	const userFollowing = async () => {};
+	const userFollowed = async () => {};
 
 	return {
 		getHomeTweets,
