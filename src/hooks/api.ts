@@ -72,6 +72,12 @@ interface Api {
 	userFavorites: (
 		params: Partial<TweetV1UserTimelineParams>
 	) => PromiseWithErrorMessage<TweetV1[]>;
+	userFollowing: (
+		params: FriendOrFollowerIdsV1Params
+	) => PromiseWithErrorMessage<DoubleEndedIdCursorV1Result>;
+	userFollowed: (
+		params: FriendOrFollowerIdsV1Params
+	) => PromiseWithErrorMessage<DoubleEndedIdCursorV1Result>;
 }
 
 export const useApi = (): Api => {
@@ -292,5 +298,7 @@ export const useApi = (): Api => {
 		retweet,
 		unretweet,
 		userFavorites,
+		userFollowing,
+		userFollowed,
 	};
 };
