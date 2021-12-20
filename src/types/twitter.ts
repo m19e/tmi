@@ -1,3 +1,5 @@
+import type { DoubleEndedIdCursorV1Params } from "twitter-api-v2";
+
 export interface TrimmedList {
 	id_str: string;
 	name: string;
@@ -18,3 +20,14 @@ export interface TweetV1SearchParams {
 	tweet_mode: "extended";
 	include_entities: true;
 }
+
+type TUserIdOrScreenName =
+	| {
+			user_id: string;
+	  }
+	| {
+			screen_name: string;
+	  };
+
+export type FriendIdsV1Params = TUserIdOrScreenName &
+	DoubleEndedIdCursorV1Params & { count?: number };
