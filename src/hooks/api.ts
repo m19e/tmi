@@ -14,6 +14,7 @@ import type {
 	TweetV1UserTimelineParams,
 	UserTimelineV1Paginator,
 	UserLookupV1Params,
+	DoubleEndedIdCursorV1Result,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import type {
@@ -251,8 +252,24 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "GET", "favorites/list").message;
 		}
 	};
-	const userFollowing = async (params: FriendOrFollowerIdsV1Params) => {};
-	const userFollowed = async (params: FriendOrFollowerIdsV1Params) => {};
+	const userFollowing = async (params: FriendOrFollowerIdsV1Params) => {
+		try {
+			return await api.get<DoubleEndedIdCursorV1Result>("friends/ids.json", {
+				...params,
+			});
+		} catch (error) {
+			return handleResponseError(error, "GET", "friends/ids").message;
+		}
+	};
+	const userFollowed = async (params: FriendOrFollowerIdsV1Params) => {
+		try {
+			return await api.get<DoubleEndedIdCursorV1Result>("followers/ids.json", {
+				...params,
+			});
+		} catch (error) {
+			return handleResponseError(error, "GET", "followers/ids").message;
+		}
+	};
 
 	return {
 		getHomeTweets,
