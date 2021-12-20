@@ -29,5 +29,5 @@ type TUserIdOrScreenName =
 			screen_name: string;
 	  };
 
-export type FriendIdsV1Params = TUserIdOrScreenName &
+export type FriendOrFollowerIdsV1Params = TUserIdOrScreenName &
 	DoubleEndedIdCursorV1Params & { count?: number };
