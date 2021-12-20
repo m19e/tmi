@@ -37,6 +37,7 @@ interface Api {
 	) => PromiseWithErrorMessage<TweetV1[]>;
 	getTweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	getUser: (params: UserShowV1Params) => PromiseWithErrorMessage<UserV1>;
+	getUsers: (params: UserLookupV1Params) => PromiseWithErrorMessage<UserV1[]>;
 	getRelation: (
 		params: FriendshipShowV1Params
 	) => PromiseWithErrorMessage<FriendshipV1>;
@@ -126,7 +127,7 @@ export const useApi = (): Api => {
 		try {
 			return await api.users(params);
 		} catch (error) {
-			return handleResponseError(error, "GET", "users/lookup");
+			return handleResponseError(error, "GET", "users/lookup").message;
 		}
 	};
 	const getRelation = async (params: FriendshipShowV1Params) => {
@@ -257,6 +258,7 @@ export const useApi = (): Api => {
 		getListTweets,
 		getTweet,
 		getUser,
+		getUsers,
 		getRelation,
 		getUserListed,
 		getUserTimeline,
