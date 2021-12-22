@@ -135,6 +135,12 @@ export const useApi = (): Api => {
 	};
 	const getUsers = async (params: UserLookupV1Params) => {
 		try {
+			if (params.user_id.length && params.user_id.length > 100) {
+				// generate two-dimensional array
+				// or
+				// return "Error: too many ids"
+				// or return { data: UserV1[], remain: string[], done: string[] }
+			}
 			return await api.users(params);
 		} catch (error) {
 			return handleResponseError(error, "GET", "users/lookup").message;
