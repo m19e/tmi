@@ -31,3 +31,5 @@ type TUserIdOrScreenName =
 
 export type FriendOrFollowerIdsV1Params = TUserIdOrScreenName &
 	DoubleEndedIdCursorV1Params & { count?: number };
+
+interface UserV1DataGetFromIdsObject {}
