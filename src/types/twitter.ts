@@ -32,7 +32,7 @@ type TUserIdOrScreenName =
 export type FriendOrFollowerIdsV1Params = TUserIdOrScreenName &
 	DoubleEndedIdCursorV1Params & { count?: number };
 
-interface GetUsersByIdsResult {
+export interface GetUsersByIdsResult {
 	data: UserV1[];
 	remain: string[];
 	done: string[];
