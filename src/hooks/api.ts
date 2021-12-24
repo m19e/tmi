@@ -20,6 +20,7 @@ import type { HandledResponseError } from "../types";
 import type {
 	TweetV1SearchParams,
 	FriendOrFollowerIdsV1Params,
+	GetUsersByIdsResult,
 } from "../types/twitter";
 import { convertTweetToDisplayable } from "../lib";
 import { handleResponseError } from "../lib/helpers";
@@ -41,7 +42,9 @@ interface Api {
 	) => PromiseWithErrorMessage<TweetV1[]>;
 	getTweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	getUser: (params: UserShowV1Params) => PromiseWithErrorMessage<UserV1>;
-	getUsers: (params: UserLookupV1Params) => PromiseWithErrorMessage<UserV1[]>;
+	getUsers: (
+		params: UserLookupV1Params
+	) => PromiseWithErrorMessage<UserV1[] | GetUsersByIdsResult>;
 	getRelation: (
 		params: FriendshipShowV1Params
 	) => PromiseWithErrorMessage<FriendshipV1>;
@@ -135,13 +138,16 @@ export const useApi = (): Api => {
 	};
 	const getUsers = async (params: UserLookupV1Params) => {
 		try {
-			if (params.user_id.length && params.user_id.length > 100) {
-				// generate two-dimensional array
-				// or
-				// return "Error: too many ids"
-				// or return { data: UserV1[], remain: string[], done: string[] }
+			const { user_id } = params;
+			if (typeof user_id === "string" || user_id.length <= 100) {
+				return await api.users(params);
+			} else {
+				const done = user_id.slice(0, 100);
+				const remain = user_id.slice(100, user_id.length);
+				const data = await api.users({ ...params, user_id: done });
+
+				return { data, remain, done } as GetUsersByIdsResult;
 			}
-			return await api.users(params);
 		} catch (error) {
 			return handleResponseError(error, "GET", "users/lookup").message;
 		}
