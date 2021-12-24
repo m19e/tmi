@@ -1,4 +1,4 @@
-import type { DoubleEndedIdCursorV1Params } from "twitter-api-v2";
+import type { UserV1, DoubleEndedIdCursorV1Params } from "twitter-api-v2";
 
 export interface TrimmedList {
 	id_str: string;
@@ -32,4 +32,8 @@ type TUserIdOrScreenName =
 export type FriendOrFollowerIdsV1Params = TUserIdOrScreenName &
 	DoubleEndedIdCursorV1Params & { count?: number };
 
-interface GetUsersByIdsResult {}
+interface GetUsersByIdsResult {
+	data: UserV1[];
+	remain: string[];
+	done: string[];
+}
