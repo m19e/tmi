@@ -187,7 +187,7 @@ export const UserSub = ({ sname }: Props) => {
 			count: 5000,
 		});
 		if (typeof res === "string") {
-			setDebugConsole(res);
+			setError(res);
 			return;
 		}
 		const { ids, next_cursor_str } = res;
@@ -204,7 +204,7 @@ export const UserSub = ({ sname }: Props) => {
 			count: 5000,
 		});
 		if (typeof res === "string") {
-			setDebugConsole(res);
+			setError(res);
 			return;
 		}
 		const { ids, next_cursor_str } = res;
