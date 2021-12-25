@@ -180,6 +180,18 @@ export const UserSub = ({ sname }: Props) => {
 		setMenuItems(keyed);
 	};
 
+	const transitionFavorites = async () => {
+		const res = await api.userFavorites({
+			user_id: user.id_str,
+			count: 200,
+			tweet_mode: "extended",
+		});
+		if (typeof res === "string") {
+			setDebugConsole(res);
+			return;
+		}
+		setDebugConsole(JSON.stringify(res, null, 2));
+	};
 	const transitionListed = async () => {
 		const user_id = user.id_str;
 		const res = await api.getUserListed({
@@ -195,19 +207,6 @@ export const UserSub = ({ sname }: Props) => {
 			JSON.stringify({ length: lists.length, ...cursors }, null, 2)
 		);
 		setStatus("listed");
-	};
-
-	const transitionFavorites = async () => {
-		const res = await api.userFavorites({
-			user_id: user.id_str,
-			count: 200,
-			tweet_mode: "extended",
-		});
-		if (typeof res === "string") {
-			setDebugConsole(res);
-			return;
-		}
-		setDebugConsole(JSON.stringify(res, null, 2));
 	};
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
