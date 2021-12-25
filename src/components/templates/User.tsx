@@ -197,6 +197,23 @@ export const UserSub = ({ sname }: Props) => {
 		};
 		setDebugConsole(JSON.stringify(result, null, 2));
 	};
+	const transitionFollowed = async () => {
+		const res = await api.userFollowed({
+			user_id: user.id_str,
+			stringify_ids: true,
+			count: 5000,
+		});
+		if (typeof res === "string") {
+			setDebugConsole(res);
+			return;
+		}
+		const { ids, ...cursors } = res;
+		const result = {
+			count: ids.length,
+			...cursors,
+		};
+		setDebugConsole(JSON.stringify(result, null, 2));
+	};
 	const transitionFavorites = async () => {
 		const res = await api.userFavorites({
 			user_id: user.id_str,
@@ -234,7 +251,7 @@ export const UserSub = ({ sname }: Props) => {
 		} else if (action === "following") {
 			transitionFollowing();
 		} else if (action === "followed") {
-			// yet
+			transitionFollowed();
 		} else if (action === "favorites") {
 			transitionFavorites();
 		} else if (action === "listed") {
