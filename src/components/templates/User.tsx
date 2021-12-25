@@ -180,6 +180,23 @@ export const UserSub = ({ sname }: Props) => {
 		setMenuItems(keyed);
 	};
 
+	const transitionFollowing = async () => {
+		const res = await api.userFollowing({
+			user_id: user.id_str,
+			stringify_ids: true,
+			count: 5000,
+		});
+		if (typeof res === "string") {
+			setDebugConsole(res);
+			return;
+		}
+		const { ids, ...cursors } = res;
+		const result = {
+			count: ids.length,
+			...cursors,
+		};
+		setDebugConsole(JSON.stringify(result, null, 2));
+	};
 	const transitionFavorites = async () => {
 		const res = await api.userFavorites({
 			user_id: user.id_str,
@@ -215,7 +232,7 @@ export const UserSub = ({ sname }: Props) => {
 			// implemented
 			// api.userTimeline(userId)
 		} else if (action === "following") {
-			// yet
+			transitionFollowing();
 		} else if (action === "followed") {
 			// yet
 		} else if (action === "favorites") {
