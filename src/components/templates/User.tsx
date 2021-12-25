@@ -102,6 +102,10 @@ export const UserSub = ({ sname }: Props) => {
 	const [currentList, setCurrentList] = useState<TrimmedList>();
 	const [listTimeline, setListTimeline] = useState<TweetV1[]>([]);
 
+	const [nextCursor, setNextCursor] = useState("0");
+	const [remainIds, setRemainIds] = useState<string[]>([]);
+	const [users, setUsers] = useState<UserV1[]>([]);
+
 	const [debugConsole, setDebugConsole] = useState("empty");
 
 	useEffect(() => {
@@ -180,6 +184,21 @@ export const UserSub = ({ sname }: Props) => {
 		setMenuItems(keyed);
 	};
 
+	const getUsersData = async (ids: string[]) => {
+		const user_id = ids.slice(0, 100);
+		const remain = ids.slice(100, ids.length);
+		const res = await api.getUsers({
+			user_id,
+			skip_status: true,
+			tweet_mode: "extended",
+		});
+		if (typeof res === "string") {
+			setError(res);
+			return;
+		}
+		setUsers(res);
+		setRemainIds(remain);
+	};
 	const transitionFollowing = async () => {
 		const res = await api.userFollowing({
 			user_id: user.id_str,
@@ -191,11 +210,8 @@ export const UserSub = ({ sname }: Props) => {
 			return;
 		}
 		const { ids, next_cursor_str } = res;
-		const result = {
-			count: ids.length,
-			next_cursor_str,
-		};
-		setDebugConsole(JSON.stringify(result, null, 2));
+		setNextCursor(next_cursor_str);
+		await getUsersData(ids);
 	};
 	const transitionFollowed = async () => {
 		const res = await api.userFollowed({
@@ -208,11 +224,8 @@ export const UserSub = ({ sname }: Props) => {
 			return;
 		}
 		const { ids, next_cursor_str } = res;
-		const result = {
-			count: ids.length,
-			next_cursor_str,
-		};
-		setDebugConsole(JSON.stringify(result, null, 2));
+		setNextCursor(next_cursor_str);
+		await getUsersData(ids);
 	};
 	const transitionFavorites = async () => {
 		const res = await api.userFavorites({
