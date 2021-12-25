@@ -121,8 +121,8 @@ export const UserSub = ({ sname }: Props) => {
 					setRelationship(rel.relationship);
 					initMenu(res, rel.relationship);
 				}
+				setStatus("user");
 			}
-			setStatus("user");
 		};
 		f();
 	}, []);
@@ -303,7 +303,12 @@ export const UserSub = ({ sname }: Props) => {
 	};
 
 	if (status === "load") {
-		return <Text>Loading...</Text>;
+		return (
+			<>
+				<Text>Loading...</Text>
+				<Footer />
+			</>
+		);
 	}
 	if (status === "user") {
 		return (
