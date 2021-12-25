@@ -190,10 +190,10 @@ export const UserSub = ({ sname }: Props) => {
 			setDebugConsole(res);
 			return;
 		}
-		const { ids, ...cursors } = res;
+		const { ids, next_cursor_str } = res;
 		const result = {
 			count: ids.length,
-			...cursors,
+			next_cursor_str,
 		};
 		setDebugConsole(JSON.stringify(result, null, 2));
 	};
@@ -207,10 +207,10 @@ export const UserSub = ({ sname }: Props) => {
 			setDebugConsole(res);
 			return;
 		}
-		const { ids, ...cursors } = res;
+		const { ids, next_cursor_str } = res;
 		const result = {
 			count: ids.length,
-			...cursors,
+			next_cursor_str,
 		};
 		setDebugConsole(JSON.stringify(result, null, 2));
 	};
