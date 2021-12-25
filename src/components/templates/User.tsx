@@ -109,20 +109,20 @@ export const UserSub = ({ sname }: Props) => {
 			const res = await api.getUser({ screen_name: sname });
 			if (typeof res === "string") {
 				setError(res);
-			} else {
-				setUser(res);
-				const rel = await api.getRelation({
-					source_id: authUserId,
-					target_id: res.id_str,
-				});
-				if (typeof rel === "string") {
-					setError(rel);
-				} else {
-					setRelationship(rel.relationship);
-					initMenu(res, rel.relationship);
-				}
-				setStatus("user");
+				return;
 			}
+			setUser(res);
+			const rel = await api.getRelation({
+				source_id: authUserId,
+				target_id: res.id_str,
+			});
+			if (typeof rel === "string") {
+				setError(rel);
+			} else {
+				setRelationship(rel.relationship);
+				initMenu(res, rel.relationship);
+			}
+			setStatus("user");
 		};
 		f();
 	}, []);
