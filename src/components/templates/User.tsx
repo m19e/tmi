@@ -190,7 +190,6 @@ export const UserSub = ({ sname }: Props) => {
 		const res = await api.getUsers({
 			user_id,
 			skip_status: true,
-			tweet_mode: "extended",
 		});
 		if (typeof res === "string") {
 			setError(res);
