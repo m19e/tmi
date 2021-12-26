@@ -184,7 +184,7 @@ export const UserSub = ({ sname }: Props) => {
 		setMenuItems(keyed);
 	};
 
-	const getUsersData = async (ids: string[]) => {
+	const getUsersFromIds = async (ids: string[]) => {
 		const user_id = ids.slice(0, 100);
 		const remain = ids.slice(100, ids.length);
 		const res = await api.getUsers({
@@ -210,7 +210,7 @@ export const UserSub = ({ sname }: Props) => {
 		}
 		const { ids, next_cursor_str } = res;
 		setNextCursor(next_cursor_str);
-		await getUsersData(ids);
+		await getUsersFromIds(ids);
 	};
 	const transitionFollowed = async () => {
 		const res = await api.userFollowed({
@@ -224,7 +224,7 @@ export const UserSub = ({ sname }: Props) => {
 		}
 		const { ids, next_cursor_str } = res;
 		setNextCursor(next_cursor_str);
-		await getUsersData(ids);
+		await getUsersFromIds(ids);
 	};
 	const transitionFavorites = async () => {
 		const res = await api.userFavorites({
