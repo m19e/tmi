@@ -221,6 +221,13 @@ export const UserSub = ({ sname }: Props) => {
 			return;
 		}
 		setUserTimelinePaginator(res);
+		setDebugConsole(
+			JSON.stringify(
+				res.tweets.map((t) => `@${t.user.screen_name} ${t.full_text}`),
+				null,
+				2
+			)
+		);
 	};
 	const transitionFollowing = async () => {
 		const res = await api.userFollowing({
