@@ -50,7 +50,7 @@ interface Api {
 		params: Partial<ListMembershipsV1Params>
 	) => PromiseWithErrorMessage<ListMembershipsV1Paginator>;
 	getUserTimeline: (
-		params: Partial<TweetV1UserTimelineParams>
+		params: Partial<TweetV1UserTimelineParams & { include_rts: boolean }>
 	) => PromiseWithErrorMessage<UserTimelineV1Paginator>;
 
 	tweet: (status: string) => PromiseWithErrorMessage<null>;
@@ -158,7 +158,7 @@ export const useApi = (): Api => {
 		}
 	};
 	const getUserTimeline = async (
-		params: Partial<TweetV1UserTimelineParams>
+		params: Partial<TweetV1UserTimelineParams & { include_rts: boolean }>
 	) => {
 		try {
 			return await api.userTimeline(params.user_id, params);
