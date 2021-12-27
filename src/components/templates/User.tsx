@@ -229,8 +229,8 @@ export const UserSub = ({ sname }: Props) => {
 	const transitionFavorites = async () => {
 		const res = await api.userFavorites({
 			user_id: user.id_str,
-			count: 200,
 			tweet_mode: "extended",
+			count: 200,
 		});
 		if (typeof res === "string") {
 			setDebugConsole(res);
