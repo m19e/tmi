@@ -63,6 +63,12 @@ interface Api {
 		attachment_url: string
 	) => PromiseWithErrorMessage<null>;
 	deleteTweet: (id: string) => PromiseWithErrorMessage<null>;
+	addListMembers: (
+		params: AddOrRemoveListMembersV1Params
+	) => PromiseWithErrorMessage<null>;
+	removeListMembers: (
+		params: AddOrRemoveListMembersV1Params
+	) => PromiseWithErrorMessage<null>;
 
 	search: (params: TweetV1SearchParams) => PromiseWithErrorMessage<TweetV1[]>;
 	favorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
@@ -200,10 +206,23 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "POST", "statuses/destroy").message;
 		}
 	};
-	const addListMembers = async (params: AddOrRemoveListMembersV1Params) => {};
-	const removeListMembers = async (
-		params: AddOrRemoveListMembersV1Params
-	) => {};
+	const addListMembers = async (params: AddOrRemoveListMembersV1Params) => {
+		try {
+			await api.addListMembers(params);
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "POST", "lists/members/create").message;
+		}
+	};
+	const removeListMembers = async (params: AddOrRemoveListMembersV1Params) => {
+		try {
+			await api.removeListMembers(params);
+			return null;
+		} catch (error) {
+			return handleResponseError(error, "POST", "lists/members/destroy")
+				.message;
+		}
+	};
 	const updateProfile = async (params: Partial<AccountProfileV1Params>) => {};
 
 	// Local http wrappers
@@ -289,6 +308,8 @@ export const useApi = (): Api => {
 		reply,
 		quote,
 		deleteTweet,
+		addListMembers,
+		removeListMembers,
 		search,
 		favorite,
 		unfavorite,
