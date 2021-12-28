@@ -99,9 +99,9 @@ export const UserSub = ({ sname }: Props) => {
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
-	const [status, setStatus] = useState<"load" | "user" | "listed" | "list">(
-		"load"
-	);
+	const [status, setStatus] = useState<
+		"load" | "user" | "tweets" | "listed" | "list"
+	>("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
 	const [listed, setListed] = useState<ListV1[]>([]);
