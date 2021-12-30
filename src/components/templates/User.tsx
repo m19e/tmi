@@ -305,6 +305,7 @@ export const UserSub = ({ sname }: Props) => {
 			// api.addListMembers({ list_id, user_id[] })
 			// api.removeListMembers({ list_id, user_id })
 			// api.removeListMembers({ list_id, user_id[] })
+			// setStatus("list/member/manage")
 		} else if (action === "profile") {
 			// implemented
 		} else if (action === "follow") {
