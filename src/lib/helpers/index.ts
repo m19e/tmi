@@ -10,6 +10,8 @@ type Endpoint =
 	| "friends/ids"
 	| "followers/ids"
 	| "friendships/show"
+	| "friendships/create"
+	| "friendships/destroy"
 	| "lists/list"
 	| "lists/statuses"
 	| "lists/memberships"
