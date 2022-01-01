@@ -100,7 +100,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
 	const [status, setStatus] = useState<
-		"load" | "user" | "tweets" | "listed" | "list"
+		"load" | "user" | "tweets" | "listed" | "list" | "list/member/manage"
 	>("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
@@ -306,7 +306,7 @@ export const UserSub = ({ sname }: Props) => {
 			// api.addListMembers({ list_id, user_id[] })
 			// api.removeListMembers({ list_id, user_id })
 			// api.removeListMembers({ list_id, user_id[] })
-			// setStatus("list/member/manage")
+			setStatus("list/member/manage");
 		} else if (action === "profile") {
 			// implemented
 		} else if (action === "follow") {
