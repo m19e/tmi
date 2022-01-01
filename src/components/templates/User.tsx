@@ -228,6 +228,7 @@ export const UserSub = ({ sname }: Props) => {
 				2
 			)
 		);
+		setStatus("tweets");
 	};
 	const transitionFollowing = async () => {
 		const res = await api.userFollowing({
@@ -389,6 +390,13 @@ export const UserSub = ({ sname }: Props) => {
 				<Text>{debugConsole}</Text>
 				<Footer />
 			</Box>
+		);
+	}
+	if (status === "tweets") {
+		return (
+			<Text>
+				<Text>{user.screen_name}</Text>'s tweets
+			</Text>
 		);
 	}
 	if (status === "listed") {
