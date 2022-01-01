@@ -23,7 +23,7 @@ type UserMenuAction =
 	| "followed"
 	| "favorites"
 	| "listed"
-	| "list/add-remove"
+	| "list/manage"
 	| "follow"
 	| "unfollow"
 	| "mute"
@@ -298,7 +298,7 @@ export const UserSub = ({ sname }: Props) => {
 			transitionFavorites();
 		} else if (action === "listed") {
 			transitionListed();
-		} else if (action === "list/add-remove") {
+		} else if (action === "list/manage") {
 			// "lists/members/create" or "lists/members/create_all"
 			// "lists/members/destroy" or "lists/members/destroy_all"
 			// implemented
