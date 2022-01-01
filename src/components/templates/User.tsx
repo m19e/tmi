@@ -423,5 +423,12 @@ export const UserSub = ({ sname }: Props) => {
 			</>
 		);
 	}
+	if (status === "list/member/manage") {
+		return (
+			<Text>
+				Add / Remove <Text color="#00acee">@{user.screen_name}</Text> from lists
+			</Text>
+		);
+	}
 	return null;
 };
