@@ -395,7 +395,7 @@ export const UserSub = ({ sname }: Props) => {
 	if (status === "tweets") {
 		return (
 			<Text>
-				<Text>@{user.screen_name}</Text>'s tweets
+				<Text color="#00acee">@{user.screen_name}</Text>'s tweets
 			</Text>
 		);
 	}
