@@ -167,7 +167,7 @@ export const UserSub = ({ sname }: Props) => {
 			},
 			{
 				label: "Add to / Remove from lists",
-				value: "list/add-remove",
+				value: "list/manage",
 			},
 		];
 		if (myself) {
