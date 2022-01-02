@@ -116,6 +116,8 @@ export const UserSub = ({ sname }: Props) => {
 		UserTimelineV1Paginator | undefined
 	>(undefined);
 
+	const [lists, setLists] = useState<ListV1[]>([]);
+
 	const [debugConsole, setDebugConsole] = useState("empty");
 
 	useEffect(() => {
@@ -286,6 +288,15 @@ export const UserSub = ({ sname }: Props) => {
 		);
 		setStatus("listed");
 	};
+	const transitionListManage = async () => {
+		const res = await api.getLists();
+		if (!Array.isArray(res)) {
+			setError(res.message);
+			return;
+		}
+		setLists(res);
+		setStatus("list/manage");
+	};
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
@@ -299,14 +310,7 @@ export const UserSub = ({ sname }: Props) => {
 		} else if (action === "listed") {
 			transitionListed();
 		} else if (action === "list/manage") {
-			// "lists/members/create" or "lists/members/create_all"
-			// "lists/members/destroy" or "lists/members/destroy_all"
-			// implemented
-			// api.addListMembers({ list_id, user_id })
-			// api.addListMembers({ list_id, user_id[] })
-			// api.removeListMembers({ list_id, user_id })
-			// api.removeListMembers({ list_id, user_id[] })
-			setStatus("list/manage");
+			transitionListManage();
 		} else if (action === "profile") {
 			// implemented
 		} else if (action === "follow") {
@@ -425,9 +429,12 @@ export const UserSub = ({ sname }: Props) => {
 	}
 	if (status === "list/manage") {
 		return (
-			<Text>
-				Add / Remove <Text color="#00acee">@{user.screen_name}</Text> from lists
-			</Text>
+			<Box flexDirection="column" minHeight={rows}>
+				<Text>
+					Add / Remove <Text color="#00acee">@{user.screen_name}</Text> from
+					lists
+				</Text>
+			</Box>
 		);
 	}
 	return null;
