@@ -15,6 +15,7 @@ import type {
 	UserTimelineV1Paginator,
 	UserLookupV1Params,
 	DoubleEndedIdCursorV1Result,
+	ListMemberShowV1Params,
 } from "twitter-api-v2";
 import type { HandledResponseError } from "../types";
 import type {
@@ -152,6 +153,13 @@ export const useApi = (): Api => {
 			return await api.friendship(params);
 		} catch (error) {
 			return handleResponseError(error, "GET", "friendships/show").message;
+		}
+	};
+	const isListMember = async (params: ListMemberShowV1Params) => {
+		try {
+			return await api.listGetMember(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "lists/members/show").message;
 		}
 	};
 
