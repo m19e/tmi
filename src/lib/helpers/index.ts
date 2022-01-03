@@ -15,6 +15,7 @@ type Endpoint =
 	| "lists/list"
 	| "lists/statuses"
 	| "lists/memberships"
+	| "lists/members/show"
 	| "lists/members/create"
 	| "lists/members/destroy"
 	| "statuses/show"
