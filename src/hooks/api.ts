@@ -53,6 +53,7 @@ interface Api {
 	getUserTimeline: (
 		params: Partial<TweetV1UserTimelineParams & { include_rts: boolean }>
 	) => PromiseWithErrorMessage<UserTimelineV1Paginator>;
+	isListMember: (params: ListMemberShowV1Params) => PromiseWithError<boolean>;
 
 	tweet: (status: string) => PromiseWithErrorMessage<null>;
 	reply: (
@@ -157,9 +158,14 @@ export const useApi = (): Api => {
 	};
 	const isListMember = async (params: ListMemberShowV1Params) => {
 		try {
-			return await api.listGetMember(params);
+			await api.listGetMember(params);
+			return true;
 		} catch (error) {
-			return handleResponseError(error, "GET", "lists/members/show").message;
+			const err = handleResponseError(error, "GET", "lists/members/show");
+			if (err.rateLimit) {
+				return err;
+			}
+			return false;
 		}
 	};
 
@@ -312,6 +318,7 @@ export const useApi = (): Api => {
 		getRelation,
 		getUserListed,
 		getUserTimeline,
+		isListMember,
 		tweet,
 		reply,
 		quote,
