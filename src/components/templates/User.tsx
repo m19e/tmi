@@ -16,6 +16,7 @@ import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput, { Item } from "../molecules/SelectInput";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
+import { ListMemberManage } from "../molecules/ListMemberManage";
 
 type UserMenuAction =
 	| "tweets"
@@ -100,7 +101,13 @@ export const UserSub = ({ sname }: Props) => {
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
 	const [status, setStatus] = useState<
-		"load" | "user" | "tweets" | "listed" | "list" | "list/manage"
+		| "load"
+		| "user"
+		| "tweets"
+		| "listed"
+		| "list"
+		| "list/manage"
+		| "list/manage/confirm"
 	>("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
@@ -117,6 +124,7 @@ export const UserSub = ({ sname }: Props) => {
 	>(undefined);
 
 	const [lists, setLists] = useState<ListV1[]>([]);
+	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
 
 	const [debugConsole, setDebugConsole] = useState("empty");
 
@@ -292,9 +300,9 @@ export const UserSub = ({ sname }: Props) => {
 		const res = await api.getLists();
 		if (!Array.isArray(res)) {
 			setError(res.message);
-			return;
+		} else {
+			setLists(res);
 		}
-		setLists(res);
 		setStatus("list/manage");
 	};
 
@@ -347,6 +355,10 @@ export const UserSub = ({ sname }: Props) => {
 		});
 		setListTimeline(res);
 		setStatus("list");
+	};
+	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
+		setManageList(list);
+		setStatus("list/manage/confirm");
 	};
 
 	if (status === "load") {
@@ -430,10 +442,20 @@ export const UserSub = ({ sname }: Props) => {
 	if (status === "list/manage") {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
-				<Text>
-					Add / Remove <Text color="#00acee">@{user.screen_name}</Text> from
-					lists
-				</Text>
+				<Box flexDirection="column" flexGrow={1}>
+					<ListMemberManage
+						user={user}
+						lists={lists}
+						onSelect={handleSelectManageList}
+					/>
+				</Box>
+			</Box>
+		);
+	}
+	if (status === "list/manage/confirm") {
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<Text>{JSON.stringify(manageList, null, 2)}</Text>
 			</Box>
 		);
 	}
