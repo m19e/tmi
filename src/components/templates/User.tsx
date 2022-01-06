@@ -365,7 +365,24 @@ export const UserSub = ({ sname }: Props) => {
 	}: {
 		value: "add" | "remove";
 	}) => {
-		setDebugConsole(`Selected list action: ${action}`);
+		const { id_str: list_id } = manageList;
+		const { id_str: user_id } = user;
+
+		const res =
+			action === "add"
+				? await api.addListMembers({ list_id, user_id })
+				: await api.removeListMembers({ list_id, user_id });
+		if (typeof res === "string") {
+			setDebugConsole(res);
+			return;
+		} else {
+			setDebugConsole(
+				`Successfully ${action} @${user.screen_name} ${
+					action === "add" ? "to" : "from"
+				} list.`
+			);
+		}
+		// setStatus("list/manage");
 	};
 
 	if (status === "load") {
@@ -459,7 +476,12 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
-					<Text>Select action</Text>
+					<Text>
+						Select action to{" "}
+						<Text color="#00acee">
+							@{user.screen_name}/{manageList.name}
+						</Text>
+					</Text>
 				</Box>
 				<SelectInput
 					items={[
