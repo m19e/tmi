@@ -107,7 +107,7 @@ export const UserSub = ({ sname }: Props) => {
 		| "listed"
 		| "list"
 		| "list/manage"
-		| "list/manage/confirm"
+		| "list/manage/action"
 	>("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
@@ -455,7 +455,7 @@ export const UserSub = ({ sname }: Props) => {
 			</Box>
 		);
 	}
-	if (status === "list/manage/confirm") {
+	if (status === "list/manage/action") {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
