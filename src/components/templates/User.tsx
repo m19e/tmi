@@ -360,6 +360,13 @@ export const UserSub = ({ sname }: Props) => {
 		setManageList(list);
 		setStatus("list/manage/confirm");
 	};
+	const handleSelectListAction = async ({
+		value: action,
+	}: {
+		value: "add" | "remove";
+	}) => {
+		setDebugConsole(`Selected list action: ${action}`);
+	};
 
 	if (status === "load") {
 		return (
@@ -451,7 +458,22 @@ export const UserSub = ({ sname }: Props) => {
 	if (status === "list/manage/confirm") {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
-				<Text>{JSON.stringify(manageList, null, 2)}</Text>
+				<Box marginBottom={1}>
+					<Text>Select action</Text>
+				</Box>
+				<SelectInput
+					items={[
+						{ key: "add", label: "Add to List", value: "add" as "add" },
+						{
+							key: "remove",
+							label: "Remove from List",
+							value: "remove" as "remove",
+						},
+					]}
+					onSelect={handleSelectListAction}
+					itemComponent={BreakLineItem}
+				/>
+				<Text>{debugConsole}</Text>
 			</Box>
 		);
 	}
