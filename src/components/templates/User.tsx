@@ -469,32 +469,35 @@ export const UserSub = ({ sname }: Props) => {
 				<Box flexDirection="column" flexGrow={1}>
 					<ListMemberManage lists={lists} onSelect={handleSelectManageList} />
 				</Box>
+				<Text>{debugConsole}</Text>
 			</Box>
 		);
 	}
 	if (status === "list/manage/action") {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
-				<Box marginBottom={1}>
-					<Text>
-						Select action to{" "}
-						<Text color="#00acee">
-							@{user.screen_name}/{manageList.name}
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Text>
+							Select action to{" "}
+							<Text color="#00acee">
+								@{manageList.user.screen_name}/{manageList.name}
+							</Text>
 						</Text>
-					</Text>
+					</Box>
+					<SelectInput
+						items={[
+							{ key: "add", label: "Add to List", value: "add" as "add" },
+							{
+								key: "remove",
+								label: "Remove from List",
+								value: "remove" as "remove",
+							},
+						]}
+						onSelect={handleSelectListAction}
+						itemComponent={BreakLineItem}
+					/>
 				</Box>
-				<SelectInput
-					items={[
-						{ key: "add", label: "Add to List", value: "add" as "add" },
-						{
-							key: "remove",
-							label: "Remove from List",
-							value: "remove" as "remove",
-						},
-					]}
-					onSelect={handleSelectListAction}
-					itemComponent={BreakLineItem}
-				/>
 				<Text>{debugConsole}</Text>
 			</Box>
 		);
