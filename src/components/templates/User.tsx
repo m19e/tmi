@@ -382,7 +382,7 @@ export const UserSub = ({ sname }: Props) => {
 				} @${manageList.user.screen_name}/${manageList.name}`
 			);
 		}
-		// setStatus("list/manage");
+		setStatus("list/manage");
 	};
 
 	if (status === "load") {
