@@ -77,7 +77,7 @@ const FriendshipLabel = ({ relation }: FriendshipProps) => {
 	return null;
 };
 
-const MenuComponent: VFC<{ isSelected?: boolean; label: string }> = ({
+const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
 	isSelected = false,
 	label,
 }) => (
@@ -399,7 +399,7 @@ export const UserSub = ({ sname }: Props) => {
 					)}
 					<SelectInput
 						items={menuItems}
-						itemComponent={MenuComponent}
+						itemComponent={BreakLineItem}
 						onSelect={handleSelectMenu}
 					/>
 				</Box>
