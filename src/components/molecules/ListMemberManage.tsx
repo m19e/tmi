@@ -45,10 +45,7 @@ export const ListMemberManage = ({ user, lists, onSelect }: Props) => {
 	return (
 		<>
 			<Box marginBottom={1}>
-				<Text>
-					Add / Remove <Text color="#00acee">@{user.screen_name}</Text> from
-					lists
-				</Text>
+				<Text>Pick a List</Text>
 			</Box>
 			<SelectManageList lists={lists} onSelect={onSelect} />
 		</>
