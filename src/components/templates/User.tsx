@@ -443,11 +443,7 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
-					<ListMemberManage
-						user={user}
-						lists={lists}
-						onSelect={handleSelectManageList}
-					/>
+					<ListMemberManage lists={lists} onSelect={handleSelectManageList} />
 				</Box>
 			</Box>
 		);
