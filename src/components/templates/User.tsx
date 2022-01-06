@@ -379,7 +379,7 @@ export const UserSub = ({ sname }: Props) => {
 			setDebugConsole(
 				`Successfully ${action} @${user.screen_name} ${
 					action === "add" ? "to" : "from"
-				} list.`
+				} @${manageList.user.screen_name}/${manageList.name}`
 			);
 		}
 		// setStatus("list/manage");
