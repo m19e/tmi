@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, Text } from "ink";
-import type { ListV1, UserV1 } from "twitter-api-v2";
+import type { ListV1 } from "twitter-api-v2";
 import SelectInput from "./SelectInput";
 import type { Item } from "./SelectInput";
 
-interface SelectProps {
+interface Props {
 	lists: ListV1[];
 	onSelect: (item: { value: ListV1 }) => void;
 }
@@ -21,7 +21,7 @@ const ItemComponent = ({
 	</Box>
 );
 
-const SelectManageList = ({ lists, onSelect }: SelectProps) => {
+const SelectManageList = ({ lists, onSelect }: Props) => {
 	const items: Item<ListV1>[] = lists.map((list) => ({
 		key: list.id_str,
 		label: list.name + (list.mode === "private" ? " 🔒" : ""),
@@ -37,11 +37,7 @@ const SelectManageList = ({ lists, onSelect }: SelectProps) => {
 	);
 };
 
-interface Props extends SelectProps {
-	user: UserV1;
-}
-
-export const ListMemberManage = ({ user, lists, onSelect }: Props) => {
+export const ListMemberManage = ({ lists, onSelect }: Props) => {
 	return (
 		<>
 			<Box marginBottom={1}>
