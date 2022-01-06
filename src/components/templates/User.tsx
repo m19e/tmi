@@ -358,7 +358,7 @@ export const UserSub = ({ sname }: Props) => {
 	};
 	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
 		setManageList(list);
-		setStatus("list/manage/confirm");
+		setStatus("list/manage/action");
 	};
 	const handleSelectListAction = async ({
 		value: action,
