@@ -332,7 +332,7 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	};
 
-	const handleSelectList = async ({ value: list }: Item<ListV1>) => {
+	const handleSelectList = async ({ value: list }: { value: ListV1 }) => {
 		const res = await api.getListTweets({
 			list_id: list.id_str,
 			count: 200,
