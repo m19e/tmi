@@ -100,7 +100,9 @@ export const UserSub = ({ sname }: Props) => {
 
 	const api = useApi();
 	const [{ userId: authUserId }] = useUserConfig();
+	const [, setRequestResult] = useRequestResult();
 	const [, setError] = useError();
+	const [, setHint] = useHint();
 
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
