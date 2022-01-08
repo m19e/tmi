@@ -506,6 +506,7 @@ export const UserSub = ({ sname }: Props) => {
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
+				<Footer />
 			</Box>
 		);
 	}
