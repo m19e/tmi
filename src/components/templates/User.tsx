@@ -477,6 +477,7 @@ export const UserSub = ({ sname }: Props) => {
 					<ListMemberManage lists={lists} onSelect={handleSelectManageList} />
 				</Box>
 				<Text>{debugConsole}</Text>
+				<Footer />
 			</Box>
 		);
 	}
