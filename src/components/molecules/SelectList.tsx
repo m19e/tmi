@@ -1,14 +1,7 @@
 import React from "react";
 import type { VFC } from "react";
-import { Box, Text } from "ink";
 import { TrimmedList } from "../../types/twitter";
-import SelectInput from "./SelectInput";
-
-interface Item<V> {
-	key: string;
-	label: string;
-	value: V;
-}
+import SelectInput, { Item } from "./SelectInput";
 
 interface Props {
 	lists: Array<TrimmedList>;
@@ -22,12 +15,7 @@ const SelectList: VFC<Props> = ({ lists, onSelect }) => {
 		value: list,
 	}));
 
-	return (
-		<Box flexDirection="column">
-			<Text>Select list to display.</Text>
-			<SelectInput items={items} onSelect={onSelect} />
-		</Box>
-	);
+	return <SelectInput items={items} onSelect={onSelect} />;
 };
 
 export default SelectList;

@@ -1,14 +1,14 @@
 import type { VFC } from "react";
 import { Text, Box } from "ink";
-import SelectInput from "ink-select-input";
 import figures from "../../lib/sindresorhus/figures";
+import CustomSelectInput from "./CostumSelectInput";
 
 interface ItemProps {
 	isSelected?: boolean;
 	label: string;
 }
 
-interface Item<V> {
+export interface Item<V> {
 	key?: string;
 	label: string;
 	value: V;
@@ -58,11 +58,14 @@ interface Props<V> {
 	onHighlight?: (item: Item<V>) => void;
 }
 
-const ItemC: VFC<ItemProps> = ({ isSelected = false, label }) => (
-	<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
-);
+const DefaultItemComponent: VFC<ItemProps> = ({
+	isSelected = false,
+	label,
+}) => <Text color={isSelected ? "#00acee" : undefined}>{label}</Text>;
 
-const IndicatorC: VFC<IndicatorProps> = ({ isSelected = false }) => (
+const DefaultIndicatorComponent: VFC<IndicatorProps> = ({
+	isSelected = false,
+}) => (
 	<Box marginRight={1}>
 		{isSelected ? (
 			<Text color="#00acee">{figures.squareLeft}</Text>
@@ -72,13 +75,20 @@ const IndicatorC: VFC<IndicatorProps> = ({ isSelected = false }) => (
 	</Box>
 );
 
-function Select<V>({ items = [], onSelect }: Props<V>): JSX.Element {
+function Select<V>({
+	items = [],
+	onSelect,
+	itemComponent = DefaultItemComponent,
+	indicatorComponent = DefaultIndicatorComponent,
+	limit = undefined,
+}: Props<V>): JSX.Element {
 	return (
-		<SelectInput
+		<CustomSelectInput
 			items={items}
 			onSelect={onSelect}
-			itemComponent={ItemC}
-			indicatorComponent={IndicatorC}
+			itemComponent={itemComponent}
+			indicatorComponent={indicatorComponent}
+			limit={limit}
 		/>
 	);
 }

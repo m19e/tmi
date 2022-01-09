@@ -1,16 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { AuthContainer } from "../src/components/AuthContainer";
-import { List as ListPage } from "../src/components/pages/List";
+import { AuthContainer } from "../src/components/pages/AuthContainer";
+import { ColumnTemplate } from "../src/components/templates/Column";
 
-/// Hello world command
-const Tink = () => {
-	return <AuthContainer page={ListPage} />;
+/// Index command
+const IndexCommand = () => {
+	return (
+		<AuthContainer>
+			<ColumnTemplate />
+		</AuthContainer>
+	);
 };
 
-Tink.propTypes = {
-	/// Name of the person to greet
-	name: PropTypes.string,
-};
-
-export default Tink;
+export default IndexCommand;

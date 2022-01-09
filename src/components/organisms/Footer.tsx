@@ -9,7 +9,7 @@ const Error: VFC = () => {
 		return (
 			<Box width="100%">
 				<Text wrap="truncate-end" color="black" backgroundColor="red">
-					<> {error} </>
+					<>{error}</>
 				</Text>
 			</Box>
 		);
@@ -23,7 +23,7 @@ const RequestResult: VFC = () => {
 		return (
 			<Box width="100%">
 				<Text wrap="truncate-end" color="black" backgroundColor="green">
-					<> {requestResult} </>
+					<>{requestResult}</>
 				</Text>
 			</Box>
 		);
@@ -32,7 +32,7 @@ const RequestResult: VFC = () => {
 };
 
 const Hint: VFC = () => {
-	const [hint] = useHint();
+	const [{ value: hint }] = useHint();
 	if (hint) {
 		return <Text>{hint}</Text>;
 	}

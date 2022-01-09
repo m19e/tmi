@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
-import type { VFC } from "react";
+import type { VFC, ReactNode } from "react";
 import path from "path";
-import {
-	mkdirsSync,
-	readdirSync,
-	existsSync,
-	readJsonSync,
-	writeJson,
-} from "fs-extra";
+import { writeJSON } from "fs-extra";
+import { mkdirsSync, readdirSync, existsSync, readJsonSync } from "fs-extra";
 import { Text, useApp } from "ink";
 import { config } from "dotenv";
 import TwitterApi from "twitter-api-v2";
 import type { TwitterApiTokens } from "twitter-api-v2";
 
-import type { UserConfig } from "../types";
-import { useTwitterClient, useUserConfig } from "../hooks/v2";
-import PinAuthInput from "./molecules/PinAuthInput";
+import type { UserConfig } from "../../types";
+import { useTwitterClient, useUserConfig } from "../../hooks";
+import PinAuthInput from "../molecules/PinAuthInput";
 
 config();
 
@@ -24,15 +19,11 @@ const defaultTokens: TwitterApiTokens = {
 	appSecret: process.env.TWITTER_CONSUMER_SECRET,
 };
 
-interface PageProps {
-	onSaveConfig: (c: UserConfig) => Promise<void>;
-}
-
 interface Props {
-	page: VFC<PageProps>;
+	children: ReactNode;
 }
 
-export const AuthContainer: VFC<Props> = ({ page: Page }) => {
+export const AuthContainer: VFC<Props> = ({ children }) => {
 	const { exit } = useApp();
 	const [, setTwitterClient] = useTwitterClient();
 	const [, setUserConfig] = useUserConfig();
@@ -48,9 +39,8 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 	}>();
 
 	useEffect(() => {
-		const initV2 = async () => {
+		const init = async () => {
 			const [fp, conf, err] = getConfig();
-			setFilePath(fp);
 			if (err !== null || !conf.accessToken || !conf.accessSecret) {
 				if (err !== null) {
 					console.error("cannot get configuration: ", err);
@@ -59,6 +49,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 				const initClient = new TwitterApi(defaultTokens);
 				const link = await initClient.generateAuthLink("oob");
 				setAuthLink(link);
+				setFilePath(fp);
 				setStatus("pin");
 			} else {
 				setTwitterClient(new TwitterApi(conf));
@@ -66,7 +57,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 				setStatus("page");
 			}
 		};
-		initV2();
+		init();
 	}, []);
 
 	const getConfig = (
@@ -121,7 +112,7 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 			if (existsSync(file)) {
 				return ["", null, "CANNOT READ JSON"];
 			}
-			conf = { ...defaultTokens, userId: "", lists: [] };
+			conf = { ...defaultTokens, userId: "", lists: [], filePath: file };
 		} else {
 			conf = json;
 		}
@@ -142,18 +133,18 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 			userId,
 		} = await oauthClient.login(p);
 		setTwitterClient(loggedClient);
-		setUserConfig({
+		const c = {
 			...defaultTokens,
 			accessToken,
 			accessSecret,
 			userId,
+			filePath,
 			lists: [],
-		});
+		};
+		await writeJSON(filePath, c);
+		setUserConfig(c);
 		setStatus("page");
 	};
-
-	const handleSaveConfig = async (conf: UserConfig) =>
-		await writeJson(filePath, conf);
 
 	if (status === "load") {
 		return <Text>Loading...</Text>;
@@ -169,6 +160,6 @@ export const AuthContainer: VFC<Props> = ({ page: Page }) => {
 		);
 	}
 	if (status === "page") {
-		return <Page onSaveConfig={handleSaveConfig} />;
+		return <>{children}</>;
 	}
 };

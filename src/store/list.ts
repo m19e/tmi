@@ -1,21 +1,24 @@
 import { atom } from "jotai";
-import type { TwitterApi, TweetV1 } from "twitter-api-v2";
-import type { UserConfig } from "../types";
+import type { TweetV1 } from "twitter-api-v2";
 import type { TrimmedList } from "../types/twitter";
+import { displayTweetsCountAtom } from ".";
 
-export const userConfigAtom = atom<UserConfig | null>(null);
-
-export const twitterClientAtom = atom<TwitterApi | null>(null);
-
-export const currentListAtom = atom<TrimmedList | null>(null);
+export const currentListAtom = atom<TrimmedList>({
+	id_str: "",
+	name: "",
+	owner: {
+		id_str: "",
+		screen_name: "",
+		name: "",
+	},
+	mode: "public",
+});
 
 export const listTimelineAtom = atom<TweetV1[]>([]);
 
 export const cursorIndexAtom = atom(0);
 
 export const focusIndexAtom = atom(0);
-
-export const displayTweetsCountAtom = atom(5);
 
 export const displayTimelineAtom = atom<TweetV1[]>((get) => {
 	const cursor = get(cursorIndexAtom);
