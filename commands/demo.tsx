@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Box, Text, useInput } from "ink";
+import { Box, Text, Newline, useInput } from "ink";
 import got from "got";
+import { readJSON, writeJSON } from "fs-extra";
 import TwitterApi from "twitter-api-v2";
 import type {
 	TwitterApiv1,
 	TwitterApiTokens,
 	ListTimelineV1Paginator,
+	TweetV1,
 } from "twitter-api-v2";
 import { config } from "dotenv";
 import { terminalImageFromBuffer } from "../src/lib/sindresorhus/terminal-image";
@@ -214,4 +216,68 @@ const Auth = () => {
 	}
 };
 
-export default Auth;
+type TrimmedTweetV1 = Pick<
+	TweetV1,
+	| "created_at"
+	| "id_str"
+	| "full_text"
+	| "in_reply_to_status_id_str"
+	| "in_reply_to_user_id_str"
+	| "in_reply_to_screen_name"
+	| "entities"
+	| "extended_entities"
+>;
+
+const trimTweet = ({
+	created_at,
+	id_str,
+	full_text,
+	in_reply_to_status_id_str,
+	in_reply_to_user_id_str,
+	in_reply_to_screen_name,
+	quote_count,
+	reply_count,
+	retweet_count,
+	favorite_count,
+	entities,
+	extended_entities,
+}: TweetV1): TrimmedTweetV1 => ({
+	created_at,
+	id_str,
+	full_text,
+	in_reply_to_status_id_str,
+	in_reply_to_user_id_str,
+	in_reply_to_screen_name,
+	entities,
+	extended_entities,
+});
+
+const ReadWriteJSON = () => {
+	const [data, setData] = useState<TweetV1[]>([]);
+	const [trim, setTrim] = useState<TrimmedTweetV1[]>([]);
+
+	useEffect(() => {
+		(async () => {
+			const d: TweetV1[] = await readJSON("full-tweets.json");
+			const trimmed = d.map(trimTweet);
+			await writeJSON("trimmed-tweets.json", trimmed);
+			setData(d);
+			setTrim(trimmed);
+		})();
+	}, []);
+
+	if (data.length && trim.length) {
+		return (
+			<Text>
+				Raw data count: {data.length} tweets
+				<Newline />
+				First trimmed tweet:
+				<Newline />
+				<Text color="gray">{trim[0].full_text}</Text>
+			</Text>
+		);
+	}
+	return null;
+};
+
+export default ReadWriteJSON;
