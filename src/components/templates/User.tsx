@@ -329,9 +329,9 @@ export const UserSub = ({ sname }: Props) => {
 		} else if (action === "profile") {
 			// implemented
 		} else if (action === "follow") {
-			// yet
+			// TODO: next
 		} else if (action === "unfollow") {
-			// yet
+			// TODO: next
 		} else if (action === "mute") {
 			// yet
 		} else if (action === "block") {
