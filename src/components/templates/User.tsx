@@ -114,6 +114,7 @@ export const UserSub = ({ sname }: Props) => {
 		| "list"
 		| "list/manage"
 		| "list/manage/action"
+		| "follow/manage"
 	>("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
@@ -330,7 +331,7 @@ export const UserSub = ({ sname }: Props) => {
 		} else if (action === "profile") {
 			// implemented
 		} else if (action === "follow/manage") {
-			// TODO: next
+			setStatus("follow/manage");
 		} else if (action === "mute") {
 			// yet
 		} else if (action === "block") {
@@ -490,6 +491,33 @@ export const UserSub = ({ sname }: Props) => {
 							<Text color="#00acee">
 								@{manageList.user.screen_name}/{manageList.name}
 							</Text>
+						</Text>
+					</Box>
+					<SelectInput
+						items={[
+							{ key: "add", label: "Add to List", value: "add" as "add" },
+							{
+								key: "remove",
+								label: "Remove from List",
+								value: "remove" as "remove",
+							},
+						]}
+						onSelect={handleSelectListAction}
+						itemComponent={BreakLineItem}
+					/>
+				</Box>
+				<Text>{debugConsole}</Text>
+				<Footer />
+			</Box>
+		);
+	}
+	if (status === "follow/manage") {
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Text>
+							Follow / Unfollow <Text color="#00acee">@{user.screen_name}</Text>
 						</Text>
 					</Box>
 					<SelectInput
