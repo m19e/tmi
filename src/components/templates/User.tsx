@@ -30,8 +30,7 @@ type UserMenuAction =
 	| "favorites"
 	| "listed"
 	| "list/manage"
-	| "follow"
-	| "unfollow"
+	| "follow/manage"
 	| "mute"
 	| "block"
 	| "profile";
@@ -193,11 +192,11 @@ export const UserSub = ({ sname }: Props) => {
 			const follow: Item<UserMenuAction> = rel.source.following
 				? {
 						label: "Unfollow this user",
-						value: "unfollow",
+						value: "follow/manage",
 				  }
 				: {
 						label: "Follow this user",
-						value: "follow",
+						value: "follow/manage",
 				  };
 			actions = [
 				...actions,
@@ -330,9 +329,7 @@ export const UserSub = ({ sname }: Props) => {
 			transitionListManage();
 		} else if (action === "profile") {
 			// implemented
-		} else if (action === "follow") {
-			// TODO: next
-		} else if (action === "unfollow") {
+		} else if (action === "follow/manage") {
 			// TODO: next
 		} else if (action === "mute") {
 			// yet
