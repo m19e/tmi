@@ -288,6 +288,7 @@ export const useApi = (): Api => {
 	const follow = async (user_id: string) => {
 		try {
 			await api.post(`friendships/create.json`, { user_id });
+			// TODO: return user?
 			return null;
 		} catch (error) {
 			return handleResponseError(error, "POST", "friendships/create").message;
@@ -296,6 +297,7 @@ export const useApi = (): Api => {
 	const unfollow = async (user_id: string) => {
 		try {
 			await api.post(`friendships/destroy.json`, { user_id });
+			// TODO: return user?
 			return null;
 		} catch (error) {
 			return handleResponseError(error, "POST", "friendships/destroy").message;
