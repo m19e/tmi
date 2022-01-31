@@ -312,6 +312,19 @@ export const UserSub = ({ sname }: Props) => {
 		}
 		setStatus("list/manage");
 	};
+	const transitionFollowManage = async () => {
+		const rel = await api.getRelation({
+			source_id: authUserId,
+			target_id: user.id_str,
+		});
+		if (typeof rel === "string") {
+			setError(rel);
+		} else {
+			setRelationship(rel.relationship);
+			setStatus("follow/manage");
+			initMenu(user, rel.relationship);
+		}
+	};
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
@@ -329,7 +342,7 @@ export const UserSub = ({ sname }: Props) => {
 		} else if (action === "profile") {
 			// implemented
 		} else if (action === "follow/manage") {
-			setStatus("follow/manage");
+			transitionFollowManage();
 		} else if (action === "mute") {
 			// yet
 		} else if (action === "block") {
