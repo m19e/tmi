@@ -77,8 +77,8 @@ interface Api {
 	unfavorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	retweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	unretweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
-	follow: (id: string) => PromiseWithErrorMessage<null>;
-	unfollow: (id: string) => PromiseWithErrorMessage<null>;
+	follow: (id: string) => PromiseWithErrorMessage<UserV1>;
+	unfollow: (id: string) => PromiseWithErrorMessage<UserV1>;
 
 	userFavorites: (
 		params: Partial<TweetV1UserTimelineParams>
@@ -287,18 +287,14 @@ export const useApi = (): Api => {
 	};
 	const follow = async (user_id: string) => {
 		try {
-			await api.post(`friendships/create.json`, { user_id });
-			// TODO: return user?
-			return null;
+			return await api.post<UserV1>(`friendships/create.json`, { user_id });
 		} catch (error) {
 			return handleResponseError(error, "POST", "friendships/create").message;
 		}
 	};
 	const unfollow = async (user_id: string) => {
 		try {
-			await api.post(`friendships/destroy.json`, { user_id });
-			// TODO: return user?
-			return null;
+			return await api.post<UserV1>(`friendships/destroy.json`, { user_id });
 		} catch (error) {
 			return handleResponseError(error, "POST", "friendships/destroy").message;
 		}
