@@ -312,8 +312,6 @@ export const UserSub = ({ sname }: Props) => {
 		}
 		setStatus("list/manage");
 	};
-	const transitionFollow = async () => {};
-	const transitionUnfollow = async () => {};
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
