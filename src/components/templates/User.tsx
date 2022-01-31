@@ -402,6 +402,13 @@ export const UserSub = ({ sname }: Props) => {
 		}
 		setStatus("list/manage");
 	};
+	const handleSelectFollowAction = async ({
+		value: action,
+	}: {
+		value: "follow" | "unfollow" | "cancel";
+	}) => {
+		setDebugConsole(action);
+	};
 
 	if (status === "load") {
 		return (
@@ -528,19 +535,30 @@ export const UserSub = ({ sname }: Props) => {
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
 						<Text>
-							Follow / Unfollow <Text color="#00acee">@{user.screen_name}</Text>
+							{relationship.source.following ? "Unfollow" : "Follow"}{" "}
+							<Text color="#00acee">@{user.screen_name}</Text>
 						</Text>
 					</Box>
 					<SelectInput
 						items={[
-							{ key: "add", label: "Add to List", value: "add" as "add" },
+							relationship.source.following
+								? {
+										key: "unfollow",
+										label: "Unfollow",
+										value: "unfollow" as "unfollow",
+								  }
+								: {
+										key: "follow",
+										label: "Follow",
+										value: "follow" as "follow",
+								  },
 							{
-								key: "remove",
-								label: "Remove from List",
-								value: "remove" as "remove",
+								key: "cancel",
+								label: "cancel",
+								value: "cancel" as "cancel",
 							},
 						]}
-						onSelect={handleSelectListAction}
+						onSelect={handleSelectFollowAction}
 						itemComponent={BreakLineItem}
 					/>
 				</Box>
