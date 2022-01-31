@@ -407,7 +407,34 @@ export const UserSub = ({ sname }: Props) => {
 	}: {
 		value: "follow" | "unfollow" | "cancel";
 	}) => {
-		setDebugConsole(action);
+		if (action === "cancel") {
+			setStatus("user");
+			return;
+		}
+
+		const { id_str: user_id } = user;
+		const res =
+			action === "follow"
+				? await api.follow(user_id)
+				: await api.unfollow(user_id);
+		if (typeof res === "string") {
+			setError(res);
+			return;
+		}
+		setUser(res);
+		setRequestResult(`Successfully ${action}ed: @${res.screen_name}`);
+
+		const rel = await api.getRelation({
+			source_id: authUserId,
+			target_id: res.id_str,
+		});
+		if (typeof rel === "string") {
+			setError(rel);
+		} else {
+			setRelationship(rel.relationship);
+			initMenu(res, rel.relationship);
+		}
+		setStatus("user");
 	};
 
 	if (status === "load") {
