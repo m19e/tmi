@@ -587,6 +587,7 @@ export const UserSub = ({ sname }: Props) => {
 						]}
 						onSelect={handleSelectFollowAction}
 						itemComponent={BreakLineItem}
+						initialIndex={1}
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
