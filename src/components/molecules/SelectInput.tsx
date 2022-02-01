@@ -81,6 +81,7 @@ function Select<V>({
 	itemComponent = DefaultItemComponent,
 	indicatorComponent = DefaultIndicatorComponent,
 	limit = undefined,
+	initialIndex = 0,
 }: Props<V>): JSX.Element {
 	return (
 		<CustomSelectInput
@@ -89,6 +90,7 @@ function Select<V>({
 			itemComponent={itemComponent}
 			indicatorComponent={indicatorComponent}
 			limit={limit}
+			initialIndex={initialIndex}
 		/>
 	);
 }
