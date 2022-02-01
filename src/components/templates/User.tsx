@@ -571,12 +571,12 @@ export const UserSub = ({ sname }: Props) => {
 							relationship.source.following
 								? {
 										key: "unfollow",
-										label: "Unfollow",
+										label: "OK",
 										value: "unfollow" as "unfollow",
 								  }
 								: {
 										key: "follow",
-										label: "Follow",
+										label: "OK",
 										value: "follow" as "follow",
 								  },
 							{
