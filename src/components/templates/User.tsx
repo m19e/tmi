@@ -424,9 +424,10 @@ export const UserSub = ({ sname }: Props) => {
 		setUser(res);
 		setRequestResult(`Successfully ${action}ed: @${res.screen_name}`);
 
+		const { id_str: target_id } = res;
 		const rel = await api.getRelation({
 			source_id: authUserId,
-			target_id: res.id_str,
+			target_id,
 		});
 		if (typeof rel === "string") {
 			setError(rel);
