@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text } from "ink";
 import type { ListV1 } from "twitter-api-v2";
-import SelectInput from "./SelectInput";
+import { NoRotateSelect } from "./SelectInput";
 import type { Item } from "./SelectInput";
 
 interface Props {
@@ -29,10 +29,11 @@ const SelectManageList = ({ lists, onSelect }: Props) => {
 	}));
 
 	return (
-		<SelectInput
+		<NoRotateSelect
 			items={items}
 			onSelect={onSelect}
 			itemComponent={ItemComponent}
+			limit={5}
 		/>
 	);
 };
