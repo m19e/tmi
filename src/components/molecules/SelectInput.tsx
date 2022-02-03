@@ -1,7 +1,9 @@
 import type { VFC } from "react";
 import { Text, Box } from "ink";
 import figures from "../../lib/sindresorhus/figures";
-import CustomSelectInput from "./CostumSelectInput";
+import CustomSelectInput, {
+	NoRotateSelectInput as NoRotate,
+} from "./CostumSelectInput";
 
 interface ItemProps {
 	isSelected?: boolean;
@@ -85,6 +87,26 @@ function Select<V>({
 }: Props<V>): JSX.Element {
 	return (
 		<CustomSelectInput
+			items={items}
+			onSelect={onSelect}
+			itemComponent={itemComponent}
+			indicatorComponent={indicatorComponent}
+			limit={limit}
+			initialIndex={initialIndex}
+		/>
+	);
+}
+
+export function NoRotateSelect<V>({
+	items = [],
+	onSelect,
+	itemComponent = DefaultItemComponent,
+	indicatorComponent = DefaultIndicatorComponent,
+	limit = undefined,
+	initialIndex = 0,
+}: Props<V>): JSX.Element {
+	return (
+		<NoRotate
 			items={items}
 			onSelect={onSelect}
 			itemComponent={itemComponent}
