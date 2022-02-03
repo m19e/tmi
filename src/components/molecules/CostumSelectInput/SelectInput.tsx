@@ -181,7 +181,7 @@ function SelectInput<V>({
 	);
 }
 
-function JumpableSelectInput<V>({
+function NoRotateSelectInput<V>({
 	items = [],
 	isFocused = true,
 	initialIndex = 0,
@@ -217,13 +217,11 @@ function JumpableSelectInput<V>({
 		useCallback(
 			(input, key) => {
 				if (input === "k" || key.upArrow) {
-					const lastIndex = (hasLimit ? limit : items.length) - 1;
 					const atFirstIndex = selectedIndex === 0;
-					const nextIndex = hasLimit ? selectedIndex : lastIndex;
-					const nextRotateIndex = atFirstIndex ? rotateIndex + 1 : rotateIndex;
-					const nextSelectedIndex = atFirstIndex
-						? nextIndex
-						: selectedIndex - 1;
+					const nextRotateIndex = atFirstIndex
+						? Math.max(0, rotateIndex - 1)
+						: rotateIndex;
+					const nextSelectedIndex = atFirstIndex ? 0 : selectedIndex - 1;
 
 					setRotateIndex(nextRotateIndex);
 					setSelectedIndex(nextSelectedIndex);
@@ -240,9 +238,13 @@ function JumpableSelectInput<V>({
 				if (input === "j" || key.downArrow) {
 					const atLastIndex =
 						selectedIndex === (hasLimit ? limit : items.length) - 1;
-					const nextIndex = hasLimit ? selectedIndex : 0;
-					const nextRotateIndex = atLastIndex ? rotateIndex - 1 : rotateIndex;
-					const nextSelectedIndex = atLastIndex ? nextIndex : selectedIndex + 1;
+					const safeLine = items.length - limit;
+					const nextRotateIndex = atLastIndex
+						? Math.min(rotateIndex + 1, safeLine)
+						: rotateIndex;
+					const nextSelectedIndex = atLastIndex
+						? selectedIndex
+						: selectedIndex + 1;
 
 					setRotateIndex(nextRotateIndex);
 					setSelectedIndex(nextSelectedIndex);
@@ -258,8 +260,13 @@ function JumpableSelectInput<V>({
 
 				if (hasLimit) {
 					if (key.pageUp) {
+						const nextRotateIndex = Math.max(0, rotateIndex - limit);
+						setRotateIndex(nextRotateIndex);
 					}
 					if (key.pageDown) {
+						const nextRotateIndex =
+							Math.min(items.length - limit, rotateIndex + limit) - 1;
+						setRotateIndex(nextRotateIndex);
 					}
 				}
 
@@ -286,8 +293,11 @@ function JumpableSelectInput<V>({
 		{ isActive: isFocused }
 	);
 
+	// const slicedItems = hasLimit
+	// 	? arrayRotate(items, rotateIndex).slice(0, limit)
+	// 	: items;
 	const slicedItems = hasLimit
-		? arrayRotate(items, rotateIndex).slice(0, limit)
+		? items.slice(rotateIndex, rotateIndex + limit)
 		: items;
 
 	return (
@@ -306,4 +316,4 @@ function JumpableSelectInput<V>({
 	);
 }
 
-export default JumpableSelectInput;
+export default NoRotateSelectInput;
