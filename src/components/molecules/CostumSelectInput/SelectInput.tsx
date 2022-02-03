@@ -181,7 +181,7 @@ function SelectInput<V>({
 	);
 }
 
-function NoRotateSelectInput<V>({
+export function NoRotateSelectInput<V>({
 	items = [],
 	isFocused = true,
 	initialIndex = 0,
@@ -316,4 +316,4 @@ function NoRotateSelectInput<V>({
 	);
 }
 
-export default NoRotateSelectInput;
+export default SelectInput;
