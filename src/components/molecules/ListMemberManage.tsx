@@ -33,7 +33,7 @@ const SelectManageList = ({ lists, onSelect }: Props) => {
 			items={items}
 			onSelect={onSelect}
 			itemComponent={ItemComponent}
-			limit={5}
+			limit={10}
 		/>
 	);
 };
