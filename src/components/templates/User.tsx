@@ -498,9 +498,24 @@ export const UserSub = ({ sname }: Props) => {
 	}
 	if (status === "tweets") {
 		return (
-			<Text>
-				<Text color="#00acee">@{user.screen_name}</Text>'s tweets
-			</Text>
+			<Box flexDirection="column" minHeight={rows}>
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Text>
+							<Text color="#00acee">@{user.screen_name}</Text>'s tweets
+						</Text>
+					</Box>
+					<Box flexDirection="column">
+						{userTimelinePaginator.tweets.map((tweet) => (
+							<Box key={tweet.id_str} marginBottom={1}>
+								<Text>
+									@{tweet.user.screen_name} {tweet.full_text}
+								</Text>
+							</Box>
+						))}
+					</Box>
+				</Box>
+			</Box>
 		);
 	}
 	if (status === "listed") {
