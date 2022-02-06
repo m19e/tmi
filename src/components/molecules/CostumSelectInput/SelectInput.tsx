@@ -191,7 +191,7 @@ export function NoRotateSelectInput<V>({
 	onSelect,
 	onHighlight,
 }: Props<V>): JSX.Element {
-	const [cursorIndex, serCursorIndex] = useState(0);
+	const [cursorIndex, setCursorIndex] = useState(0);
 	const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 	const hasLimit =
 		typeof customLimit === "number" && items.length > customLimit;
@@ -206,7 +206,7 @@ export function NoRotateSelectInput<V>({
 				items.map((item) => item.value)
 			)
 		) {
-			serCursorIndex(0);
+			setCursorIndex(0);
 			setSelectedIndex(0);
 		}
 
@@ -218,12 +218,12 @@ export function NoRotateSelectInput<V>({
 			(input, key) => {
 				if (input === "k" || key.upArrow) {
 					const atFirstIndex = selectedIndex === 0;
-					const nextRotateIndex = atFirstIndex
+					const nextCursorIndex = atFirstIndex
 						? Math.max(0, cursorIndex - 1)
 						: cursorIndex;
 					const nextSelectedIndex = atFirstIndex ? 0 : selectedIndex - 1;
 
-					serCursorIndex(nextRotateIndex);
+					setCursorIndex(nextCursorIndex);
 					setSelectedIndex(nextSelectedIndex);
 
 					const slicedItems = hasLimit
@@ -239,14 +239,14 @@ export function NoRotateSelectInput<V>({
 					const atLastIndex =
 						selectedIndex === (hasLimit ? limit : items.length) - 1;
 					const safeLine = items.length - limit;
-					const nextRotateIndex = atLastIndex
+					const nextCursorIndex = atLastIndex
 						? Math.min(cursorIndex + 1, safeLine)
 						: cursorIndex;
 					const nextSelectedIndex = atLastIndex
 						? selectedIndex
 						: selectedIndex + 1;
 
-					serCursorIndex(nextRotateIndex);
+					setCursorIndex(nextCursorIndex);
 					setSelectedIndex(nextSelectedIndex);
 
 					const slicedItems = hasLimit
@@ -260,15 +260,15 @@ export function NoRotateSelectInput<V>({
 
 				if (hasLimit) {
 					if (key.pageUp) {
-						const nextRotateIndex = Math.max(0, cursorIndex - limit);
-						serCursorIndex(nextRotateIndex);
+						const nextCursorIndex = Math.max(0, cursorIndex - limit);
+						setCursorIndex(nextCursorIndex);
 					}
 					if (key.pageDown) {
-						const nextRotateIndex = Math.min(
+						const nextCursorIndex = Math.min(
 							items.length - limit,
 							cursorIndex + limit
 						);
-						serCursorIndex(nextRotateIndex);
+						setCursorIndex(nextCursorIndex);
 					}
 				}
 
