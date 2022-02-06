@@ -191,7 +191,7 @@ export function NoRotateSelectInput<V>({
 	onSelect,
 	onHighlight,
 }: Props<V>): JSX.Element {
-	const [rotateIndex, setRotateIndex] = useState(0);
+	const [cursorIndex, serCursorIndex] = useState(0);
 	const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 	const hasLimit =
 		typeof customLimit === "number" && items.length > customLimit;
@@ -206,7 +206,7 @@ export function NoRotateSelectInput<V>({
 				items.map((item) => item.value)
 			)
 		) {
-			setRotateIndex(0);
+			serCursorIndex(0);
 			setSelectedIndex(0);
 		}
 
@@ -219,15 +219,15 @@ export function NoRotateSelectInput<V>({
 				if (input === "k" || key.upArrow) {
 					const atFirstIndex = selectedIndex === 0;
 					const nextRotateIndex = atFirstIndex
-						? Math.max(0, rotateIndex - 1)
-						: rotateIndex;
+						? Math.max(0, cursorIndex - 1)
+						: cursorIndex;
 					const nextSelectedIndex = atFirstIndex ? 0 : selectedIndex - 1;
 
-					setRotateIndex(nextRotateIndex);
+					serCursorIndex(nextRotateIndex);
 					setSelectedIndex(nextSelectedIndex);
 
 					const slicedItems = hasLimit
-						? arrayRotate(items, nextRotateIndex).slice(0, limit)
+						? items.slice(cursorIndex, cursorIndex + limit)
 						: items;
 
 					if (typeof onHighlight === "function") {
@@ -240,17 +240,17 @@ export function NoRotateSelectInput<V>({
 						selectedIndex === (hasLimit ? limit : items.length) - 1;
 					const safeLine = items.length - limit;
 					const nextRotateIndex = atLastIndex
-						? Math.min(rotateIndex + 1, safeLine)
-						: rotateIndex;
+						? Math.min(cursorIndex + 1, safeLine)
+						: cursorIndex;
 					const nextSelectedIndex = atLastIndex
 						? selectedIndex
 						: selectedIndex + 1;
 
-					setRotateIndex(nextRotateIndex);
+					serCursorIndex(nextRotateIndex);
 					setSelectedIndex(nextSelectedIndex);
 
 					const slicedItems = hasLimit
-						? arrayRotate(items, nextRotateIndex).slice(0, limit)
+						? items.slice(cursorIndex, cursorIndex + limit)
 						: items;
 
 					if (typeof onHighlight === "function") {
@@ -260,19 +260,21 @@ export function NoRotateSelectInput<V>({
 
 				if (hasLimit) {
 					if (key.pageUp) {
-						const nextRotateIndex = Math.max(0, rotateIndex - limit);
-						setRotateIndex(nextRotateIndex);
+						const nextRotateIndex = Math.max(0, cursorIndex - limit);
+						serCursorIndex(nextRotateIndex);
 					}
 					if (key.pageDown) {
-						const nextRotateIndex =
-							Math.min(items.length - limit, rotateIndex + limit) - 1;
-						setRotateIndex(nextRotateIndex);
+						const nextRotateIndex = Math.min(
+							items.length - limit,
+							cursorIndex + limit
+						);
+						serCursorIndex(nextRotateIndex);
 					}
 				}
 
 				if (key.return) {
 					const slicedItems = hasLimit
-						? arrayRotate(items, rotateIndex).slice(0, limit)
+						? items.slice(cursorIndex, cursorIndex + limit)
 						: items;
 
 					if (typeof onSelect === "function") {
@@ -283,7 +285,7 @@ export function NoRotateSelectInput<V>({
 			[
 				hasLimit,
 				limit,
-				rotateIndex,
+				cursorIndex,
 				selectedIndex,
 				items,
 				onSelect,
@@ -294,7 +296,7 @@ export function NoRotateSelectInput<V>({
 	);
 
 	const slicedItems = hasLimit
-		? items.slice(rotateIndex, rotateIndex + limit)
+		? items.slice(cursorIndex, cursorIndex + limit)
 		: items;
 
 	return (
