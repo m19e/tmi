@@ -293,9 +293,6 @@ export function NoRotateSelectInput<V>({
 		{ isActive: isFocused }
 	);
 
-	// const slicedItems = hasLimit
-	// 	? arrayRotate(items, rotateIndex).slice(0, limit)
-	// 	: items;
 	const slicedItems = hasLimit
 		? items.slice(rotateIndex, rotateIndex + limit)
 		: items;
