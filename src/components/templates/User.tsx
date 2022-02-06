@@ -19,7 +19,8 @@ import {
 } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
-import SelectInput, { Item } from "../molecules/SelectInput";
+import SelectInput from "../molecules/SelectInput";
+import type { Item } from "../molecules/SelectInput";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 
