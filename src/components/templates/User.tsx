@@ -21,6 +21,7 @@ import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput from "../molecules/SelectInput";
 import type { Item } from "../molecules/SelectInput";
+import { UserTimelineSelect } from "../molecules/UserTimelineSelect";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 
@@ -351,6 +352,14 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	};
 
+	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
+		setDebugConsole(`Selected: @${tweet.user.screen_name} ${tweet.full_text}`);
+	};
+	const handleHignlightTweet = ({ value: tweet }: { value: TweetV1 }) => {
+		setDebugConsole(
+			`Highlighted: @${tweet.user.screen_name} ${tweet.full_text}`
+		);
+	};
 	const handleSelectList = async ({ value: list }: { value: ListV1 }) => {
 		const res = await api.getListTweets({
 			list_id: list.id_str,
@@ -506,16 +515,13 @@ export const UserSub = ({ sname }: Props) => {
 							<Text color="#00acee">@{user.screen_name}</Text>'s tweets
 						</Text>
 					</Box>
-					<Box flexDirection="column">
-						{userTimelinePaginator.tweets.map((tweet) => (
-							<Box key={tweet.id_str} marginBottom={1}>
-								<Text>
-									@{tweet.user.screen_name} {tweet.full_text}
-								</Text>
-							</Box>
-						))}
-					</Box>
+					<UserTimelineSelect
+						tweets={userTimelinePaginator.tweets}
+						onSelectTweet={handleSelectTweet}
+						onHighlightTweet={handleHignlightTweet}
+					/>
 				</Box>
+				<Text>{debugConsole}</Text>
 			</Box>
 		);
 	}
