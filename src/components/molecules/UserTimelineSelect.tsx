@@ -43,7 +43,7 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 		<Box flexDirection="column" marginBottom={1}>
 			<Text>USER name, screen_name, protected, retweeted, fav, rt</Text>
 			<Text>in_reply_to_screen_name</Text>
-			<Text>full_text, media</Text>
+			<Text>{t.full_text.split("\n").join(" ")}</Text>
 			<Text>Quoted</Text>
 		</Box>
 	);
@@ -73,6 +73,7 @@ export const UserTimelineSelect = ({
 			onHighlight={onHighlightTweet}
 			indicatorComponent={IndicatorComponent}
 			itemComponent={ItemComponent}
+			limit={5}
 		/>
 	);
 };
