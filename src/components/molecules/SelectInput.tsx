@@ -100,6 +100,7 @@ function Select<V>({
 export function NoRotateSelect<V>({
 	items = [],
 	onSelect,
+	onHighlight,
 	itemComponent = DefaultItemComponent,
 	indicatorComponent = DefaultIndicatorComponent,
 	limit = undefined,
@@ -109,6 +110,7 @@ export function NoRotateSelect<V>({
 		<NoRotate
 			items={items}
 			onSelect={onSelect}
+			onHighlight={onHighlight}
 			itemComponent={itemComponent}
 			indicatorComponent={indicatorComponent}
 			limit={limit}
