@@ -206,8 +206,8 @@ export function NoRotateSelectInput<V>({
 				items.map((item) => item.value)
 			)
 		) {
-			setCursorIndex(0);
-			setSelectedIndex(0);
+			// setCursorIndex(0);
+			// setSelectedIndex(0);
 		}
 
 		previousItems.current = items;
