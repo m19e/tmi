@@ -41,6 +41,20 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 
 	return (
 		<Box flexDirection="column" marginBottom={1}>
+			<Text>
+				<Text bold color={generatedColor}>
+					{t.user.name}
+				</Text>{" "}
+				<Text>
+					(@{t.user.screen_name}) {t.user.protected && "🔒 "}
+				</Text>
+				<Text>[{ago}]</Text>{" "}
+				{tweet.retweeted_status && (
+					<>
+						(<Text bold>@{tweet.user.screen_name}</Text> RT){" "}
+					</>
+				)}
+			</Text>
 			<Text>USER name, screen_name, protected, retweeted, fav, rt</Text>
 			<Text>in_reply_to_screen_name</Text>
 			<Text>{t.full_text.split("\n").join(" ")}</Text>
