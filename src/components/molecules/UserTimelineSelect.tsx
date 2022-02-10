@@ -73,7 +73,7 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 							<Space />
 						</Text>
 					)}
-					{t.favorite_count && <Text>{t.favorite_count}fav</Text>}
+					{!!t.favorite_count && <Text>{t.favorite_count}fav</Text>}
 					<Space />
 				</Text>
 				<Text color="green">
@@ -83,7 +83,7 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 							<Space />
 						</Text>
 					)}
-					{t.retweet_count && <Text>{t.retweet_count}RT</Text>}
+					{!!t.retweet_count && <Text>{t.retweet_count}RT</Text>}
 					<Space />
 				</Text>
 			</Text>
