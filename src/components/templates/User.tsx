@@ -240,13 +240,13 @@ export const UserSub = ({ sname }: Props) => {
 			return;
 		}
 		setUserTimelinePaginator(res);
-		setDebugConsole(
-			JSON.stringify(
-				res.tweets.map((t) => `@${t.user.screen_name} ${t.full_text}`),
-				null,
-				2
-			)
-		);
+		// setDebugConsole(
+		// 	JSON.stringify(
+		// 		res.tweets.map((t) => `@${t.user.screen_name} ${t.full_text}`),
+		// 		null,
+		// 		2
+		// 	)
+		// );
 		setStatus("tweets");
 	};
 	const transitionFollowing = async () => {
