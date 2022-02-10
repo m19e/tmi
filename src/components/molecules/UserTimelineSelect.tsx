@@ -8,6 +8,10 @@ import figures from "../../lib/sindresorhus/figures";
 import { NoRotateSelect } from "./SelectInput";
 import type { Item } from "./SelectInput";
 
+const Space = () => {
+	return <Text> </Text>;
+};
+
 interface IndicatorProps {
 	isSelected?: boolean;
 }
