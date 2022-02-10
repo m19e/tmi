@@ -25,8 +25,8 @@ const IndicatorComponent: VFC<IndicatorProps> = ({ isSelected = false }) => (
 			</>
 		) : (
 			<>
-				<Text> </Text>
-				<Text> </Text>
+				<Space />
+				<Space />
 			</>
 		)}
 	</Box>
@@ -48,14 +48,23 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 			<Text>
 				<Text bold color={generatedColor}>
 					{t.user.name}
-				</Text>{" "}
-				<Text>(@{t.user.screen_name})</Text>{" "}
-				<Text>{t.user.protected && "🔒 "}</Text>
-				<Text>[{ago}]</Text>{" "}
+				</Text>
+				<Space />
+				<Text>(@{t.user.screen_name})</Text>
+				<Space />
+				{t.user.protected && (
+					<Text>
+						🔒
+						<Space />
+					</Text>
+				)}
+				<Text>[{ago}]</Text>
+				<Space />
 				{tweet.retweeted_status && (
-					<>
-						(<Text bold>@{tweet.user.screen_name}</Text> RT){" "}
-					</>
+					<Text>
+						(<Text bold>@{tweet.user.screen_name}</Text> RT)
+						<Space />
+					</Text>
 				)}
 			</Text>
 			<Text>USER name, screen_name, protected, retweeted, fav, rt</Text>
