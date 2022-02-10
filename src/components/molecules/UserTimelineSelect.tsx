@@ -66,6 +66,26 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 						<Space />
 					</Text>
 				)}
+				<Text color="yellow">
+					{t.favorited && (
+						<Text>
+							{figures.square}
+							<Space />
+						</Text>
+					)}
+					{t.favorite_count && <Text>{t.favorite_count}fav</Text>}
+					<Space />
+				</Text>
+				<Text color="green">
+					{t.retweeted && (
+						<Text>
+							{figures.square}
+							<Space />
+						</Text>
+					)}
+					{t.retweet_count && <Text>{t.retweet_count}RT</Text>}
+					<Space />
+				</Text>
 			</Text>
 			<Text>USER name, screen_name, protected, retweeted, fav, rt</Text>
 			<Text>in_reply_to_screen_name</Text>
