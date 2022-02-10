@@ -45,9 +45,8 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 				<Text bold color={generatedColor}>
 					{t.user.name}
 				</Text>{" "}
-				<Text>
-					(@{t.user.screen_name}) {t.user.protected && "🔒 "}
-				</Text>
+				<Text>(@{t.user.screen_name})</Text>{" "}
+				<Text>{t.user.protected && "🔒 "}</Text>
 				<Text>[{ago}]</Text>{" "}
 				{tweet.retweeted_status && (
 					<>
