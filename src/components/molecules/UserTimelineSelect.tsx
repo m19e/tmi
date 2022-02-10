@@ -87,7 +87,6 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 					<Space />
 				</Text>
 			</Text>
-			<Text>USER name, screen_name, protected, retweeted, fav, rt</Text>
 			<Text>in_reply_to_screen_name</Text>
 			<Text>{t.full_text.split("\n").join(" ")}</Text>
 			<Text>Quoted</Text>
