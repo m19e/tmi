@@ -87,7 +87,12 @@ const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
 					<Space />
 				</Text>
 			</Text>
-			<Text>in_reply_to_screen_name</Text>
+			{!!t.in_reply_to_screen_name && (
+				<Text>
+					<Text dimColor>Replying to </Text>
+					<Text color="#00acee">@{t.in_reply_to_screen_name}</Text>
+				</Text>
+			)}
 			<Text>{t.full_text.split("\n").join(" ")}</Text>
 			<Text>Quoted</Text>
 		</Box>
