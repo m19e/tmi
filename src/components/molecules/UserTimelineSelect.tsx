@@ -3,7 +3,7 @@ import type { TweetV1 } from "twitter-api-v2";
 import stc from "string-to-color";
 import { Box, Text } from "ink";
 
-import { getDisplayTimeAgo } from "../../lib";
+import { getDisplayTimeAgo, convertTweetToDisplayable } from "../../lib";
 import figures from "../../lib/sindresorhus/figures";
 import { NoRotateSelect } from "./SelectInput";
 import type { Item } from "./SelectInput";
@@ -38,7 +38,8 @@ interface ItemProps {
 	value: TweetV1;
 }
 
-const ItemComponent: VFC<ItemProps> = ({ value: tweet }) => {
+const ItemComponent: VFC<ItemProps> = ({ value: raw_tweet }) => {
+	const tweet = convertTweetToDisplayable(raw_tweet);
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(t.created_at);
 	const generatedColor = stc(t.user.screen_name);
