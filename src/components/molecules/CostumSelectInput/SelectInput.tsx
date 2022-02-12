@@ -262,6 +262,15 @@ export function NoRotateSelectInput<V>({
 					if (key.pageUp) {
 						const nextCursorIndex = Math.max(0, cursorIndex - limit);
 						setCursorIndex(nextCursorIndex);
+
+						const slicedItems = items.slice(
+							nextCursorIndex,
+							nextCursorIndex + limit
+						);
+
+						if (typeof onHighlight === "function") {
+							onHighlight(slicedItems[selectedIndex]);
+						}
 					}
 					if (key.pageDown) {
 						const nextCursorIndex = Math.min(
@@ -269,6 +278,15 @@ export function NoRotateSelectInput<V>({
 							cursorIndex + limit
 						);
 						setCursorIndex(nextCursorIndex);
+
+						const slicedItems = items.slice(
+							nextCursorIndex,
+							nextCursorIndex + limit
+						);
+
+						if (typeof onHighlight === "function") {
+							onHighlight(slicedItems[selectedIndex]);
+						}
 					}
 				}
 
