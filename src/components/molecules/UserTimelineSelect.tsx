@@ -33,6 +33,18 @@ const IndicatorComponent: VFC<IndicatorProps> = ({ isSelected = false }) => (
 	</Box>
 );
 
+const RetweetedLabel: VFC<{ tweet: TweetV1 }> = ({ tweet }) => {
+	if (tweet.retweeted_status) {
+		return (
+			<Text>
+				(<Text bold>@{tweet.user.screen_name}</Text> RT)
+				<Space />
+			</Text>
+		);
+	}
+	return null;
+};
+
 interface ItemProps {
 	isSelected?: boolean;
 	label: string;
@@ -62,12 +74,7 @@ const ItemComponent: VFC<ItemProps> = ({ value: raw_tweet }) => {
 				)}
 				<Text>[{ago}]</Text>
 				<Space />
-				{tweet.retweeted_status && (
-					<Text>
-						(<Text bold>@{tweet.user.screen_name}</Text> RT)
-						<Space />
-					</Text>
-				)}
+				<RetweetedLabel tweet={tweet} />
 				<Text color="yellow">
 					{t.favorited && (
 						<Text>
