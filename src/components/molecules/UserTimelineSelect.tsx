@@ -104,7 +104,12 @@ const ItemComponent: VFC<ItemProps> = ({ value: raw_tweet }) => {
 			)}
 			<Text>
 				{t.full_text}
-				{t.entities.media && <Text dimColor> (with Media)</Text>}
+				{t.entities.media && (
+					<Text dimColor>
+						<Space />
+						(with Media)
+					</Text>
+				)}
 			</Text>
 			<Quoted tweet={t.quoted_status} />
 		</Box>
