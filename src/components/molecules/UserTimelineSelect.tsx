@@ -7,6 +7,7 @@ import { getDisplayTimeAgo, convertTweetToDisplayable } from "../../lib";
 import figures from "../../lib/sindresorhus/figures";
 import { NoRotateSelect } from "./SelectInput";
 import type { Item } from "./SelectInput";
+import Quoted from "./Quoted";
 
 const Space = () => {
 	return <Text> </Text>;
@@ -98,7 +99,7 @@ const ItemComponent: VFC<ItemProps> = ({ value: raw_tweet }) => {
 				{t.full_text}
 				{t.entities.media && <Text dimColor> (with Media)</Text>}
 			</Text>
-			<Text>Quoted</Text>
+			<Quoted tweet={t.quoted_status} />
 		</Box>
 	);
 };
