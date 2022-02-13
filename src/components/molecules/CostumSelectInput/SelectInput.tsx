@@ -268,8 +268,15 @@ export function NoRotateSelectInput<V>({
 							nextCursorIndex + limit
 						);
 
+						let nextSelectedIndex = selectedIndex;
+
+						if (cursorIndex < limit && selectedIndex !== 0) {
+							nextSelectedIndex = 0;
+							setSelectedIndex(0);
+						}
+
 						if (typeof onHighlight === "function") {
-							onHighlight(slicedItems[selectedIndex]);
+							onHighlight(slicedItems[nextSelectedIndex]);
 						}
 					}
 					if (key.pageDown) {
@@ -284,8 +291,18 @@ export function NoRotateSelectInput<V>({
 							nextCursorIndex + limit
 						);
 
+						let nextSelectIndex = selectedIndex;
+
+						if (
+							cursorIndex + limit >= items.length &&
+							selectedIndex !== limit - 1
+						) {
+							nextSelectIndex = limit - 1;
+							setSelectedIndex(nextSelectIndex);
+						}
+
 						if (typeof onHighlight === "function") {
-							onHighlight(slicedItems[selectedIndex]);
+							onHighlight(slicedItems[nextSelectIndex]);
 						}
 					}
 				}
