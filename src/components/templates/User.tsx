@@ -152,6 +152,8 @@ export const UserSub = ({ sname }: Props) => {
 	const [remainIds, setRemainIds] = useState<string[]>([]);
 	const [users, setUsers] = useState<UserV1[]>([]);
 
+	const limitCounter = usePositiveCounter(5);
+
 	const [userTimelinePaginator, setUserTimelinePaginator] = useState<
 		UserTimelineV1Paginator | undefined
 	>(undefined);
@@ -480,6 +482,22 @@ export const UserSub = ({ sname }: Props) => {
 		}, []),
 		{
 			isActive: status !== "load" && status !== "user",
+		}
+	);
+
+	useInput(
+		useCallback(
+			(input, key) => {
+				if (input === "+" || input === "=") {
+					limitCounter.increment();
+				} else if (input === "-" || input === "_") {
+					limitCounter.decrement();
+				}
+			},
+			[limitCounter]
+		),
+		{
+			isActive: status === "tweets",
 		}
 	);
 
