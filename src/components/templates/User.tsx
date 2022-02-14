@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import type { VFC } from "react";
+import type { VFC, Dispatch, SetStateAction } from "react";
 import { Box, Text, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import type {
@@ -91,6 +91,30 @@ const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
 		<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
 	</Box>
 );
+
+interface ReturnType {
+	count: number;
+	increment: () => void;
+	decrement: () => void;
+	reset: () => void;
+	setCount: Dispatch<SetStateAction<number>>;
+}
+
+const useCounter = (initialValue?: number): ReturnType => {
+	const [count, setCount] = useState(initialValue || 0);
+
+	const increment = () => setCount((x) => x + 1);
+	const decrement = () => setCount((x) => Math.max(x - 1, 1));
+	const reset = () => setCount(initialValue || 0);
+
+	return {
+		count,
+		increment,
+		decrement,
+		reset,
+		setCount,
+	};
+};
 
 interface Props {
 	sname: string;
