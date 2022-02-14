@@ -554,7 +554,9 @@ export const UserSub = ({ sname }: Props) => {
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
 						<Text>
-							<Text color="#00acee">@{user.screen_name}</Text>'s tweets
+							<Text color="#00acee">@{user.screen_name}</Text>
+							<Text dimColor>{" > "}</Text>
+							<Text color="#00acee">Tweets</Text>
 						</Text>
 					</Box>
 					<UserTimelineSelect
