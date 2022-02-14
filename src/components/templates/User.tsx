@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import type { VFC } from "react";
 import { Box, Text, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
@@ -449,11 +449,11 @@ export const UserSub = ({ sname }: Props) => {
 	};
 
 	useInput(
-		(_, key) => {
+		useCallback((_, key) => {
 			if (key.escape) {
 				setStatus("user");
 			}
-		},
+		}, []),
 		{
 			isActive: status !== "load" && status !== "user",
 		}
