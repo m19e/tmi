@@ -556,7 +556,7 @@ export const UserSub = ({ sname }: Props) => {
 						<Text>
 							<Text color="#00acee">@{user.screen_name}</Text>
 							<Text dimColor>{" > "}</Text>
-							<Text color="#00acee">Tweets</Text>
+							<Text>Tweets</Text>
 						</Text>
 					</Box>
 					<UserTimelineSelect
