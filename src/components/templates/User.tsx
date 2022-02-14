@@ -21,7 +21,11 @@ import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput from "../molecules/SelectInput";
 import type { Item } from "../molecules/SelectInput";
-import { UserTimelineSelect } from "../molecules/UserTimelineSelect";
+import {
+	UserTimelineSelect,
+	TweetIndicator,
+	TweetItem,
+} from "../molecules/UserTimelineSelect";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 
@@ -136,6 +140,7 @@ export const UserSub = ({ sname }: Props) => {
 		| "load"
 		| "user"
 		| "tweets"
+		| "tweets/detail"
 		| "listed"
 		| "list"
 		| "list/manage"
@@ -157,6 +162,9 @@ export const UserSub = ({ sname }: Props) => {
 	const [userTimelinePaginator, setUserTimelinePaginator] = useState<
 		UserTimelineV1Paginator | undefined
 	>(undefined);
+	const [selectedTweet, setSelectedTweet] = useState<TweetV1 | undefined>(
+		undefined
+	);
 
 	const [lists, setLists] = useState<ListV1[]>([]);
 	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
@@ -380,6 +388,8 @@ export const UserSub = ({ sname }: Props) => {
 
 	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
 		setDebugConsole(`Selected: @${tweet.user.screen_name} ${tweet.full_text}`);
+		setSelectedTweet(tweet);
+		setStatus("tweets/detail");
 	};
 	const handleHignlightTweet = ({ value: tweet }: { value: TweetV1 }) => {
 		setDebugConsole(
@@ -475,11 +485,18 @@ export const UserSub = ({ sname }: Props) => {
 	};
 
 	useInput(
-		useCallback((_, key) => {
-			if (key.escape) {
-				setStatus("user");
-			}
-		}, []),
+		useCallback(
+			(_, key) => {
+				if (key.escape) {
+					if (status === "tweets/detail") {
+						setStatus("tweets");
+					} else {
+						setStatus("user");
+					}
+				}
+			},
+			[status]
+		),
 		{
 			isActive: status !== "load" && status !== "user",
 		}
@@ -567,6 +584,25 @@ export const UserSub = ({ sname }: Props) => {
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
+			</Box>
+		);
+	}
+	if (status === "tweets/detail" && !!selectedTweet) {
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<Box marginBottom={1}>
+					<Text>
+						<Text color="#00acee">@{user.screen_name}</Text>
+						<Text dimColor>{" > "}</Text>
+						<Text>Tweets</Text>
+						<Text dimColor>{" > "}</Text>
+						<Text>Detail</Text>
+					</Text>
+				</Box>
+				<Box>
+					<TweetIndicator isSelected={true} />
+					<TweetItem value={selectedTweet} label={selectedTweet.id_str} />
+				</Box>
 			</Box>
 		);
 	}
