@@ -394,8 +394,8 @@ export const UserSub = ({ sname }: Props) => {
 	const handleHighlightTweet = async ({ value: tweet }: { value: TweetV1 }) => {
 		if (isFetching) return;
 		const { tweets } = userTimelinePaginator;
-		const last = tweets[tweets.length - 1];
-		if (last.id_str === tweet.id_str) {
+		const bottom = tweets[tweets.length - 1];
+		if (bottom.id_str === tweet.id_str) {
 			setIsFetching(true);
 			const newPaginator = await userTimelinePaginator.fetchNext(200);
 			setUserTimelinePaginator(newPaginator);
