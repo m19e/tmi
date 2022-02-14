@@ -310,14 +310,18 @@ export const useApi = (): Api => {
 	};
 	const userFollowing = async (params: FriendOrFollowerIdsV1Params) => {
 		try {
-			return await api.get("friends/ids.json", { ...params });
+			return await api.get<DoubleEndedIdCursorV1Result>("friends/ids.json", {
+				...params,
+			});
 		} catch (error) {
 			return handleResponseError(error, "GET", "friends/ids").message;
 		}
 	};
 	const userFollowed = async (params: FriendOrFollowerIdsV1Params) => {
 		try {
-			return await api.get("followers/ids.json", { ...params });
+			return await api.get<DoubleEndedIdCursorV1Result>("followers/ids.json", {
+				...params,
+			});
 		} catch (error) {
 			return handleResponseError(error, "GET", "followers/ids").message;
 		}
