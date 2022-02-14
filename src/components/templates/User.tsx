@@ -100,7 +100,7 @@ interface ReturnType {
 	setCount: Dispatch<SetStateAction<number>>;
 }
 
-const useCounter = (initialValue?: number): ReturnType => {
+const usePositiveCounter = (initialValue?: number): ReturnType => {
 	const [count, setCount] = useState(initialValue || 0);
 
 	const increment = () => setCount((x) => x + 1);
