@@ -561,6 +561,7 @@ export const UserSub = ({ sname }: Props) => {
 						tweets={userTimelinePaginator.tweets}
 						onSelectTweet={handleSelectTweet}
 						onHighlightTweet={handleHignlightTweet}
+						limit={limitCounter.count}
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
