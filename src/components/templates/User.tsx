@@ -165,6 +165,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [selectedTweet, setSelectedTweet] = useState<TweetV1 | undefined>(
 		undefined
 	);
+	const [isFetching, setIsFetching] = useState(false);
 
 	const [lists, setLists] = useState<ListV1[]>([]);
 	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
@@ -390,10 +391,21 @@ export const UserSub = ({ sname }: Props) => {
 		setSelectedTweet(tweet);
 		setStatus("tweets/detail");
 	};
-	const handleHignlightTweet = ({ value: tweet }: { value: TweetV1 }) => {
-		setDebugConsole(
-			`Highlighted: @${tweet.user.screen_name} ${tweet.full_text}`
-		);
+	const handleHighlightTweet = async ({ value: tweet }: { value: TweetV1 }) => {
+		if (isFetching) return;
+		const { tweets } = userTimelinePaginator;
+		const last = tweets[tweets.length - 1];
+		if (last.id_str === tweet.id_str) {
+			setIsFetching(true);
+			const newPaginator = await userTimelinePaginator.fetchNext(200);
+			setUserTimelinePaginator(newPaginator);
+			setDebugConsole(
+				`Fetch next page (all ${
+					newPaginator.tweets.length
+				} tweets) at ${new Date().toLocaleString()}`
+			);
+			setIsFetching(false);
+		}
 	};
 	const handleSelectList = async ({ value: list }: { value: ListV1 }) => {
 		const res = await api.getListTweets({
@@ -581,7 +593,7 @@ export const UserSub = ({ sname }: Props) => {
 					<UserTimelineSelect
 						tweets={userTimelinePaginator.tweets}
 						onSelectTweet={handleSelectTweet}
-						onHighlightTweet={handleHignlightTweet}
+						onHighlightTweet={handleHighlightTweet}
 						limit={limitCounter.count}
 					/>
 				</Box>
