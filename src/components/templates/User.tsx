@@ -387,7 +387,6 @@ export const UserSub = ({ sname }: Props) => {
 	};
 
 	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
-		setDebugConsole(`Selected: @${tweet.user.screen_name} ${tweet.full_text}`);
 		setSelectedTweet(tweet);
 		setStatus("tweets/detail");
 	};
