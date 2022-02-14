@@ -531,6 +531,9 @@ export const UserSub = ({ sname }: Props) => {
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
+						<Text color="#00acee">@{user.screen_name}</Text>
+					</Box>
+					<Box marginBottom={1}>
 						<Text>
 							{user.name} {user.protected && "🔒 "}(@{user.screen_name})
 						</Text>
