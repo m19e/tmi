@@ -508,14 +508,10 @@ export const UserSub = ({ sname }: Props) => {
 		useCallback(
 			(_, key) => {
 				if (key.escape) {
-					if (status === "tweets/detail") {
-						setStatus("tweets");
-					} else {
-						setStatus("user");
-					}
+					setStatus(prevStatus);
 				}
 			},
-			[status]
+			[status, prevStatus]
 		),
 		{
 			isActive: status !== "load" && status !== "user",
