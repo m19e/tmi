@@ -145,7 +145,10 @@ export const UserSub = ({ sname }: Props) => {
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
-	const [{ present: status }, { set: setStatus, canUndo, undo }] = useUndo<
+	const [
+		{ present: status },
+		{ set: setStatus, canUndo: canStatusBack, undo: statusBack },
+	] = useUndo<
 		| "load"
 		| "user"
 		| "tweets"
@@ -507,11 +510,11 @@ export const UserSub = ({ sname }: Props) => {
 	useInput(
 		useCallback(
 			(_, key) => {
-				if (key.escape && canUndo) {
-					undo();
+				if (key.escape && canStatusBack) {
+					statusBack();
 				}
 			},
-			[status]
+			[status, canStatusBack]
 		),
 		{
 			isActive: status !== "load" && status !== "user",
