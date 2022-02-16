@@ -9,6 +9,7 @@ import type {
 	TweetV1,
 	UserTimelineV1Paginator,
 } from "twitter-api-v2";
+import useUndo from "use-undo";
 
 import type { TrimmedList } from "../../types/twitter";
 import {
@@ -144,7 +145,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
-	const [status, setStatus] = useState<
+	const [{ present: status }, { set: setStatus, canUndo, undo }] = useUndo<
 		| "load"
 		| "user"
 		| "tweets"
@@ -155,7 +156,6 @@ export const UserSub = ({ sname }: Props) => {
 		| "list/manage/action"
 		| "follow/manage"
 	>("load");
-	const prevStatus = usePrevious(status);
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
 	const [listed, setListed] = useState<ListV1[]>([]);
@@ -507,11 +507,11 @@ export const UserSub = ({ sname }: Props) => {
 	useInput(
 		useCallback(
 			(_, key) => {
-				if (key.escape) {
-					setStatus(prevStatus);
+				if (key.escape && canUndo) {
+					undo();
 				}
 			},
-			[status, prevStatus]
+			[status]
 		),
 		{
 			isActive: status !== "load" && status !== "user",
