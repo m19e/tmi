@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import type { VFC, Dispatch, SetStateAction } from "react";
 import { Box, Text, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
@@ -120,6 +120,14 @@ const usePositiveCounter = (initialValue?: number): ReturnType => {
 	};
 };
 
+function usePrevious<T>(value: T): T | undefined {
+	const ref = useRef<T>();
+	useEffect(() => {
+		ref.current = value;
+	});
+	return ref.current;
+}
+
 interface Props {
 	sname: string;
 }
@@ -147,6 +155,7 @@ export const UserSub = ({ sname }: Props) => {
 		| "list/manage/action"
 		| "follow/manage"
 	>("load");
+	const prevStatus = usePrevious(status);
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
 	const [listed, setListed] = useState<ListV1[]>([]);
