@@ -563,7 +563,7 @@ export const UserSub = ({ sname }: Props) => {
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
-						<Text color="#00acee">@{user.screen_name}</Text>
+						<Breadcrumbs root={`@${user.screen_name}`} />
 					</Box>
 					<Box marginBottom={1}>
 						<Text>
@@ -605,11 +605,10 @@ export const UserSub = ({ sname }: Props) => {
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
-						<Text>
-							<Text color="#00acee">@{user.screen_name}</Text>
-							<Text dimColor>{" > "}</Text>
-							<Text>Tweets</Text>
-						</Text>
+						<Breadcrumbs
+							root={`@${user.screen_name}`}
+							breadcrumbs={["Tweets"]}
+						/>
 					</Box>
 					<UserTimelineSelect
 						tweets={userTimelinePaginator.tweets}
@@ -626,13 +625,10 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
-					<Text>
-						<Text color="#00acee">@{user.screen_name}</Text>
-						<Text dimColor>{" > "}</Text>
-						<Text>Tweets</Text>
-						<Text dimColor>{" > "}</Text>
-						<Text>Detail</Text>
-					</Text>
+					<Breadcrumbs
+						root={`@${user.screen_name}`}
+						breadcrumbs={["Tweets", "Detail"]}
+					/>
 				</Box>
 				<Box>
 					<TweetIndicator isSelected={true} />
