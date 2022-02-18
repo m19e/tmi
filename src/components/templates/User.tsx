@@ -121,6 +121,27 @@ const usePositiveCounter = (initialValue?: number): ReturnType => {
 	};
 };
 
+const Breadcrumbs: VFC<{ root: string; breadcrumbs?: string[] }> = ({
+	root,
+	breadcrumbs,
+}) => {
+	if (Array.isArray(breadcrumbs)) {
+		return (
+			<Text>
+				<Text color="#00acee">{root}</Text>
+				{breadcrumbs.map((b) => (
+					<Text key={b}>
+						<Text dimColor>{" > "}</Text>
+						<Text>{b}</Text>
+					</Text>
+				))}
+			</Text>
+		);
+	}
+
+	return <Text color="#00acee">{root}</Text>;
+};
+
 interface Props {
 	sname: string;
 }
