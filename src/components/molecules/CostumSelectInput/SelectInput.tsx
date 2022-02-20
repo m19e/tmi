@@ -47,6 +47,11 @@ interface Props<V> {
 	itemComponent?: FC<ItemProps>;
 
 	/**
+	 * Custom component to add the selected component. (local extended)
+	 */
+	selectedComponent?: FC<ItemProps>;
+
+	/**
 	 * Function to call when user selects an item. Item object is passed to that function as an argument.
 	 */
 	onSelect?: (item: Item<V>) => void;
@@ -187,12 +192,14 @@ export function NoRotateSelectInput<V>({
 	initialIndex = 0,
 	indicatorComponent = Indicator,
 	itemComponent = Item,
+	selectedComponent = undefined,
 	limit: customLimit,
 	onSelect,
 	onHighlight,
 }: Props<V>): JSX.Element {
 	const [cursorIndex, setCursorIndex] = useState(0);
 	const [selectedIndex, setSelectedIndex] = useState(initialIndex);
+	const [selected, setSelected] = useState(false);
 	const hasLimit =
 		typeof customLimit === "number" && items.length > customLimit;
 	const limit = hasLimit ? Math.min(customLimit!, items.length) : items.length;
@@ -216,6 +223,10 @@ export function NoRotateSelectInput<V>({
 	useInput(
 		useCallback(
 			(input, key) => {
+				if (key.escape && selected) setSelected(false);
+
+				if (selected) return;
+
 				if (input === "k" || key.upArrow) {
 					const atFirstIndex = selectedIndex === 0;
 					const nextCursorIndex = atFirstIndex
@@ -315,6 +326,10 @@ export function NoRotateSelectInput<V>({
 					if (typeof onSelect === "function") {
 						onSelect(slicedItems[selectedIndex]);
 					}
+
+					if (selectedComponent) {
+						setSelected(true);
+					}
 				}
 			},
 			[
@@ -325,6 +340,8 @@ export function NoRotateSelectInput<V>({
 				items,
 				onSelect,
 				onHighlight,
+				selected,
+				selectedComponent,
 			]
 		),
 		{ isActive: isFocused }
@@ -333,6 +350,16 @@ export function NoRotateSelectInput<V>({
 	const slicedItems = hasLimit
 		? items.slice(cursorIndex, cursorIndex + limit)
 		: items;
+
+	if (selected && selectedComponent) {
+		const item = slicedItems[selectedIndex];
+
+		return (
+			<Box flexDirection="column">
+				{React.createElement(selectedComponent, { ...item })}
+			</Box>
+		);
+	}
 
 	return (
 		<Box flexDirection="column">
