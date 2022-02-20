@@ -595,12 +595,14 @@ export const UserSub = ({ sname }: Props) => {
 			</Box>
 		);
 	}
-	if (status === "tweets") {
+	if (status === "tweets" || status === "tweets/detail") {
+		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
+
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} breadcrumbs={["Tweets"]} />
+						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
 					<UserTimelineSelect
 						tweets={userTimelinePaginator.tweets}
@@ -611,19 +613,6 @@ export const UserSub = ({ sname }: Props) => {
 				</Box>
 				<Text>{debugConsole}</Text>
 				<Footer />
-			</Box>
-		);
-	}
-	if (status === "tweets/detail" && !!selectedTweet) {
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box marginBottom={1}>
-					<Breadcrumbs root={rootLabel} breadcrumbs={["Tweets", "Detail"]} />
-				</Box>
-				<Box>
-					<TweetIndicator isSelected={true} />
-					<TweetItem value={selectedTweet} label={selectedTweet.id_str} />
-				</Box>
 			</Box>
 		);
 	}
