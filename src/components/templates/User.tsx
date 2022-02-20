@@ -543,6 +543,8 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	);
 
+	const rootLabel = user ? `@${user.screen_name}` : "*Invalid user*";
+
 	if (status === "load") {
 		return (
 			<>
@@ -556,7 +558,7 @@ export const UserSub = ({ sname }: Props) => {
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
-						<Breadcrumbs root={`@${user.screen_name}`} />
+						<Breadcrumbs root={rootLabel} />
 					</Box>
 					<Box marginBottom={1}>
 						<Text>
@@ -598,10 +600,7 @@ export const UserSub = ({ sname }: Props) => {
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
-						<Breadcrumbs
-							root={`@${user.screen_name}`}
-							breadcrumbs={["Tweets"]}
-						/>
+						<Breadcrumbs root={rootLabel} breadcrumbs={["Tweets"]} />
 					</Box>
 					<UserTimelineSelect
 						tweets={userTimelinePaginator.tweets}
@@ -619,10 +618,7 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
-					<Breadcrumbs
-						root={`@${user.screen_name}`}
-						breadcrumbs={["Tweets", "Detail"]}
-					/>
+					<Breadcrumbs root={rootLabel} breadcrumbs={["Tweets", "Detail"]} />
 				</Box>
 				<Box>
 					<TweetIndicator isSelected={true} />
@@ -635,7 +631,7 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
-					<Breadcrumbs root={`@${user.screen_name}`} breadcrumbs={["Listed"]} />
+					<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
 				</Box>
 				<SelectMemberedList lists={listed} onSelect={handleSelectList} />
 			</Box>
