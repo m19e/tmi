@@ -635,9 +635,7 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
-					<Text>
-						Lists <Text color="#00acee">@{user.screen_name}</Text>'s on
-					</Text>
+					<Breadcrumbs root={`@${user.screen_name}`} breadcrumbs={["Listed"]} />
 				</Box>
 				<SelectMemberedList lists={listed} onSelect={handleSelectList} />
 			</Box>
