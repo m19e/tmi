@@ -51,6 +51,10 @@ interface Props<V> {
 	 */
 	itemComponent?: VFC<ItemProps>;
 	/**
+	 * Custom component to add the selected component. (local extended)
+	 */
+	selectedComponent?: VFC<ItemProps>;
+	/**
 	 * Function to call when user selects an item. Item object is passed to that function as an argument.
 	 */
 	onSelect?: (item: Item<V>) => void;
@@ -103,6 +107,7 @@ export function NoRotateSelect<V>({
 	onHighlight,
 	itemComponent = DefaultItemComponent,
 	indicatorComponent = DefaultIndicatorComponent,
+	selectedComponent = undefined,
 	limit = undefined,
 	initialIndex = 0,
 }: Props<V>): JSX.Element {
@@ -115,6 +120,7 @@ export function NoRotateSelect<V>({
 			indicatorComponent={indicatorComponent}
 			limit={limit}
 			initialIndex={initialIndex}
+			selectedComponent={selectedComponent}
 		/>
 	);
 }
