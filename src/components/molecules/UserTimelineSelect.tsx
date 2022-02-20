@@ -116,6 +116,15 @@ export const TweetItem: VFC<ItemProps> = ({ value: raw_tweet }) => {
 	);
 };
 
+const TweetSelected: VFC<ItemProps> = ({ value: tweet }) => {
+	return (
+		<Box>
+			<TweetIndicator isSelected={true} />
+			<TweetItem value={tweet} label={tweet.id_str} />
+		</Box>
+	);
+};
+
 interface Props {
 	tweets: TweetV1[];
 	onSelectTweet: (item: { value: TweetV1 }) => void;
@@ -142,6 +151,7 @@ export const UserTimelineSelect = ({
 			onHighlight={onHighlightTweet}
 			indicatorComponent={TweetIndicator}
 			itemComponent={TweetItem}
+			selectedComponent={TweetSelected}
 			limit={limit}
 		/>
 	);
