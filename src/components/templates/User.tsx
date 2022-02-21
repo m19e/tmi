@@ -522,6 +522,9 @@ export const UserSub = ({ sname }: Props) => {
 			(_, key) => {
 				if (key.escape && canStatusBack) {
 					statusBack();
+					if (status === "tweets") {
+						setFocusedTweet(undefined);
+					}
 				}
 			},
 			[status, canStatusBack]
