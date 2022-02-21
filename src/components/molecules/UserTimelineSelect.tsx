@@ -58,7 +58,7 @@ export const TweetItem: VFC<ItemProps> = ({ value: raw_tweet }) => {
 	const generatedColor = stc(t.user.screen_name);
 
 	return (
-		<Box flexDirection="column" marginBottom={1}>
+		<Box flexDirection="column" flexGrow={1} marginBottom={1}>
 			<Text>
 				<Text bold color={generatedColor}>
 					{t.user.name}
