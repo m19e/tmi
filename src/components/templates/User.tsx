@@ -188,7 +188,7 @@ export const UserSub = ({ sname }: Props) => {
 		UserTimelineV1Paginator | undefined
 	>(undefined);
 	const [currentTweets, setCurrentTweets] = useState<TweetV1[]>([]);
-	const [selectedTweet, setSelectedTweet] = useState<TweetV1 | undefined>(
+	const [focusedTweet, setFocusedTweet] = useState<TweetV1 | undefined>(
 		undefined
 	);
 	const [isFetching, setIsFetching] = useState(false);
