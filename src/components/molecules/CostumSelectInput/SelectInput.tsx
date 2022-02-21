@@ -220,6 +220,12 @@ export function NoRotateSelectInput<V>({
 		previousItems.current = items;
 	}, [items]);
 
+	useEffect(() => {
+		if (limit <= selectedIndex) {
+			setSelectedIndex(limit - 1);
+		}
+	}, [limit, selectedIndex]);
+
 	useInput(
 		useCallback(
 			(input, key) => {
