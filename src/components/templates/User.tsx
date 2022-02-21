@@ -620,6 +620,11 @@ export const UserSub = ({ sname }: Props) => {
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
+				{!!focusedTweet && (
+					<Text>
+						@{focusedTweet.user.screen_name} {focusedTweet.full_text}
+					</Text>
+				)}
 				<Footer />
 			</Box>
 		);
