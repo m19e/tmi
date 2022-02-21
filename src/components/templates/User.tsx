@@ -408,10 +408,11 @@ export const UserSub = ({ sname }: Props) => {
 	};
 
 	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
-		setSelectedTweet(tweet);
+		setFocusedTweet(tweet);
 		setStatus("tweets/detail");
 	};
 	const handleHighlightTweet = async ({ value: tweet }: { value: TweetV1 }) => {
+		setFocusedTweet(tweet);
 		if (isFetching) return;
 		const bottom = currentTweets[currentTweets.length - 1];
 		if (bottom.id_str === tweet.id_str) {
