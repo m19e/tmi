@@ -300,6 +300,7 @@ export const UserSub = ({ sname }: Props) => {
 			setError(res);
 			return;
 		}
+		setCurrentTweets(res.tweets);
 		setUserTimelinePaginator(res);
 		setStatus("tweets");
 	};
@@ -412,15 +413,16 @@ export const UserSub = ({ sname }: Props) => {
 	};
 	const handleHighlightTweet = async ({ value: tweet }: { value: TweetV1 }) => {
 		if (isFetching) return;
-		const { tweets } = userTimelinePaginator;
-		const bottom = tweets[tweets.length - 1];
+		const bottom = currentTweets[currentTweets.length - 1];
 		if (bottom.id_str === tweet.id_str) {
 			setIsFetching(true);
-			const newPaginator = await userTimelinePaginator.fetchNext(200);
+			const newPaginator = await userTimelinePaginator.next(200);
+			const newTweets = [...currentTweets, ...newPaginator.tweets];
+			setCurrentTweets(newTweets);
 			setUserTimelinePaginator(newPaginator);
 			setDebugConsole(
 				`Fetch next page (all ${
-					newPaginator.tweets.length
+					newTweets.length
 				} tweets) at ${new Date().toLocaleString()}`
 			);
 			setIsFetching(false);
@@ -598,6 +600,7 @@ export const UserSub = ({ sname }: Props) => {
 	}
 	if (status === "tweets" || status === "tweets/detail") {
 		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
+		const { count: limit } = limitCounter;
 
 		return (
 			<Box flexDirection="column" minHeight={rows}>
@@ -606,10 +609,10 @@ export const UserSub = ({ sname }: Props) => {
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
 					<UserTimelineSelect
-						tweets={userTimelinePaginator.tweets}
+						tweets={currentTweets}
 						onSelectTweet={handleSelectTweet}
 						onHighlightTweet={handleHighlightTweet}
-						limit={limitCounter.count}
+						limit={limit}
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
