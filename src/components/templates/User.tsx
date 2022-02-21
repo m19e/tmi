@@ -187,6 +187,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [userTimelinePaginator, setUserTimelinePaginator] = useState<
 		UserTimelineV1Paginator | undefined
 	>(undefined);
+	const [currentTweets, setCurrentTweets] = useState<TweetV1[]>([]);
 	const [selectedTweet, setSelectedTweet] = useState<TweetV1 | undefined>(
 		undefined
 	);
