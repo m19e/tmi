@@ -360,11 +360,7 @@ export function NoRotateSelectInput<V>({
 	if (selected && selectedComponent) {
 		const item = slicedItems[selectedIndex];
 
-		return (
-			<Box flexDirection="column">
-				{React.createElement(selectedComponent, { ...item })}
-			</Box>
-		);
+		return <Box>{React.createElement(selectedComponent, { ...item })}</Box>;
 	}
 
 	return (
