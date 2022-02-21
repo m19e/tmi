@@ -222,9 +222,14 @@ export function NoRotateSelectInput<V>({
 
 	useEffect(() => {
 		if (limit <= selectedIndex) {
-			setSelectedIndex(limit - 1);
+			const nextSelectedIndex = limit - 1;
+			setSelectedIndex(nextSelectedIndex);
+			const slicedItems = items.slice(cursorIndex, cursorIndex + limit);
+			if (typeof onHighlight === "function") {
+				onHighlight(slicedItems[nextSelectedIndex]);
+			}
 		}
-	}, [limit, selectedIndex]);
+	}, [limit]);
 
 	useInput(
 		useCallback(
