@@ -249,7 +249,7 @@ export function NoRotateSelectInput<V>({
 					setSelectedIndex(nextSelectedIndex);
 
 					const slicedItems = hasLimit
-						? items.slice(cursorIndex, cursorIndex + limit)
+						? items.slice(nextCursorIndex, nextCursorIndex + limit)
 						: items;
 
 					if (typeof onHighlight === "function") {
@@ -272,7 +272,7 @@ export function NoRotateSelectInput<V>({
 					setSelectedIndex(nextSelectedIndex);
 
 					const slicedItems = hasLimit
-						? items.slice(cursorIndex, cursorIndex + limit)
+						? items.slice(nextCursorIndex, nextCursorIndex + limit)
 						: items;
 
 					if (typeof onHighlight === "function") {
