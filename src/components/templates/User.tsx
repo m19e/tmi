@@ -22,11 +22,7 @@ import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput from "../molecules/SelectInput";
 import type { Item } from "../molecules/SelectInput";
-import {
-	UserTimelineSelect,
-	TweetIndicator,
-	TweetItem,
-} from "../molecules/UserTimelineSelect";
+import { UserTimelineSelect } from "../molecules/UserTimelineSelect";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 
