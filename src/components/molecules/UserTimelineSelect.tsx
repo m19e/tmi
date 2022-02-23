@@ -17,7 +17,7 @@ interface IndicatorProps {
 	isSelected?: boolean;
 }
 
-export const TweetIndicator: VFC<IndicatorProps> = ({ isSelected = false }) => (
+const TweetIndicator: VFC<IndicatorProps> = ({ isSelected = false }) => (
 	<Box width={2} height={2} flexDirection="column">
 		{isSelected ? (
 			<>
@@ -51,7 +51,7 @@ interface ItemProps {
 	value: TweetV1;
 }
 
-export const TweetItem: VFC<ItemProps> = ({ value: raw_tweet }) => {
+const TweetItem: VFC<ItemProps> = ({ value: raw_tweet }) => {
 	const tweet = convertTweetToDisplayable(raw_tweet);
 	const t = tweet.retweeted_status ?? tweet;
 	const ago = getDisplayTimeAgo(t.created_at);
