@@ -207,18 +207,8 @@ export function NoRotateSelectInput<V>({
 	const previousItems = useRef<Array<Item<V>>>(items);
 
 	useEffect(() => {
-		if (
-			!isEqual(
-				previousItems.current.map((item) => item.value),
-				items.map((item) => item.value)
-			)
-		) {
-			// setCursorIndex(0);
-			// setSelectedIndex(0);
-		}
-
-		previousItems.current = items;
-	}, [items]);
+		onHighlight(items[0]);
+	}, []);
 
 	useEffect(() => {
 		if (limit <= selectedIndex) {
