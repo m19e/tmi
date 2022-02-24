@@ -417,11 +417,6 @@ export const UserSub = ({ sname }: Props) => {
 			const newTweets = [...currentTweets, ...newPaginator.tweets];
 			setCurrentTweets(newTweets);
 			setUserTimelinePaginator(newPaginator);
-			setDebugConsole(
-				`Fetch next page (all ${
-					newTweets.length
-				} tweets) at ${new Date().toLocaleString()}`
-			);
 			setIsFetching(false);
 		}
 	};
