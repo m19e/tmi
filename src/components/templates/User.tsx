@@ -537,6 +537,12 @@ export const UserSub = ({ sname }: Props) => {
 					limitCounter.increment();
 				} else if (input === "-" || input === "_") {
 					limitCounter.decrement();
+				} else if (input === "t") {
+					// rt();
+				} else if (input === "f") {
+					// fav();
+				} else if (input === "n") {
+					// setIsNewTweetOpen(true);
 				}
 			},
 			[limitCounter]
