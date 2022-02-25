@@ -204,8 +204,6 @@ export function NoRotateSelectInput<V>({
 		typeof customLimit === "number" && items.length > customLimit;
 	const limit = hasLimit ? Math.min(customLimit!, items.length) : items.length;
 
-	const previousItems = useRef<Array<Item<V>>>(items);
-
 	useEffect(() => {
 		if (typeof onHighlight === "function") {
 			const slicedItems = items.slice(cursorIndex, cursorIndex + limit);
