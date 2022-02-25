@@ -217,8 +217,8 @@ export function NoRotateSelectInput<V>({
 		if (limit <= selectedIndex) {
 			const nextSelectedIndex = limit - 1;
 			setSelectedIndex(nextSelectedIndex);
-			const slicedItems = items.slice(cursorIndex, cursorIndex + limit);
 			if (typeof onHighlight === "function") {
+				const slicedItems = items.slice(cursorIndex, cursorIndex + limit);
 				onHighlight(slicedItems[nextSelectedIndex]);
 			}
 		}
