@@ -525,6 +525,46 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	);
 
+	const updateTweet = (newTweet: TweetV1) => {
+		setCurrentTweets((prev) =>
+			prev.map((t) => (t.id_str === newTweet.id_str ? newTweet : t))
+		);
+	};
+
+	const fav = useCallback(async () => {
+		const { favorited, id_str: tweet_id } = focusedTweet;
+		const res = favorited
+			? await api.unfavorite(tweet_id)
+			: await api.favorite(tweet_id);
+		if (typeof res === "string") {
+			setError(res);
+		} else {
+			updateTweet(res);
+			setRequestResult(
+				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
+		}
+	}, [focusedTweet]);
+
+	const rt = useCallback(async () => {
+		const { retweeted, id_str: tweet_id } = focusedTweet;
+		const res = retweeted
+			? await api.unretweet(tweet_id)
+			: await api.retweet(tweet_id);
+		if (typeof res === "string") {
+			setError(res);
+		} else {
+			updateTweet(res);
+			setRequestResult(
+				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
+					res.user.screen_name
+				} "${res.full_text.split("\n").join(" ")}"`
+			);
+		}
+	}, [focusedTweet]);
+
 	useInput(
 		useCallback(
 			(input, key) => {
@@ -533,9 +573,9 @@ export const UserSub = ({ sname }: Props) => {
 				} else if (input === "-" || input === "_") {
 					limitCounter.decrement();
 				} else if (input === "t") {
-					// rt();
+					rt();
 				} else if (input === "f") {
-					// fav();
+					fav();
 				} else if (input === "n") {
 					// setIsNewTweetOpen(true);
 				}
