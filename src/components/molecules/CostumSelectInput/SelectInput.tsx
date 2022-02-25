@@ -207,8 +207,11 @@ export function NoRotateSelectInput<V>({
 	const previousItems = useRef<Array<Item<V>>>(items);
 
 	useEffect(() => {
-		onHighlight(items[0]);
-	}, []);
+		if (typeof onHighlight === "function") {
+			const slicedItems = items.slice(cursorIndex, cursorIndex + limit);
+			onHighlight(slicedItems[selectedIndex]);
+		}
+	}, [items]);
 
 	useEffect(() => {
 		if (limit <= selectedIndex) {
