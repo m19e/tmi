@@ -407,19 +407,22 @@ export const UserSub = ({ sname }: Props) => {
 		setFocusedTweet(tweet);
 		setStatus("tweets/detail");
 	};
-	const handleHighlightTweet = async ({ value: tweet }: { value: TweetV1 }) => {
-		setFocusedTweet(tweet);
-		if (isFetching) return;
-		const bottom = currentTweets[currentTweets.length - 1];
-		if (bottom.id_str === tweet.id_str) {
-			setIsFetching(true);
-			const newPaginator = await userTimelinePaginator.next(200);
-			const newTweets = [...currentTweets, ...newPaginator.tweets];
-			setCurrentTweets(newTweets);
-			setUserTimelinePaginator(newPaginator);
-			setIsFetching(false);
-		}
-	};
+	const handleHighlightTweet = useCallback(
+		async ({ value: tweet }: { value: TweetV1 }) => {
+			setFocusedTweet(tweet);
+			if (isFetching) return;
+			const bottom = currentTweets[currentTweets.length - 1];
+			if (bottom.id_str === tweet.id_str) {
+				setIsFetching(true);
+				const newPaginator = await userTimelinePaginator.next(200);
+				const newTweets = [...currentTweets, ...newPaginator.tweets];
+				setCurrentTweets(newTweets);
+				setUserTimelinePaginator(newPaginator);
+				setIsFetching(false);
+			}
+		},
+		[isFetching, currentTweets, userTimelinePaginator]
+	);
 	const handleSelectList = async ({ value: list }: { value: ListV1 }) => {
 		const res = await api.getListTweets({
 			list_id: list.id_str,
