@@ -285,7 +285,7 @@ export const UserSub = ({ sname }: Props) => {
 		setRemainIds(remain);
 	};
 
-	const transitionTweets = async () => {
+	const transitionTweets = useCallback(async () => {
 		const res = await api.getUserTimeline({
 			user_id: user.id_str,
 			include_rts: true,
@@ -299,8 +299,8 @@ export const UserSub = ({ sname }: Props) => {
 		setCurrentTweets(res.tweets);
 		setUserTimelinePaginator(res);
 		setStatus("tweets");
-	};
-	const transitionFollowing = async () => {
+	}, [user]);
+	const transitionFollowing = useCallback(async () => {
 		const res = await api.userFollowing({
 			user_id: user.id_str,
 			stringify_ids: true,
@@ -313,8 +313,8 @@ export const UserSub = ({ sname }: Props) => {
 		const { ids, next_cursor_str } = res;
 		setNextCursor(next_cursor_str);
 		await getUsersFromIds(ids);
-	};
-	const transitionFollowed = async () => {
+	}, [user]);
+	const transitionFollowed = useCallback(async () => {
 		const res = await api.userFollowed({
 			user_id: user.id_str,
 			stringify_ids: true,
@@ -327,8 +327,8 @@ export const UserSub = ({ sname }: Props) => {
 		const { ids, next_cursor_str } = res;
 		setNextCursor(next_cursor_str);
 		await getUsersFromIds(ids);
-	};
-	const transitionFavorites = async () => {
+	}, [user]);
+	const transitionFavorites = useCallback(async () => {
 		const res = await api.userFavorites({
 			user_id: user.id_str,
 			tweet_mode: "extended",
@@ -339,8 +339,8 @@ export const UserSub = ({ sname }: Props) => {
 			return;
 		}
 		setDebugConsole(JSON.stringify(res, null, 2));
-	};
-	const transitionListed = async () => {
+	}, [user]);
+	const transitionListed = useCallback(async () => {
 		const user_id = user.id_str;
 		const res = await api.getUserListed({
 			user_id,
@@ -355,8 +355,8 @@ export const UserSub = ({ sname }: Props) => {
 			JSON.stringify({ length: lists.length, ...cursors }, null, 2)
 		);
 		setStatus("listed");
-	};
-	const transitionListManage = async () => {
+	}, [user]);
+	const transitionListManage = useCallback(async () => {
 		const res = await api.getLists();
 		if (!Array.isArray(res)) {
 			setError(res.message);
@@ -364,8 +364,8 @@ export const UserSub = ({ sname }: Props) => {
 			setLists(res);
 		}
 		setStatus("list/manage");
-	};
-	const transitionFollowManage = async () => {
+	}, [user]);
+	const transitionFollowManage = useCallback(async () => {
 		const rel = await api.getRelation({
 			source_id: authUserId,
 			target_id: user.id_str,
@@ -377,7 +377,7 @@ export const UserSub = ({ sname }: Props) => {
 			setStatus("follow/manage");
 			initMenu(user, rel.relationship);
 		}
-	};
+	}, [authUserId, user]);
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
