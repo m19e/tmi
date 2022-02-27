@@ -467,13 +467,12 @@ export const UserSub = ({ sname }: Props) => {
 		if (typeof res === "string") {
 			setDebugConsole(res);
 			return;
-		} else {
-			setDebugConsole(
-				`Successfully ${action} @${user.screen_name} ${
-					action === "add" ? "to" : "from"
-				} @${manageList.user.screen_name}/${manageList.name}`
-			);
 		}
+		setDebugConsole(
+			`Successfully ${action} @${user.screen_name} ${
+				action === "add" ? "to" : "from"
+			} @${manageList.user.screen_name}/${manageList.name}`
+		);
 		setStatus("list/manage");
 	};
 	const handleSelectFollowAction = async ({
