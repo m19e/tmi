@@ -335,7 +335,7 @@ export const UserSub = ({ sname }: Props) => {
 			count: 200,
 		});
 		if (typeof res === "string") {
-			setDebugConsole(res);
+			setError(res);
 			return;
 		}
 		setDebugConsole(JSON.stringify(res, null, 2));
@@ -347,6 +347,7 @@ export const UserSub = ({ sname }: Props) => {
 			count: 1000,
 		});
 		if (typeof res === "string") {
+			setError(res);
 			return;
 		}
 		const { lists, ...cursors } = res.data;
@@ -360,9 +361,9 @@ export const UserSub = ({ sname }: Props) => {
 		const res = await api.getLists();
 		if (!Array.isArray(res)) {
 			setError(res.message);
-		} else {
-			setLists(res);
+			return;
 		}
+		setLists(res);
 		setStatus("list/manage");
 	}, [user]);
 	const transitionFollowManage = useCallback(async () => {
@@ -372,11 +373,11 @@ export const UserSub = ({ sname }: Props) => {
 		});
 		if (typeof rel === "string") {
 			setError(rel);
-		} else {
-			setRelationship(rel.relationship);
-			setStatus("follow/manage");
-			initMenu(user, rel.relationship);
+			return;
 		}
+		setRelationship(rel.relationship);
+		setStatus("follow/manage");
+		initMenu(user, rel.relationship);
 	}, [authUserId, user]);
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
