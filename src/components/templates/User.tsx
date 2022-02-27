@@ -432,6 +432,7 @@ export const UserSub = ({ sname }: Props) => {
 			include_entities: true,
 		});
 		if (typeof res === "string") {
+			setError(res);
 			return;
 		}
 		const { id_str, name, mode, user } = list;
