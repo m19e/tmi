@@ -239,11 +239,10 @@ export function NoRotateSelectInput<V>({
 					setCursorIndex(nextCursorIndex);
 					setSelectedIndex(nextSelectedIndex);
 
-					const slicedItems = hasLimit
-						? items.slice(nextCursorIndex, nextCursorIndex + limit)
-						: items;
-
 					if (typeof onHighlight === "function") {
+						const slicedItems = hasLimit
+							? items.slice(nextCursorIndex, nextCursorIndex + limit)
+							: items;
 						onHighlight(slicedItems[nextSelectedIndex]);
 					}
 				}
@@ -262,11 +261,10 @@ export function NoRotateSelectInput<V>({
 					setCursorIndex(nextCursorIndex);
 					setSelectedIndex(nextSelectedIndex);
 
-					const slicedItems = hasLimit
-						? items.slice(nextCursorIndex, nextCursorIndex + limit)
-						: items;
-
 					if (typeof onHighlight === "function") {
+						const slicedItems = hasLimit
+							? items.slice(nextCursorIndex, nextCursorIndex + limit)
+							: items;
 						onHighlight(slicedItems[nextSelectedIndex]);
 					}
 				}
@@ -321,11 +319,10 @@ export function NoRotateSelectInput<V>({
 				}
 
 				if (key.return) {
-					const slicedItems = hasLimit
-						? items.slice(cursorIndex, cursorIndex + limit)
-						: items;
-
 					if (typeof onSelect === "function") {
+						const slicedItems = hasLimit
+							? items.slice(cursorIndex, cursorIndex + limit)
+							: items;
 						onSelect(slicedItems[selectedIndex]);
 					}
 
