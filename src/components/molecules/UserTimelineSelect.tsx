@@ -8,10 +8,7 @@ import { getDisplayTimeAgo, convertTweetToDisplayable } from "../../lib";
 import { NoRotateSelect } from "./SelectInput";
 import type { Item } from "./SelectInput";
 import Quoted from "./Quoted";
-
-const Space = () => {
-	return <Text> </Text>;
-};
+import { Space } from "../atoms/Space";
 
 interface IndicatorProps {
 	isSelected?: boolean;
