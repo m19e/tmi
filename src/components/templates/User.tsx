@@ -8,6 +8,7 @@ import type {
 	ListV1,
 	TweetV1,
 	UserTimelineV1Paginator,
+	ListMembershipsV1Paginator,
 } from "twitter-api-v2";
 import useUndo from "use-undo";
 
@@ -188,6 +189,10 @@ export const UserSub = ({ sname }: Props) => {
 		undefined
 	);
 	const [isFetching, setIsFetching] = useState(false);
+
+	const [listedPaginator, setListedPaginator] = useState<
+		ListMembershipsV1Paginator | undefined
+	>(undefined);
 
 	const [lists, setLists] = useState<ListV1[]>([]);
 	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
