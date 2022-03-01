@@ -341,9 +341,8 @@ export const UserSub = ({ sname }: Props) => {
 		setDebugConsole(JSON.stringify(res, null, 2));
 	}, [user]);
 	const transitionListed = useCallback(async () => {
-		const user_id = user.id_str;
 		const res = await api.getUserListed({
-			user_id,
+			user_id: user.id_str,
 			count: 1000,
 		});
 		if (typeof res === "string") {
