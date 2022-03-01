@@ -354,11 +354,7 @@ export const UserSub = ({ sname }: Props) => {
 			setError(res);
 			return;
 		}
-		const { lists, ...cursors } = res.data;
-		setListed(lists);
-		setDebugConsole(
-			JSON.stringify({ length: lists.length, ...cursors }, null, 2)
-		);
+		setListedPaginator(res);
 		setStatus("listed");
 	}, [user]);
 	const transitionListManage = useCallback(async () => {
@@ -670,12 +666,14 @@ export const UserSub = ({ sname }: Props) => {
 		);
 	}
 	if (status === "listed") {
+		const memberedLists = listedPaginator.lists;
+
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
 					<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
 				</Box>
-				<SelectMemberedList lists={listed} onSelect={handleSelectList} />
+				<SelectMemberedList lists={memberedLists} onSelect={handleSelectList} />
 			</Box>
 		);
 	}
