@@ -561,7 +561,7 @@ export const UserSub = ({ sname }: Props) => {
 		} else {
 			updateTweet(res);
 			setRequestResult(
-				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
+				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
 					res.user.screen_name
 				} "${res.full_text.split("\n").join(" ")}"`
 			);
