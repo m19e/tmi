@@ -535,7 +535,6 @@ export const UserSub = ({ sname }: Props) => {
 			prev.map((t) => (t.id_str === newTweet.id_str ? newTweet : t))
 		);
 	};
-
 	const fav = useCallback(async () => {
 		const { favorited, id_str: tweet_id } = focusedTweet;
 		const res = favorited
@@ -552,7 +551,6 @@ export const UserSub = ({ sname }: Props) => {
 			);
 		}
 	}, [focusedTweet]);
-
 	const rt = useCallback(async () => {
 		const { retweeted, id_str: tweet_id } = focusedTweet;
 		const res = retweeted
