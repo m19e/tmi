@@ -171,9 +171,6 @@ export const UserSub = ({ sname }: Props) => {
 	>("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
-	const [listed, setListed] = useState<ListV1[]>([]);
-	const [currentList, setCurrentList] = useState<TrimmedList>();
-	const [listTimeline, setListTimeline] = useState<TweetV1[]>([]);
 
 	const [nextCursor, setNextCursor] = useState("0");
 	const [remainIds, setRemainIds] = useState<string[]>([]);
@@ -193,6 +190,8 @@ export const UserSub = ({ sname }: Props) => {
 	const [listedPaginator, setListedPaginator] = useState<
 		ListMembershipsV1Paginator | undefined
 	>(undefined);
+	const [currentList, setCurrentList] = useState<TrimmedList>();
+	const [listTweets, setListTweets] = useState<TweetV1[]>([]);
 
 	const [lists, setLists] = useState<ListV1[]>([]);
 	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
@@ -425,7 +424,7 @@ export const UserSub = ({ sname }: Props) => {
 		[isFetching, currentTweets, userTimelinePaginator]
 	);
 	const handleSelectList = async ({ value: list }: { value: ListV1 }) => {
-		const res = await api.getListTweets({
+		const res = await api.getListTimeline({
 			list_id: list.id_str,
 			count: 200,
 			tweet_mode: "extended",
@@ -446,7 +445,7 @@ export const UserSub = ({ sname }: Props) => {
 				screen_name: user.screen_name,
 			},
 		});
-		setListTimeline(res);
+		setListTweets(res.tweets);
 		setStatus("list");
 	};
 	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
@@ -678,15 +677,27 @@ export const UserSub = ({ sname }: Props) => {
 		);
 	}
 	if (status === "list") {
+		const bcs = [
+			"Listed",
+			`@${currentList.owner.screen_name}/${currentList.name}`,
+		];
+		const { count: limit } = limitCounter;
+
 		return (
-			<>
-				<Text>{JSON.stringify(currentList, null, 4)}</Text>
-				{listTimeline.slice(0, 20).map((tweet) => (
-					<Text>
-						@{tweet.user.screen_name} {tweet.full_text}
-					</Text>
-				))}
-			</>
+			<Box flexDirection="column" minHeight={rows}>
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Breadcrumbs root={rootLabel} breadcrumbs={bcs} />
+					</Box>
+					<TimelineSelect
+						tweets={listTweets}
+						onSelectTweet={() => {}}
+						onHighlightTweet={() => {}}
+						limit={limit}
+					/>
+				</Box>
+				<Footer />
+			</Box>
 		);
 	}
 	if (status === "list/manage") {
