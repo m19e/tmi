@@ -3,7 +3,9 @@ import type {
 	UserV1,
 	FriendshipV1,
 	ListV1,
+	ListTimelineV1Paginator,
 	ListMembershipsV1Paginator,
+	UserTimelineV1Paginator,
 	TweetV1TimelineParams,
 	UserShowV1Params,
 	FriendshipShowV1Params,
@@ -12,7 +14,6 @@ import type {
 	AddOrRemoveListMembersV1Params,
 	AccountProfileV1Params,
 	TweetV1UserTimelineParams,
-	UserTimelineV1Paginator,
 	UserLookupV1Params,
 	DoubleEndedIdCursorV1Result,
 	ListMemberShowV1Params,
@@ -38,6 +39,9 @@ interface Api {
 		params: TweetV1TimelineParams
 	) => PromiseWithErrorMessage<TweetV1[]>;
 	getLists: () => PromiseWithError<ListV1[]>;
+	getListTimeline: (
+		params: ListStatusesV1Params
+	) => PromiseWithErrorMessage<ListTimelineV1Paginator>;
 	getListTweets: (
 		params: ListStatusesV1Params
 	) => PromiseWithErrorMessage<TweetV1[]>;
@@ -189,6 +193,13 @@ export const useApi = (): Api => {
 				.message;
 		}
 	};
+	const getListTimeline = async (params: ListStatusesV1Params) => {
+		try {
+			return await api.listStatuses(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "lists/statuses").message;
+		}
+	};
 
 	const tweet = async (status: string) => {
 		try {
@@ -331,6 +342,7 @@ export const useApi = (): Api => {
 		getHomeTweets,
 		getMentionTweets,
 		getLists,
+		getListTimeline,
 		getListTweets,
 		getTweet,
 		getUser,
