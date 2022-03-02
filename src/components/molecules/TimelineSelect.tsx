@@ -129,7 +129,7 @@ interface Props {
 	limit: number;
 }
 
-export const UserTimelineSelect = ({
+export const TimelineSelect = ({
 	tweets,
 	onSelectTweet,
 	onHighlightTweet,

@@ -23,7 +23,7 @@ import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput from "../molecules/SelectInput";
 import type { Item } from "../molecules/SelectInput";
-import { UserTimelineSelect } from "../molecules/UserTimelineSelect";
+import { TimelineSelect } from "../molecules/TimelineSelect";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 
@@ -653,7 +653,7 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
-					<UserTimelineSelect
+					<TimelineSelect
 						tweets={currentTweets}
 						onSelectTweet={handleSelectTweet}
 						onHighlightTweet={handleHighlightTweet}
