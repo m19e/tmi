@@ -451,6 +451,27 @@ export const UserSub = ({ sname }: Props) => {
 		setListTweets(res.tweets);
 		setStatus("list/tweets");
 	};
+	const handleSelectListTweet = ({ value: tweet }: { value: TweetV1 }) => {
+		setFocusedTweet(tweet);
+		setStatus("list/tweets/detail");
+	};
+	const handleHighlightListTweet = useCallback(
+		async ({ value: tweet }: { value: TweetV1 }) => {
+			setFocusedTweet(tweet);
+			if (isFetching) return;
+			const bottom = listTweets[listTweets.length - 1];
+			if (bottom.id_str === tweet.id_str) {
+				setIsFetching(true);
+				// const newPaginator = await listTimelinePaginator.next(200);
+				// TODO: convert tweets to displayable
+				// const newTweets = [...listTweets, ...newPaginator.tweets];
+				// setListTweets(newTweets);
+				// setListTimelinePaginator(newPaginator);
+				setIsFetching(false);
+			}
+		},
+		[isFetching, listTweets]
+	);
 	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
 		setManageList(list);
 		setStatus("list/manage/action");
@@ -696,8 +717,8 @@ export const UserSub = ({ sname }: Props) => {
 					</Box>
 					<TimelineSelect
 						tweets={listTweets}
-						onSelectTweet={() => {}}
-						onHighlightTweet={() => {}}
+						onSelectTweet={handleSelectListTweet}
+						onHighlightTweet={handleHighlightListTweet}
 						limit={limit}
 					/>
 				</Box>
