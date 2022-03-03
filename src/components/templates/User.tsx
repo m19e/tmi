@@ -164,7 +164,8 @@ export const UserSub = ({ sname }: Props) => {
 		| "tweets"
 		| "tweets/detail"
 		| "listed"
-		| "list"
+		| "list/tweets"
+		| "list/tweets/detail"
 		| "list/manage"
 		| "list/manage/action"
 		| "follow/manage"
@@ -448,7 +449,7 @@ export const UserSub = ({ sname }: Props) => {
 		});
 		// TODO: convert tweets to displayable
 		setListTweets(res.tweets);
-		setStatus("list");
+		setStatus("list/tweets");
 	};
 	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
 		setManageList(list);
@@ -676,18 +677,22 @@ export const UserSub = ({ sname }: Props) => {
 			</Box>
 		);
 	}
-	if (status === "list") {
-		const bcs = [
-			"Listed",
-			`@${currentList.owner.screen_name}/${currentList.name}`,
-		];
+	if (status === "list/tweets" || status === "list/tweets/detail") {
+		const breadcrumbs =
+			status === "list/tweets"
+				? ["Listed", `@${currentList.owner.screen_name}/${currentList.name}`]
+				: [
+						"Listed",
+						`@${currentList.owner.screen_name}/${currentList.name}`,
+						"Detail",
+				  ];
 		const { count: limit } = limitCounter;
 
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} breadcrumbs={bcs} />
+						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
 					<TimelineSelect
 						tweets={listTweets}
