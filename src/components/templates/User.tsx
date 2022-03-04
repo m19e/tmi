@@ -453,6 +453,7 @@ export const UserSub = ({ sname }: Props) => {
 		});
 		// TODO convert tweets to displayable
 		setListTweets(res.tweets);
+		setListTimelinePaginator(res);
 		setStatus("list/tweets");
 	};
 	const handleSelectListTweet = ({ value: tweet }: { value: TweetV1 }) => {
@@ -466,15 +467,15 @@ export const UserSub = ({ sname }: Props) => {
 			const bottom = listTweets[listTweets.length - 1];
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
-				// const newPaginator = await listTimelinePaginator.next(200);
+				const newPaginator = await listTimelinePaginator.next(200);
 				// TODO convert tweets to displayable
-				// const newTweets = [...listTweets, ...newPaginator.tweets];
-				// setListTweets(newTweets);
-				// setListTimelinePaginator(newPaginator);
+				const newTweets = [...listTweets, ...newPaginator.tweets];
+				setListTweets(newTweets);
+				setListTimelinePaginator(newPaginator);
 				setIsFetching(false);
 			}
 		},
-		[isFetching, listTweets]
+		[isFetching, listTweets, listTimelinePaginator]
 	);
 	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
 		setManageList(list);
