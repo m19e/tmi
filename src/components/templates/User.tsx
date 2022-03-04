@@ -180,6 +180,7 @@ export const UserSub = ({ sname }: Props) => {
 
 	const limitCounter = usePositiveCounter(5);
 
+	// TODO add user-timeline data custom hook
 	const [userTimelinePaginator, setUserTimelinePaginator] = useState<
 		UserTimelineV1Paginator | undefined
 	>(undefined);
@@ -193,6 +194,8 @@ export const UserSub = ({ sname }: Props) => {
 		ListMembershipsV1Paginator | undefined
 	>(undefined);
 	const [currentList, setCurrentList] = useState<TrimmedList>();
+
+	// TODO add list-timeline data custom hook
 	const [listTimelinePaginator, setListTimelinePaginator] = useState<
 		ListTimelineV1Paginator | undefined
 	>(undefined);
