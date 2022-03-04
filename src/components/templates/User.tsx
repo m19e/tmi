@@ -420,7 +420,7 @@ export const UserSub = ({ sname }: Props) => {
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
 				const newPaginator = await userTimelinePaginator.next(200);
-				// TODO: convert tweets to displayable
+				// TODO convert tweets to displayable
 				const newTweets = [...currentTweets, ...newPaginator.tweets];
 				setCurrentTweets(newTweets);
 				setUserTimelinePaginator(newPaginator);
@@ -451,7 +451,7 @@ export const UserSub = ({ sname }: Props) => {
 				screen_name: user.screen_name,
 			},
 		});
-		// TODO: convert tweets to displayable
+		// TODO convert tweets to displayable
 		setListTweets(res.tweets);
 		setStatus("list/tweets");
 	};
@@ -467,7 +467,7 @@ export const UserSub = ({ sname }: Props) => {
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
 				// const newPaginator = await listTimelinePaginator.next(200);
-				// TODO: convert tweets to displayable
+				// TODO convert tweets to displayable
 				// const newTweets = [...listTweets, ...newPaginator.tweets];
 				// setListTweets(newTweets);
 				// setListTimelinePaginator(newPaginator);
