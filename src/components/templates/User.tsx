@@ -14,6 +14,7 @@ import type {
 import useUndo from "use-undo";
 
 import type { TrimmedList } from "../../types/twitter";
+import { convertTweetToDisplayable } from "../../lib";
 import {
 	useUserConfig,
 	useError,
