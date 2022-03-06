@@ -538,8 +538,6 @@ export const UserSub = ({ sname }: Props) => {
 				screen_name: user.screen_name,
 			},
 		});
-		// setListTweets(res.tweets);
-		// setListTimelinePaginator(res);
 		listTimeline.setPaginator(res);
 		setStatus("list/tweets");
 	};
@@ -551,15 +549,10 @@ export const UserSub = ({ sname }: Props) => {
 		async ({ value: tweet }: { value: TweetV1 }) => {
 			setFocusedTweet(tweet);
 			if (isFetching) return;
-			// const bottom = listTweets[listTweets.length - 1];
 			const { tweets } = listTimeline;
 			const bottom = tweets[tweets.length - 1];
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
-				// const newPaginator = await listTimelinePaginator.next(200)
-				// const newTweets = [...listTweets, ...newPaginator.tweets];
-				// setListTweets(newTweets);
-				// setListTimelinePaginator(newPaginator);
 				await listTimeline.fetchNext();
 				setIsFetching(false);
 			}
@@ -652,7 +645,7 @@ export const UserSub = ({ sname }: Props) => {
 				userTimeline.updateTweet(newTweet);
 			} else if (status === "list/tweets" || status === "list/tweets/detail") {
 				// TODO update tweet in list-timeline
-				// listTimeline.updateTweet(newTweet)
+				listTimeline.updateTweet(newTweet);
 			}
 		},
 		[status]
