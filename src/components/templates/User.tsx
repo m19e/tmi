@@ -478,7 +478,6 @@ export const UserSub = ({ sname }: Props) => {
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
 				// const newPaginator = await userTimelinePaginator.next(200);
-				// TODO convert tweets to displayable
 				// const newTweets = [...currentTweets, ...newPaginator.tweets];
 				// setCurrentTweets(newTweets);
 				// setUserTimelinePaginator(newPaginator);
