@@ -603,6 +603,7 @@ export const UserSub = ({ sname }: Props) => {
 	);
 
 	const updateTweet = (newTweet: TweetV1) => {
+		// TODO switch by status is "tweets" or "list"
 		userTimeline.updateTweet(newTweet);
 		// setCurrentTweets((prev) =>
 		// 	prev.map((t) => (t.id_str === newTweet.id_str ? newTweet : t))
