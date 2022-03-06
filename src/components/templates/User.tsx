@@ -607,7 +607,8 @@ export const UserSub = ({ sname }: Props) => {
 			if (status === "tweets" || status === "tweets/detail") {
 				userTimeline.updateTweet(newTweet);
 			} else if (status === "list/tweets" || status === "list/tweets/detail") {
-				// update tweet in list-timeline
+				// TODO update tweet in list-timeline
+				// listTimeline.updateTweet(newTweet)
 			}
 		},
 		[status]
