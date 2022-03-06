@@ -289,12 +289,6 @@ export const UserSub = ({ sname }: Props) => {
 	>(undefined);
 	const [currentList, setCurrentList] = useState<TrimmedList>();
 
-	// TODO add list-timeline data custom hook
-	// const [listTimelinePaginator, setListTimelinePaginator] = useState<
-	// 	ListTimelineV1Paginator | undefined
-	// >(undefined);
-	// const [listTweets, setListTweets] = useState<TweetV1[]>([]);
-
 	const [lists, setLists] = useState<ListV1[]>([]);
 	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
 
@@ -544,7 +538,6 @@ export const UserSub = ({ sname }: Props) => {
 				screen_name: user.screen_name,
 			},
 		});
-		// TODO convert tweets to displayable
 		// setListTweets(res.tweets);
 		// setListTimelinePaginator(res);
 		listTimeline.setPaginator(res);
@@ -563,8 +556,7 @@ export const UserSub = ({ sname }: Props) => {
 			const bottom = tweets[tweets.length - 1];
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
-				// const newPaginator = await listTimelinePaginator.next(200);
-				// TODO convert tweets to displayable
+				// const newPaginator = await listTimelinePaginator.next(200)
 				// const newTweets = [...listTweets, ...newPaginator.tweets];
 				// setListTweets(newTweets);
 				// setListTimelinePaginator(newPaginator);
