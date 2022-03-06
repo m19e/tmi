@@ -277,6 +277,7 @@ export const UserSub = ({ sname }: Props) => {
 	const limitCounter = usePositiveCounter(5);
 
 	const userTimeline = useUserTimeline();
+	const listTimeline = useListTimeline();
 
 	const [focusedTweet, setFocusedTweet] = useState<TweetV1 | undefined>(
 		undefined
@@ -289,10 +290,10 @@ export const UserSub = ({ sname }: Props) => {
 	const [currentList, setCurrentList] = useState<TrimmedList>();
 
 	// TODO add list-timeline data custom hook
-	const [listTimelinePaginator, setListTimelinePaginator] = useState<
-		ListTimelineV1Paginator | undefined
-	>(undefined);
-	const [listTweets, setListTweets] = useState<TweetV1[]>([]);
+	// const [listTimelinePaginator, setListTimelinePaginator] = useState<
+	// 	ListTimelineV1Paginator | undefined
+	// >(undefined);
+	// const [listTweets, setListTweets] = useState<TweetV1[]>([]);
 
 	const [lists, setLists] = useState<ListV1[]>([]);
 	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
@@ -544,8 +545,9 @@ export const UserSub = ({ sname }: Props) => {
 			},
 		});
 		// TODO convert tweets to displayable
-		setListTweets(res.tweets);
-		setListTimelinePaginator(res);
+		// setListTweets(res.tweets);
+		// setListTimelinePaginator(res);
+		listTimeline.setPaginator(res);
 		setStatus("list/tweets");
 	};
 	const handleSelectListTweet = ({ value: tweet }: { value: TweetV1 }) => {
@@ -556,18 +558,21 @@ export const UserSub = ({ sname }: Props) => {
 		async ({ value: tweet }: { value: TweetV1 }) => {
 			setFocusedTweet(tweet);
 			if (isFetching) return;
-			const bottom = listTweets[listTweets.length - 1];
+			// const bottom = listTweets[listTweets.length - 1];
+			const { tweets } = listTimeline;
+			const bottom = tweets[tweets.length - 1];
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
-				const newPaginator = await listTimelinePaginator.next(200);
+				// const newPaginator = await listTimelinePaginator.next(200);
 				// TODO convert tweets to displayable
-				const newTweets = [...listTweets, ...newPaginator.tweets];
-				setListTweets(newTweets);
-				setListTimelinePaginator(newPaginator);
+				// const newTweets = [...listTweets, ...newPaginator.tweets];
+				// setListTweets(newTweets);
+				// setListTimelinePaginator(newPaginator);
+				await listTimeline.fetchNext();
 				setIsFetching(false);
 			}
 		},
-		[isFetching, listTweets, listTimelinePaginator]
+		[isFetching, listTimeline]
 	);
 	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
 		setManageList(list);
@@ -820,7 +825,7 @@ export const UserSub = ({ sname }: Props) => {
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
 					<TimelineSelect
-						tweets={listTweets}
+						tweets={listTimeline.tweets}
 						onSelectTweet={handleSelectListTweet}
 						onHighlightTweet={handleHighlightListTweet}
 						limit={limit}
