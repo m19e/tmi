@@ -602,13 +602,17 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	);
 
-	const updateTweet = (newTweet: TweetV1) => {
-		if (status === "tweets" || status === "tweets/detail") {
-			userTimeline.updateTweet(newTweet);
-		} else if (status === "list/tweets" || status === "list/tweets/detail") {
-			// update tweet in list-timeline
-		}
-	};
+	const updateTweet = useCallback(
+		(newTweet: TweetV1) => {
+			if (status === "tweets" || status === "tweets/detail") {
+				userTimeline.updateTweet(newTweet);
+			} else if (status === "list/tweets" || status === "list/tweets/detail") {
+				// update tweet in list-timeline
+			}
+		},
+		[status]
+	);
+
 	const fav = useCallback(async () => {
 		const { favorited, id_str: tweet_id } = focusedTweet;
 		const res = favorited
