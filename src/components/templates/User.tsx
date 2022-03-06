@@ -354,8 +354,6 @@ export const UserSub = ({ sname }: Props) => {
 			setError(res);
 			return;
 		}
-		// setCurrentTweets(res.tweets);
-		// setUserTimelinePaginator(res);
 		userTimeline.setPaginator(res);
 		setStatus("tweets");
 	}, [user]);
@@ -466,15 +464,10 @@ export const UserSub = ({ sname }: Props) => {
 		async ({ value: tweet }: { value: TweetV1 }) => {
 			setFocusedTweet(tweet);
 			if (isFetching) return;
-			// const bottom = currentTweets[currentTweets.length - 1];
 			const { tweets } = userTimeline;
 			const bottom = tweets[tweets.length - 1];
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
-				// const newPaginator = await userTimelinePaginator.next(200);
-				// const newTweets = [...currentTweets, ...newPaginator.tweets];
-				// setCurrentTweets(newTweets);
-				// setUserTimelinePaginator(newPaginator);
 				await userTimeline.fetchNext();
 				setIsFetching(false);
 			}
