@@ -229,12 +229,6 @@ export const UserSub = ({ sname }: Props) => {
 
 	const limitCounter = usePositiveCounter(5);
 
-	// TODO add user-timeline data custom hook
-	const [userTimelinePaginator, setUserTimelinePaginator] = useState<
-		UserTimelineV1Paginator | undefined
-	>(undefined);
-	const [currentTweets, setCurrentTweets] = useState<TweetV1[]>([]);
-
 	const userTimeline = useUserTimeline();
 
 	const [focusedTweet, setFocusedTweet] = useState<TweetV1 | undefined>(
