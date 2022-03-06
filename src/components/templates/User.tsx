@@ -167,6 +167,53 @@ const useUserTimeline = () => {
 		reset,
 	};
 };
+const useListTimeline = () => {
+	const [paginator, setP] = useState<ListTimelineV1Paginator | undefined>(
+		undefined
+	);
+	const [tweets, setTweets] = useState<TweetV1[]>([]);
+
+	const setPaginator: typeof setP = (action) => {
+		setP((prevP) => {
+			const newPaginator =
+				typeof action === "function" ? action(prevP) : action;
+			const newTweets = newPaginator.tweets.map(convertTweetToDisplayable);
+
+			setTweets((prevT) =>
+				prevT.length ? [...prevT, ...newTweets] : newTweets
+			);
+
+			return newPaginator;
+		});
+	};
+	const fetchNext = useCallback(async () => {
+		if (typeof paginator === undefined) return;
+		const newPaginator = await paginator.next(200);
+		setPaginator(newPaginator);
+	}, [paginator]);
+	const updateTweet = (target: TweetV1) => {
+		setTweets((prev) =>
+			prev.map((t) => (t.id_str === target.id_str ? target : t))
+		);
+	};
+	const removeTweet = (target_id: string) => {
+		setTweets((prev) => prev.filter((t) => t.id_str !== target_id));
+	};
+	const reset = () => {
+		setP(undefined);
+		setTweets([]);
+	};
+
+	return {
+		paginator,
+		setPaginator,
+		fetchNext,
+		tweets,
+		updateTweet,
+		removeTweet,
+		reset,
+	};
+};
 
 const Breadcrumbs: VFC<{ root: string; breadcrumbs?: string[] }> = ({
 	root,
