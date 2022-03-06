@@ -234,6 +234,9 @@ export const UserSub = ({ sname }: Props) => {
 		UserTimelineV1Paginator | undefined
 	>(undefined);
 	const [currentTweets, setCurrentTweets] = useState<TweetV1[]>([]);
+
+	const userTimeline = useUserTimeline();
+
 	const [focusedTweet, setFocusedTweet] = useState<TweetV1 | undefined>(
 		undefined
 	);
@@ -357,8 +360,9 @@ export const UserSub = ({ sname }: Props) => {
 			setError(res);
 			return;
 		}
-		setCurrentTweets(res.tweets);
-		setUserTimelinePaginator(res);
+		// setCurrentTweets(res.tweets);
+		// setUserTimelinePaginator(res);
+		userTimeline.setPaginator(res);
 		setStatus("tweets");
 	}, [user]);
 	const transitionFollowing = useCallback(async () => {
@@ -468,18 +472,21 @@ export const UserSub = ({ sname }: Props) => {
 		async ({ value: tweet }: { value: TweetV1 }) => {
 			setFocusedTweet(tweet);
 			if (isFetching) return;
-			const bottom = currentTweets[currentTweets.length - 1];
+			// const bottom = currentTweets[currentTweets.length - 1];
+			const { tweets } = userTimeline;
+			const bottom = tweets[tweets.length - 1];
 			if (bottom.id_str === tweet.id_str) {
 				setIsFetching(true);
-				const newPaginator = await userTimelinePaginator.next(200);
+				// const newPaginator = await userTimelinePaginator.next(200);
 				// TODO convert tweets to displayable
-				const newTweets = [...currentTweets, ...newPaginator.tweets];
-				setCurrentTweets(newTweets);
-				setUserTimelinePaginator(newPaginator);
+				// const newTweets = [...currentTweets, ...newPaginator.tweets];
+				// setCurrentTweets(newTweets);
+				// setUserTimelinePaginator(newPaginator);
+				await userTimeline.fetchNext();
 				setIsFetching(false);
 			}
 		},
-		[isFetching, currentTweets, userTimelinePaginator]
+		[isFetching, userTimeline]
 	);
 	const handleSelectList = async ({ value: list }: { value: ListV1 }) => {
 		const res = await api.getListTimeline({
@@ -610,9 +617,10 @@ export const UserSub = ({ sname }: Props) => {
 	);
 
 	const updateTweet = (newTweet: TweetV1) => {
-		setCurrentTweets((prev) =>
-			prev.map((t) => (t.id_str === newTweet.id_str ? newTweet : t))
-		);
+		userTimeline.updateTweet(newTweet);
+		// setCurrentTweets((prev) =>
+		// 	prev.map((t) => (t.id_str === newTweet.id_str ? newTweet : t))
+		// );
 	};
 	const fav = useCallback(async () => {
 		const { favorited, id_str: tweet_id } = focusedTweet;
@@ -732,7 +740,7 @@ export const UserSub = ({ sname }: Props) => {
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
 					<TimelineSelect
-						tweets={currentTweets}
+						tweets={userTimeline.tweets}
 						onSelectTweet={handleSelectTweet}
 						onHighlightTweet={handleHighlightTweet}
 						limit={limit}
