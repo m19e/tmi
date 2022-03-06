@@ -616,14 +616,14 @@ export const UserSub = ({ sname }: Props) => {
 			: await api.favorite(tweet_id);
 		if (typeof res === "string") {
 			setError(res);
-		} else {
-			updateTweet(res);
-			setRequestResult(
-				`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
-					res.user.screen_name
-				} "${res.full_text.split("\n").join(" ")}"`
-			);
+			return;
 		}
+		updateTweet(res);
+		setRequestResult(
+			`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
+				res.user.screen_name
+			} "${res.full_text.split("\n").join(" ")}"`
+		);
 	}, [focusedTweet]);
 	const rt = useCallback(async () => {
 		const { retweeted, id_str: tweet_id } = focusedTweet;
@@ -632,14 +632,14 @@ export const UserSub = ({ sname }: Props) => {
 			: await api.retweet(tweet_id);
 		if (typeof res === "string") {
 			setError(res);
-		} else {
-			updateTweet(res);
-			setRequestResult(
-				`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
-					res.user.screen_name
-				} "${res.full_text.split("\n").join(" ")}"`
-			);
+			return;
 		}
+		updateTweet(res);
+		setRequestResult(
+			`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
+				res.user.screen_name
+			} "${res.full_text.split("\n").join(" ")}"`
+		);
 	}, [focusedTweet]);
 
 	useInput(
