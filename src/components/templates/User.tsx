@@ -666,7 +666,7 @@ export const UserSub = ({ sname }: Props) => {
 			[limitCounter]
 		),
 		{
-			isActive: status === "tweets",
+			isActive: status === "tweets" || status === "list/tweets",
 		}
 	);
 
