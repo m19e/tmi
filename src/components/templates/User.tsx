@@ -592,7 +592,7 @@ export const UserSub = ({ sname }: Props) => {
 			(_, key) => {
 				if (key.escape && canStatusBack) {
 					statusBack();
-					if (status === "tweets") {
+					if (status === "tweets" || status === "list/tweets") {
 						setFocusedTweet(undefined);
 					}
 				}
