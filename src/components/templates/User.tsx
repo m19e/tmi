@@ -29,6 +29,7 @@ import { TimelineSelect } from "../molecules/TimelineSelect";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
+import { Breadcrumbs } from "../atoms/Breadcrumbs";
 
 type UserMenuAction =
 	| "tweets"
@@ -134,27 +135,6 @@ const useAbstractTimeline = <
 };
 const useUserTimeline = () => useAbstractTimeline<UserTimelineV1Paginator>();
 const useListTimeline = () => useAbstractTimeline<ListTimelineV1Paginator>();
-
-const Breadcrumbs: VFC<{ root: string; breadcrumbs?: string[] }> = ({
-	root,
-	breadcrumbs,
-}) => {
-	if (Array.isArray(breadcrumbs)) {
-		return (
-			<Text>
-				<Text color="#00acee">{root}</Text>
-				{breadcrumbs.map((b) => (
-					<Text key={b}>
-						<Text dimColor>{" > "}</Text>
-						<Text>{b}</Text>
-					</Text>
-				))}
-			</Text>
-		);
-	}
-
-	return <Text color="#00acee">{root}</Text>;
-};
 
 interface Props {
 	sname: string;
