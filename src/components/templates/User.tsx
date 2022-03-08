@@ -52,15 +52,7 @@ const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
 	</Box>
 );
 
-interface ReturnType {
-	count: number;
-	increment: () => void;
-	decrement: () => void;
-	reset: () => void;
-	setCount: Dispatch<SetStateAction<number>>;
-}
-
-const usePositiveCounter = (initialValue?: number): ReturnType => {
+const usePositiveCounter = (initialValue?: number) => {
 	const [count, setCount] = useState(initialValue || 0);
 
 	const increment = () => setCount((x) => x + 1);
