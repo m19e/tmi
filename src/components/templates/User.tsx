@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import type { VFC, Dispatch, SetStateAction } from "react";
+import type { VFC } from "react";
 import { Box, Text, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import type {
@@ -7,14 +7,11 @@ import type {
 	FriendshipV1,
 	ListV1,
 	TweetV1,
-	UserTimelineV1Paginator,
 	ListMembershipsV1Paginator,
-	ListTimelineV1Paginator,
 } from "twitter-api-v2";
 import useUndo from "use-undo";
 
 import type { TrimmedList } from "../../types/twitter";
-import { convertTweetToDisplayable } from "../../lib";
 import {
 	useUserConfig,
 	useError,
