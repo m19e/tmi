@@ -53,11 +53,11 @@ const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
 );
 
 const usePositiveCounter = (initialValue?: number) => {
-	const [count, setCount] = useState(initialValue || 0);
+	const [count, setCount] = useState(initialValue || 1);
 
 	const increment = () => setCount((x) => x + 1);
 	const decrement = () => setCount((x) => Math.max(x - 1, 1));
-	const reset = () => setCount(initialValue || 0);
+	const reset = () => setCount(initialValue || 1);
 
 	return {
 		count,
