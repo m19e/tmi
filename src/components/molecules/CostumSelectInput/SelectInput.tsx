@@ -212,7 +212,7 @@ export function NoRotateSelectInput<V>({
 	}, [items]);
 
 	useEffect(() => {
-		if (limit <= selectedIndex) {
+		if (limit === selectedIndex) {
 			const nextSelectedIndex = limit - 1;
 			setSelectedIndex(nextSelectedIndex);
 			if (typeof onHighlight === "function") {
