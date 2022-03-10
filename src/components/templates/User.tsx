@@ -350,15 +350,20 @@ export const UserSub = ({ sname }: Props) => {
 	};
 	const handleHighlightTweet = useCallback(
 		async (item: { value: TweetV1 }) => {
-			const tweet = item.value;
-			setFocusedTweet(tweet);
-			if (isFetching) return;
-			const { tweets } = userTimeline;
-			const bottom = tweets[tweets.length - 1];
-			if (bottom.id_str === tweet.id_str) {
-				setIsFetching(true);
-				await userTimeline.fetchNext();
-				setIsFetching(false);
+			try {
+				const tweet = item.value;
+				setFocusedTweet(tweet);
+				if (isFetching) return;
+				const { tweets } = userTimeline;
+				const bottom = tweets[tweets.length - 1];
+				if (bottom.id_str === tweet.id_str) {
+					setIsFetching(true);
+					await userTimeline.fetchNext();
+					setIsFetching(false);
+				}
+			} catch (error) {
+				// do nothing in catch block
+				// to avoid flickering console
 			}
 		},
 		[isFetching, userTimeline]
@@ -394,15 +399,20 @@ export const UserSub = ({ sname }: Props) => {
 	};
 	const handleHighlightListTweet = useCallback(
 		async (item: { value: TweetV1 }) => {
-			const tweet = item.value;
-			setFocusedTweet(tweet);
-			if (isFetching) return;
-			const { tweets } = listTimeline;
-			const bottom = tweets[tweets.length - 1];
-			if (bottom.id_str === tweet.id_str) {
-				setIsFetching(true);
-				await listTimeline.fetchNext();
-				setIsFetching(false);
+			try {
+				const tweet = item.value;
+				setFocusedTweet(tweet);
+				if (isFetching) return;
+				const { tweets } = listTimeline;
+				const bottom = tweets[tweets.length - 1];
+				if (bottom.id_str === tweet.id_str) {
+					setIsFetching(true);
+					await listTimeline.fetchNext();
+					setIsFetching(false);
+				}
+			} catch (error) {
+				// do nothing in catch block
+				// to avoid flickering console
 			}
 		},
 		[isFetching, listTimeline]
