@@ -333,7 +333,8 @@ export const UserSub = ({ sname }: Props) => {
 		setStatus("tweets/detail");
 	};
 	const handleHighlightTweet = useCallback(
-		async ({ value: tweet }: { value: TweetV1 }) => {
+		async (item: { value: TweetV1 }) => {
+			const tweet = item.value;
 			setFocusedTweet(tweet);
 			if (isFetching) return;
 			const { tweets } = userTimeline;
