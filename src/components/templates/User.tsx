@@ -50,6 +50,22 @@ const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
 	</Box>
 );
 
+const UserMenuSelect = ({
+	items,
+	onSelect,
+}: {
+	items: Item<UserMenuAction>[];
+	onSelect: ({ value: action }: Item<UserMenuAction>) => void;
+}) => {
+	return (
+		<SelectInput
+			items={items}
+			itemComponent={BreakLineItem}
+			onSelect={onSelect}
+		/>
+	);
+};
+
 const usePositiveCounter = (initialValue?: number) => {
 	const [count, setCount] = useState(initialValue || 1);
 
@@ -578,11 +594,7 @@ export const UserSub = ({ sname }: Props) => {
 							</Text>
 						</Box>
 					)}
-					<SelectInput
-						items={menuItems}
-						itemComponent={BreakLineItem}
-						onSelect={handleSelectMenu}
-					/>
+					<UserMenuSelect items={menuItems} onSelect={handleSelectMenu} />
 				</Box>
 				<Text>{debugConsole}</Text>
 				<Footer />
