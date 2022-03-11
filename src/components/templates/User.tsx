@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import type { VFC } from "react";
 import { Box, Text, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import type {
