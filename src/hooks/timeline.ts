@@ -7,6 +7,22 @@ import type {
 
 import { convertTweetToDisplayable } from "../lib";
 
+export const usePositiveCounter = (initialValue?: number) => {
+	const [count, setCount] = useState(initialValue || 1);
+
+	const increment = () => setCount((x) => x + 1);
+	const decrement = () => setCount((x) => Math.max(x - 1, 1));
+	const reset = () => setCount(initialValue || 1);
+
+	return {
+		count,
+		increment,
+		decrement,
+		reset,
+		setCount,
+	};
+};
+
 interface TimelineHook<T> {
 	paginator: T | undefined;
 	setPaginator: React.Dispatch<React.SetStateAction<T | undefined>>;

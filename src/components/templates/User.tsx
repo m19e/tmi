@@ -18,7 +18,11 @@ import {
 	useRequestResult,
 	useHint,
 } from "../../hooks";
-import { useUserTimeline, useListTimeline } from "../../hooks/timeline";
+import {
+	usePositiveCounter,
+	useUserTimeline,
+	useListTimeline,
+} from "../../hooks/timeline";
 import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
 import SelectInput from "../molecules/SelectInput";
@@ -64,22 +68,6 @@ const UserMenuSelect = ({
 			onSelect={onSelect}
 		/>
 	);
-};
-
-const usePositiveCounter = (initialValue?: number) => {
-	const [count, setCount] = useState(initialValue || 1);
-
-	const increment = () => setCount((x) => x + 1);
-	const decrement = () => setCount((x) => Math.max(x - 1, 1));
-	const reset = () => setCount(initialValue || 1);
-
-	return {
-		count,
-		increment,
-		decrement,
-		reset,
-		setCount,
-	};
 };
 
 interface Props {
