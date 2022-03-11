@@ -11,6 +11,9 @@ import type {
 } from "twitter-api-v2";
 import useUndo from "use-undo";
 
+import SelectInput from "../molecules/SelectInput";
+import type { Item } from "../molecules/SelectInput";
+
 import type { UserMenuAction } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
 import {
@@ -19,45 +22,20 @@ import {
 	useRequestResult,
 	useHint,
 } from "../../hooks";
+import { useApi } from "../../hooks/api";
 import {
 	usePositiveCounter,
 	useUserTimeline,
 	useListTimeline,
 } from "../../hooks/timeline";
-import { useApi } from "../../hooks/api";
 import Footer from "../organisms/Footer";
-import SelectInput from "../molecules/SelectInput";
-import type { Item } from "../molecules/SelectInput";
+import { UserMenuSelect } from "../molecules/UserMenuSelect";
 import { TimelineSelect } from "../molecules/TimelineSelect";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
 import { Breadcrumbs } from "../atoms/Breadcrumbs";
-
-const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
-	isSelected = false,
-	label,
-}) => (
-	<Box marginBottom={1}>
-		<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
-	</Box>
-);
-
-const UserMenuSelect = ({
-	items,
-	onSelect,
-}: {
-	items: Item<UserMenuAction>[];
-	onSelect: ({ value: action }: Item<UserMenuAction>) => void;
-}) => {
-	return (
-		<SelectInput
-			items={items}
-			itemComponent={BreakLineItem}
-			onSelect={onSelect}
-		/>
-	);
-};
+import { BreakLineItem } from "../atoms/BreakLineItem";
 
 interface Props {
 	sname: string;
