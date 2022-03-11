@@ -48,9 +48,13 @@ interface ItemProps {
 	value: TweetV1;
 }
 
-const TweetItem: VFC<ItemProps> = ({ value: raw_tweet }) => {
-	const tweet = convertTweetToDisplayable(raw_tweet);
-	const t = tweet.retweeted_status ?? tweet;
+const TweetItemWrapper: VFC<ItemProps> = ({ value }) => {
+	return <TweetItem tweet={value} />;
+};
+
+const TweetItem: VFC<{ tweet: TweetV1 }> = ({ tweet }) => {
+	const converted = convertTweetToDisplayable(tweet);
+	const t = converted.retweeted_status ?? converted;
 	const ago = getDisplayTimeAgo(t.created_at);
 	const generatedColor = stc(t.user.screen_name);
 
@@ -71,7 +75,7 @@ const TweetItem: VFC<ItemProps> = ({ value: raw_tweet }) => {
 				)}
 				<Text>[{ago}]</Text>
 				<Space />
-				<RetweetedLabel tweet={tweet} />
+				<RetweetedLabel tweet={converted} />
 				<Text color="yellow">
 					{t.favorited && (
 						<Text>
@@ -117,7 +121,7 @@ const TweetSelected: VFC<ItemProps> = ({ value: tweet }) => {
 	return (
 		<Box>
 			<TweetIndicator isSelected={true} />
-			<TweetItem value={tweet} label={tweet.id_str} />
+			<TweetItem tweet={tweet} />
 		</Box>
 	);
 };
@@ -147,7 +151,7 @@ export const TimelineSelect = ({
 			onSelect={onSelectTweet}
 			onHighlight={onHighlightTweet}
 			indicatorComponent={TweetIndicator}
-			itemComponent={TweetItem}
+			itemComponent={TweetItemWrapper}
 			selectedComponent={TweetSelected}
 			limit={limit}
 		/>
