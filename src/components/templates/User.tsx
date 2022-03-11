@@ -11,6 +11,7 @@ import type {
 } from "twitter-api-v2";
 import useUndo from "use-undo";
 
+import type { UserMenuAction } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
 import {
 	useUserConfig,
@@ -32,18 +33,6 @@ import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
 import { Breadcrumbs } from "../atoms/Breadcrumbs";
-
-type UserMenuAction =
-	| "tweets"
-	| "following"
-	| "followed"
-	| "favorites"
-	| "listed"
-	| "list/manage"
-	| "follow/manage"
-	| "mute"
-	| "block"
-	| "profile";
 
 const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
 	isSelected = false,
