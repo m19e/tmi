@@ -29,7 +29,7 @@ import {
 } from "../../hooks/timeline";
 import Footer from "../organisms/Footer";
 import { UserMenuSelect } from "../molecules/UserMenuSelect";
-import { TimelineSelect } from "../molecules/TimelineSelect";
+import { TimelineSelect } from "../molecules/Timeline";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
