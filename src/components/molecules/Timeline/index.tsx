@@ -2,13 +2,13 @@ import type { VFC } from "react";
 import type { TweetV1 } from "twitter-api-v2";
 import stc from "string-to-color";
 import { Box, Text } from "ink";
-import figures from "../../lib/sindresorhus/figures";
+import figures from "../../../lib/sindresorhus/figures";
 
-import { getDisplayTimeAgo, convertTweetToDisplayable } from "../../lib";
-import { NoRotateSelect } from "./SelectInput";
-import type { Item } from "./SelectInput";
-import Quoted from "./Quoted";
-import { Space } from "../atoms/Space";
+import { getDisplayTimeAgo, convertTweetToDisplayable } from "../../../lib";
+import { NoRotateSelect } from "../SelectInput";
+import type { Item } from "../SelectInput";
+import Quoted from "../Quoted";
+import { Space } from "../../atoms/Space";
 
 interface IndicatorProps {
 	isSelected?: boolean;
