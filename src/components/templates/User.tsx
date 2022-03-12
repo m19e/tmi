@@ -29,7 +29,7 @@ import {
 } from "../../hooks/timeline";
 import Footer from "../organisms/Footer";
 import { UserMenuSelect } from "../molecules/UserMenuSelect";
-import { TimelineSelect } from "../molecules/Timeline";
+import { Timeline } from "../molecules/Timeline";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
@@ -575,7 +575,7 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
-					<TimelineSelect
+					<Timeline
 						tweets={userTimeline.tweets}
 						onSelectTweet={handleSelectTweet}
 						onHighlightTweet={handleHighlightTweet}
@@ -616,7 +616,7 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
-					<TimelineSelect
+					<Timeline
 						tweets={listTimeline.tweets}
 						onSelectTweet={handleSelectListTweet}
 						onHighlightTweet={handleHighlightListTweet}
