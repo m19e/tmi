@@ -1,9 +1,9 @@
 import type { VFC } from "react";
 import { Box } from "ink";
+import { TweetMenu } from "../../organisms/TweetMenu";
 import type { TweetItemProps } from "./types";
 import { TweetItem } from "./TweetItem";
 import { TweetIndicator } from "./TweetIndicator";
-import { TweetMenu } from "../../organisms/TweetMenu";
 
 export const Selected: VFC<TweetItemProps> = ({ value: tweet }) => {
 	return (
@@ -12,7 +12,7 @@ export const Selected: VFC<TweetItemProps> = ({ value: tweet }) => {
 				<TweetIndicator isSelected={true} />
 				<TweetItem tweet={tweet} />
 			</Box>
-			<TweetMenu />
+			<TweetMenu tweet={tweet} />
 		</Box>
 	);
 };
