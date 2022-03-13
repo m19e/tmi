@@ -14,7 +14,9 @@ export const curriedSelected: (updater: Updater) => VFC<TweetItemProps> =
 					<TweetIndicator isSelected={true} />
 					<TweetItem tweet={tweet} />
 				</Box>
-				<TweetMenu tweet={tweet} updater={updater} />
+				<Box marginLeft={2}>
+					<TweetMenu tweet={tweet} updater={updater} />
+				</Box>
 			</Box>
 		);
 	};
