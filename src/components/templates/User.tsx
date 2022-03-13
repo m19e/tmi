@@ -567,8 +567,6 @@ export const UserSub = ({ sname }: Props) => {
 	}
 	if (status === "tweets" || status === "tweets/detail") {
 		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
-		const { count: limit } = limitCounter;
-
 		const updater = {
 			update: userTimeline.updateTweet,
 			remove: userTimeline.removeTweet,
@@ -584,8 +582,8 @@ export const UserSub = ({ sname }: Props) => {
 						tweets={userTimeline.tweets}
 						onSelectTweet={handleSelectTweet}
 						onHighlightTweet={handleHighlightTweet}
+						limit={limitCounter.count}
 						updater={updater}
-						limit={limit}
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
@@ -614,8 +612,6 @@ export const UserSub = ({ sname }: Props) => {
 						`@${currentList.owner.screen_name}/${currentList.name}`,
 						"Detail",
 				  ];
-		const { count: limit } = limitCounter;
-
 		const updater = {
 			update: listTimeline.updateTweet,
 			remove: listTimeline.removeTweet,
@@ -631,8 +627,8 @@ export const UserSub = ({ sname }: Props) => {
 						tweets={listTimeline.tweets}
 						onSelectTweet={handleSelectListTweet}
 						onHighlightTweet={handleHighlightListTweet}
+						limit={limitCounter.count}
 						updater={updater}
-						limit={limit}
 					/>
 				</Box>
 				<Footer />
