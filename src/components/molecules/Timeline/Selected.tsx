@@ -1,7 +1,7 @@
 import type { VFC } from "react";
 import { Box } from "ink";
-import { TweetMenu } from "../../organisms/TweetMenu";
 import type { TweetItemProps, Updater } from "./types";
+import { TweetMenu } from "../../organisms/TweetMenu";
 import { TweetItem } from "./TweetItem";
 import { TweetIndicator } from "./TweetIndicator";
 

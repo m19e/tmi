@@ -1,7 +1,7 @@
 import type { VFC } from "react";
 import type { TweetV1 } from "twitter-api-v2";
-import type { Updater } from "../molecules/Timeline/types";
 import { useUserConfig } from "../../hooks";
+import type { Updater } from "../molecules/Timeline/types";
 
 interface Props {
 	tweet: TweetV1;
