@@ -569,7 +569,10 @@ export const UserSub = ({ sname }: Props) => {
 		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
 		const updater = {
 			update: userTimeline.updateTweet,
-			remove: userTimeline.removeTweet,
+			remove: (target_id: string) => {
+				userTimeline.removeTweet(target_id);
+				statusBack();
+			},
 		};
 
 		return (
@@ -614,7 +617,10 @@ export const UserSub = ({ sname }: Props) => {
 				  ];
 		const updater = {
 			update: listTimeline.updateTweet,
-			remove: listTimeline.removeTweet,
+			remove: (target_id: string) => {
+				listTimeline.removeTweet(target_id);
+				statusBack();
+			},
 		};
 
 		return (
