@@ -569,6 +569,11 @@ export const UserSub = ({ sname }: Props) => {
 		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
 		const { count: limit } = limitCounter;
 
+		const updater = {
+			update: userTimeline.updateTweet,
+			remove: userTimeline.removeTweet,
+		};
+
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
@@ -579,6 +584,7 @@ export const UserSub = ({ sname }: Props) => {
 						tweets={userTimeline.tweets}
 						onSelectTweet={handleSelectTweet}
 						onHighlightTweet={handleHighlightTweet}
+						updater={updater}
 						limit={limit}
 					/>
 				</Box>
@@ -610,6 +616,11 @@ export const UserSub = ({ sname }: Props) => {
 				  ];
 		const { count: limit } = limitCounter;
 
+		const updater = {
+			update: listTimeline.updateTweet,
+			remove: listTimeline.removeTweet,
+		};
+
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
@@ -620,6 +631,7 @@ export const UserSub = ({ sname }: Props) => {
 						tweets={listTimeline.tweets}
 						onSelectTweet={handleSelectListTweet}
 						onHighlightTweet={handleHighlightListTweet}
+						updater={updater}
 						limit={limit}
 					/>
 				</Box>
