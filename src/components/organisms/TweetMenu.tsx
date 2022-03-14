@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { VFC } from "react";
 import type { TweetV1 } from "twitter-api-v2";
 import SelectInput from "../molecules/SelectInput";
 import type { Item } from "../molecules/SelectInput";
-import { useUserConfig } from "../../hooks";
+import {
+	useHint,
+	useError,
+	useRequestResult,
+	useUserConfig,
+} from "../../hooks";
 import { useApi } from "../../hooks/api";
 import type { Updater } from "../molecules/Timeline/types";
 
@@ -24,6 +29,9 @@ interface Props {
 }
 
 export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
+	const [, setHint] = useHint();
+	const [, setError] = useError();
+	const [, setRequestResult] = useRequestResult();
 	const [{ userId }] = useUserConfig();
 
 	const api = useApi();
@@ -53,22 +61,22 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			  ]
 	);
 
-	const deleteTweet = async () => {
+	const deleteTweet = useCallback(async () => {
 		const error = await api.deleteTweet(t.id_str);
 		if (typeof error === "string") {
-			// setError(error);
+			setError(error);
 			return;
 		}
-		// setRequestResult(`Successfully deleted: "${tweet.full_text}"`);
+		setRequestResult(`Successfully deleted: "${t.full_text}"`);
 		updater.remove(t.id_str);
-	};
+	}, [t]);
 
 	const handleSelectMenu = ({ value: action }: { value: TweetMenuAction }) => {
 		setIsMenuOpen(false);
 		if (action === "mention") {
 			// mention()
 		} else if (action === "delete") {
-			// deleteTweet()
+			deleteTweet();
 		} else if (action === "re-draft") {
 			// redraft()
 		}
