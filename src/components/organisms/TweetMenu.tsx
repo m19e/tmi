@@ -4,6 +4,7 @@ import type { TweetV1 } from "twitter-api-v2";
 import SelectInput from "../molecules/SelectInput";
 import type { Item } from "../molecules/SelectInput";
 import { useUserConfig } from "../../hooks";
+import { useApi } from "../../hooks/api";
 import type { Updater } from "../molecules/Timeline/types";
 
 import { BreakLineItem } from "../atoms/BreakLineItem";
@@ -24,6 +25,8 @@ interface Props {
 
 export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 	const [{ userId }] = useUserConfig();
+
+	const api = useApi();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
 
@@ -49,6 +52,16 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 					{ label: `Block @${t.user.screen_name}`, value: "block" },
 			  ]
 	);
+
+	const deleteTweet = async () => {
+		const error = await api.deleteTweet(t.id_str);
+		if (typeof error === "string") {
+			// setError(error);
+			return;
+		}
+		// setRequestResult(`Successfully deleted: "${tweet.full_text}"`);
+		updater.remove(t.id_str);
+	};
 
 	const handleSelectMenu = ({ value: action }: { value: TweetMenuAction }) => {
 		setIsMenuOpen(false);
