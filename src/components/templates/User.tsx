@@ -441,6 +441,8 @@ export const UserSub = ({ sname }: Props) => {
 					statusBack();
 					if (status === "tweets" || status === "list/tweets") {
 						setFocusedTweet(undefined);
+						userTimeline.reset();
+						listTimeline.reset();
 					}
 				}
 			},
