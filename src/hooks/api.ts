@@ -3,7 +3,9 @@ import type {
 	UserV1,
 	FriendshipV1,
 	ListV1,
+	ListTimelineV1Paginator,
 	ListMembershipsV1Paginator,
+	UserTimelineV1Paginator,
 	TweetV1TimelineParams,
 	UserShowV1Params,
 	FriendshipShowV1Params,
@@ -12,7 +14,6 @@ import type {
 	AddOrRemoveListMembersV1Params,
 	AccountProfileV1Params,
 	TweetV1UserTimelineParams,
-	UserTimelineV1Paginator,
 	UserLookupV1Params,
 	DoubleEndedIdCursorV1Result,
 	ListMemberShowV1Params,
@@ -38,6 +39,9 @@ interface Api {
 		params: TweetV1TimelineParams
 	) => PromiseWithErrorMessage<TweetV1[]>;
 	getLists: () => PromiseWithError<ListV1[]>;
+	getListTimeline: (
+		params: ListStatusesV1Params
+	) => PromiseWithErrorMessage<ListTimelineV1Paginator>;
 	getListTweets: (
 		params: ListStatusesV1Params
 	) => PromiseWithErrorMessage<TweetV1[]>;
@@ -77,6 +81,8 @@ interface Api {
 	unfavorite: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	retweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
 	unretweet: (id: string) => PromiseWithErrorMessage<TweetV1>;
+	follow: (id: string) => PromiseWithErrorMessage<UserV1>;
+	unfollow: (id: string) => PromiseWithErrorMessage<UserV1>;
 
 	userFavorites: (
 		params: Partial<TweetV1UserTimelineParams>
@@ -187,6 +193,13 @@ export const useApi = (): Api => {
 				.message;
 		}
 	};
+	const getListTimeline = async (params: ListStatusesV1Params) => {
+		try {
+			return await api.listStatuses(params);
+		} catch (error) {
+			return handleResponseError(error, "GET", "lists/statuses").message;
+		}
+	};
 
 	const tweet = async (status: string) => {
 		try {
@@ -283,6 +296,20 @@ export const useApi = (): Api => {
 			return handleResponseError(error, "POST", "statuses/unretweet").message;
 		}
 	};
+	const follow = async (user_id: string) => {
+		try {
+			return await api.post<UserV1>(`friendships/create.json`, { user_id });
+		} catch (error) {
+			return handleResponseError(error, "POST", "friendships/create").message;
+		}
+	};
+	const unfollow = async (user_id: string) => {
+		try {
+			return await api.post<UserV1>(`friendships/destroy.json`, { user_id });
+		} catch (error) {
+			return handleResponseError(error, "POST", "friendships/destroy").message;
+		}
+	};
 
 	// WIP
 	const userFavorites = async (params: Partial<TweetV1UserTimelineParams>) => {
@@ -294,14 +321,18 @@ export const useApi = (): Api => {
 	};
 	const userFollowing = async (params: FriendOrFollowerIdsV1Params) => {
 		try {
-			return await api.get("friends/ids.json", { ...params });
+			return await api.get<DoubleEndedIdCursorV1Result>("friends/ids.json", {
+				...params,
+			});
 		} catch (error) {
 			return handleResponseError(error, "GET", "friends/ids").message;
 		}
 	};
 	const userFollowed = async (params: FriendOrFollowerIdsV1Params) => {
 		try {
-			return await api.get("followers/ids.json", { ...params });
+			return await api.get<DoubleEndedIdCursorV1Result>("followers/ids.json", {
+				...params,
+			});
 		} catch (error) {
 			return handleResponseError(error, "GET", "followers/ids").message;
 		}
@@ -311,6 +342,7 @@ export const useApi = (): Api => {
 		getHomeTweets,
 		getMentionTweets,
 		getLists,
+		getListTimeline,
 		getListTweets,
 		getTweet,
 		getUser,
@@ -330,6 +362,8 @@ export const useApi = (): Api => {
 		unfavorite,
 		retweet,
 		unretweet,
+		follow,
+		unfollow,
 		userFavorites,
 		userFollowing,
 		userFollowed,

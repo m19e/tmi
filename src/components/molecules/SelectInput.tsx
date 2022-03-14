@@ -1,7 +1,9 @@
 import type { VFC } from "react";
 import { Text, Box } from "ink";
 import figures from "../../lib/sindresorhus/figures";
-import CustomSelectInput from "./CostumSelectInput";
+import CustomSelectInput, {
+	NoRotateSelectInput as NoRotate,
+} from "./CostumSelectInput";
 
 interface ItemProps {
 	isSelected?: boolean;
@@ -49,6 +51,10 @@ interface Props<V> {
 	 */
 	itemComponent?: VFC<ItemProps>;
 	/**
+	 * Custom component to add the selected component. (local extended)
+	 */
+	selectedComponent?: VFC<ItemProps>;
+	/**
 	 * Function to call when user selects an item. Item object is passed to that function as an argument.
 	 */
 	onSelect?: (item: Item<V>) => void;
@@ -81,6 +87,7 @@ function Select<V>({
 	itemComponent = DefaultItemComponent,
 	indicatorComponent = DefaultIndicatorComponent,
 	limit = undefined,
+	initialIndex = 0,
 }: Props<V>): JSX.Element {
 	return (
 		<CustomSelectInput
@@ -89,6 +96,31 @@ function Select<V>({
 			itemComponent={itemComponent}
 			indicatorComponent={indicatorComponent}
 			limit={limit}
+			initialIndex={initialIndex}
+		/>
+	);
+}
+
+export function NoRotateSelect<V>({
+	items = [],
+	onSelect,
+	onHighlight,
+	itemComponent = DefaultItemComponent,
+	indicatorComponent = DefaultIndicatorComponent,
+	selectedComponent = undefined,
+	limit = undefined,
+	initialIndex = 0,
+}: Props<V>): JSX.Element {
+	return (
+		<NoRotate
+			items={items}
+			onSelect={onSelect}
+			onHighlight={onHighlight}
+			itemComponent={itemComponent}
+			indicatorComponent={indicatorComponent}
+			limit={limit}
+			initialIndex={initialIndex}
+			selectedComponent={selectedComponent}
 		/>
 	);
 }

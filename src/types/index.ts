@@ -78,3 +78,15 @@ export interface Mover {
 	top: () => void;
 	bottom: () => void;
 }
+
+export type UserMenuAction =
+	| "tweets"
+	| "following"
+	| "followed"
+	| "favorites"
+	| "listed"
+	| "list/manage"
+	| "follow/manage"
+	| "mute"
+	| "block"
+	| "profile";

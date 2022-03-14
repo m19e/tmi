@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from "react";
-import type { VFC } from "react";
-import { Box, Text } from "ink";
+import React, { useState, useEffect, useCallback } from "react";
+import { Box, Text, useInput } from "ink";
 import useDimensions from "ink-use-stdout-dimensions";
 import type {
 	UserV1,
 	FriendshipV1,
 	ListV1,
 	TweetV1,
-	UserTimelineV1Paginator,
+	ListMembershipsV1Paginator,
 } from "twitter-api-v2";
+import useUndo from "use-undo";
 
+import SelectInput from "../molecules/SelectInput";
+import type { Item } from "../molecules/SelectInput";
+
+import type { UserMenuAction } from "../../types";
 import type { TrimmedList } from "../../types/twitter";
 import {
 	useUserConfig,
@@ -18,78 +22,19 @@ import {
 	useHint,
 } from "../../hooks";
 import { useApi } from "../../hooks/api";
+import {
+	usePositiveCounter,
+	useUserTimeline,
+	useListTimeline,
+} from "../../hooks/timeline";
 import Footer from "../organisms/Footer";
-import SelectInput, { Item } from "../molecules/SelectInput";
+import { UserMenuSelect } from "../molecules/UserMenuSelect";
+import { Timeline } from "../molecules/Timeline";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
-
-type UserMenuAction =
-	| "tweets"
-	| "following"
-	| "followed"
-	| "favorites"
-	| "listed"
-	| "list/manage"
-	| "follow"
-	| "unfollow"
-	| "mute"
-	| "block"
-	| "profile";
-
-interface FriendshipProps {
-	relation: FriendshipV1["relationship"];
-}
-
-const FriendshipLabel = ({ relation }: FriendshipProps) => {
-	const { blocked_by, blocking, following_requested, followed_by, following } =
-		relation.source;
-
-	if (
-		blocked_by ||
-		blocking ||
-		following_requested ||
-		followed_by ||
-		following
-	) {
-		return (
-			<Box marginBottom={1}>
-				{(() => {
-					if (blocked_by && blocking) {
-						return <Text color="red">[blocked / blocking]</Text>;
-					}
-					if (blocked_by) {
-						return <Text color="red">[blocked]</Text>;
-					}
-					if (blocking) {
-						return <Text color="red">[blocking]</Text>;
-					}
-					if (following_requested) {
-						return <Text color="#00acee">[pending]</Text>;
-					}
-					if (followed_by && following) {
-						return <Text color="#00acee">[followed / following]</Text>;
-					}
-					if (followed_by) {
-						return <Text color="green">[followed]</Text>;
-					}
-					if (following) {
-						return <Text color="yellow">[following]</Text>;
-					}
-				})()}
-			</Box>
-		);
-	}
-	return null;
-};
-
-const BreakLineItem: VFC<{ isSelected?: boolean; label: string }> = ({
-	isSelected = false,
-	label,
-}) => (
-	<Box marginBottom={1}>
-		<Text color={isSelected ? "#00acee" : undefined}>{label}</Text>
-	</Box>
-);
+import { FriendshipLabel } from "../atoms/FriendshipLabel";
+import { Breadcrumbs } from "../atoms/Breadcrumbs";
+import { BreakLineItem } from "../atoms/BreakLineItem";
 
 interface Props {
 	sname: string;
@@ -107,28 +52,42 @@ export const UserSub = ({ sname }: Props) => {
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
-	const [status, setStatus] = useState<
+	const [
+		{ present: status },
+		{ set: setStatus, canUndo: canStatusBack, undo: statusBack },
+	] = useUndo<
 		| "load"
 		| "user"
 		| "tweets"
+		| "tweets/detail"
 		| "listed"
-		| "list"
+		| "list/tweets"
+		| "list/tweets/detail"
 		| "list/manage"
 		| "list/manage/action"
+		| "follow/manage"
 	>("load");
 
 	const [menuItems, setMenuItems] = useState<Item<UserMenuAction>[]>([]);
-	const [listed, setListed] = useState<ListV1[]>([]);
-	const [currentList, setCurrentList] = useState<TrimmedList>();
-	const [listTimeline, setListTimeline] = useState<TweetV1[]>([]);
 
 	const [nextCursor, setNextCursor] = useState("0");
 	const [remainIds, setRemainIds] = useState<string[]>([]);
 	const [users, setUsers] = useState<UserV1[]>([]);
 
-	const [userTimelinePaginator, setUserTimelinePaginator] = useState<
-		UserTimelineV1Paginator | undefined
+	const limitCounter = usePositiveCounter(5);
+
+	const userTimeline = useUserTimeline();
+	const listTimeline = useListTimeline();
+
+	const [focusedTweet, setFocusedTweet] = useState<TweetV1 | undefined>(
+		undefined
+	);
+	const [isFetching, setIsFetching] = useState(false);
+
+	const [listedPaginator, setListedPaginator] = useState<
+		ListMembershipsV1Paginator | undefined
 	>(undefined);
+	const [currentList, setCurrentList] = useState<TrimmedList>();
 
 	const [lists, setLists] = useState<ListV1[]>([]);
 	const [manageList, setManageList] = useState<ListV1 | undefined>(undefined);
@@ -193,11 +152,11 @@ export const UserSub = ({ sname }: Props) => {
 			const follow: Item<UserMenuAction> = rel.source.following
 				? {
 						label: "Unfollow this user",
-						value: "unfollow",
+						value: "follow/manage",
 				  }
 				: {
 						label: "Follow this user",
-						value: "follow",
+						value: "follow/manage",
 				  };
 			actions = [
 				...actions,
@@ -226,7 +185,7 @@ export const UserSub = ({ sname }: Props) => {
 		setRemainIds(remain);
 	};
 
-	const transitionTweets = async () => {
+	const transitionTweets = useCallback(async () => {
 		const res = await api.getUserTimeline({
 			user_id: user.id_str,
 			include_rts: true,
@@ -237,17 +196,10 @@ export const UserSub = ({ sname }: Props) => {
 			setError(res);
 			return;
 		}
-		setUserTimelinePaginator(res);
-		setDebugConsole(
-			JSON.stringify(
-				res.tweets.map((t) => `@${t.user.screen_name} ${t.full_text}`),
-				null,
-				2
-			)
-		);
+		userTimeline.setPaginator(res);
 		setStatus("tweets");
-	};
-	const transitionFollowing = async () => {
+	}, [user]);
+	const transitionFollowing = useCallback(async () => {
 		const res = await api.userFollowing({
 			user_id: user.id_str,
 			stringify_ids: true,
@@ -260,8 +212,8 @@ export const UserSub = ({ sname }: Props) => {
 		const { ids, next_cursor_str } = res;
 		setNextCursor(next_cursor_str);
 		await getUsersFromIds(ids);
-	};
-	const transitionFollowed = async () => {
+	}, [user]);
+	const transitionFollowed = useCallback(async () => {
 		const res = await api.userFollowed({
 			user_id: user.id_str,
 			stringify_ids: true,
@@ -274,44 +226,53 @@ export const UserSub = ({ sname }: Props) => {
 		const { ids, next_cursor_str } = res;
 		setNextCursor(next_cursor_str);
 		await getUsersFromIds(ids);
-	};
-	const transitionFavorites = async () => {
+	}, [user]);
+	const transitionFavorites = useCallback(async () => {
 		const res = await api.userFavorites({
 			user_id: user.id_str,
 			tweet_mode: "extended",
 			count: 200,
 		});
 		if (typeof res === "string") {
-			setDebugConsole(res);
+			setError(res);
 			return;
 		}
 		setDebugConsole(JSON.stringify(res, null, 2));
-	};
-	const transitionListed = async () => {
-		const user_id = user.id_str;
+	}, [user]);
+	const transitionListed = useCallback(async () => {
 		const res = await api.getUserListed({
-			user_id,
+			user_id: user.id_str,
 			count: 1000,
 		});
 		if (typeof res === "string") {
+			setError(res);
 			return;
 		}
-		const { lists, ...cursors } = res.data;
-		setListed(lists);
-		setDebugConsole(
-			JSON.stringify({ length: lists.length, ...cursors }, null, 2)
-		);
+		setListedPaginator(res);
 		setStatus("listed");
-	};
-	const transitionListManage = async () => {
+	}, [user]);
+	const transitionListManage = useCallback(async () => {
 		const res = await api.getLists();
 		if (!Array.isArray(res)) {
 			setError(res.message);
-		} else {
-			setLists(res);
+			return;
 		}
+		setLists(res);
 		setStatus("list/manage");
-	};
+	}, [user]);
+	const transitionFollowManage = useCallback(async () => {
+		const rel = await api.getRelation({
+			source_id: authUserId,
+			target_id: user.id_str,
+		});
+		if (typeof rel === "string") {
+			setError(rel);
+			return;
+		}
+		setRelationship(rel.relationship);
+		setStatus("follow/manage");
+		initMenu(user, rel.relationship);
+	}, [authUserId, user]);
 
 	const handleSelectMenu = ({ value: action }: Item<UserMenuAction>) => {
 		if (action === "tweets") {
@@ -328,10 +289,8 @@ export const UserSub = ({ sname }: Props) => {
 			transitionListManage();
 		} else if (action === "profile") {
 			// implemented
-		} else if (action === "follow") {
-			// yet
-		} else if (action === "unfollow") {
-			// yet
+		} else if (action === "follow/manage") {
+			transitionFollowManage();
 		} else if (action === "mute") {
 			// yet
 		} else if (action === "block") {
@@ -339,14 +298,39 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	};
 
+	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
+		setFocusedTweet(tweet);
+		setStatus("tweets/detail");
+	};
+	const handleHighlightTweet = useCallback(
+		async (item: { value: TweetV1 }) => {
+			try {
+				const tweet = item.value;
+				setFocusedTweet(tweet);
+				if (isFetching) return;
+				const { tweets } = userTimeline;
+				const bottom = tweets[tweets.length - 1];
+				if (bottom.id_str === tweet.id_str) {
+					setIsFetching(true);
+					await userTimeline.fetchNext();
+					setIsFetching(false);
+				}
+			} catch (error) {
+				// do nothing in catch block
+				// to avoid flickering console
+			}
+		},
+		[isFetching, userTimeline]
+	);
 	const handleSelectList = async ({ value: list }: { value: ListV1 }) => {
-		const res = await api.getListTweets({
+		const res = await api.getListTimeline({
 			list_id: list.id_str,
 			count: 200,
 			tweet_mode: "extended",
 			include_entities: true,
 		});
 		if (typeof res === "string") {
+			setError(res);
 			return;
 		}
 		const { id_str, name, mode, user } = list;
@@ -360,9 +344,33 @@ export const UserSub = ({ sname }: Props) => {
 				screen_name: user.screen_name,
 			},
 		});
-		setListTimeline(res);
-		setStatus("list");
+		listTimeline.setPaginator(res);
+		setStatus("list/tweets");
 	};
+	const handleSelectListTweet = ({ value: tweet }: { value: TweetV1 }) => {
+		setFocusedTweet(tweet);
+		setStatus("list/tweets/detail");
+	};
+	const handleHighlightListTweet = useCallback(
+		async (item: { value: TweetV1 }) => {
+			try {
+				const tweet = item.value;
+				setFocusedTweet(tweet);
+				if (isFetching) return;
+				const { tweets } = listTimeline;
+				const bottom = tweets[tweets.length - 1];
+				if (bottom.id_str === tweet.id_str) {
+					setIsFetching(true);
+					await listTimeline.fetchNext();
+					setIsFetching(false);
+				}
+			} catch (error) {
+				// do nothing in catch block
+				// to avoid flickering console
+			}
+		},
+		[isFetching, listTimeline]
+	);
 	const handleSelectManageList = async ({ value: list }: { value: ListV1 }) => {
 		setManageList(list);
 		setStatus("list/manage/action");
@@ -382,15 +390,134 @@ export const UserSub = ({ sname }: Props) => {
 		if (typeof res === "string") {
 			setDebugConsole(res);
 			return;
-		} else {
-			setDebugConsole(
-				`Successfully ${action} @${user.screen_name} ${
-					action === "add" ? "to" : "from"
-				} @${manageList.user.screen_name}/${manageList.name}`
-			);
 		}
+		setDebugConsole(
+			`Successfully ${action} @${user.screen_name} ${
+				action === "add" ? "to" : "from"
+			} @${manageList.user.screen_name}/${manageList.name}`
+		);
 		setStatus("list/manage");
 	};
+	const handleSelectFollowAction = async ({
+		value: action,
+	}: {
+		value: "follow" | "unfollow" | "cancel";
+	}) => {
+		if (action === "cancel") {
+			setStatus("user");
+			return;
+		}
+
+		const { id_str: user_id } = user;
+		const res =
+			action === "follow"
+				? await api.follow(user_id)
+				: await api.unfollow(user_id);
+		if (typeof res === "string") {
+			setError(res);
+			return;
+		}
+		setUser(res);
+		setRequestResult(`Successfully ${action}ed: @${res.screen_name}`);
+
+		const { id_str: target_id } = res;
+		const rel = await api.getRelation({
+			source_id: authUserId,
+			target_id,
+		});
+		if (typeof rel === "string") {
+			setError(rel);
+		} else {
+			setRelationship(rel.relationship);
+			initMenu(res, rel.relationship);
+		}
+		setStatus("user");
+	};
+
+	useInput(
+		useCallback(
+			(_, key) => {
+				if (key.escape && canStatusBack) {
+					statusBack();
+					if (status === "tweets" || status === "list/tweets") {
+						setFocusedTweet(undefined);
+					}
+				}
+			},
+			[status, canStatusBack]
+		),
+		{
+			isActive: status !== "load" && status !== "user",
+		}
+	);
+
+	const updateTweet = useCallback(
+		(newTweet: TweetV1) => {
+			if (status === "tweets" || status === "tweets/detail") {
+				userTimeline.updateTweet(newTweet);
+			} else if (status === "list/tweets" || status === "list/tweets/detail") {
+				listTimeline.updateTweet(newTweet);
+			}
+		},
+		[status]
+	);
+
+	const fav = useCallback(async () => {
+		const { favorited, id_str: tweet_id } = focusedTweet;
+		const res = favorited
+			? await api.unfavorite(tweet_id)
+			: await api.favorite(tweet_id);
+		if (typeof res === "string") {
+			setError(res);
+			return;
+		}
+		updateTweet(res);
+		setRequestResult(
+			`Successfully ${res.favorited ? "favorited" : "unfavorited"}: @${
+				res.user.screen_name
+			} "${res.full_text.split("\n").join(" ")}"`
+		);
+	}, [focusedTweet]);
+	const rt = useCallback(async () => {
+		const { retweeted, id_str: tweet_id } = focusedTweet;
+		const res = retweeted
+			? await api.unretweet(tweet_id)
+			: await api.retweet(tweet_id);
+		if (typeof res === "string") {
+			setError(res);
+			return;
+		}
+		updateTweet(res);
+		setRequestResult(
+			`Successfully ${res.retweeted ? "retweeted" : "unretweeted"}: @${
+				res.user.screen_name
+			} "${res.full_text.split("\n").join(" ")}"`
+		);
+	}, [focusedTweet]);
+
+	useInput(
+		useCallback(
+			(input, key) => {
+				if (input === "+" || input === "=") {
+					limitCounter.increment();
+				} else if (input === "-" || input === "_") {
+					limitCounter.decrement();
+				} else if (input === "t") {
+					rt();
+				} else if (input === "f") {
+					fav();
+				} else if (input === "n") {
+					// setIsNewTweetOpen(true);
+				}
+			},
+			[limitCounter]
+		),
+		{
+			isActive: status === "tweets" || status === "list/tweets",
+		}
+	);
+
+	const rootLabel = user ? `@${user.screen_name}` : "*Invalid user*";
 
 	if (status === "load") {
 		return (
@@ -404,6 +531,9 @@ export const UserSub = ({ sname }: Props) => {
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Breadcrumbs root={rootLabel} />
+					</Box>
 					<Box marginBottom={1}>
 						<Text>
 							{user.name} {user.protected && "🔒 "}(@{user.screen_name})
@@ -428,10 +558,35 @@ export const UserSub = ({ sname }: Props) => {
 							</Text>
 						</Box>
 					)}
-					<SelectInput
-						items={menuItems}
-						itemComponent={BreakLineItem}
-						onSelect={handleSelectMenu}
+					<UserMenuSelect items={menuItems} onSelect={handleSelectMenu} />
+				</Box>
+				<Text>{debugConsole}</Text>
+				<Footer />
+			</Box>
+		);
+	}
+	if (status === "tweets" || status === "tweets/detail") {
+		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
+		const updater = {
+			update: userTimeline.updateTweet,
+			remove: (target_id: string) => {
+				userTimeline.removeTweet(target_id);
+				statusBack();
+			},
+		};
+
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
+					</Box>
+					<Timeline
+						tweets={userTimeline.tweets}
+						onSelectTweet={handleSelectTweet}
+						onHighlightTweet={handleHighlightTweet}
+						limit={limitCounter.count}
+						updater={updater}
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
@@ -439,35 +594,51 @@ export const UserSub = ({ sname }: Props) => {
 			</Box>
 		);
 	}
-	if (status === "tweets") {
-		return (
-			<Text>
-				<Text color="#00acee">@{user.screen_name}</Text>'s tweets
-			</Text>
-		);
-	}
 	if (status === "listed") {
+		const memberedLists = listedPaginator.lists;
+
 		return (
 			<Box flexDirection="column" minHeight={rows}>
 				<Box marginBottom={1}>
-					<Text>
-						Lists <Text color="#00acee">@{user.screen_name}</Text>'s on
-					</Text>
+					<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
 				</Box>
-				<SelectMemberedList lists={listed} onSelect={handleSelectList} />
+				<SelectMemberedList lists={memberedLists} onSelect={handleSelectList} />
 			</Box>
 		);
 	}
-	if (status === "list") {
+	if (status === "list/tweets" || status === "list/tweets/detail") {
+		const breadcrumbs =
+			status === "list/tweets"
+				? ["Listed", `@${currentList.owner.screen_name}/${currentList.name}`]
+				: [
+						"Listed",
+						`@${currentList.owner.screen_name}/${currentList.name}`,
+						"Detail",
+				  ];
+		const updater = {
+			update: listTimeline.updateTweet,
+			remove: (target_id: string) => {
+				listTimeline.removeTweet(target_id);
+				statusBack();
+			},
+		};
+
 		return (
-			<>
-				<Text>{JSON.stringify(currentList, null, 4)}</Text>
-				{listTimeline.slice(0, 20).map((tweet) => (
-					<Text>
-						@{tweet.user.screen_name} {tweet.full_text}
-					</Text>
-				))}
-			</>
+			<Box flexDirection="column" minHeight={rows}>
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
+					</Box>
+					<Timeline
+						tweets={listTimeline.tweets}
+						onSelectTweet={handleSelectListTweet}
+						onHighlightTweet={handleHighlightListTweet}
+						limit={limitCounter.count}
+						updater={updater}
+					/>
+				</Box>
+				<Footer />
+			</Box>
 		);
 	}
 	if (status === "list/manage") {
@@ -504,6 +675,45 @@ export const UserSub = ({ sname }: Props) => {
 						]}
 						onSelect={handleSelectListAction}
 						itemComponent={BreakLineItem}
+					/>
+				</Box>
+				<Text>{debugConsole}</Text>
+				<Footer />
+			</Box>
+		);
+	}
+	if (status === "follow/manage") {
+		return (
+			<Box flexDirection="column" minHeight={rows}>
+				<Box flexDirection="column" flexGrow={1}>
+					<Box marginBottom={1}>
+						<Text>
+							{relationship.source.following ? "Unfollow" : "Follow"}{" "}
+							<Text color="#00acee">@{user.screen_name}</Text>
+						</Text>
+					</Box>
+					<SelectInput
+						items={[
+							relationship.source.following
+								? {
+										key: "unfollow",
+										label: "OK",
+										value: "unfollow" as "unfollow",
+								  }
+								: {
+										key: "follow",
+										label: "OK",
+										value: "follow" as "follow",
+								  },
+							{
+								key: "cancel",
+								label: "cancel",
+								value: "cancel" as "cancel",
+							},
+						]}
+						onSelect={handleSelectFollowAction}
+						itemComponent={BreakLineItem}
+						initialIndex={1}
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
