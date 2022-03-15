@@ -61,6 +61,8 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			  ]
 	);
 
+	// TODO implement mention action
+	const mention = useCallback(async () => {}, []);
 	const deleteTweet = useCallback(async () => {
 		const error = await api.deleteTweet(t.id_str);
 		if (typeof error === "string") {
