@@ -17,6 +17,7 @@ interface Props {
 	onHighlightTweet: (item: { value: TweetV1 }) => void;
 	updater: Updater;
 	limit: number;
+	forceUnselect: boolean;
 }
 
 export const Timeline = ({
@@ -25,6 +26,7 @@ export const Timeline = ({
 	onHighlightTweet,
 	updater,
 	limit,
+	forceUnselect,
 }: Props) => {
 	const items: Item<TweetV1>[] = tweets.map((t) => ({
 		key: t.id_str,
@@ -42,6 +44,7 @@ export const Timeline = ({
 			itemComponent={TweetItemWrapper}
 			selectedComponent={Selected}
 			limit={limit}
+			forceUnselect={forceUnselect}
 		/>
 	);
 };

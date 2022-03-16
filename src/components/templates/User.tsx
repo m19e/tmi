@@ -589,6 +589,7 @@ export const UserSub = ({ sname }: Props) => {
 						onHighlightTweet={handleHighlightTweet}
 						limit={limitCounter.count}
 						updater={updater}
+						forceUnselect={status === "tweets"}
 					/>
 				</Box>
 				<Text>{debugConsole}</Text>
@@ -637,6 +638,7 @@ export const UserSub = ({ sname }: Props) => {
 						onHighlightTweet={handleHighlightListTweet}
 						limit={limitCounter.count}
 						updater={updater}
+						forceUnselect={status === "list/tweets"}
 					/>
 				</Box>
 				<Footer />

@@ -67,6 +67,7 @@ export function NoRotateSelect<V>({
 	selectedComponent = undefined,
 	limit = undefined,
 	initialIndex = 0,
+	forceUnselect = undefined,
 }: Props<V>): JSX.Element {
 	return (
 		<NoRotate
@@ -76,6 +77,7 @@ export function NoRotateSelect<V>({
 			itemComponent={itemComponent}
 			indicatorComponent={indicatorComponent}
 			limit={limit}
+			forceUnselect={forceUnselect}
 			initialIndex={initialIndex}
 			selectedComponent={selectedComponent}
 		/>
