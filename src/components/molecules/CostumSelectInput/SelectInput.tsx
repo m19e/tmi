@@ -10,7 +10,7 @@ import type { Props as ItemProps } from "./Item";
 import { Indicator } from "./Indicator";
 import { Item } from "./Item";
 
-interface Props<V> {
+export interface Props<V> {
 	/**
 	 * Items to display in a list. Each item must be an object and have `label` and `value` props, it may also optionally have a `key` prop.
 	 * If no `key` prop is provided, `value` will be used as the item key.
@@ -60,6 +60,8 @@ interface Props<V> {
 	 * Function to call when user highlights an item. Item object is passed to that function as an argument.
 	 */
 	onHighlight?: (item: Item<V>) => void;
+
+	forceUnselect?: boolean;
 }
 
 export interface Item<V> {
@@ -196,6 +198,7 @@ export function NoRotateSelectInput<V>({
 	limit: customLimit,
 	onSelect,
 	onHighlight,
+	forceUnselect = undefined,
 }: Props<V>): JSX.Element {
 	const [cursorIndex, setCursorIndex] = useState(0);
 	const [selectedIndex, setSelectedIndex] = useState(initialIndex);
@@ -221,6 +224,12 @@ export function NoRotateSelectInput<V>({
 			}
 		}
 	}, [limit]);
+
+	useEffect(() => {
+		if (forceUnselect) {
+			setSelected(false);
+		}
+	}, [forceUnselect]);
 
 	useInput(
 		useCallback(
