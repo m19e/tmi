@@ -77,9 +77,9 @@ export function NoRotateSelect<V>({
 			itemComponent={itemComponent}
 			indicatorComponent={indicatorComponent}
 			limit={limit}
-			forceUnselect={forceUnselect}
 			initialIndex={initialIndex}
 			selectedComponent={selectedComponent}
+			forceUnselect={forceUnselect}
 		/>
 	);
 }
