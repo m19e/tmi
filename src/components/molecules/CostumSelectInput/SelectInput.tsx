@@ -61,6 +61,9 @@ export interface Props<V> {
 	 */
 	onHighlight?: (item: Item<V>) => void;
 
+	/**
+	 * Override selected flag inner select-input. Pass true => unselect, other => do nothing.
+	 */
 	forceUnselect?: boolean;
 }
 
