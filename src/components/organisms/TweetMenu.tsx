@@ -37,10 +37,15 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 	const api = useApi();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(true);
+	const [isTweetOpen, setIsTweetOpen] = useState(false);
+	const [initialText, setInitialText] = useState("");
+	const [tweetMode, setTweetMode] = useState<
+		"none" | "mention" | "reply" | "quote"
+	>("none");
 
 	const t = tweet.retweeted_status ?? tweet;
 	const myTweet = t.user.id_str === userId;
-	// const quoteUrl = `https://twitter.com/${t.user.screen_name}/status/${t.id_str}`;
+	const quoteUrl = `https://twitter.com/${t.user.screen_name}/status/${t.id_str}`;
 
 	const items: Item<TweetMenuAction>[] = [].concat(
 		[
@@ -82,6 +87,33 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		} else if (action === "re-draft") {
 			// redraft()
 		}
+	};
+
+	const handleMentionSubmit = async (text: string) => {
+		const err = await api.tweet(text);
+		if (typeof err === "string") {
+			setError(err);
+			return;
+		}
+		setRequestResult(`Successfully tweeted: "${text}"`);
+	};
+	const handleReplySubmit = async (text: string) => {
+		const err = await api.reply(text, t.id_str);
+		if (typeof err === "string") {
+			setError(err);
+			return;
+		}
+		setRequestResult(
+			`Successfully replied to @${t.user.screen_name}: "${text}"`
+		);
+	};
+	const handleQuoteSubmit = async (text: string) => {
+		const err = await api.quote(text, quoteUrl);
+		if (typeof err === "string") {
+			setError(err);
+			return;
+		}
+		setRequestResult(`Successfully quoted: "${text}"`);
 	};
 
 	if (isMenuOpen) {
