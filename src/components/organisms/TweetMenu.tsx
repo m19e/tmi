@@ -11,7 +11,7 @@ import {
 } from "../../hooks";
 import { useApi } from "../../hooks/api";
 import type { Updater } from "../molecules/Timeline/types";
-
+import { NewTweetBox } from "../molecules/Timeline/NewTweetBox";
 import { BreakLineItem } from "../atoms/BreakLineItem";
 
 type TweetMenuActionTarget = "user" | "retweets" | "quotes" | "client";
@@ -67,7 +67,11 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 	);
 
 	// TODO implement mention action
-	const mention = useCallback(async () => {}, []);
+	const mention = () => {
+		setTweetMode("mention");
+		setIsTweetOpen(true);
+		setHint("timeline/detail/input");
+	};
 	const deleteTweet = useCallback(async () => {
 		const error = await api.deleteTweet(t.id_str);
 		if (typeof error === "string") {
@@ -81,7 +85,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 	const handleSelectMenu = ({ value: action }: { value: TweetMenuAction }) => {
 		setIsMenuOpen(false);
 		if (action === "mention") {
-			// mention()
+			mention();
 		} else if (action === "delete") {
 			deleteTweet();
 		} else if (action === "re-draft") {
@@ -96,6 +100,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			return;
 		}
 		setRequestResult(`Successfully tweeted: "${text}"`);
+		setIsTweetOpen(false);
 	};
 	const handleReplySubmit = async (text: string) => {
 		const err = await api.reply(text, t.id_str);
@@ -106,6 +111,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		setRequestResult(
 			`Successfully replied to @${t.user.screen_name}: "${text}"`
 		);
+		setIsTweetOpen(false);
 	};
 	const handleQuoteSubmit = async (text: string) => {
 		const err = await api.quote(text, quoteUrl);
@@ -114,6 +120,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			return;
 		}
 		setRequestResult(`Successfully quoted: "${text}"`);
+		setIsTweetOpen(false);
 	};
 
 	if (isMenuOpen) {
@@ -124,6 +131,23 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 				itemComponent={BreakLineItem}
 			/>
 		);
+	}
+	if (isTweetOpen) {
+		if (tweetMode === "mention") {
+			return (
+				<NewTweetBox
+					type="new"
+					initialText={`@${t.user.screen_name} `}
+					onSubmit={handleMentionSubmit}
+				/>
+			);
+		}
+		if (tweetMode === "reply") {
+			return <NewTweetBox type="reply" onSubmit={handleReplySubmit} />;
+		}
+		if (tweetMode === "quote") {
+			return <NewTweetBox type="quote" onSubmit={handleQuoteSubmit} />;
+		}
 	}
 	return null;
 };
