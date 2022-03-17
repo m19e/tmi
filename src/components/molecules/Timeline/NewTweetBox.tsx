@@ -31,8 +31,10 @@ const useTweetText = (
 	return [{ tweetText, weightedLength, invalid }, setTweetText];
 };
 
+type TweetBoxType = "new" | "reply" | "quote";
+
 interface Props {
-	type: "new" | "reply" | "quote";
+	type: TweetBoxType;
 	onSubmit: (v: string) => void;
 	initialText?: string;
 }
