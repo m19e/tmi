@@ -69,7 +69,8 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 	const mention = () => {
 		setTweetMode("mention");
 		setIsTweetOpen(true);
-		setHint("timeline/detail/input");
+		// 何故かsetHintするとメニュー選択されない
+		// setHint("timeline/detail/input");
 	};
 	const deleteTweet = useCallback(async () => {
 		const error = await api.deleteTweet(t.id_str);
@@ -136,17 +137,22 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			return (
 				<NewTweetBox
 					type="new"
-					initialText={`@${t.user.screen_name} `}
 					onSubmit={handleMentionSubmit}
+					initialText={`@${t.user.screen_name} `}
 				/>
 			);
 		}
 		if (tweetMode === "reply") {
-			return <NewTweetBox type="reply" onSubmit={handleReplySubmit} />;
+			return (
+				<NewTweetBox type="reply" onSubmit={handleReplySubmit} tweet={t} />
+			);
 		}
 		if (tweetMode === "quote") {
-			return <NewTweetBox type="quote" onSubmit={handleQuoteSubmit} />;
+			return (
+				<NewTweetBox type="quote" onSubmit={handleQuoteSubmit} tweet={t} />
+			);
 		}
 	}
+
 	return null;
 };
