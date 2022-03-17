@@ -301,6 +301,7 @@ export const UserSub = ({ sname }: Props) => {
 	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
 		setFocusedTweet(tweet);
 		setStatus("tweets/detail");
+		setHint("timeline/detail");
 	};
 	const handleHighlightTweet = useCallback(
 		async (item: { value: TweetV1 }) => {
@@ -592,7 +593,6 @@ export const UserSub = ({ sname }: Props) => {
 						forceUnselect={status === "tweets"}
 					/>
 				</Box>
-				<Text>{debugConsole}</Text>
 				<Footer />
 			</Box>
 		);
