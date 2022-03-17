@@ -2,10 +2,12 @@ import { useState, useCallback } from "react";
 import type { VFC } from "react";
 import { Text, Box, useInput } from "ink";
 import TextInput from "ink-text-input";
+import type { TweetV1 } from "twitter-api-v2";
 import { parseTweet } from "twitter-text";
 import type { ParsedTweet } from "twitter-text";
 
 import figures from "../../../lib/sindresorhus/figures";
+import Quoted from "../../molecules/Quoted";
 import Counter from "../../atoms/CharCounter";
 
 interface TweetTextStates {
@@ -36,11 +38,13 @@ type TweetBoxType = "new" | "reply" | "quote";
 interface Props {
 	type: TweetBoxType;
 	onSubmit: (v: string) => void;
+	tweet?: TweetV1;
 	initialText?: string;
 }
 
 export const NewTweetBox: VFC<Props> = ({
 	onSubmit,
+	tweet = undefined,
 	initialText = undefined,
 }) => {
 	const [{ tweetText, weightedLength, invalid }, setTweetText] =
@@ -85,6 +89,7 @@ export const NewTweetBox: VFC<Props> = ({
 						onChange={setTweetText}
 						onSubmit={handleWaitReturn}
 					/>
+					<Quoted tweet={tweet} />
 				</Box>
 			</Box>
 		</Box>
