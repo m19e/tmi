@@ -9,6 +9,7 @@ import type { ParsedTweet } from "twitter-text";
 import figures from "../../../lib/sindresorhus/figures";
 import Quoted from "../../molecules/Quoted";
 import Counter from "../../atoms/CharCounter";
+import { Space } from "../../atoms/Space";
 
 interface TweetTextStates {
 	tweetText: string;
@@ -35,6 +36,27 @@ const useTweetText = (
 
 type TweetBoxType = "new" | "reply" | "quote";
 
+const TweetBoxHeader: VFC<{ type: TweetBoxType; tweet: TweetV1 }> = ({
+	type,
+	tweet,
+}) => {
+	if (type === "reply") {
+		return (
+			<Text>
+				Replying to <Text color="#00acee">@{tweet.user.screen_name}</Text>
+			</Text>
+		);
+	}
+	if (type === "quote") {
+		return (
+			<Text>
+				Quote <Text color="#00acee">@{tweet.user.screen_name}</Text>'s tweet
+			</Text>
+		);
+	}
+	return <Text>Tweet</Text>;
+};
+
 interface Props {
 	type: TweetBoxType;
 	onSubmit: (v: string) => void;
@@ -43,6 +65,7 @@ interface Props {
 }
 
 export const NewTweetBox: VFC<Props> = ({
+	type,
 	onSubmit,
 	tweet = undefined,
 	initialText = undefined,
@@ -74,7 +97,8 @@ export const NewTweetBox: VFC<Props> = ({
 	return (
 		<Box flexDirection="column">
 			<Text color="gray">
-				<Text>Header is here. </Text>
+				<TweetBoxHeader type={type} tweet={tweet} />
+				<Space />
 				<Counter invalid={invalid} length={weightedLength} />
 			</Text>
 			<Box marginY={1}>
