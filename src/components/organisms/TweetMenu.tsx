@@ -66,7 +66,6 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			  ]
 	);
 
-	// TODO implement mention action
 	const mention = () => {
 		setTweetMode("mention");
 		setIsTweetOpen(true);
