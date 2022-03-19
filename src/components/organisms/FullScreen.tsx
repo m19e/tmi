@@ -13,7 +13,7 @@ export const FullScreen: FC<Props> = ({
 	const [, rows] = useDimensions();
 
 	return (
-		<Box flexDirection={flexDirection} height={rows}>
+		<Box flexDirection={flexDirection} minHeight={rows}>
 			{children}
 		</Box>
 	);
