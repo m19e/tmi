@@ -510,6 +510,9 @@ export const UserSub = ({ sname }: Props) => {
 					fav();
 				} else if (input === "n") {
 					// setIsNewTweetOpen(true);
+				} else if (input === "g") {
+					// TODO will implement in footer hooks
+					// toggleDisplayFooter()
 				}
 			},
 			[limitCounter]
