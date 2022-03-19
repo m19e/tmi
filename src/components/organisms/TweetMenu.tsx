@@ -99,6 +99,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			return;
 		}
 		setRequestResult(`Successfully tweeted: "${text}"`);
+		setIsMenuOpen(true);
 		setIsTweetOpen(false);
 	};
 	const handleReplySubmit = async (text: string) => {
@@ -110,6 +111,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		setRequestResult(
 			`Successfully replied to @${t.user.screen_name}: "${text}"`
 		);
+		setIsMenuOpen(true);
 		setIsTweetOpen(false);
 	};
 	const handleQuoteSubmit = async (text: string) => {
@@ -119,6 +121,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			return;
 		}
 		setRequestResult(`Successfully quoted: "${text}"`);
+		setIsMenuOpen(true);
 		setIsTweetOpen(false);
 	};
 
