@@ -7,6 +7,7 @@ import { parseTweet } from "twitter-text";
 import type { ParsedTweet } from "twitter-text";
 
 import figures from "../../../lib/sindresorhus/figures";
+import { useHint } from "../../../hooks";
 import Quoted from "../../molecules/Quoted";
 import Counter from "../../atoms/CharCounter";
 import { Space } from "../../atoms/Space";
@@ -70,6 +71,8 @@ export const NewTweetBox: VFC<Props> = ({
 	tweet = undefined,
 	initialText = undefined,
 }) => {
+	const [, setHintKey] = useHint();
+
 	const [{ tweetText, weightedLength, invalid }, setTweetText] =
 		useTweetText(initialText);
 	const [waitReturn, setWaitReturn] = useState(false);
@@ -90,7 +93,7 @@ export const NewTweetBox: VFC<Props> = ({
 	);
 
 	const handleWaitReturn = () => {
-		// setHint("timeline/detail/wait-return")
+		setHintKey("timeline/detail/wait-return");
 		setWaitReturn(true);
 	};
 

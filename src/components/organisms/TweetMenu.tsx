@@ -69,8 +69,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 	const mention = () => {
 		setTweetMode("mention");
 		setIsTweetOpen(true);
-		// 何故かsetHintするとメニュー選択されない
-		// setHint("timeline/detail/input");
+		setHint("timeline/detail/input");
 	};
 	const deleteTweet = useCallback(async () => {
 		const error = await api.deleteTweet(t.id_str);
