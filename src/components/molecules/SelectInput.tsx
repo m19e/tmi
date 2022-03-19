@@ -65,10 +65,8 @@ export function NoRotateSelect<V>({
 	onHighlight,
 	itemComponent = DefaultItemComponent,
 	indicatorComponent = DefaultIndicatorComponent,
-	selectedComponent = undefined,
 	limit = undefined,
 	initialIndex = 0,
-	forceUnselect = undefined,
 	isFocused = true,
 }: Props<V>): JSX.Element {
 	return (
@@ -81,8 +79,6 @@ export function NoRotateSelect<V>({
 			limit={limit}
 			initialIndex={initialIndex}
 			isFocused={isFocused}
-			selectedComponent={selectedComponent}
-			forceUnselect={forceUnselect}
 		/>
 	);
 }
