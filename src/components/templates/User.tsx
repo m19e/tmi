@@ -30,6 +30,7 @@ import Footer from "../organisms/Footer";
 import { FullScreen } from "../organisms/FullScreen";
 import { UserMenuSelect } from "../molecules/UserMenuSelect";
 import { Timeline } from "../molecules/Timeline";
+import { TweetDetail } from "../molecules/Timeline/Detail";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
@@ -566,14 +567,8 @@ export const UserSub = ({ sname }: Props) => {
 		);
 	}
 	if (status === "tweets" || status === "tweets/detail") {
-		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
-		const updater = {
-			update: userTimeline.updateTweet,
-			remove: (target_id: string) => {
-				userTimeline.removeTweet(target_id);
-				statusBack();
-			},
-		};
+		const isTweets = status === "tweets";
+		const breadcrumbs = isTweets ? ["Tweets"] : ["Tweets", "Detail"];
 
 		return (
 			<FullScreen>
@@ -581,14 +576,26 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
-					<Timeline
-						tweets={userTimeline.tweets}
-						onSelectTweet={handleSelectTweet}
-						onHighlightTweet={handleHighlightTweet}
-						limit={limitCounter.count}
-						updater={updater}
-						forceUnselect={status === "tweets"}
-					/>
+					<Box flexDirection="column" display={isTweets ? "flex" : "none"}>
+						<Timeline
+							tweets={userTimeline.tweets}
+							onSelectTweet={handleSelectTweet}
+							onHighlightTweet={handleHighlightTweet}
+							limit={limitCounter.count}
+						/>
+					</Box>
+					{!isTweets && (
+						<TweetDetail
+							tweet={focusedTweet}
+							updater={{
+								update: userTimeline.updateTweet,
+								remove: (id) => {
+									userTimeline.removeTweet(id);
+									statusBack();
+								},
+							}}
+						/>
+					)}
 				</Box>
 				<Footer />
 			</FullScreen>
@@ -607,21 +614,14 @@ export const UserSub = ({ sname }: Props) => {
 		);
 	}
 	if (status === "list/tweets" || status === "list/tweets/detail") {
-		const breadcrumbs =
-			status === "list/tweets"
-				? ["Listed", `@${currentList.owner.screen_name}/${currentList.name}`]
-				: [
-						"Listed",
-						`@${currentList.owner.screen_name}/${currentList.name}`,
-						"Detail",
-				  ];
-		const updater = {
-			update: listTimeline.updateTweet,
-			remove: (target_id: string) => {
-				listTimeline.removeTweet(target_id);
-				statusBack();
-			},
-		};
+		const isTweets = status === "list/tweets";
+		const breadcrumbs = isTweets
+			? ["Listed", `@${currentList.owner.screen_name}/${currentList.name}`]
+			: [
+					"Listed",
+					`@${currentList.owner.screen_name}/${currentList.name}`,
+					"Detail",
+			  ];
 
 		return (
 			<FullScreen>
@@ -629,14 +629,26 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
-					<Timeline
-						tweets={listTimeline.tweets}
-						onSelectTweet={handleSelectListTweet}
-						onHighlightTweet={handleHighlightListTweet}
-						limit={limitCounter.count}
-						updater={updater}
-						forceUnselect={status === "list/tweets"}
-					/>
+					<Box flexDirection="column" display={isTweets ? "flex" : "none"}>
+						<Timeline
+							tweets={listTimeline.tweets}
+							onSelectTweet={handleSelectListTweet}
+							onHighlightTweet={handleHighlightListTweet}
+							limit={limitCounter.count}
+						/>
+					</Box>
+					{!isTweets && (
+						<TweetDetail
+							tweet={focusedTweet}
+							updater={{
+								update: userTimeline.updateTweet,
+								remove: (id) => {
+									userTimeline.removeTweet(id);
+									statusBack();
+								},
+							}}
+						/>
+					)}
 				</Box>
 				<Footer />
 			</FullScreen>
