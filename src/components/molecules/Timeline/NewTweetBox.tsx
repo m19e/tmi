@@ -92,10 +92,11 @@ export const NewTweetBox: VFC<Props> = ({
 		{ isActive: waitReturn }
 	);
 
-	const handleWaitReturn = () => {
-		setHintKey("timeline/detail/wait-return");
+	const handleWaitReturn = useCallback(() => {
+		if (invalid) return;
 		setWaitReturn(true);
-	};
+		setHintKey("timeline/detail/wait-return");
+	}, [invalid]);
 
 	return (
 		<Box flexDirection="column">
