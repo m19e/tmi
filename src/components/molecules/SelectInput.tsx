@@ -58,7 +58,6 @@ function Select<V>({
 	);
 }
 
-// TODO remove needless deconstruct props
 export function NoRotateSelect<V>({
 	items = [],
 	onSelect,
