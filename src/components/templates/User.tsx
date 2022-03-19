@@ -569,6 +569,7 @@ export const UserSub = ({ sname }: Props) => {
 	if (status === "tweets" || status === "tweets/detail") {
 		const isTweets = status === "tweets";
 		const breadcrumbs = isTweets ? ["Tweets"] : ["Tweets", "Detail"];
+		const displayTL = isTweets ? "flex" : "none";
 
 		return (
 			<FullScreen>
@@ -576,7 +577,7 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
-					<Box flexDirection="column" display={isTweets ? "flex" : "none"}>
+					<Box flexDirection="column" display={displayTL}>
 						<Timeline
 							tweets={userTimeline.tweets}
 							onSelectTweet={handleSelectTweet}
@@ -622,6 +623,7 @@ export const UserSub = ({ sname }: Props) => {
 					`@${currentList.owner.screen_name}/${currentList.name}`,
 					"Detail",
 			  ];
+		const displayTL = isTweets ? "flex" : "none";
 
 		return (
 			<FullScreen>
@@ -629,7 +631,7 @@ export const UserSub = ({ sname }: Props) => {
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 					</Box>
-					<Box flexDirection="column" display={isTweets ? "flex" : "none"}>
+					<Box flexDirection="column" display={displayTL}>
 						<Timeline
 							tweets={listTimeline.tweets}
 							onSelectTweet={handleSelectListTweet}
