@@ -58,6 +58,7 @@ function Select<V>({
 	);
 }
 
+// TODO remove needless deconstruct props
 export function NoRotateSelect<V>({
 	items = [],
 	onSelect,
@@ -68,6 +69,7 @@ export function NoRotateSelect<V>({
 	limit = undefined,
 	initialIndex = 0,
 	forceUnselect = undefined,
+	isFocused = true,
 }: Props<V>): JSX.Element {
 	return (
 		<NoRotate
@@ -78,6 +80,7 @@ export function NoRotateSelect<V>({
 			indicatorComponent={indicatorComponent}
 			limit={limit}
 			initialIndex={initialIndex}
+			isFocused={isFocused}
 			selectedComponent={selectedComponent}
 			forceUnselect={forceUnselect}
 		/>

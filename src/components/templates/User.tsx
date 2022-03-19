@@ -586,6 +586,7 @@ export const UserSub = ({ sname }: Props) => {
 							onSelectTweet={handleSelectTweet}
 							onHighlightTweet={handleHighlightTweet}
 							limit={limitCounter.count}
+							focus={isTweets}
 						/>
 					</Box>
 					{!isTweets && (
@@ -594,8 +595,9 @@ export const UserSub = ({ sname }: Props) => {
 							updater={{
 								update: userTimeline.updateTweet,
 								remove: (id) => {
-									userTimeline.removeTweet(id);
+									// REVIEW order process, remove and back
 									statusBack();
+									userTimeline.removeTweet(id);
 								},
 							}}
 						/>
@@ -640,6 +642,7 @@ export const UserSub = ({ sname }: Props) => {
 							onSelectTweet={handleSelectListTweet}
 							onHighlightTweet={handleHighlightListTweet}
 							limit={limitCounter.count}
+							focus={isTweets}
 						/>
 					</Box>
 					{!isTweets && (
@@ -648,8 +651,9 @@ export const UserSub = ({ sname }: Props) => {
 							updater={{
 								update: userTimeline.updateTweet,
 								remove: (id) => {
-									userTimeline.removeTweet(id);
+									// REVIEW order process, remove and back
 									statusBack();
+									userTimeline.removeTweet(id);
 								},
 							}}
 						/>

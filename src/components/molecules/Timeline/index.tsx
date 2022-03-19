@@ -10,11 +10,13 @@ const TweetItemWrapper: VFC<TweetItemProps> = ({ value }) => {
 	return <TweetItem tweet={value} />;
 };
 
+// TODO add focus prop
 interface Props {
 	tweets: TweetV1[];
 	onSelectTweet: (item: { value: TweetV1 }) => void;
 	onHighlightTweet: (item: { value: TweetV1 }) => void;
 	limit: number;
+	focus: boolean;
 }
 
 export const Timeline = ({
@@ -22,6 +24,7 @@ export const Timeline = ({
 	onSelectTweet,
 	onHighlightTweet,
 	limit,
+	focus,
 }: Props) => {
 	const items: Item<TweetV1>[] = tweets.map((t) => ({
 		key: t.id_str,
@@ -37,6 +40,7 @@ export const Timeline = ({
 			indicatorComponent={TweetIndicator}
 			itemComponent={TweetItemWrapper}
 			limit={limit}
+			isFocused={focus}
 		/>
 	);
 };
