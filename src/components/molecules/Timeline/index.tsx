@@ -10,7 +10,6 @@ const TweetItemWrapper: VFC<TweetItemProps> = ({ value }) => {
 	return <TweetItem tweet={value} />;
 };
 
-// TODO add focus prop
 interface Props {
 	tweets: TweetV1[];
 	onSelectTweet: (item: { value: TweetV1 }) => void;
