@@ -561,7 +561,6 @@ export const UserSub = ({ sname }: Props) => {
 					)}
 					<UserMenuSelect items={menuItems} onSelect={handleSelectMenu} />
 				</Box>
-				<Text>{debugConsole}</Text>
 				<Footer />
 			</FullScreen>
 		);
@@ -649,7 +648,6 @@ export const UserSub = ({ sname }: Props) => {
 				<Box flexDirection="column" flexGrow={1}>
 					<ListMemberManage lists={lists} onSelect={handleSelectManageList} />
 				</Box>
-				<Text>{debugConsole}</Text>
 				<Footer />
 			</FullScreen>
 		);
@@ -679,7 +677,6 @@ export const UserSub = ({ sname }: Props) => {
 						itemComponent={BreakLineItem}
 					/>
 				</Box>
-				<Text>{debugConsole}</Text>
 				<Footer />
 			</FullScreen>
 		);
@@ -718,7 +715,6 @@ export const UserSub = ({ sname }: Props) => {
 						initialIndex={1}
 					/>
 				</Box>
-				<Text>{debugConsole}</Text>
 				<Footer />
 			</FullScreen>
 		);
