@@ -9,7 +9,7 @@ export const curriedSelected: (updater: Updater) => VFC<TweetItemProps> =
 	(updater) =>
 	({ value: tweet }) => {
 		return (
-			<Box flexDirection="column" flexGrow={1}>
+			<Box flexDirection="column">
 				<Box>
 					<TweetIndicator isSelected={true} />
 					<TweetItem tweet={tweet} />

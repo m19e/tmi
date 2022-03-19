@@ -105,7 +105,7 @@ export const NewTweetBox: VFC<Props> = ({
 				<Box width={2} flexDirection="column">
 					<Text color="#00acee">{figures.squareLeft}</Text>
 				</Box>
-				<Box flexDirection="column" flexGrow={1}>
+				<Box flexDirection="column">
 					<TextInput
 						placeholder={""}
 						focus={!waitReturn}
