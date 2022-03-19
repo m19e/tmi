@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Box, Text, useInput } from "ink";
-import useDimensions from "ink-use-stdout-dimensions";
 import type {
 	UserV1,
 	FriendshipV1,
@@ -28,6 +27,7 @@ import {
 	useListTimeline,
 } from "../../hooks/timeline";
 import Footer from "../organisms/Footer";
+import { FullScreen } from "../organisms/FullScreen";
 import { UserMenuSelect } from "../molecules/UserMenuSelect";
 import { Timeline } from "../molecules/Timeline";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
@@ -41,8 +41,6 @@ interface Props {
 }
 
 export const UserSub = ({ sname }: Props) => {
-	const [, rows] = useDimensions();
-
 	const api = useApi();
 	const [{ userId: authUserId }] = useUserConfig();
 	const [, setRequestResult] = useRequestResult();
@@ -532,7 +530,7 @@ export const UserSub = ({ sname }: Props) => {
 	}
 	if (status === "user") {
 		return (
-			<Box flexDirection="column" minHeight={rows}>
+			<FullScreen>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} />
@@ -565,7 +563,7 @@ export const UserSub = ({ sname }: Props) => {
 				</Box>
 				<Text>{debugConsole}</Text>
 				<Footer />
-			</Box>
+			</FullScreen>
 		);
 	}
 	if (status === "tweets" || status === "tweets/detail") {
@@ -579,7 +577,7 @@ export const UserSub = ({ sname }: Props) => {
 		};
 
 		return (
-			<Box flexDirection="column" minHeight={rows}>
+			<FullScreen>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
@@ -594,19 +592,19 @@ export const UserSub = ({ sname }: Props) => {
 					/>
 				</Box>
 				<Footer />
-			</Box>
+			</FullScreen>
 		);
 	}
 	if (status === "listed") {
 		const memberedLists = listedPaginator.lists;
 
 		return (
-			<Box flexDirection="column" minHeight={rows}>
+			<FullScreen>
 				<Box marginBottom={1}>
 					<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
 				</Box>
 				<SelectMemberedList lists={memberedLists} onSelect={handleSelectList} />
-			</Box>
+			</FullScreen>
 		);
 	}
 	if (status === "list/tweets" || status === "list/tweets/detail") {
@@ -627,7 +625,7 @@ export const UserSub = ({ sname }: Props) => {
 		};
 
 		return (
-			<Box flexDirection="column" minHeight={rows}>
+			<FullScreen>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
 						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
@@ -642,23 +640,23 @@ export const UserSub = ({ sname }: Props) => {
 					/>
 				</Box>
 				<Footer />
-			</Box>
+			</FullScreen>
 		);
 	}
 	if (status === "list/manage") {
 		return (
-			<Box flexDirection="column" minHeight={rows}>
+			<FullScreen>
 				<Box flexDirection="column" flexGrow={1}>
 					<ListMemberManage lists={lists} onSelect={handleSelectManageList} />
 				</Box>
 				<Text>{debugConsole}</Text>
 				<Footer />
-			</Box>
+			</FullScreen>
 		);
 	}
 	if (status === "list/manage/action") {
 		return (
-			<Box flexDirection="column" minHeight={rows}>
+			<FullScreen>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
 						<Text>
@@ -683,12 +681,12 @@ export const UserSub = ({ sname }: Props) => {
 				</Box>
 				<Text>{debugConsole}</Text>
 				<Footer />
-			</Box>
+			</FullScreen>
 		);
 	}
 	if (status === "follow/manage") {
 		return (
-			<Box flexDirection="column" minHeight={rows}>
+			<FullScreen>
 				<Box flexDirection="column" flexGrow={1}>
 					<Box marginBottom={1}>
 						<Text>
@@ -722,7 +720,7 @@ export const UserSub = ({ sname }: Props) => {
 				</Box>
 				<Text>{debugConsole}</Text>
 				<Footer />
-			</Box>
+			</FullScreen>
 		);
 	}
 	return null;
