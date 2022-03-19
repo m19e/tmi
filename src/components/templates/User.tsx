@@ -595,7 +595,6 @@ export const UserSub = ({ sname }: Props) => {
 							updater={{
 								update: userTimeline.updateTweet,
 								remove: (id) => {
-									// REVIEW order process, remove and back
 									statusBack();
 									userTimeline.removeTweet(id);
 								},
@@ -651,7 +650,6 @@ export const UserSub = ({ sname }: Props) => {
 							updater={{
 								update: userTimeline.updateTweet,
 								remove: (id) => {
-									// REVIEW order process, remove and back
 									statusBack();
 									userTimeline.removeTweet(id);
 								},
