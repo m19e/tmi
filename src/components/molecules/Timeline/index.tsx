@@ -2,7 +2,7 @@ import type { VFC } from "react";
 import type { TweetV1 } from "twitter-api-v2";
 import { NoRotateSelect } from "../SelectInput";
 import type { Item } from "../SelectInput";
-import type { TweetItemProps, Updater } from "./types";
+import type { TweetItemProps } from "./types";
 import { TweetItem } from "./TweetItem";
 import { TweetIndicator } from "./TweetIndicator";
 
