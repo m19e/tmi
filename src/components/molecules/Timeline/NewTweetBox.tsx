@@ -37,6 +37,12 @@ const useTweetText = (
 
 type TweetBoxType = "new" | "reply" | "quote";
 
+const placeholderMap = new Map<TweetBoxType, string>([
+	["new", "What's happening?"],
+	["reply", "Tweet your reply"],
+	["quote", "Add a comment"],
+]);
+
 const TweetBoxHeader: VFC<{ type: TweetBoxType; tweet: TweetV1 }> = ({
 	type,
 	tweet,
@@ -77,6 +83,8 @@ export const NewTweetBox: VFC<Props> = ({
 		useTweetText(initialText);
 	const [waitReturn, setWaitReturn] = useState(false);
 
+	const placeholder = placeholderMap.get(type);
+
 	useInput(
 		useCallback(
 			(_, key) => {
@@ -111,7 +119,7 @@ export const NewTweetBox: VFC<Props> = ({
 				</Box>
 				<Box flexDirection="column">
 					<TextInput
-						placeholder={""}
+						placeholder={placeholder}
 						focus={!waitReturn}
 						value={tweetText}
 						onChange={setTweetText}
