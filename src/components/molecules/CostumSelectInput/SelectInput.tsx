@@ -197,6 +197,174 @@ export function NoRotateSelectInput<V>({
 	initialIndex = 0,
 	indicatorComponent = Indicator,
 	itemComponent = Item,
+	limit: customLimit,
+	onSelect,
+	onHighlight,
+}: Props<V>): JSX.Element {
+	const [cursorIndex, setCursorIndex] = useState(0);
+	const [selectedIndex, setSelectedIndex] = useState(initialIndex);
+	const hasLimit =
+		typeof customLimit === "number" && items.length > customLimit;
+	const limit = hasLimit ? Math.min(customLimit!, items.length) : items.length;
+
+	useEffect(() => {
+		if (typeof onHighlight === "function") {
+			const slicedItems = items.slice(cursorIndex, cursorIndex + limit);
+			onHighlight(slicedItems[selectedIndex]);
+		}
+	}, [items]);
+
+	useEffect(() => {
+		if (limit === selectedIndex) {
+			const nextSelectedIndex = limit - 1;
+			setSelectedIndex(nextSelectedIndex);
+			if (typeof onHighlight === "function") {
+				const slicedItems = items.slice(cursorIndex, cursorIndex + limit);
+				onHighlight(slicedItems[nextSelectedIndex]);
+			}
+		}
+	}, [limit]);
+
+	useInput(
+		useCallback(
+			(input, key) => {
+				if (input === "k" || key.upArrow) {
+					const atFirstIndex = selectedIndex === 0;
+					const nextCursorIndex = atFirstIndex
+						? Math.max(0, cursorIndex - 1)
+						: cursorIndex;
+					const nextSelectedIndex = atFirstIndex ? 0 : selectedIndex - 1;
+
+					setCursorIndex(nextCursorIndex);
+					setSelectedIndex(nextSelectedIndex);
+
+					if (typeof onHighlight === "function") {
+						const slicedItems = hasLimit
+							? items.slice(nextCursorIndex, nextCursorIndex + limit)
+							: items;
+						onHighlight(slicedItems[nextSelectedIndex]);
+					}
+				}
+
+				if (input === "j" || key.downArrow) {
+					const atLastIndex =
+						selectedIndex === (hasLimit ? limit : items.length) - 1;
+					const safeLine = items.length - limit;
+					const nextCursorIndex = atLastIndex
+						? Math.min(cursorIndex + 1, safeLine)
+						: cursorIndex;
+					const nextSelectedIndex = atLastIndex
+						? selectedIndex
+						: selectedIndex + 1;
+
+					setCursorIndex(nextCursorIndex);
+					setSelectedIndex(nextSelectedIndex);
+
+					if (typeof onHighlight === "function") {
+						const slicedItems = hasLimit
+							? items.slice(nextCursorIndex, nextCursorIndex + limit)
+							: items;
+						onHighlight(slicedItems[nextSelectedIndex]);
+					}
+				}
+
+				if (hasLimit) {
+					if (key.pageUp) {
+						const nextCursorIndex = Math.max(0, cursorIndex - limit);
+						setCursorIndex(nextCursorIndex);
+
+						const slicedItems = items.slice(
+							nextCursorIndex,
+							nextCursorIndex + limit
+						);
+
+						let nextSelectedIndex = selectedIndex;
+
+						if (cursorIndex < limit && selectedIndex !== 0) {
+							nextSelectedIndex = 0;
+							setSelectedIndex(0);
+						}
+
+						if (typeof onHighlight === "function") {
+							onHighlight(slicedItems[nextSelectedIndex]);
+						}
+					}
+					if (key.pageDown) {
+						const nextCursorIndex = Math.min(
+							items.length - limit,
+							cursorIndex + limit
+						);
+						setCursorIndex(nextCursorIndex);
+
+						const slicedItems = items.slice(
+							nextCursorIndex,
+							nextCursorIndex + limit
+						);
+
+						let nextSelectIndex = selectedIndex;
+
+						if (
+							cursorIndex + limit >= items.length &&
+							selectedIndex !== limit - 1
+						) {
+							nextSelectIndex = limit - 1;
+							setSelectedIndex(nextSelectIndex);
+						}
+
+						if (typeof onHighlight === "function") {
+							onHighlight(slicedItems[nextSelectIndex]);
+						}
+					}
+				}
+
+				if (key.return) {
+					if (typeof onSelect === "function") {
+						const slicedItems = hasLimit
+							? items.slice(cursorIndex, cursorIndex + limit)
+							: items;
+						onSelect(slicedItems[selectedIndex]);
+					}
+				}
+			},
+			[
+				hasLimit,
+				limit,
+				cursorIndex,
+				selectedIndex,
+				items,
+				onSelect,
+				onHighlight,
+			]
+		),
+		{ isActive: isFocused }
+	);
+
+	const slicedItems = hasLimit
+		? items.slice(cursorIndex, cursorIndex + limit)
+		: items;
+
+	return (
+		<Box flexDirection="column">
+			{slicedItems.map((item, index) => {
+				const isSelected = index === selectedIndex;
+
+				return (
+					<Box key={item.key ?? item.label}>
+						{React.createElement(indicatorComponent, { isSelected })}
+						{React.createElement(itemComponent, { ...item, isSelected })}
+					</Box>
+				);
+			})}
+		</Box>
+	);
+}
+
+export function NoRotateWithSelected<V>({
+	items = [],
+	isFocused = true,
+	initialIndex = 0,
+	indicatorComponent = Indicator,
+	itemComponent = Item,
 	selectedComponent = undefined,
 	limit: customLimit,
 	onSelect,
