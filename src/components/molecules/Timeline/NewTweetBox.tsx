@@ -10,6 +10,7 @@ import figures from "../../../lib/sindresorhus/figures";
 import { useHint } from "../../../hooks";
 import Quoted from "../../molecules/Quoted";
 import Counter from "../../atoms/CharCounter";
+import { TCText } from "../../atoms/TwitterColoredText";
 import { Space } from "../../atoms/Space";
 
 interface TweetTextStates {
@@ -115,7 +116,7 @@ export const NewTweetBox: VFC<Props> = ({
 			</Text>
 			<Box marginY={1}>
 				<Box width={2} flexDirection="column">
-					<Text color="#00acee">{figures.squareLeft}</Text>
+					<TCText>{figures.squareLeft}</TCText>
 				</Box>
 				<Box flexDirection="column">
 					<TextInput
