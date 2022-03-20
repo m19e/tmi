@@ -67,7 +67,7 @@ const TweetBoxHeader: VFC<{ type: TweetBoxType; tweet: TweetV1 }> = ({
 
 interface Props {
 	type: TweetBoxType;
-	onSubmit: (v: string) => void;
+	onSubmit: (v: string) => Promise<void>;
 	tweet?: TweetV1;
 	initialText?: string;
 }
@@ -90,8 +90,7 @@ export const NewTweetBox: VFC<Props> = ({
 		useCallback(
 			(_, key) => {
 				if (key.return) {
-					onSubmit(tweetText);
-					setWaitReturn(false);
+					submitTweet(tweetText);
 				} else if (key.escape) {
 					setWaitReturn(false);
 				}
@@ -100,6 +99,12 @@ export const NewTweetBox: VFC<Props> = ({
 		),
 		{ isActive: waitReturn }
 	);
+
+	const submitTweet = async (text: string) => {
+		setWaitReturn(false);
+		await onSubmit(text);
+		setHintKey("timeline/detail");
+	};
 
 	const handleWaitReturn = useCallback(() => {
 		if (invalid) return;
