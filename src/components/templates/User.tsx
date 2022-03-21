@@ -46,7 +46,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [{ userId: authUserId }] = useUserConfig();
 	const [, setRequestResult] = useRequestResult();
 	const [, setError] = useError();
-	const [, setHint] = useHint();
+	const [{ key: location }, setHint] = useHint();
 
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
@@ -438,6 +438,9 @@ export const UserSub = ({ sname }: Props) => {
 		useCallback(
 			(_, key) => {
 				if (key.escape && canStatusBack) {
+					if (location === "timeline/detail/input") {
+						return;
+					}
 					statusBack();
 					if (status === "tweets" || status === "list/tweets") {
 						setFocusedTweet(undefined);
@@ -446,7 +449,7 @@ export const UserSub = ({ sname }: Props) => {
 					}
 				}
 			},
-			[status, canStatusBack]
+			[location, status, canStatusBack]
 		),
 		{
 			isActive: status !== "load" && status !== "user" && !isFetching,
