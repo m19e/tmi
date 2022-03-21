@@ -449,7 +449,7 @@ export const UserSub = ({ sname }: Props) => {
 			[status, canStatusBack]
 		),
 		{
-			isActive: status !== "load" && status !== "user",
+			isActive: status !== "load" && status !== "user" && !isFetching,
 		}
 	);
 
@@ -512,7 +512,6 @@ export const UserSub = ({ sname }: Props) => {
 				}
 
 				if (input === "t" || input === "f") {
-					if (isFetching) return;
 					(async () => {
 						setIsFetching(true);
 						if (input === "t") await rt();
@@ -521,10 +520,11 @@ export const UserSub = ({ sname }: Props) => {
 					})();
 				}
 			},
-			[limitCounter, isFetching]
+			[limitCounter]
 		),
 		{
-			isActive: status === "tweets" || status === "list/tweets",
+			isActive:
+				(status === "tweets" || status === "list/tweets") && !isFetching,
 		}
 	);
 
