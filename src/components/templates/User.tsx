@@ -504,18 +504,24 @@ export const UserSub = ({ sname }: Props) => {
 					limitCounter.increment();
 				} else if (input === "-" || input === "_") {
 					limitCounter.decrement();
-				} else if (input === "t") {
-					rt();
-				} else if (input === "f") {
-					fav();
 				} else if (input === "n") {
 					// setIsNewTweetOpen(true);
 				} else if (input === "g") {
 					// TODO will implement in footer hooks
 					// toggleDisplayFooter()
 				}
+
+				if (input === "t" || input === "f") {
+					if (isFetching) return;
+					(async () => {
+						setIsFetching(true);
+						if (input === "t") await rt();
+						else if (input === "f") await fav();
+						setIsFetching(false);
+					})();
+				}
 			},
-			[limitCounter]
+			[limitCounter, isFetching]
 		),
 		{
 			isActive: status === "tweets" || status === "list/tweets",
