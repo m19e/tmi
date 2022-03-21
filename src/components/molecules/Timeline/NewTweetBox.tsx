@@ -131,7 +131,9 @@ export const NewTweetBox: VFC<Props> = ({
 						onChange={setTweetText}
 						onSubmit={handleWaitReturn}
 					/>
-					<Quoted tweet={tweet} />
+					<Box flexGrow={1}>
+						<Quoted tweet={tweet} />
+					</Box>
 				</Box>
 			</Box>
 		</Box>
