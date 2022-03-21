@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import type { VFC } from "react";
 import type { TweetV1 } from "twitter-api-v2";
+import { Text, useInput } from "ink";
 import SelectInput from "../molecules/SelectInput";
 import type { Item } from "../molecules/SelectInput";
 import {
@@ -36,7 +37,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 
 	const api = useApi();
 
-	const [isMenuOpen, setIsMenuOpen] = useState(true);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isTweetOpen, setIsTweetOpen] = useState(false);
 	const [initialText, setInitialText] = useState("");
 	const [tweetMode, setTweetMode] = useState<
@@ -64,6 +65,15 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 					{ label: "Mute Retweets from User", value: "mute-retweets" },
 					{ label: `Block @${t.user.screen_name}`, value: "block" },
 			  ]
+	);
+
+	useInput(
+		(input, key) => {
+			if (input === "x") {
+				setIsMenuOpen((prev) => !prev);
+			}
+		},
+		{ isActive: !isTweetOpen }
 	);
 
 	const mention = () => {
@@ -99,7 +109,6 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			return;
 		}
 		setRequestResult(`Successfully tweeted: "${text}"`);
-		setIsMenuOpen(true);
 		setIsTweetOpen(false);
 	};
 	const handleReplySubmit = async (text: string) => {
@@ -111,7 +120,6 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		setRequestResult(
 			`Successfully replied to @${t.user.screen_name}: "${text}"`
 		);
-		setIsMenuOpen(true);
 		setIsTweetOpen(false);
 	};
 	const handleQuoteSubmit = async (text: string) => {
@@ -121,19 +129,9 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			return;
 		}
 		setRequestResult(`Successfully quoted: "${text}"`);
-		setIsMenuOpen(true);
 		setIsTweetOpen(false);
 	};
 
-	if (isMenuOpen) {
-		return (
-			<SelectInput
-				items={items}
-				onSelect={handleSelectMenu}
-				itemComponent={BreakLineItem}
-			/>
-		);
-	}
 	if (isTweetOpen) {
 		if (tweetMode === "mention") {
 			return (
@@ -155,6 +153,14 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			);
 		}
 	}
-
-	return null;
+	if (isMenuOpen) {
+		return (
+			<SelectInput
+				items={items}
+				onSelect={handleSelectMenu}
+				itemComponent={BreakLineItem}
+			/>
+		);
+	}
+	return <Text dimColor>[X] to open tweet menu</Text>;
 };
