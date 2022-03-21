@@ -51,14 +51,14 @@ const TweetBoxHeader: VFC<{ type: TweetBoxType; tweet: TweetV1 }> = ({
 	if (type === "reply") {
 		return (
 			<Text>
-				Replying to <Text color="#00acee">@{tweet.user.screen_name}</Text>
+				Replying to <TCText>@{tweet.user.screen_name}</TCText>
 			</Text>
 		);
 	}
 	if (type === "quote") {
 		return (
 			<Text>
-				Quote <Text color="#00acee">@{tweet.user.screen_name}</Text>'s tweet
+				Quote <TCText>@{tweet.user.screen_name}</TCText>'s tweet
 			</Text>
 		);
 	}
