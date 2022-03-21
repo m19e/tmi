@@ -70,17 +70,30 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 
 	useInput(
 		(input, key) => {
-			if (input === "x") {
-				setIsMenuOpen((prev) => !prev);
-			}
+			if (input === "x") setIsMenuOpen((prev) => !prev);
+			else if (input === "r") openTweet("reply");
+			else if (input === "q") openTweet("quote");
 		},
 		{ isActive: !isTweetOpen && !isFetching }
 	);
 
-	const mention = () => {
-		setTweetMode("mention");
+	useInput(
+		(input, key) => {
+			if (key.escape) {
+				setIsTweetOpen(false);
+				setTweetMode("none");
+				setHint("timeline/detail");
+			}
+		},
+		{ isActive: isTweetOpen && !isFetching }
+	);
+
+	const openTweet = (mode: "mention" | "reply" | "quote") => {
+		setTweetMode(mode);
 		setIsTweetOpen(true);
-		setIsMenuOpen(false);
+		if (mode === "mention") {
+			setIsMenuOpen(false);
+		}
 		setHint("timeline/detail/input");
 	};
 	const deleteTweet = useCallback(async () => {
@@ -98,7 +111,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 
 	const handleSelectMenu = ({ value: action }: { value: TweetMenuAction }) => {
 		if (action === "mention") {
-			mention();
+			openTweet("mention");
 		} else if (action === "delete") {
 			deleteTweet();
 		} else if (action === "re-draft") {
