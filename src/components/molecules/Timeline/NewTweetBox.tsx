@@ -123,7 +123,7 @@ export const NewTweetBox: VFC<Props> = ({
 				<Box width={2} flexDirection="column">
 					<TCText>{figures.squareLeft}</TCText>
 				</Box>
-				<Box flexDirection="column">
+				<Box flexDirection="column" flexGrow={1}>
 					<TextInput
 						placeholder={placeholder}
 						focus={!waitReturn}
@@ -131,9 +131,7 @@ export const NewTweetBox: VFC<Props> = ({
 						onChange={setTweetText}
 						onSubmit={handleWaitReturn}
 					/>
-					<Box flexGrow={1}>
-						<Quoted tweet={tweet} />
-					</Box>
+					<Quoted tweet={tweet} />
 				</Box>
 			</Box>
 		</Box>
