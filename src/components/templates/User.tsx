@@ -438,7 +438,10 @@ export const UserSub = ({ sname }: Props) => {
 		useCallback(
 			(_, key) => {
 				if (key.escape && canStatusBack) {
-					if (location === "timeline/detail/input") {
+					if (
+						location === "timeline/detail/input" ||
+						location === "timeline/detail/wait-return"
+					) {
 						return;
 					}
 					statusBack();
