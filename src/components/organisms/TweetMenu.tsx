@@ -39,6 +39,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isTweetOpen, setIsTweetOpen] = useState(false);
+	const [isFetching, setIsFetching] = useState(false);
 	const [initialText, setInitialText] = useState("");
 	const [tweetMode, setTweetMode] = useState<
 		"none" | "mention" | "reply" | "quote"
@@ -73,15 +74,18 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 				setIsMenuOpen((prev) => !prev);
 			}
 		},
-		{ isActive: !isTweetOpen }
+		{ isActive: !isTweetOpen && !isFetching }
 	);
 
 	const mention = () => {
 		setTweetMode("mention");
 		setIsTweetOpen(true);
+		setIsMenuOpen(false);
 		setHint("timeline/detail/input");
 	};
 	const deleteTweet = useCallback(async () => {
+		setIsFetching(true);
+		setIsMenuOpen(false);
 		const error = await api.deleteTweet(t.id_str);
 		if (typeof error === "string") {
 			setError(error);
@@ -89,10 +93,10 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		}
 		setRequestResult(`Successfully deleted: "${t.full_text}"`);
 		updater.remove(t.id_str);
+		setIsFetching(false);
 	}, [t]);
 
 	const handleSelectMenu = ({ value: action }: { value: TweetMenuAction }) => {
-		setIsMenuOpen(false);
 		if (action === "mention") {
 			mention();
 		} else if (action === "delete") {
@@ -162,5 +166,9 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			/>
 		);
 	}
-	return <Text dimColor>[X] to open tweet menu</Text>;
+	return (
+		<Text dimColor>
+			{isFetching ? "fetching..." : "[X] to open tweet menu"}
+		</Text>
+	);
 };
