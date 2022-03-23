@@ -437,7 +437,7 @@ export const UserSub = ({ sname }: Props) => {
 	const isOpenTweetBox =
 		location === "timeline/detail/input" ||
 		location === "timeline/detail/wait-return";
-	const stopInput = !isOpenTweetBox && !isFetching;
+	const stopInput = isOpenTweetBox || isFetching;
 
 	const isAfterSelectedMenu = status !== "load" && status !== "user";
 	const isActiveEscapeBack = isAfterSelectedMenu && !stopInput;
