@@ -434,28 +434,29 @@ export const UserSub = ({ sname }: Props) => {
 		setStatus("user");
 	};
 
+	const isActiveEscapeBack =
+		status !== "load" &&
+		status !== "user" &&
+		location !== "timeline/detail/input" &&
+		location !== "timeline/detail/wait-return" &&
+		!isFetching;
+
 	useInput(
 		useCallback(
 			(_, key) => {
 				if (key.escape && canStatusBack) {
-					if (
-						location === "timeline/detail/input" ||
-						location === "timeline/detail/wait-return"
-					) {
-						return;
-					}
 					statusBack();
 					if (status === "tweets" || status === "list/tweets") {
 						setFocusedTweet(undefined);
-						userTimeline.reset();
-						listTimeline.reset();
+						if (status === "tweets") userTimeline.reset();
+						if (status === "list/tweets") listTimeline.reset();
 					}
 				}
 			},
-			[location, status, canStatusBack]
+			[status, canStatusBack]
 		),
 		{
-			isActive: status !== "load" && status !== "user" && !isFetching,
+			isActive: isActiveEscapeBack,
 		}
 	);
 
