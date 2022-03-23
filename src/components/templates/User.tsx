@@ -434,12 +434,13 @@ export const UserSub = ({ sname }: Props) => {
 		setStatus("user");
 	};
 
-	const isActiveEscapeBack =
-		status !== "load" &&
-		status !== "user" &&
-		location !== "timeline/detail/input" &&
-		location !== "timeline/detail/wait-return" &&
-		!isFetching;
+	const isOpenTweetBox =
+		location === "timeline/detail/input" ||
+		location === "timeline/detail/wait-return";
+	const stopInput = !isOpenTweetBox && !isFetching;
+
+	const isAfterSelectedMenu = status !== "load" && status !== "user";
+	const isActiveEscapeBack = isAfterSelectedMenu && !stopInput;
 
 	useInput(
 		useCallback(
@@ -504,22 +505,29 @@ export const UserSub = ({ sname }: Props) => {
 		);
 	}, [focusedTweet]);
 
+	const isTimeline = status === "tweets" || status === "list/tweets";
+	const isDetail =
+		status === "tweets/detail" || status === "list/tweets/detail";
+	const isTimelineOrDetail = isTimeline || isDetail;
+	const isActiveTimelineKeybind = isTimelineOrDetail && !stopInput;
+
 	useInput(
 		useCallback(
 			(input, key) => {
-				if (input === "+" || input === "=") {
-					limitCounter.increment();
-				} else if (input === "-" || input === "_") {
-					limitCounter.decrement();
-				} else if (input === "n") {
-					// setIsNewTweetOpen(true);
-				} else if (input === "g") {
-					// TODO will implement in footer hooks
-					// toggleDisplayFooter()
+				if (isTimeline) {
+					if (input === "+" || input === "=") {
+						limitCounter.increment();
+					} else if (input === "-" || input === "_") {
+						limitCounter.decrement();
+					} else if (input === "n") {
+						// setIsNewTweetOpen(true);
+					} else if (input === "g") {
+						// TODO will implement in footer hooks
+						// toggleDisplayFooter()
+					}
 				}
 
 				const shouldFetch = input === "t" || input === "f";
-
 				if (shouldFetch) {
 					(async () => {
 						setIsFetching(true);
@@ -529,11 +537,10 @@ export const UserSub = ({ sname }: Props) => {
 					})();
 				}
 			},
-			[limitCounter]
+			[isTimeline, limitCounter]
 		),
 		{
-			isActive:
-				(status === "tweets" || status === "list/tweets") && !isFetching,
+			isActive: isActiveTimelineKeybind,
 		}
 	);
 
