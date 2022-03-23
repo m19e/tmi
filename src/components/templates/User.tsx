@@ -517,7 +517,9 @@ export const UserSub = ({ sname }: Props) => {
 					// toggleDisplayFooter()
 				}
 
-				if (input === "t" || input === "f") {
+				const shouldFetch = input === "t" || input === "f";
+
+				if (shouldFetch) {
 					(async () => {
 						setIsFetching(true);
 						if (input === "t") await rt();
