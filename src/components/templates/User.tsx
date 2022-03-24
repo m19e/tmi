@@ -546,219 +546,215 @@ export const UserSub = ({ sname }: Props) => {
 
 	const rootLabel = user ? `@${user.screen_name}` : "*Invalid user*";
 
-	if (status === "load") {
-		return (
-			<>
-				<Text>Loading...</Text>
-				<Footer />
-			</>
-		);
-	}
-	if (status === "user") {
-		return (
-			<FullScreen>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} />
-					</Box>
-					<Box marginBottom={1}>
-						<Text>
-							{user.name} {user.protected && "🔒 "}(@{user.screen_name})
-						</Text>
-					</Box>
-					<FriendshipLabel relation={relationship} />
-					{!!user.description && (
-						<Box marginBottom={1}>
-							<Text>{user.description}</Text>
-						</Box>
-					)}
-					{!!user.location && (
-						<Box marginBottom={1}>
-							<Text>Location: {user.location}</Text>
-						</Box>
-					)}
-					{!!user.url && (
-						<Box marginBottom={1}>
-							<Text>
-								URL: {user.entities.url.urls[0].display_url} (
-								{user.entities.url.urls[0].expanded_url})
-							</Text>
-						</Box>
-					)}
-					<UserMenuSelect items={menuItems} onSelect={handleSelectMenu} />
-				</Box>
-				<Footer />
-			</FullScreen>
-		);
-	}
-	if (status === "tweets" || status === "tweets/detail") {
-		const isTweets = status === "tweets";
-		const breadcrumbs = isTweets ? ["Tweets"] : ["Tweets", "Detail"];
-		const displayTL = isTweets ? "flex" : "none";
+	return (
+		<FullScreen>
+			<Box flexDirection="column" flexGrow={1}>
+				{(() => {
+					if (status === "load") {
+						return (
+							<>
+								<Text>Loading...</Text>
+								<Footer />
+							</>
+						);
+					}
+					if (status === "user") {
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} />
+								</Box>
+								<Box marginBottom={1}>
+									<Text>
+										{user.name} {user.protected && "🔒 "}(@{user.screen_name})
+									</Text>
+								</Box>
+								<FriendshipLabel relation={relationship} />
+								{!!user.description && (
+									<Box marginBottom={1}>
+										<Text>{user.description}</Text>
+									</Box>
+								)}
+								{!!user.location && (
+									<Box marginBottom={1}>
+										<Text>Location: {user.location}</Text>
+									</Box>
+								)}
+								{!!user.url && (
+									<Box marginBottom={1}>
+										<Text>
+											URL: {user.entities.url.urls[0].display_url} (
+											{user.entities.url.urls[0].expanded_url})
+										</Text>
+									</Box>
+								)}
+								<UserMenuSelect items={menuItems} onSelect={handleSelectMenu} />
+							</>
+						);
+					}
+					if (status === "tweets" || status === "tweets/detail") {
+						const isTweets = status === "tweets";
+						const breadcrumbs = isTweets ? ["Tweets"] : ["Tweets", "Detail"];
+						const displayTL = isTweets ? "flex" : "none";
 
-		return (
-			<FullScreen>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
-					</Box>
-					<Box flexDirection="column" display={displayTL}>
-						<Timeline
-							tweets={userTimeline.tweets}
-							onSelectTweet={handleSelectTweet}
-							onHighlightTweet={handleHighlightTweet}
-							limit={limitCounter.count}
-							focus={isTweets}
-						/>
-					</Box>
-					{!isTweets && (
-						<TweetDetail
-							tweet={focusedTweet}
-							updater={{
-								update: userTimeline.updateTweet,
-								remove: (id) => {
-									statusBack();
-									userTimeline.removeTweet(id);
-								},
-							}}
-						/>
-					)}
-				</Box>
-				<Footer />
-			</FullScreen>
-		);
-	}
-	if (status === "listed") {
-		const memberedLists = listedPaginator.lists;
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
+								</Box>
+								<Box flexDirection="column" display={displayTL}>
+									<Timeline
+										tweets={userTimeline.tweets}
+										onSelectTweet={handleSelectTweet}
+										onHighlightTweet={handleHighlightTweet}
+										limit={limitCounter.count}
+										focus={isTweets}
+									/>
+								</Box>
+								{!isTweets && (
+									<TweetDetail
+										tweet={focusedTweet}
+										updater={{
+											update: userTimeline.updateTweet,
+											remove: (id) => {
+												statusBack();
+												userTimeline.removeTweet(id);
+											},
+										}}
+									/>
+								)}
+							</>
+						);
+					}
+					if (status === "listed") {
+						const memberedLists = listedPaginator.lists;
 
-		return (
-			<FullScreen>
-				<Box marginBottom={1}>
-					<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
-				</Box>
-				<SelectMemberedList lists={memberedLists} onSelect={handleSelectList} />
-			</FullScreen>
-		);
-	}
-	if (status === "list/tweets" || status === "list/tweets/detail") {
-		const isTweets = status === "list/tweets";
-		const breadcrumbs = isTweets
-			? ["Listed", `@${currentList.owner.screen_name}/${currentList.name}`]
-			: [
-					"Listed",
-					`@${currentList.owner.screen_name}/${currentList.name}`,
-					"Detail",
-			  ];
-		const displayTL = isTweets ? "flex" : "none";
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
+								</Box>
+								<SelectMemberedList
+									lists={memberedLists}
+									onSelect={handleSelectList}
+								/>
+							</>
+						);
+					}
+					if (status === "list/tweets" || status === "list/tweets/detail") {
+						const isTweets = status === "list/tweets";
+						const listNameLabel = `@${currentList.owner.screen_name}/${currentList.name}`;
+						const breadcrumbs = isTweets
+							? ["Listed", listNameLabel]
+							: ["Listed", listNameLabel, "Detail"];
+						const displayTL = isTweets ? "flex" : "none";
 
-		return (
-			<FullScreen>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
-					</Box>
-					<Box flexDirection="column" display={displayTL}>
-						<Timeline
-							tweets={listTimeline.tweets}
-							onSelectTweet={handleSelectListTweet}
-							onHighlightTweet={handleHighlightListTweet}
-							limit={limitCounter.count}
-							focus={isTweets}
-						/>
-					</Box>
-					{!isTweets && (
-						<TweetDetail
-							tweet={focusedTweet}
-							updater={{
-								update: userTimeline.updateTweet,
-								remove: (id) => {
-									statusBack();
-									userTimeline.removeTweet(id);
-								},
-							}}
-						/>
-					)}
-				</Box>
-				<Footer />
-			</FullScreen>
-		);
-	}
-	if (status === "list/manage") {
-		return (
-			<FullScreen>
-				<Box flexDirection="column" flexGrow={1}>
-					<ListMemberManage lists={lists} onSelect={handleSelectManageList} />
-				</Box>
-				<Footer />
-			</FullScreen>
-		);
-	}
-	if (status === "list/manage/action") {
-		return (
-			<FullScreen>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Text>
-							Select action to{" "}
-							<Text color="#00acee">
-								@{manageList.user.screen_name}/{manageList.name}
-							</Text>
-						</Text>
-					</Box>
-					<SelectInput
-						items={[
-							{ key: "add", label: "Add to List", value: "add" as "add" },
-							{
-								key: "remove",
-								label: "Remove from List",
-								value: "remove" as "remove",
-							},
-						]}
-						onSelect={handleSelectListAction}
-						itemComponent={BreakLineItem}
-					/>
-				</Box>
-				<Footer />
-			</FullScreen>
-		);
-	}
-	if (status === "follow/manage") {
-		return (
-			<FullScreen>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Text>
-							{relationship.source.following ? "Unfollow" : "Follow"}{" "}
-							<Text color="#00acee">@{user.screen_name}</Text>
-						</Text>
-					</Box>
-					<SelectInput
-						items={[
-							relationship.source.following
-								? {
-										key: "unfollow",
-										label: "OK",
-										value: "unfollow" as "unfollow",
-								  }
-								: {
-										key: "follow",
-										label: "OK",
-										value: "follow" as "follow",
-								  },
-							{
-								key: "cancel",
-								label: "cancel",
-								value: "cancel" as "cancel",
-							},
-						]}
-						onSelect={handleSelectFollowAction}
-						itemComponent={BreakLineItem}
-						initialIndex={1}
-					/>
-				</Box>
-				<Footer />
-			</FullScreen>
-		);
-	}
-	return null;
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
+								</Box>
+								<Box flexDirection="column" display={displayTL}>
+									<Timeline
+										tweets={listTimeline.tweets}
+										onSelectTweet={handleSelectListTweet}
+										onHighlightTweet={handleHighlightListTweet}
+										limit={limitCounter.count}
+										focus={isTweets}
+									/>
+								</Box>
+								{!isTweets && (
+									<TweetDetail
+										tweet={focusedTweet}
+										updater={{
+											update: userTimeline.updateTweet,
+											remove: (id) => {
+												statusBack();
+												userTimeline.removeTweet(id);
+											},
+										}}
+									/>
+								)}
+							</>
+						);
+					}
+					if (status === "list/manage") {
+						return (
+							<ListMemberManage
+								lists={lists}
+								onSelect={handleSelectManageList}
+							/>
+						);
+					}
+					if (status === "list/manage/action") {
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Text>
+										Select action to{" "}
+										<Text color="#00acee">
+											@{manageList.user.screen_name}/{manageList.name}
+										</Text>
+									</Text>
+								</Box>
+								<SelectInput
+									items={[
+										{
+											key: "add",
+											label: "Add to List",
+											value: "add" as "add",
+										},
+										{
+											key: "remove",
+											label: "Remove from List",
+											value: "remove" as "remove",
+										},
+									]}
+									onSelect={handleSelectListAction}
+									itemComponent={BreakLineItem}
+								/>
+							</>
+						);
+					}
+					if (status === "follow/manage") {
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Text>
+										{relationship.source.following ? "Unfollow" : "Follow"}{" "}
+										<Text color="#00acee">@{user.screen_name}</Text>
+									</Text>
+								</Box>
+								<SelectInput
+									items={[
+										relationship.source.following
+											? {
+													key: "unfollow",
+													label: "OK",
+													value: "unfollow" as "unfollow",
+											  }
+											: {
+													key: "follow",
+													label: "OK",
+													value: "follow" as "follow",
+											  },
+										{
+											key: "cancel",
+											label: "cancel",
+											value: "cancel" as "cancel",
+										},
+									]}
+									onSelect={handleSelectFollowAction}
+									itemComponent={BreakLineItem}
+									initialIndex={1}
+								/>
+							</>
+						);
+					}
+					return null;
+				})()}
+			</Box>
+			<Footer />
+		</FullScreen>
+	);
 };
