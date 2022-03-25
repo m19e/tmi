@@ -717,6 +717,26 @@ export const UserSub = ({ sname }: Props) => {
 						);
 					}
 					if (status === "follow/manage") {
+						const followItem = relationship.source.following
+							? {
+									key: "unfollow",
+									label: "OK",
+									value: "unfollow" as "unfollow",
+							  }
+							: {
+									key: "follow",
+									label: "OK",
+									value: "follow" as "follow",
+							  };
+						const items = [
+							followItem,
+							{
+								key: "cancel",
+								label: "cancel",
+								value: "cancel" as "cancel",
+							},
+						];
+
 						return (
 							<>
 								<Box marginBottom={1}>
@@ -726,24 +746,7 @@ export const UserSub = ({ sname }: Props) => {
 									</Text>
 								</Box>
 								<SelectInput
-									items={[
-										relationship.source.following
-											? {
-													key: "unfollow",
-													label: "OK",
-													value: "unfollow" as "unfollow",
-											  }
-											: {
-													key: "follow",
-													label: "OK",
-													value: "follow" as "follow",
-											  },
-										{
-											key: "cancel",
-											label: "cancel",
-											value: "cancel" as "cancel",
-										},
-									]}
+									items={items}
 									onSelect={handleSelectFollowAction}
 									itemComponent={BreakLineItem}
 									initialIndex={1}
