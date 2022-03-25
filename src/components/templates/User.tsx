@@ -720,12 +720,12 @@ export const UserSub = ({ sname }: Props) => {
 						const followItem = relationship.source.following
 							? {
 									key: "unfollow",
-									label: "OK",
+									label: "Unfollow",
 									value: "unfollow" as "unfollow",
 							  }
 							: {
 									key: "follow",
-									label: "OK",
+									label: "Follow",
 									value: "follow" as "follow",
 							  };
 						const items = [
@@ -740,10 +740,10 @@ export const UserSub = ({ sname }: Props) => {
 						return (
 							<>
 								<Box marginBottom={1}>
-									<Text>
-										{relationship.source.following ? "Unfollow" : "Follow"}{" "}
-										<Text color="#00acee">@{user.screen_name}</Text>
-									</Text>
+									<Breadcrumbs
+										root={rootLabel}
+										breadcrumbs={["Follow Action"]}
+									/>
 								</Box>
 								<SelectInput
 									items={items}
