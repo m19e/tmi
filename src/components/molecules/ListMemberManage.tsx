@@ -39,12 +39,5 @@ const SelectManageList = ({ lists, onSelect }: Props) => {
 };
 
 export const ListMemberManage = ({ lists, onSelect }: Props) => {
-	return (
-		<>
-			<Box marginBottom={1}>
-				<Text>Pick a List</Text>
-			</Box>
-			<SelectManageList lists={lists} onSelect={onSelect} />
-		</>
-	);
+	return <SelectManageList lists={lists} onSelect={onSelect} />;
 };

@@ -680,36 +680,42 @@ export const UserSub = ({ sname }: Props) => {
 					}
 					if (status === "list/manage") {
 						return (
-							<ListMemberManage
-								lists={lists}
-								onSelect={handleSelectManageList}
-							/>
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} breadcrumbs={["Pick a List"]} />
+								</Box>
+								<ListMemberManage
+									lists={lists}
+									onSelect={handleSelectManageList}
+								/>
+							</>
 						);
 					}
 					if (status === "list/manage/action") {
+						const items = [
+							{
+								key: "add",
+								label: "Add to List",
+								value: "add" as "add",
+							},
+							{
+								key: "remove",
+								label: "Remove from List",
+								value: "remove" as "remove",
+							},
+						];
+						const breadcrumbs = [
+							"Pick a List",
+							`@${manageList.user.screen_name}/${manageList.name}`,
+						];
+
 						return (
 							<>
 								<Box marginBottom={1}>
-									<Text>
-										Select action to{" "}
-										<Text color="#00acee">
-											@{manageList.user.screen_name}/{manageList.name}
-										</Text>
-									</Text>
+									<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
 								</Box>
 								<SelectInput
-									items={[
-										{
-											key: "add",
-											label: "Add to List",
-											value: "add" as "add",
-										},
-										{
-											key: "remove",
-											label: "Remove from List",
-											value: "remove" as "remove",
-										},
-									]}
+									items={items}
 									onSelect={handleSelectListAction}
 									itemComponent={BreakLineItem}
 								/>
