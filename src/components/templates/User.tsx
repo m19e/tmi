@@ -30,7 +30,9 @@ import Footer from "../organisms/Footer";
 import { FullScreen } from "../organisms/FullScreen";
 import { UserMenuSelect } from "../molecules/UserMenuSelect";
 import { Timeline } from "../molecules/Timeline";
+import type { Props as TimelineProps } from "../molecules/Timeline";
 import { TweetDetail } from "../molecules/Timeline/Detail";
+import type { Props as TweetDetailProps } from "../molecules/Timeline/Detail";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
@@ -595,35 +597,27 @@ export const UserSub = ({ sname }: Props) => {
 					if (status === "tweets" || status === "tweets/detail") {
 						const isTweets = status === "tweets";
 						const breadcrumbs = isTweets ? ["Tweets"] : ["Tweets", "Detail"];
-						const displayTL = isTweets ? "flex" : "none";
+						const updater = {
+							update: userTimeline.updateTweet,
+							remove: (id: string) => {
+								statusBack();
+								userTimeline.removeTweet(id);
+							},
+						};
 
 						return (
-							<>
-								<Box marginBottom={1}>
-									<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
-								</Box>
-								<Box flexDirection="column" display={displayTL}>
-									<Timeline
-										tweets={userTimeline.tweets}
-										onSelectTweet={handleSelectTweet}
-										onHighlightTweet={handleHighlightTweet}
-										limit={limitCounter.count}
-										focus={isTweets}
-									/>
-								</Box>
-								{!isTweets && (
-									<TweetDetail
-										tweet={focusedTweet}
-										updater={{
-											update: userTimeline.updateTweet,
-											remove: (id) => {
-												statusBack();
-												userTimeline.removeTweet(id);
-											},
-										}}
-									/>
-								)}
-							</>
+							<TimelineContainer
+								root={rootLabel}
+								breadcrumbs={breadcrumbs}
+								isTweets={isTweets}
+								tweets={userTimeline.tweets}
+								onSelectTweet={handleSelectTweet}
+								onHighlightTweet={handleHighlightTweet}
+								limit={limitCounter.count}
+								focus={isTweets}
+								tweet={focusedTweet}
+								updater={updater}
+							/>
 						);
 					}
 					if (status === "listed") {
@@ -667,10 +661,10 @@ export const UserSub = ({ sname }: Props) => {
 									<TweetDetail
 										tweet={focusedTweet}
 										updater={{
-											update: userTimeline.updateTweet,
+											update: listTimeline.updateTweet,
 											remove: (id) => {
 												statusBack();
-												userTimeline.removeTweet(id);
+												listTimeline.removeTweet(id);
 											},
 										}}
 									/>
@@ -765,5 +759,42 @@ export const UserSub = ({ sname }: Props) => {
 			</Box>
 			<Footer />
 		</FullScreen>
+	);
+};
+
+type TimelineContainerProps = TimelineProps &
+	TweetDetailProps & {
+		isTweets: boolean;
+		root: string;
+		breadcrumbs: string[];
+	};
+
+const TimelineContainer = ({
+	root,
+	breadcrumbs,
+	isTweets,
+	tweets,
+	onSelectTweet,
+	onHighlightTweet,
+	limit,
+	tweet,
+	updater,
+}: TimelineContainerProps) => {
+	return (
+		<>
+			<Box marginBottom={1}>
+				<Breadcrumbs root={root} breadcrumbs={breadcrumbs} />
+			</Box>
+			<Box flexDirection="column" display={isTweets ? "flex" : "none"}>
+				<Timeline
+					tweets={tweets}
+					onSelectTweet={onSelectTweet}
+					onHighlightTweet={onHighlightTweet}
+					limit={limit}
+					focus={isTweets}
+				/>
+			</Box>
+			{!isTweets && <TweetDetail tweet={tweet} updater={updater} />}
+		</>
 	);
 };
