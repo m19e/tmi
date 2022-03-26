@@ -6,7 +6,7 @@ import { TweetMenu } from "../../organisms/TweetMenu";
 import { TweetItem } from "./TweetItem";
 import { TweetIndicator } from "./TweetIndicator";
 
-interface Props {
+export interface Props {
 	tweet: TweetV1;
 	updater: Updater;
 }
