@@ -18,14 +18,8 @@ export interface Props {
 	isFocused: boolean;
 }
 
-export const Timeline = ({
-	tweets,
-	onSelect,
-	onHighlight,
-	limit,
-	isFocused,
-}: Props) => {
-	const items: Item<TweetV1>[] = tweets.map((t) => ({
+export const Timeline = (props: Props) => {
+	const items: Item<TweetV1>[] = props.tweets.map((t) => ({
 		key: t.id_str,
 		label: t.full_text,
 		value: t,
@@ -33,13 +27,10 @@ export const Timeline = ({
 
 	return (
 		<NoRotateSelect
+			{...props}
 			items={items}
-			onSelect={onSelect}
-			onHighlight={onHighlight}
 			indicatorComponent={TweetIndicator}
 			itemComponent={TweetItemWrapper}
-			limit={limit}
-			isFocused={isFocused}
 		/>
 	);
 };
