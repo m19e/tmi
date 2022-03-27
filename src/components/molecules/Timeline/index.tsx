@@ -12,16 +12,16 @@ const TweetItemWrapper: VFC<TweetItemProps> = ({ value }) => {
 
 export interface Props {
 	tweets: TweetV1[];
-	onSelectTweet: (item: { value: TweetV1 }) => void;
-	onHighlightTweet: (item: { value: TweetV1 }) => void;
+	onSelect: (item: { value: TweetV1 }) => void;
+	onHighlight: (item: { value: TweetV1 }) => void;
 	limit: number;
 	isFocused: boolean;
 }
 
 export const Timeline = ({
 	tweets,
-	onSelectTweet,
-	onHighlightTweet,
+	onSelect,
+	onHighlight,
 	limit,
 	isFocused,
 }: Props) => {
@@ -34,8 +34,8 @@ export const Timeline = ({
 	return (
 		<NoRotateSelect
 			items={items}
-			onSelect={onSelectTweet}
-			onHighlight={onHighlightTweet}
+			onSelect={onSelect}
+			onHighlight={onHighlight}
 			indicatorComponent={TweetIndicator}
 			itemComponent={TweetItemWrapper}
 			limit={limit}

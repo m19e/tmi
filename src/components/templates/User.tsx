@@ -611,8 +611,8 @@ export const UserSub = ({ sname }: Props) => {
 								breadcrumbs={breadcrumbs}
 								isTweets={isTweets}
 								tweets={userTimeline.tweets}
-								onSelectTweet={handleSelectTweet}
-								onHighlightTweet={handleHighlightTweet}
+								onSelect={handleSelectTweet}
+								onHighlight={handleHighlightTweet}
 								limit={limitCounter.count}
 								isFocused={isTweets}
 								tweet={focusedTweet}
@@ -774,8 +774,8 @@ const TimelineContainer = ({
 	breadcrumbs,
 	isTweets,
 	tweets,
-	onSelectTweet,
-	onHighlightTweet,
+	onSelect,
+	onHighlight,
 	limit,
 	tweet,
 	updater,
@@ -788,8 +788,8 @@ const TimelineContainer = ({
 			<Box flexDirection="column" display={isTweets ? "flex" : "none"}>
 				<Timeline
 					tweets={tweets}
-					onSelectTweet={onSelectTweet}
-					onHighlightTweet={onHighlightTweet}
+					onSelect={onSelect}
+					onHighlight={onHighlight}
 					limit={limit}
 					isFocused={isTweets}
 				/>
