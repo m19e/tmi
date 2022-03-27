@@ -614,7 +614,7 @@ export const UserSub = ({ sname }: Props) => {
 								onSelectTweet={handleSelectTweet}
 								onHighlightTweet={handleHighlightTweet}
 								limit={limitCounter.count}
-								focus={isTweets}
+								isFocused={isTweets}
 								tweet={focusedTweet}
 								updater={updater}
 							/>
@@ -791,7 +791,7 @@ const TimelineContainer = ({
 					onSelectTweet={onSelectTweet}
 					onHighlightTweet={onHighlightTweet}
 					limit={limit}
-					focus={isTweets}
+					isFocused={isTweets}
 				/>
 			</Box>
 			{!isTweets && <TweetDetail tweet={tweet} updater={updater} />}
