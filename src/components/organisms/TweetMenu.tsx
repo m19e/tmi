@@ -30,7 +30,7 @@ interface Props {
 }
 
 export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
-	const [, setHintKey] = useHint();
+	const [{ key: location }, setHintKey] = useHint();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [{ userId }] = useUserConfig();
@@ -76,6 +76,9 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		{ isActive: !isTweetOpen && !isFetching }
 	);
 
+	const isActiveCloseTweetBox =
+		isTweetOpen && location === "timeline/detail/input" && !isFetching;
+
 	useInput(
 		(input, key) => {
 			if (key.escape) {
@@ -84,7 +87,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 				setHintKey("timeline/detail");
 			}
 		},
-		{ isActive: isTweetOpen && !isFetching }
+		{ isActive: isActiveCloseTweetBox }
 	);
 
 	const openTweet = (mode: "mention" | "reply" | "quote") => {

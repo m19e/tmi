@@ -93,6 +93,7 @@ export const NewTweetBox: VFC<Props> = ({
 					submitTweet(tweetText);
 				} else if (key.escape) {
 					setWaitReturn(false);
+					setHintKey("timeline/detail/input");
 				}
 			},
 			[tweetText]
