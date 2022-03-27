@@ -48,7 +48,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [{ userId: authUserId }] = useUserConfig();
 	const [, setRequestResult] = useRequestResult();
 	const [, setError] = useError();
-	const [{ key: location }, setHint] = useHint();
+	const [{ key: location }, setHintKey] = useHint();
 
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
@@ -302,7 +302,7 @@ export const UserSub = ({ sname }: Props) => {
 	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
 		setFocusedTweet(tweet);
 		setStatus("tweets/detail");
-		setHint("timeline/detail");
+		setHintKey("timeline/detail");
 	};
 	const handleHighlightTweet = useCallback(
 		async (item: { value: TweetV1 }) => {
