@@ -604,6 +604,11 @@ export const UserSub = ({ sname }: Props) => {
 								userTimeline.removeTweet(id);
 								// TODO set hint "timeline"
 							},
+							redraft: (target: TweetV1) => {
+								statusBack();
+								userTimeline.removeTweet(target.id_str);
+								// TODO set target.full_text to timeline/input
+							},
 						};
 
 						return (
@@ -646,6 +651,11 @@ export const UserSub = ({ sname }: Props) => {
 								statusBack();
 								listTimeline.removeTweet(id);
 								// TODO set hint "timeline"
+							},
+							redraft: (target: TweetV1) => {
+								statusBack();
+								listTimeline.removeTweet(target.id_str);
+								// TODO set target.full_text to timeline/input
 							},
 						};
 

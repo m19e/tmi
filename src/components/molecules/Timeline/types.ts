@@ -9,4 +9,5 @@ export interface TweetItemProps {
 export interface Updater {
 	update: (target: TweetV1) => void;
 	remove: (target_id: string) => void;
+	redraft: (target: TweetV1) => void;
 }
