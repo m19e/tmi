@@ -93,7 +93,14 @@ export const NewTweetBox: VFC<Props> = ({
 					submitTweet(tweetText);
 				} else if (key.escape) {
 					setWaitReturn(false);
-					setHintKey("timeline/detail/input");
+					setHintKey((prev) => {
+						if (prev === "timeline/new/wait-return") {
+							return "timeline/new/input";
+						}
+						if (prev === "timeline/detail/wait-return") {
+							return "timeline/detail/input";
+						}
+					});
 				}
 			},
 			[tweetText]
@@ -110,7 +117,14 @@ export const NewTweetBox: VFC<Props> = ({
 	const handleWaitReturn = useCallback(() => {
 		if (invalid) return;
 		setWaitReturn(true);
-		setHintKey("timeline/detail/wait-return");
+		setHintKey((prev) => {
+			if (prev === "timeline/new/input") {
+				return "timeline/new/wait-return";
+			}
+			if (prev === "timeline/detail/input") {
+				return "timeline/detail/wait-return";
+			}
+		});
 	}, [invalid]);
 
 	return (
