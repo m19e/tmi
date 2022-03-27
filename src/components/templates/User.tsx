@@ -621,15 +621,13 @@ export const UserSub = ({ sname }: Props) => {
 						);
 					}
 					if (status === "listed") {
-						const memberedLists = listedPaginator.lists;
-
 						return (
 							<>
 								<Box marginBottom={1}>
 									<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
 								</Box>
 								<SelectMemberedList
-									lists={memberedLists}
+									lists={listedPaginator.lists}
 									onSelect={handleSelectList}
 								/>
 							</>
