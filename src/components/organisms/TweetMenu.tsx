@@ -30,7 +30,7 @@ interface Props {
 }
 
 export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
-	const [, setHint] = useHint();
+	const [, setHintKey] = useHint();
 	const [, setError] = useError();
 	const [, setRequestResult] = useRequestResult();
 	const [{ userId }] = useUserConfig();
@@ -81,7 +81,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			if (key.escape) {
 				setIsTweetOpen(false);
 				setTweetMode("none");
-				setHint("timeline/detail");
+				setHintKey("timeline/detail");
 			}
 		},
 		{ isActive: isTweetOpen && !isFetching }
@@ -93,7 +93,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		if (mode === "mention") {
 			setIsMenuOpen(false);
 		}
-		setHint("timeline/detail/input");
+		setHintKey("timeline/detail/input");
 	};
 	const deleteTweet = useCallback(async () => {
 		setIsFetching(true);
