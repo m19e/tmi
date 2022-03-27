@@ -783,7 +783,7 @@ const TimelineContainer = ({
 	updater,
 }: TimelineContainerProps) => {
 	return (
-		<>
+		<Box flexDirection="column" flexGrow={1}>
 			<Box marginBottom={1}>
 				<Breadcrumbs root={root} breadcrumbs={breadcrumbs} />
 			</Box>
@@ -797,6 +797,6 @@ const TimelineContainer = ({
 				/>
 			</Box>
 			{!isTweets && <TweetDetail tweet={tweet} updater={updater} />}
-		</>
+		</Box>
 	);
 };
