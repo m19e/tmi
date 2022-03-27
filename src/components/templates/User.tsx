@@ -641,35 +641,27 @@ export const UserSub = ({ sname }: Props) => {
 						const breadcrumbs = isTweets
 							? ["Listed", listNameLabel]
 							: ["Listed", listNameLabel, "Detail"];
-						const displayTL = isTweets ? "flex" : "none";
+						const updater = {
+							update: listTimeline.updateTweet,
+							remove: (id: string) => {
+								statusBack();
+								listTimeline.removeTweet(id);
+							},
+						};
 
 						return (
-							<>
-								<Box marginBottom={1}>
-									<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
-								</Box>
-								<Box flexDirection="column" display={displayTL}>
-									<Timeline
-										tweets={listTimeline.tweets}
-										onSelectTweet={handleSelectListTweet}
-										onHighlightTweet={handleHighlightListTweet}
-										limit={limitCounter.count}
-										focus={isTweets}
-									/>
-								</Box>
-								{!isTweets && (
-									<TweetDetail
-										tweet={focusedTweet}
-										updater={{
-											update: listTimeline.updateTweet,
-											remove: (id) => {
-												statusBack();
-												listTimeline.removeTweet(id);
-											},
-										}}
-									/>
-								)}
-							</>
+							<TimelineContainer
+								root={rootLabel}
+								breadcrumbs={breadcrumbs}
+								isTweets={isTweets}
+								tweets={listTimeline.tweets}
+								onSelect={handleSelectListTweet}
+								onHighlight={handleHighlightListTweet}
+								limit={limitCounter.count}
+								isFocused={isTweets}
+								tweet={focusedTweet}
+								updater={updater}
+							/>
 						);
 					}
 					if (status === "list/manage") {
