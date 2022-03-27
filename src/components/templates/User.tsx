@@ -602,6 +602,7 @@ export const UserSub = ({ sname }: Props) => {
 							remove: (id: string) => {
 								statusBack();
 								userTimeline.removeTweet(id);
+								// TODO set hint "timeline"
 							},
 						};
 
@@ -644,6 +645,7 @@ export const UserSub = ({ sname }: Props) => {
 							remove: (id: string) => {
 								statusBack();
 								listTimeline.removeTweet(id);
+								// TODO set hint "timeline"
 							},
 						};
 
