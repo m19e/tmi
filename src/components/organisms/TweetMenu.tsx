@@ -40,7 +40,6 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isTweetOpen, setIsTweetOpen] = useState(false);
 	const [isFetching, setIsFetching] = useState(false);
-	const [initialText, setInitialText] = useState("");
 	const [tweetMode, setTweetMode] = useState<
 		"none" | "mention" | "reply" | "quote"
 	>("none");
