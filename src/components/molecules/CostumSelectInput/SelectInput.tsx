@@ -47,11 +47,6 @@ export interface Props<V> {
 	itemComponent?: FC<ItemProps>;
 
 	/**
-	 * Custom component to add the selected component. (local extended)
-	 */
-	selectedComponent?: FC<ItemProps>;
-
-	/**
 	 * Function to call when user selects an item. Item object is passed to that function as an argument.
 	 */
 	onSelect?: (item: Item<V>) => void;
@@ -60,11 +55,6 @@ export interface Props<V> {
 	 * Function to call when user highlights an item. Item object is passed to that function as an argument.
 	 */
 	onHighlight?: (item: Item<V>) => void;
-
-	/**
-	 * Override selected flag inner select-input. Pass true => unselect, other => do nothing.
-	 */
-	forceUnselect?: boolean;
 }
 
 export interface Item<V> {
@@ -359,6 +349,18 @@ export function NoRotateSelectInput<V>({
 	);
 }
 
+export interface PropsWithSelected<V> extends Props<V> {
+	/**
+	 * Custom component to add the selected component. (local extended)
+	 */
+	selectedComponent?: FC<ItemProps>;
+
+	/**
+	 * Override selected flag inner select-input. Pass true => unselect, other => do nothing.
+	 */
+	forceUnselect?: boolean;
+}
+
 export function NoRotateWithSelected<V>({
 	items = [],
 	isFocused = true,
@@ -370,7 +372,7 @@ export function NoRotateWithSelected<V>({
 	onSelect,
 	onHighlight,
 	forceUnselect = undefined,
-}: Props<V>): JSX.Element {
+}: PropsWithSelected<V>): JSX.Element {
 	const [cursorIndex, setCursorIndex] = useState(0);
 	const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 	const [selected, setSelected] = useState(false);
