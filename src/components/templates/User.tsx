@@ -33,6 +33,7 @@ import { Timeline } from "../molecules/Timeline";
 import type { Props as TimelineProps } from "../molecules/Timeline";
 import { TweetDetail } from "../molecules/Timeline/Detail";
 import type { Props as TweetDetailProps } from "../molecules/Timeline/Detail";
+import { NewTweetBox } from "../molecules/Timeline/NewTweetBox";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
@@ -84,6 +85,8 @@ export const UserSub = ({ sname }: Props) => {
 		undefined
 	);
 	const [isFetching, setIsFetching] = useState(false);
+	const [isTweetOpen, setIsTweetOpen] = useState(false);
+	const [initialText, setInitialText] = useState("");
 
 	const [listedPaginator, setListedPaginator] = useState<
 		ListMembershipsV1Paginator | undefined
@@ -550,6 +553,18 @@ export const UserSub = ({ sname }: Props) => {
 
 	const rootLabel = user ? `@${user.screen_name}` : "*Invalid user*";
 
+	const handleSubmitTweet = async (text: string) => {
+		const err = await api.tweet(text);
+		if (typeof err === "string") {
+			setError(err);
+			return;
+		}
+		setRequestResult(`Successfully tweeted: "${text}"`);
+		setIsTweetOpen(false);
+		setHintKey("timeline");
+		if (initialText) setInitialText("");
+	};
+
 	return (
 		<FullScreen>
 			<Box flexDirection="column" flexGrow={1}>
@@ -606,27 +621,40 @@ export const UserSub = ({ sname }: Props) => {
 								statusBack();
 								userTimeline.removeTweet(id);
 								// TODO set hint "timeline"
+								setHintKey("timeline");
 							},
 							redraft: (target: TweetV1) => {
 								statusBack();
 								userTimeline.removeTweet(target.id_str);
 								// TODO set target.full_text to timeline/input
+								setInitialText(target.full_text);
+								setIsTweetOpen(true);
+								setHintKey("timeline/new/input");
 							},
 						};
 
 						return (
-							<TimelineContainer
-								root={rootLabel}
-								breadcrumbs={breadcrumbs}
-								isTweets={isTweets}
-								tweets={userTimeline.tweets}
-								onSelect={handleSelectTweet}
-								onHighlight={handleHighlightTweet}
-								limit={limitCounter.count}
-								isFocused={isTweets}
-								tweet={focusedTweet}
-								updater={updater}
-							/>
+							<>
+								<TimelineContainer
+									root={rootLabel}
+									breadcrumbs={breadcrumbs}
+									isTweets={isTweets}
+									tweets={userTimeline.tweets}
+									onSelect={handleSelectTweet}
+									onHighlight={handleHighlightTweet}
+									limit={limitCounter.count}
+									isFocused={isFocused}
+									tweet={focusedTweet}
+									updater={updater}
+								/>
+								{isTweetOpen && (
+									<NewTweetBox
+										type="new"
+										onSubmit={handleSubmitTweet}
+										initialText={initialText}
+									/>
+								)}
+							</>
 						);
 					}
 					if (status === "listed") {
@@ -655,27 +683,40 @@ export const UserSub = ({ sname }: Props) => {
 								statusBack();
 								listTimeline.removeTweet(id);
 								// TODO set hint "timeline"
+								setHintKey("timeline");
 							},
 							redraft: (target: TweetV1) => {
 								statusBack();
 								listTimeline.removeTweet(target.id_str);
 								// TODO set target.full_text to timeline/input
+								setInitialText(target.full_text);
+								setIsTweetOpen(true);
+								setHintKey("timeline/new/input");
 							},
 						};
 
 						return (
-							<TimelineContainer
-								root={rootLabel}
-								breadcrumbs={breadcrumbs}
-								isTweets={isTweets}
-								tweets={listTimeline.tweets}
-								onSelect={handleSelectListTweet}
-								onHighlight={handleHighlightListTweet}
-								limit={limitCounter.count}
-								isFocused={isTweets}
-								tweet={focusedTweet}
-								updater={updater}
-							/>
+							<>
+								<TimelineContainer
+									root={rootLabel}
+									breadcrumbs={breadcrumbs}
+									isTweets={isTweets}
+									tweets={listTimeline.tweets}
+									onSelect={handleSelectListTweet}
+									onHighlight={handleHighlightListTweet}
+									limit={limitCounter.count}
+									isFocused={isFocused}
+									tweet={focusedTweet}
+									updater={updater}
+								/>
+								{isTweetOpen && (
+									<NewTweetBox
+										type="new"
+										onSubmit={handleSubmitTweet}
+										initialText={initialText}
+									/>
+								)}
+							</>
 						);
 					}
 					if (status === "list/manage") {
