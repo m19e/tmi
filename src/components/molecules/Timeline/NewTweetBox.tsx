@@ -111,7 +111,12 @@ export const NewTweetBox: VFC<Props> = ({
 	const submitTweet = async (text: string) => {
 		setWaitReturn(false);
 		await onSubmit(text);
-		setHintKey("timeline/detail");
+		setHintKey((prev) => {
+			if (prev.includes("detail")) {
+				return "timeline/detail";
+			}
+			return "timeline";
+		});
 	};
 
 	const handleWaitReturn = useCallback(() => {

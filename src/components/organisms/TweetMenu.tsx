@@ -110,6 +110,18 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		updater.remove(t.id_str);
 		setIsFetching(false);
 	}, [t]);
+	const redraft = useCallback(async () => {
+		setIsFetching(true);
+		setIsMenuOpen(false);
+		const error = await api.deleteTweet(t.id_str);
+		if (typeof error === "string") {
+			setError(error);
+			return;
+		}
+		setRequestResult(`Successfully deleted: "${t.full_text}"`);
+		updater.redraft(t);
+		setIsFetching(false);
+	}, [t]);
 
 	const handleSelectMenu = ({ value: action }: { value: TweetMenuAction }) => {
 		if (action === "mention") {
@@ -118,7 +130,7 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 			deleteTweet();
 		} else if (action === "re-draft") {
 			// TODO implement redraft props passed from User root
-			// redraft()
+			redraft();
 		}
 	};
 
