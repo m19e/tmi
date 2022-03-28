@@ -438,7 +438,9 @@ export const UserSub = ({ sname }: Props) => {
 
 	const isOpenTweetBox =
 		location === "timeline/detail/input" ||
-		location === "timeline/detail/wait-return";
+		location === "timeline/detail/wait-return" ||
+		location === "timeline/new/input" ||
+		location === "timeline/new/wait-return";
 	const stopInput = isOpenTweetBox || isFetching;
 
 	const isAfterSelectedMenu = status !== "load" && status !== "user";
@@ -596,6 +598,7 @@ export const UserSub = ({ sname }: Props) => {
 					}
 					if (status === "tweets" || status === "tweets/detail") {
 						const isTweets = status === "tweets";
+						const isFocused = isTweets && !stopInput;
 						const breadcrumbs = isTweets ? ["Tweets"] : ["Tweets", "Detail"];
 						const updater = {
 							update: userTimeline.updateTweet,
@@ -641,6 +644,7 @@ export const UserSub = ({ sname }: Props) => {
 					}
 					if (status === "list/tweets" || status === "list/tweets/detail") {
 						const isTweets = status === "list/tweets";
+						const isFocused = isTweets && !stopInput;
 						const listNameLabel = `@${currentList.owner.screen_name}/${currentList.name}`;
 						const breadcrumbs = isTweets
 							? ["Listed", listNameLabel]
@@ -779,6 +783,7 @@ const TimelineContainer = ({
 	onSelect,
 	onHighlight,
 	limit,
+	isFocused,
 	tweet,
 	updater,
 }: TimelineContainerProps) => {
@@ -793,7 +798,7 @@ const TimelineContainer = ({
 					onSelect={onSelect}
 					onHighlight={onHighlight}
 					limit={limit}
-					isFocused={isTweets}
+					isFocused={isFocused}
 				/>
 			</Box>
 			{!isTweets && <TweetDetail tweet={tweet} updater={updater} />}
