@@ -129,7 +129,6 @@ export const TweetMenu: VFC<Props> = ({ tweet, updater }) => {
 		} else if (action === "delete") {
 			deleteTweet();
 		} else if (action === "re-draft") {
-			// TODO implement redraft props passed from User root
 			redraft();
 		}
 	};
