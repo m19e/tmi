@@ -625,7 +625,6 @@ export const UserSub = ({ sname }: Props) => {
 							redraft: (target: TweetV1) => {
 								statusBack();
 								userTimeline.removeTweet(target.id_str);
-								// TODO set target.full_text to timeline/input
 								setInitialText(target.full_text);
 								setIsTweetOpen(true);
 								setHintKey("timeline/new/input");
@@ -686,7 +685,6 @@ export const UserSub = ({ sname }: Props) => {
 							redraft: (target: TweetV1) => {
 								statusBack();
 								listTimeline.removeTweet(target.id_str);
-								// TODO set target.full_text to timeline/input
 								setInitialText(target.full_text);
 								setIsTweetOpen(true);
 								setHintKey("timeline/new/input");
