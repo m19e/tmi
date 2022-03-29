@@ -55,7 +55,7 @@ export const UserSub = ({ sname }: Props) => {
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
 	const [
-		{ present: status },
+		{ present: status, past },
 		{ set: setStatus, canUndo: canStatusBack, undo: statusBack },
 	] = useUndo<
 		| "load"
@@ -455,6 +455,9 @@ export const UserSub = ({ sname }: Props) => {
 			(_, key) => {
 				if (key.escape && canStatusBack) {
 					statusBack();
+					if (past[past.length - 1] === "user") {
+						setHintKey("none");
+					}
 					if (status === "tweets" || status === "list/tweets") {
 						setFocusedTweet(undefined);
 						if (status === "tweets") userTimeline.reset();
@@ -462,7 +465,7 @@ export const UserSub = ({ sname }: Props) => {
 					}
 				}
 			},
-			[status, canStatusBack]
+			[status, canStatusBack, past]
 		),
 		{
 			isActive: isActiveEscapeBack,
