@@ -202,6 +202,7 @@ export const UserSub = ({ sname }: Props) => {
 		}
 		userTimeline.setPaginator(res);
 		setStatus("tweets");
+		setHintKey("timeline");
 	}, [user]);
 	const transitionFollowing = useCallback(async () => {
 		const res = await api.userFollowing({
@@ -468,6 +469,20 @@ export const UserSub = ({ sname }: Props) => {
 		}
 	);
 
+	const canCloseTweetBox = location === "timeline/new/input";
+
+	useInput(
+		useCallback((_, key) => {
+			if (key.escape) {
+				setIsTweetOpen(false);
+				setHintKey("timeline");
+			}
+		}, []),
+		{
+			isActive: canCloseTweetBox,
+		}
+	);
+
 	const updateTweet = useCallback(
 		(newTweet: TweetV1) => {
 			if (status === "tweets" || status === "tweets/detail") {
@@ -527,7 +542,8 @@ export const UserSub = ({ sname }: Props) => {
 					} else if (input === "-" || input === "_") {
 						limitCounter.decrement();
 					} else if (input === "n") {
-						// setIsNewTweetOpen(true);
+						setIsTweetOpen(true);
+						setHintKey("timeline/new/input");
 					} else if (input === "g") {
 						// TODO will implement in footer hooks
 						// toggleDisplayFooter()
