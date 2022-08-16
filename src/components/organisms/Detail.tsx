@@ -154,7 +154,7 @@ const Detail: VFC<Props> = ({
 			setError(error);
 			return;
 		}
-		setRequestResult(`Successfully deleted: "${tweet.full_text}"`);
+		setRequestResult(`Successfully deleted: "${t.full_text}"`);
 		onRemove({ redraft });
 		setInProcess("none");
 	};

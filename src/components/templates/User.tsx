@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Box, Text, useInput } from "ink";
-import useDimensions from "ink-use-stdout-dimensions";
 import type {
 	UserV1,
 	FriendshipV1,
@@ -28,8 +27,13 @@ import {
 	useListTimeline,
 } from "../../hooks/timeline";
 import Footer from "../organisms/Footer";
+import { FullScreen } from "../organisms/FullScreen";
 import { UserMenuSelect } from "../molecules/UserMenuSelect";
 import { Timeline } from "../molecules/Timeline";
+import type { Props as TimelineProps } from "../molecules/Timeline";
+import { TweetDetail } from "../molecules/Timeline/Detail";
+import type { Props as TweetDetailProps } from "../molecules/Timeline/Detail";
+import { NewTweetBox } from "../molecules/Timeline/NewTweetBox";
 import { SelectMemberedList } from "../molecules/SelectMemberedList";
 import { ListMemberManage } from "../molecules/ListMemberManage";
 import { FriendshipLabel } from "../atoms/FriendshipLabel";
@@ -41,19 +45,17 @@ interface Props {
 }
 
 export const UserSub = ({ sname }: Props) => {
-	const [, rows] = useDimensions();
-
 	const api = useApi();
 	const [{ userId: authUserId }] = useUserConfig();
 	const [, setRequestResult] = useRequestResult();
 	const [, setError] = useError();
-	const [, setHint] = useHint();
+	const [{ key: location }, setHintKey] = useHint();
 
 	const [user, setUser] = useState<UserV1 | undefined>(undefined);
 	const [relationship, setRelationship] =
 		useState<FriendshipV1["relationship"]>();
 	const [
-		{ present: status },
+		{ present: status, past },
 		{ set: setStatus, canUndo: canStatusBack, undo: statusBack },
 	] = useUndo<
 		| "load"
@@ -83,6 +85,8 @@ export const UserSub = ({ sname }: Props) => {
 		undefined
 	);
 	const [isFetching, setIsFetching] = useState(false);
+	const [isTweetOpen, setIsTweetOpen] = useState(false);
+	const [initialText, setInitialText] = useState("");
 
 	const [listedPaginator, setListedPaginator] = useState<
 		ListMembershipsV1Paginator | undefined
@@ -198,6 +202,7 @@ export const UserSub = ({ sname }: Props) => {
 		}
 		userTimeline.setPaginator(res);
 		setStatus("tweets");
+		setHintKey("timeline");
 	}, [user]);
 	const transitionFollowing = useCallback(async () => {
 		const res = await api.userFollowing({
@@ -301,6 +306,7 @@ export const UserSub = ({ sname }: Props) => {
 	const handleSelectTweet = ({ value: tweet }: { value: TweetV1 }) => {
 		setFocusedTweet(tweet);
 		setStatus("tweets/detail");
+		setHintKey("timeline/detail");
 	};
 	const handleHighlightTweet = useCallback(
 		async (item: { value: TweetV1 }) => {
@@ -434,20 +440,49 @@ export const UserSub = ({ sname }: Props) => {
 		setStatus("user");
 	};
 
+	const isOpenTweetBox =
+		location === "timeline/detail/input" ||
+		location === "timeline/detail/wait-return" ||
+		location === "timeline/new/input" ||
+		location === "timeline/new/wait-return";
+	const stopInput = isOpenTweetBox || isFetching;
+
+	const isAfterSelectedMenu = status !== "load" && status !== "user";
+	const isActiveEscapeBack = isAfterSelectedMenu && !stopInput;
+
 	useInput(
 		useCallback(
 			(_, key) => {
 				if (key.escape && canStatusBack) {
 					statusBack();
+					if (past[past.length - 1] === "user") {
+						setHintKey("none");
+					}
 					if (status === "tweets" || status === "list/tweets") {
 						setFocusedTweet(undefined);
+						if (status === "tweets") userTimeline.reset();
+						if (status === "list/tweets") listTimeline.reset();
 					}
 				}
 			},
-			[status, canStatusBack]
+			[status, canStatusBack, past]
 		),
 		{
-			isActive: status !== "load" && status !== "user",
+			isActive: isActiveEscapeBack,
+		}
+	);
+
+	const canCloseTweetBox = location === "timeline/new/input";
+
+	useInput(
+		useCallback((_, key) => {
+			if (key.escape) {
+				setIsTweetOpen(false);
+				setHintKey("timeline");
+			}
+		}, []),
+		{
+			isActive: canCloseTweetBox,
 		}
 	);
 
@@ -495,231 +530,334 @@ export const UserSub = ({ sname }: Props) => {
 		);
 	}, [focusedTweet]);
 
+	const isTimeline = status === "tweets" || status === "list/tweets";
+	const isDetail =
+		status === "tweets/detail" || status === "list/tweets/detail";
+	const isTimelineOrDetail = isTimeline || isDetail;
+	const isActiveTimelineKeybind = isTimelineOrDetail && !stopInput;
+
 	useInput(
 		useCallback(
 			(input, key) => {
-				if (input === "+" || input === "=") {
-					limitCounter.increment();
-				} else if (input === "-" || input === "_") {
-					limitCounter.decrement();
-				} else if (input === "t") {
-					rt();
-				} else if (input === "f") {
-					fav();
-				} else if (input === "n") {
-					// setIsNewTweetOpen(true);
+				if (isTimeline) {
+					if (input === "+" || input === "=") {
+						limitCounter.increment();
+					} else if (input === "-" || input === "_") {
+						limitCounter.decrement();
+					} else if (input === "n") {
+						setIsTweetOpen(true);
+						setHintKey("timeline/new/input");
+					} else if (input === "g") {
+						// TODO will implement in footer hooks
+						// toggleDisplayFooter()
+					}
+				}
+
+				const shouldFetch = input === "t" || input === "f";
+				if (shouldFetch) {
+					(async () => {
+						setIsFetching(true);
+						if (input === "t") await rt();
+						else if (input === "f") await fav();
+						setIsFetching(false);
+					})();
 				}
 			},
-			[limitCounter]
+			[isTimeline, limitCounter]
 		),
 		{
-			isActive: status === "tweets" || status === "list/tweets",
+			isActive: isActiveTimelineKeybind,
 		}
 	);
 
 	const rootLabel = user ? `@${user.screen_name}` : "*Invalid user*";
 
-	if (status === "load") {
-		return (
-			<>
-				<Text>Loading...</Text>
-				<Footer />
-			</>
-		);
-	}
-	if (status === "user") {
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} />
-					</Box>
-					<Box marginBottom={1}>
-						<Text>
-							{user.name} {user.protected && "🔒 "}(@{user.screen_name})
-						</Text>
-					</Box>
-					<FriendshipLabel relation={relationship} />
-					{!!user.description && (
-						<Box marginBottom={1}>
-							<Text>{user.description}</Text>
-						</Box>
-					)}
-					{!!user.location && (
-						<Box marginBottom={1}>
-							<Text>Location: {user.location}</Text>
-						</Box>
-					)}
-					{!!user.url && (
-						<Box marginBottom={1}>
-							<Text>
-								URL: {user.entities.url.urls[0].display_url} (
-								{user.entities.url.urls[0].expanded_url})
-							</Text>
-						</Box>
-					)}
-					<UserMenuSelect items={menuItems} onSelect={handleSelectMenu} />
-				</Box>
-				<Text>{debugConsole}</Text>
-				<Footer />
-			</Box>
-		);
-	}
-	if (status === "tweets" || status === "tweets/detail") {
-		const breadcrumbs = status === "tweets" ? ["Tweets"] : ["Tweets", "Detail"];
-		const updater = {
-			update: userTimeline.updateTweet,
-			remove: (target_id: string) => {
-				userTimeline.removeTweet(target_id);
-				statusBack();
-			},
-		};
+	const handleSubmitTweet = async (text: string) => {
+		const err = await api.tweet(text);
+		if (typeof err === "string") {
+			setError(err);
+			return;
+		}
+		setRequestResult(`Successfully tweeted: "${text}"`);
+		setIsTweetOpen(false);
+		setHintKey("timeline");
+		if (initialText) setInitialText("");
+	};
 
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
-					</Box>
-					<Timeline
-						tweets={userTimeline.tweets}
-						onSelectTweet={handleSelectTweet}
-						onHighlightTweet={handleHighlightTweet}
-						limit={limitCounter.count}
-						updater={updater}
-					/>
-				</Box>
-				<Text>{debugConsole}</Text>
-				<Footer />
-			</Box>
-		);
-	}
-	if (status === "listed") {
-		const memberedLists = listedPaginator.lists;
+	return (
+		<FullScreen>
+			<Box flexDirection="column" flexGrow={1}>
+				{(() => {
+					if (status === "load") {
+						return (
+							<>
+								<Text>Loading...</Text>
+								<Footer />
+							</>
+						);
+					}
+					if (status === "user") {
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} />
+								</Box>
+								<Box marginBottom={1}>
+									<Text>
+										{user.name} {user.protected && "🔒 "}(@{user.screen_name})
+									</Text>
+								</Box>
+								<FriendshipLabel relation={relationship} />
+								{!!user.description && (
+									<Box marginBottom={1}>
+										<Text>{user.description}</Text>
+									</Box>
+								)}
+								{!!user.location && (
+									<Box marginBottom={1}>
+										<Text>Location: {user.location}</Text>
+									</Box>
+								)}
+								{!!user.url && (
+									<Box marginBottom={1}>
+										<Text>
+											URL: {user.entities.url.urls[0].display_url} (
+											{user.entities.url.urls[0].expanded_url})
+										</Text>
+									</Box>
+								)}
+								<UserMenuSelect items={menuItems} onSelect={handleSelectMenu} />
+							</>
+						);
+					}
+					if (status === "tweets" || status === "tweets/detail") {
+						const isTweets = status === "tweets";
+						const isFocused = isTweets && !stopInput;
+						const breadcrumbs = isTweets ? ["Tweets"] : ["Tweets", "Detail"];
+						const updater = {
+							update: userTimeline.updateTweet,
+							remove: (id: string) => {
+								statusBack();
+								userTimeline.removeTweet(id);
+								setHintKey("timeline");
+							},
+							redraft: (target: TweetV1) => {
+								statusBack();
+								userTimeline.removeTweet(target.id_str);
+								setInitialText(target.full_text);
+								setIsTweetOpen(true);
+								setHintKey("timeline/new/input");
+							},
+						};
 
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box marginBottom={1}>
-					<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
-				</Box>
-				<SelectMemberedList lists={memberedLists} onSelect={handleSelectList} />
-			</Box>
-		);
-	}
-	if (status === "list/tweets" || status === "list/tweets/detail") {
-		const breadcrumbs =
-			status === "list/tweets"
-				? ["Listed", `@${currentList.owner.screen_name}/${currentList.name}`]
-				: [
-						"Listed",
-						`@${currentList.owner.screen_name}/${currentList.name}`,
-						"Detail",
-				  ];
-		const updater = {
-			update: listTimeline.updateTweet,
-			remove: (target_id: string) => {
-				listTimeline.removeTweet(target_id);
-				statusBack();
-			},
-		};
+						return (
+							<>
+								<TimelineContainer
+									root={rootLabel}
+									breadcrumbs={breadcrumbs}
+									isTweets={isTweets}
+									tweets={userTimeline.tweets}
+									onSelect={handleSelectTweet}
+									onHighlight={handleHighlightTweet}
+									limit={limitCounter.count}
+									isFocused={isFocused}
+									tweet={focusedTweet}
+									updater={updater}
+								/>
+								{isTweetOpen && (
+									<NewTweetBox
+										type="new"
+										onSubmit={handleSubmitTweet}
+										initialText={initialText}
+									/>
+								)}
+							</>
+						);
+					}
+					if (status === "listed") {
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} breadcrumbs={["Listed"]} />
+								</Box>
+								<SelectMemberedList
+									lists={listedPaginator.lists}
+									onSelect={handleSelectList}
+								/>
+							</>
+						);
+					}
+					if (status === "list/tweets" || status === "list/tweets/detail") {
+						const isTweets = status === "list/tweets";
+						const isFocused = isTweets && !stopInput;
+						const listNameLabel = `@${currentList.owner.screen_name}/${currentList.name}`;
+						const breadcrumbs = isTweets
+							? ["Listed", listNameLabel]
+							: ["Listed", listNameLabel, "Detail"];
+						const updater = {
+							update: listTimeline.updateTweet,
+							remove: (id: string) => {
+								statusBack();
+								listTimeline.removeTweet(id);
+								setHintKey("timeline");
+							},
+							redraft: (target: TweetV1) => {
+								statusBack();
+								listTimeline.removeTweet(target.id_str);
+								setInitialText(target.full_text);
+								setIsTweetOpen(true);
+								setHintKey("timeline/new/input");
+							},
+						};
 
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
-					</Box>
-					<Timeline
-						tweets={listTimeline.tweets}
-						onSelectTweet={handleSelectListTweet}
-						onHighlightTweet={handleHighlightListTweet}
-						limit={limitCounter.count}
-						updater={updater}
-					/>
-				</Box>
-				<Footer />
-			</Box>
-		);
-	}
-	if (status === "list/manage") {
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box flexDirection="column" flexGrow={1}>
-					<ListMemberManage lists={lists} onSelect={handleSelectManageList} />
-				</Box>
-				<Text>{debugConsole}</Text>
-				<Footer />
-			</Box>
-		);
-	}
-	if (status === "list/manage/action") {
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Text>
-							Select action to{" "}
-							<Text color="#00acee">
-								@{manageList.user.screen_name}/{manageList.name}
-							</Text>
-						</Text>
-					</Box>
-					<SelectInput
-						items={[
-							{ key: "add", label: "Add to List", value: "add" as "add" },
+						return (
+							<>
+								<TimelineContainer
+									root={rootLabel}
+									breadcrumbs={breadcrumbs}
+									isTweets={isTweets}
+									tweets={listTimeline.tweets}
+									onSelect={handleSelectListTweet}
+									onHighlight={handleHighlightListTweet}
+									limit={limitCounter.count}
+									isFocused={isFocused}
+									tweet={focusedTweet}
+									updater={updater}
+								/>
+								{isTweetOpen && (
+									<NewTweetBox
+										type="new"
+										onSubmit={handleSubmitTweet}
+										initialText={initialText}
+									/>
+								)}
+							</>
+						);
+					}
+					if (status === "list/manage") {
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} breadcrumbs={["Pick a List"]} />
+								</Box>
+								<ListMemberManage
+									lists={lists}
+									onSelect={handleSelectManageList}
+								/>
+							</>
+						);
+					}
+					if (status === "list/manage/action") {
+						const items = [
+							{
+								key: "add",
+								label: "Add to List",
+								value: "add" as "add",
+							},
 							{
 								key: "remove",
 								label: "Remove from List",
 								value: "remove" as "remove",
 							},
-						]}
-						onSelect={handleSelectListAction}
-						itemComponent={BreakLineItem}
-					/>
-				</Box>
-				<Text>{debugConsole}</Text>
-				<Footer />
-			</Box>
-		);
-	}
-	if (status === "follow/manage") {
-		return (
-			<Box flexDirection="column" minHeight={rows}>
-				<Box flexDirection="column" flexGrow={1}>
-					<Box marginBottom={1}>
-						<Text>
-							{relationship.source.following ? "Unfollow" : "Follow"}{" "}
-							<Text color="#00acee">@{user.screen_name}</Text>
-						</Text>
-					</Box>
-					<SelectInput
-						items={[
-							relationship.source.following
-								? {
-										key: "unfollow",
-										label: "OK",
-										value: "unfollow" as "unfollow",
-								  }
-								: {
-										key: "follow",
-										label: "OK",
-										value: "follow" as "follow",
-								  },
+						];
+						const breadcrumbs = [
+							"Pick a List",
+							`@${manageList.user.screen_name}/${manageList.name}`,
+						];
+
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs root={rootLabel} breadcrumbs={breadcrumbs} />
+								</Box>
+								<SelectInput
+									items={items}
+									onSelect={handleSelectListAction}
+									itemComponent={BreakLineItem}
+								/>
+							</>
+						);
+					}
+					if (status === "follow/manage") {
+						const followItem = relationship.source.following
+							? {
+									key: "unfollow",
+									label: "Unfollow",
+									value: "unfollow" as "unfollow",
+							  }
+							: {
+									key: "follow",
+									label: "Follow",
+									value: "follow" as "follow",
+							  };
+						const items = [
+							followItem,
 							{
 								key: "cancel",
 								label: "cancel",
 								value: "cancel" as "cancel",
 							},
-						]}
-						onSelect={handleSelectFollowAction}
-						itemComponent={BreakLineItem}
-						initialIndex={1}
-					/>
-				</Box>
-				<Text>{debugConsole}</Text>
-				<Footer />
+						];
+
+						return (
+							<>
+								<Box marginBottom={1}>
+									<Breadcrumbs
+										root={rootLabel}
+										breadcrumbs={["Follow Action"]}
+									/>
+								</Box>
+								<SelectInput
+									items={items}
+									onSelect={handleSelectFollowAction}
+									itemComponent={BreakLineItem}
+									initialIndex={1}
+								/>
+							</>
+						);
+					}
+					return null;
+				})()}
 			</Box>
-		);
-	}
-	return null;
+			<Footer />
+		</FullScreen>
+	);
+};
+
+type TimelineContainerProps = TimelineProps &
+	TweetDetailProps & {
+		isTweets: boolean;
+		root: string;
+		breadcrumbs: string[];
+	};
+
+const TimelineContainer = ({
+	root,
+	breadcrumbs,
+	isTweets,
+	tweets,
+	onSelect,
+	onHighlight,
+	limit,
+	isFocused,
+	tweet,
+	updater,
+}: TimelineContainerProps) => {
+	return (
+		<Box flexDirection="column" flexGrow={1}>
+			<Box marginBottom={1}>
+				<Breadcrumbs root={root} breadcrumbs={breadcrumbs} />
+			</Box>
+			<Box flexDirection="column" display={isTweets ? "flex" : "none"}>
+				<Timeline
+					tweets={tweets}
+					onSelect={onSelect}
+					onHighlight={onHighlight}
+					limit={limit}
+					isFocused={isFocused}
+				/>
+			</Box>
+			{!isTweets && <TweetDetail tweet={tweet} updater={updater} />}
+		</Box>
+	);
 };

@@ -127,14 +127,9 @@ export const useError = (): [string | undefined, (update: string) => void] => {
 
 export const useHint = (): [
 	{ key: TimelineHintKey; value: string | undefined },
-	(key: TimelineHintKey) => void
+	(update?: SetStateAction<TimelineHintKey | undefined>) => void | Promise<void>
 ] => {
-	const [hintKey, setHintKey]: [
-		TimelineHintKey,
-		(
-			update?: SetStateAction<TimelineHintKey | undefined>
-		) => void | Promise<void>
-	] = useAtom(hintKeyAtom);
+	const [hintKey, setHintKey] = useAtom(hintKeyAtom);
 	const [hintValue] = useAtom(hintValueAtom);
 
 	return [{ key: hintKey, value: hintValue }, setHintKey];
