@@ -29,8 +29,7 @@ TWITTER_CONSUMER_SECRET=
 
 ## Reference
 
-* [ink]()
-* []()
+[ink](https://github.com/vadimdemedes/ink) - React for interactive command-line apps
 
 ## License
 
