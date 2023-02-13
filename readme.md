@@ -33,4 +33,4 @@ TWITTER_CONSUMER_SECRET=
 
 ## License
 
-[MIT](https://github.com/m19e/tink/blob/master/LICENSE)
+[MIT](./LICENSE)
