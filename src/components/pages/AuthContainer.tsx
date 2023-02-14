@@ -70,11 +70,11 @@ export const AuthContainer: VFC<Props> = ({ children }) => {
 				dir = path.join(
 					process.env.USERPROFILE ?? "",
 					"Application Data",
-					"tink"
+					"tmi"
 				);
 			}
 		} else {
-			dir = path.join(dir, ".config", "tink");
+			dir = path.join(dir, ".config", "tmi");
 		}
 
 		try {
